@@ -1,0 +1,101 @@
+/* StatCard Component Styles */
+
+.stat-card {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-xl);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    /* border: 1px solid var(--color-border-light); <--- Removed to match Monitor.png */
+    box-shadow: var(--shadow-sm);
+    /* Using subtle shadow to lift from bg */
+    transition: all var(--transition-fast);
+}
+
+.stat-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.stat-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.stat-card-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+}
+
+.stat-card-icon-primary {
+    background: rgba(190, 250, 59, 0.15);
+    color: var(--color-accent-primary-hover);
+}
+
+.stat-card-icon-purple {
+    background: rgba(124, 58, 237, 0.15);
+    color: var(--color-accent-secondary);
+}
+
+.stat-card-icon-blue {
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--color-info);
+}
+
+.stat-card-icon-green {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--color-success);
+}
+
+.stat-card-icon-orange {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--color-warning);
+}
+
+.stat-card-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+.stat-card-value {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    line-height: 1.2;
+}
+
+.stat-card-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+.stat-card-trend {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    width: fit-content;
+}
+
+.stat-card-trend.positive {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--color-success);
+}
+
+.stat-card-trend.negative {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--color-error);
+}
+
+.stat-card-trend.neutral {
+    background: rgba(107, 114, 128, 0.1);
+    color: var(--color-text-secondary);
+}

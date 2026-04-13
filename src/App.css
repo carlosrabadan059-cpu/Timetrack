@@ -1,0 +1,6 @@
+/* App-wide styles */
+
+.app-container {
+    min-height: 100vh;
+    background-color: var(--color-bg-primary);
+}

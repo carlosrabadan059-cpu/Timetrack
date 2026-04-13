@@ -1,0 +1,111 @@
+/* Input Component Styles */
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.input-full {
+    width: 100%;
+}
+
+.input-label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+}
+
+.input-field {
+    width: 100%;
+    padding: var(--space-4) var(--space-5);
+    font-size: var(--font-size-base);
+    font-family: var(--font-family);
+    color: var(--color-text-primary);
+    background: var(--color-bg-secondary);
+    border: none;
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-xl);
+    transition: all var(--transition-fast);
+}
+
+.input-field::placeholder {
+    color: var(--color-text-muted);
+}
+
+.input-field:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.input-field:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(190, 250, 59, 0.4), var(--shadow-md);
+}
+
+/* With icon */
+.input-with-icon .input-field {
+    padding-left: calc(var(--space-4) + 24px);
+}
+
+.input-icon {
+    position: absolute;
+    left: var(--space-3);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    pointer-events: none;
+}
+
+/* Error state */
+.input-error .input-field {
+    border-color: var(--color-error);
+}
+
+.input-error .input-field:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+.input-error-message {
+    font-size: var(--font-size-sm);
+    color: var(--color-error);
+}
+
+.input-hint {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+/* Disabled state */
+.input-field:disabled {
+    background: var(--color-bg-primary);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Time & Date Picker Overrides */
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    background-color: transparent;
+    opacity: 0.6;
+    transition: opacity var(--transition-fast);
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator:hover,
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+/* Webkit specific styling to prevent blue focus backgrounds on time segments */
+input[type="time"]::-webkit-datetime-edit-hour-field:focus,
+input[type="time"]::-webkit-datetime-edit-minute-field:focus,
+input[type="time"]::-webkit-datetime-edit-ampm-field:focus {
+    background-color: var(--color-primary-alpha);
+    color: var(--color-text-primary);
+    border-radius: 4px;
+}

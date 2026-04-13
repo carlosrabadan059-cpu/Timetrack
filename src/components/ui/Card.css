@@ -1,0 +1,104 @@
+/* Card Component Styles */
+
+.card {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: all var(--transition-fast);
+}
+
+/* Padding variants */
+.card-padding-none {
+    padding: 0;
+}
+
+.card-padding-sm {
+    padding: var(--space-4);
+}
+
+.card-padding-md {
+    padding: var(--space-6);
+}
+
+.card-padding-lg {
+    padding: var(--space-8);
+}
+
+/* Card variants */
+.card-default {
+    border: 1px solid var(--color-border-light);
+}
+
+.card-elevated {
+    box-shadow: var(--shadow-lg);
+    border: none;
+}
+
+.card-outlined {
+    border: 1px solid var(--color-border);
+    box-shadow: none;
+}
+
+.card-ghost {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+}
+
+/* Clickable state */
+.card-clickable {
+    cursor: pointer;
+}
+
+.card-clickable:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.card-clickable:active {
+    transform: translateY(0);
+}
+
+/* Card sections */
+.card-header {
+    padding: var(--space-4) var(--space-6);
+    border-bottom: 1px solid var(--color-border-light);
+    font-weight: var(--font-weight-semibold);
+}
+
+.card-body {
+    padding: var(--space-6);
+}
+
+.card-footer {
+    padding: var(--space-4) var(--space-6);
+    border-top: 1px solid var(--color-border-light);
+    background: var(--color-bg-primary);
+}
+
+/* When card has padding, sections don't need extra */
+.card-padding-md .card-header,
+.card-padding-lg .card-header,
+.card-padding-sm .card-header {
+    padding: 0;
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.card-padding-md .card-body,
+.card-padding-lg .card-body,
+.card-padding-sm .card-body {
+    padding: 0;
+}
+
+.card-padding-md .card-footer,
+.card-padding-lg .card-footer,
+.card-padding-sm .card-footer {
+    padding: 0;
+    padding-top: var(--space-4);
+    margin-top: var(--space-4);
+    border-top: 1px solid var(--color-border-light);
+    background: transparent;
+}

@@ -1,0 +1,19 @@
+/* Employee Layout Styles */
+
+.employee-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.employee-main {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    background: var(--color-bg-primary);
+    min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+    .employee-main {
+        margin-left: 0;
+    }
+}

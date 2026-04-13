@@ -1,0 +1,210 @@
+/* Admin Dashboard Styles */
+
+.admin-dashboard {
+    padding: var(--space-6);
+    animation: fadeIn var(--transition-normal) ease-out;
+}
+
+.admin-dashboard-header {
+    margin-bottom: var(--space-6);
+}
+
+.admin-dashboard-header h1 {
+    font-size: var(--font-size-2xl);
+    margin: 0 0 var(--space-1);
+}
+
+/* Stats */
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+}
+
+/* Sections */
+.admin-employees-section,
+.admin-activity-section {
+    margin-bottom: var(--space-8);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+}
+
+.section-header h2 {
+    font-size: var(--font-size-lg);
+    margin: 0;
+}
+
+.section-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-left: var(--space-3);
+}
+
+/* Employee Grid */
+.employee-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4);
+}
+
+.employee-status-card {
+    transition: all var(--transition-fast);
+}
+
+.employee-status-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.employee-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.employee-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-full);
+    background: linear-gradient(135deg, var(--color-accent-primary) 0%, var(--color-accent-primary-hover) 100%);
+    color: var(--color-sidebar-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-lg);
+}
+
+.employee-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.employee-name {
+    font-weight: var(--font-weight-semibold);
+}
+
+.employee-status {
+    font-size: var(--font-size-sm);
+}
+
+.employee-status.status-in {
+    color: var(--color-success);
+}
+
+.employee-status.status-out {
+    color: var(--color-text-muted);
+}
+
+.employee-action {
+    padding: var(--space-2);
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    border-radius: var(--radius-md);
+}
+
+.employee-action:hover {
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+}
+
+.employee-since {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border-light);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+/* Activity List */
+.activity-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    background: var(--color-bg-primary);
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-sm);
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-user {
+    font-weight: var(--font-weight-medium);
+    margin-right: var(--space-2);
+}
+
+.activity-action {
+    color: var(--color-text-muted);
+}
+
+.activity-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--space-1);
+}
+
+.activity-time {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+.activity-warning {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--font-size-xs);
+    color: var(--color-warning);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .admin-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .employee-grid {
+        grid-template-columns: 1fr;
+    }
+}
