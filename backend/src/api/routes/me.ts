@@ -406,7 +406,7 @@ me.get('/dashboard', async (c) => {
   const weekDates: string[] = [];
   for (let i = 0; i < 5; i++) {
     const d = new Date(weekStart);
-    d.setDate(d.getDate() + i);
+    d.setUTCDate(d.getUTCDate() + i);
     weekDates.push(toDateString(d));
   }
 

@@ -71,4 +71,5 @@ export type SyncQueueEntry = {
   retries: number;
   error_message: string | null;
   created_at: string;
+  updated_at: string;
 };

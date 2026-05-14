@@ -23,31 +23,31 @@ function buildDateRange(
 ): { from: string; to: string } {
   const now = new Date();
   const todayEnd = new Date(now);
-  todayEnd.setHours(23, 59, 59, 999);
+  todayEnd.setUTCHours(23, 59, 59, 999);
 
   if (period === 'today') {
     return { from: startOfDayISO(now), to: todayEnd.toISOString() };
   }
   if (period === 'week') {
     const monday = new Date(now);
-    const day = monday.getDay();
-    monday.setDate(monday.getDate() - (day === 0 ? 6 : day - 1));
-    monday.setHours(0, 0, 0, 0);
+    const day = monday.getUTCDay();
+    monday.setUTCDate(monday.getUTCDate() - (day === 0 ? 6 : day - 1));
+    monday.setUTCHours(0, 0, 0, 0);
     return { from: monday.toISOString(), to: todayEnd.toISOString() };
   }
   if (period === 'month') {
-    const first = new Date(now.getFullYear(), now.getMonth(), 1);
+    const first = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
     return { from: first.toISOString(), to: todayEnd.toISOString() };
   }
   if (period === 'custom' && dateFrom && dateTo) {
     const from = new Date(dateFrom);
-    from.setHours(0, 0, 0, 0);
+    from.setUTCHours(0, 0, 0, 0);
     const to = new Date(dateTo);
-    to.setHours(23, 59, 59, 999);
+    to.setUTCHours(23, 59, 59, 999);
     return { from: from.toISOString(), to: to.toISOString() };
   }
   // Default: current month
-  const first = new Date(now.getFullYear(), now.getMonth(), 1);
+  const first = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
   return { from: first.toISOString(), to: todayEnd.toISOString() };
 }
 

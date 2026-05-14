@@ -5,9 +5,10 @@ import { logger } from 'hono/logger';
 import { authMiddleware } from './api/middleware/auth.js';
 import meRoutes from './api/routes/me.js';
 import historialRoutes from './api/routes/historial.js';
-import incidenciasRoutes from './api/routes/incidencias.js';
+import incidenciasRoutes, { adminIncidencias } from './api/routes/incidencias.js';
 import reportesRoutes from './api/routes/reportes.js';
 import webhookRoutes from './api/routes/webhooks.js';
+import usersRoutes from './api/routes/users.js';
 import type { AppVariables } from './types/api.types.js';
 import { startSignalRListener } from './services/signalr-listener.js';
 
@@ -30,7 +31,9 @@ app.use('/api/*', authMiddleware);
 app.route('/api/me', meRoutes);
 app.route('/api/me/historial', historialRoutes);
 app.route('/api/me/incidencias', incidenciasRoutes);
+app.route('/api/incidencias', adminIncidencias);
 app.route('/api/me/reportes', reportesRoutes);
+app.route('/api/users', usersRoutes);
 
 // ── 404 catch-all ─────────────────────────────────────────────────────────────
 app.notFound((c) => {

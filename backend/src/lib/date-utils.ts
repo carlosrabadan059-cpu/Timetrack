@@ -32,11 +32,11 @@ export function humanizeSource(source: string): string {
 }
 
 /**
- * Returns the ISO string for the start of the given day (00:00:00.000).
+ * Returns the ISO string for the start of the given day (00:00:00.000 UTC).
  */
 export function startOfDayISO(date: Date): string {
   const d = new Date(date);
-  d.setHours(0, 0, 0, 0);
+  d.setUTCHours(0, 0, 0, 0);
   return d.toISOString();
 }
 
@@ -52,10 +52,10 @@ export function toDateString(date: Date): string {
  */
 export function getWeekStart(date: Date): Date {
   const d = new Date(date);
-  const day = d.getDay(); // 0=Sun, 1=Mon, ...
+  const day = d.getUTCDay(); // 0=Sun, 1=Mon, ...
   const daysFromMonday = day === 0 ? 6 : day - 1;
-  d.setDate(d.getDate() - daysFromMonday);
-  d.setHours(0, 0, 0, 0);
+  d.setUTCDate(d.getUTCDate() - daysFromMonday);
+  d.setUTCHours(0, 0, 0, 0);
   return d;
 }
 
