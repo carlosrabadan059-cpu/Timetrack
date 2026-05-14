@@ -1,0 +1,4 @@
+.env
+.env.local
+google-service-account.json
+node_modules
