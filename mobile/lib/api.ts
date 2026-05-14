@@ -12,11 +12,22 @@ async function getAuthHeaders(): Promise<Record<string, string>> {
 
 async function request<T>(method: string, path: string, body?: unknown): Promise<{ data: T }> {
   const headers = await getAuthHeaders();
-  const res = await fetch(`${BASE_URL}${path}`, {
-    method,
-    headers,
-    body: body !== undefined ? JSON.stringify(body) : undefined,
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10_000);
+  let res: Response;
+  try {
+    res = await fetch(`${BASE_URL}${path}`, {
+      method,
+      headers,
+      body: body !== undefined ? JSON.stringify(body) : undefined,
+      signal: controller.signal,
+    });
+  } catch (e) {
+    clearTimeout(timeout);
+    const msg = e instanceof Error && e.name === 'AbortError' ? 'Servidor no disponible (timeout)' : 'Error de red';
+    throw new Error(msg);
+  }
+  clearTimeout(timeout);
 
   const json = await res.json();
   if (!res.ok) {
