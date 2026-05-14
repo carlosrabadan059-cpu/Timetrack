@@ -44,8 +44,8 @@ const ProtectedRoute = ({ children, requiredRole = null }) => {
 
     // Check role if required
     if (requiredRole && profile?.role !== requiredRole) {
-        // Redirect admins to admin dashboard, employees to employee dashboard
-        const redirectPath = profile?.role === 'admin' ? '/admin' : '/dashboard';
+        const role = profile?.role;
+        const redirectPath = role === 'superadmin' ? '/superadmin/empresas' : role === 'admin' || role === 'manager' ? '/admin' : '/dashboard';
         return <Navigate to={redirectPath} replace />;
     }
 

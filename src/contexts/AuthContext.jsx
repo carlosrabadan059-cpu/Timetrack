@@ -1,13 +1,12 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { MOCK_USERS } from '../lib/mockData';
+import { supabase } from '../lib/supabase';
+import { api } from '../lib/api';
 
 const AuthContext = createContext(null);
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
+    if (!context) throw new Error('useAuth must be used within an AuthProvider');
     return context;
 };
 
@@ -16,90 +15,51 @@ export const AuthProvider = ({ children }) => {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Check for existing session on mount
-    useEffect(() => {
-        const storedUser = localStorage.getItem('timetrack_user');
-        if (storedUser) {
-            try {
-                const parsed = JSON.parse(storedUser);
-                setUser(parsed);
-                setProfile(parsed.profile);
-            } catch (error) {
-                console.error('Error parsing stored user:', error);
-                localStorage.removeItem('timetrack_user');
-            }
+    async function loadProfile() {
+        try {
+            const res = await api.get('/api/me');
+            const p = res.data;
+            setProfile({ ...p, name: p.full_name });
+        } catch {
+            setProfile(null);
         }
-        setLoading(false);
+    }
+
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setUser(session?.user ?? null);
+            if (session?.user) {
+                loadProfile().finally(() => setLoading(false));
+            } else {
+                setLoading(false);
+            }
+        });
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null);
+            if (session?.user) {
+                loadProfile();
+            } else {
+                setProfile(null);
+            }
+        });
+
+        return () => subscription.unsubscribe();
     }, []);
 
-    /**
-     * Sign in with email and password
-     * Currently uses mock data
-     */
     const signIn = async (email, password) => {
-        setLoading(true);
-
-        try {
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            // Find user in mock data
-            const foundUser = MOCK_USERS.find(
-                u => u.email.toLowerCase() === email.toLowerCase() && u.password === password
-            );
-
-            if (!foundUser) {
-                throw new Error('Credenciales incorrectas');
-            }
-
-            if (!foundUser.profile.is_active) {
-                throw new Error('Usuario desactivado');
-            }
-
-            // Store user session
-            const userData = {
-                id: foundUser.id,
-                email: foundUser.email,
-                profile: foundUser.profile
-            };
-
-            localStorage.setItem('timetrack_user', JSON.stringify(userData));
-            setUser(userData);
-            setProfile(foundUser.profile);
-
-            return { user: userData, error: null };
-        } catch (error) {
-            return { user: null, error: error.message };
-        } finally {
-            setLoading(false);
-        }
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) return { user: null, error: error.message };
+        return { user, error: null };
     };
 
-    /**
-     * Sign out current user
-     */
     const signOut = async () => {
-        localStorage.removeItem('timetrack_user');
-        setUser(null);
-        setProfile(null);
+        await supabase.auth.signOut();
     };
 
-    /**
-     * Check if user has a specific role
-     */
-    const hasRole = (role) => {
-        return profile?.role === role;
-    };
-
-    /**
-     * Check if user is admin
-     */
-    const isAdmin = () => hasRole('admin');
-
-    /**
-     * Check if user is employee
-     */
-    const isEmployee = () => hasRole('employee');
+    const hasRole = (role) => profile?.role === role;
+    const isAdmin = () => profile?.role === 'admin' || profile?.role === 'manager';
+    const isEmployee = () => profile?.role === 'employee';
 
     const value = {
         user,
@@ -110,14 +70,10 @@ export const AuthProvider = ({ children }) => {
         hasRole,
         isAdmin,
         isEmployee,
-        isAuthenticated: !!user
+        isAuthenticated: !!user,
     };
 
-    return (
-        <AuthContext.Provider value={value}>
-            {children}
-        </AuthContext.Provider>
-    );
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export default AuthContext;

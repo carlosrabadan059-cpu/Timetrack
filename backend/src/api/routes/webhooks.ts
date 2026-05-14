@@ -3,7 +3,8 @@ import { z } from 'zod';
 import { getSupabaseAdmin } from '../../lib/supabase.js';
 import { acClient } from '../../lib/ac-client.js';
 import { dispatchN8nWebhook, type N8nWorkflow } from '../../lib/n8n.js';
-import type { SyncQueueEntry } from '../../types/supabase.types.js';
+import { handleAccessEvent } from '../../services/signalr-listener.js';
+import type { SyncQueueEntry, ClockingModes } from '../../types/supabase.types.js';
 
 const webhooks = new Hono();
 
@@ -258,6 +259,68 @@ webhooks.post('/n8n/reconcile', async (c) => {
   }
 
   return c.json({ data: { queued, discrepancies } });
+});
+
+// ── POST /webhooks/2n-device/:companyId ───────────────────────────────────────
+// Webhook recibido directamente desde un lector 2N (modo Dispositivo Directo).
+// Auth: X-2N-Secret header debe coincidir con clocking_modes.twoN.device_webhook_secret
+// de la empresa. El cuerpo acepta el mismo formato plano/nativo que Node-RED.
+
+webhooks.post('/2n-device/:companyId', async (c) => {
+  const companyId = c.req.param('companyId');
+  const sb = getSupabaseAdmin();
+
+  const { data: settings } = await sb
+    .from('company_settings')
+    .select('clocking_modes')
+    .eq('company_id', companyId)
+    .single();
+
+  if (!settings) {
+    return c.json({ error: { code: 'not_found', message: 'Empresa no encontrada' } }, 404);
+  }
+
+  const modes = settings.clocking_modes as ClockingModes;
+
+  if (!modes?.twoN?.enabled || modes.twoN.type !== 'device') {
+    return c.json({ error: { code: 'mode_disabled', message: 'Modo dispositivo directo no habilitado' } }, 403);
+  }
+
+  const secret = c.req.header('X-2N-Secret');
+  if (!secret || secret !== modes.twoN.device_webhook_secret) {
+    return c.json({ error: { code: 'unauthorized', message: 'Secret inválido' } }, 401);
+  }
+
+  const body = await c.req.json().catch(() => null);
+  if (typeof body !== 'object' || body === null) {
+    return c.json({ error: { code: 'invalid_params', message: 'Body inválido' } }, 400);
+  }
+
+  await handleAccessEvent(body as Record<string, unknown>, companyId);
+  return c.json({ data: { received: true } });
+});
+
+// ── POST /webhooks/node-red/access-event ──────────────────────────────────────
+// Node-RED (running inside 2N AC) forwards access events here.
+// Node-RED subscribes to the SignalR hub natively (with local auth) and POSTs
+// each event. Auth: X-Node-Red-Secret header matches NODE_RED_SECRET env var.
+
+// Accept both flat (our tests) and native 2N AC format (Category/Person/Device/...)
+const nodeRedEventSchema = z.record(z.unknown());
+
+webhooks.post('/node-red/access-event', async (c) => {
+  const secret = c.req.header('X-Node-Red-Secret');
+  if (!secret || secret !== process.env['NODE_RED_SECRET']) {
+    return c.json({ error: { code: 'unauthorized', message: 'Invalid secret' } }, 401);
+  }
+
+  const body = await c.req.json().catch(() => null);
+  if (typeof body !== 'object' || body === null) {
+    return c.json({ error: { code: 'invalid_params', message: 'Body inválido' } }, 400);
+  }
+
+  await handleAccessEvent(body as Record<string, unknown>);
+  return c.json({ data: { received: true } });
 });
 
 export default webhooks;

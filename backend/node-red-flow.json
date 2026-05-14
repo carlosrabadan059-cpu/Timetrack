@@ -1,0 +1,109 @@
+[
+  {
+    "id": "tab-2n-signalr",
+    "type": "tab",
+    "label": "2N AC → Backend",
+    "disabled": false,
+    "info": "Reenvía eventos de acceso de 2N Access Commander al backend vía webhook.\n\nVariables de entorno requeridas en Node-RED:\n  AC_BASE_URL     → https://access.rabadanhouse.space\n  AC_API_TOKEN    → token Bearer de la API de 2N AC\n  BACKEND_URL     → URL base del backend (sin barra final)\n  NODE_RED_SECRET → secreto compartido con el backend"
+  },
+  {
+    "id": "inject-start",
+    "type": "inject",
+    "z": "tab-2n-signalr",
+    "name": "Conectar / Reconectar",
+    "props": [],
+    "repeat": "300",
+    "crontab": "",
+    "once": true,
+    "onceDelay": "2",
+    "topic": "",
+    "x": 150,
+    "y": 100,
+    "wires": [
+      [
+        "func-signalr"
+      ]
+    ]
+  },
+  {
+    "id": "func-signalr",
+    "type": "function",
+    "z": "tab-2n-signalr",
+    "name": "SignalR Manager",
+    "func": "// ── SignalR Manager ──────────────────────────────────────────────\n// Output 1: access event (object) → http request\n// Output 2: error (string) → debug\n\nconst AC_BASE = env.get('AC_BASE_URL');\nconst AC_TOKEN = env.get('AC_API_TOKEN');\nconst BACKEND = env.get('BACKEND_URL');\nconst NR_SECRET = env.get('NODE_RED_SECRET');\n\nconst state = global.get('signalr_state') || 'disconnected';\nif (state === 'connected' || state === 'connecting') {\n    node.log('SignalR ya ' + state + ', skip');\n    return null;\n}\n\nglobal.set('signalr_state', 'connecting');\nnode.log('Iniciando conexión SignalR a ' + AC_BASE);\n\nconst https = require('https');\nconst negUrl = new URL(AC_BASE + '/mainhubv3/negotiate?negotiateVersion=1');\n\nconst negOpts = {\n    hostname: negUrl.hostname,\n    port: negUrl.port || 443,\n    path: negUrl.pathname + negUrl.search,\n    method: 'POST',\n    headers: { 'Authorization': 'Bearer ' + AC_TOKEN, 'Content-Length': 0 },\n    rejectUnauthorized: false\n};\n\nconst negReq = https.request(negOpts, (res) => {\n    let body = '';\n    res.on('data', c => body += c);\n    res.on('end', () => {\n        if (res.statusCode !== 200) {\n            node.send([null, { payload: 'Negotiate ' + res.statusCode + ': ' + body.slice(0, 200) }]);\n            global.set('signalr_state', 'disconnected');\n            return;\n        }\n        let neg;\n        try { neg = JSON.parse(body); }\n        catch(e) {\n            node.send([null, { payload: 'Negotiate JSON inválido: ' + body.slice(0, 100) }]);\n            global.set('signalr_state', 'disconnected');\n            return;\n        }\n        const token = neg.connectionToken || neg.connectionId;\n        if (!token) {\n            node.send([null, { payload: 'Negotiate: sin connectionToken. ' + body.slice(0, 200) }]);\n            global.set('signalr_state', 'disconnected');\n            return;\n        }\n        const wsBase = AC_BASE.replace(/^https:\\/\\//, 'wss://').replace(/^http:\\/\\//, 'ws://');\n        const wsUrl = wsBase + '/mainhubv3?id=' + encodeURIComponent(token) + '&negotiateVersion=1';\n        node.log('Abriendo WebSocket: ' + wsUrl.split('?')[0]);\n        let ws;\n        try {\n            const WS = require('ws');\n            ws = new WS(wsUrl, { headers: { Authorization: 'Bearer ' + AC_TOKEN }, rejectUnauthorized: false });\n        } catch(e) {\n            node.send([null, { payload: 'No se pudo abrir WebSocket: ' + e.message }]);\n            global.set('signalr_state', 'disconnected');\n            return;\n        }\n        global.set('signalr_ws', ws);\n        let handshakeDone = false;\n        ws.on('open', () => {\n            node.log('WS conectado — enviando handshake SignalR');\n            ws.send(JSON.stringify({ protocol: 'json', version: 1 }) + '\\u001e');\n        });\n        ws.on('message', (data) => {\n            const str = Buffer.isBuffer(data) ? data.toString('utf8') : String(data);\n            const frames = str.split('\\u001e').filter(f => f.trim() && f.trim() !== '{}');\n            for (const frame of frames) {\n                let msg;\n                try { msg = JSON.parse(frame); } catch(e) { continue; }\n                if (!handshakeDone) {\n                    handshakeDone = true;\n                    global.set('signalr_state', 'connected');\n                    node.log('Handshake OK — suscribiendo a accesslog');\n                    ws.send(JSON.stringify({ type: 1, target: 'Subscribe', arguments: ['accesslog', null], invocationId: '0' }) + '\\u001e');\n                    continue;\n                }\n                if (msg.type === 6) {\n                    ws.send(JSON.stringify({ type: 6 }) + '\\u001e');\n                    continue;\n                }\n                if (msg.type === 1 && msg.target === 'ReceiveMessage') {\n                    const payload = Array.isArray(msg.arguments) ? msg.arguments[0] : null;\n                    if (payload) {\n                        const eventData = payload.data || payload;\n                        node.log('Evento: ' + JSON.stringify(eventData).slice(0, 150));\n                        node.send([{\n                            payload: JSON.stringify(eventData),\n                            headers: {\n                                'Content-Type': 'application/json',\n                                'X-Node-Red-Secret': NR_SECRET\n                            },\n                            url: BACKEND + '/webhooks/node-red/access-event'\n                        }, null]);\n                    }\n                }\n            }\n        });\n        ws.on('error', (err) => {\n            node.send([null, { payload: 'WS error: ' + err.message }]);\n            global.set('signalr_state', 'disconnected');\n        });\n        ws.on('close', (code, reason) => {\n            const r = reason ? reason.toString() : '';\n            node.warn('WS cerrado: ' + code + ' ' + r);\n            global.set('signalr_state', 'disconnected');\n        });\n    });\n});\nnegReq.on('error', (err) => {\n    node.send([null, { payload: 'Error negotiate: ' + err.message }]);\n    global.set('signalr_state', 'disconnected');\n});\nnegReq.end();\nreturn null;",
+    "outputs": 2,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "const ws = global.get('signalr_ws');\nif (ws) { try { ws.close(); } catch(e) {} global.set('signalr_ws', null); }\nglobal.set('signalr_state', 'disconnected');\nnode.log('SignalR cerrado (redeploy)');",
+    "libs": [],
+    "x": 370,
+    "y": 100,
+    "wires": [
+      [
+        "http-forward"
+      ],
+      [
+        "debug-error"
+      ]
+    ]
+  },
+  {
+    "id": "http-forward",
+    "type": "http request",
+    "z": "tab-2n-signalr",
+    "name": "→ Backend webhook",
+    "method": "use",
+    "ret": "txt",
+    "paytoqs": "ignore",
+    "url": "",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "insecureHTTPParser": false,
+    "authType": "",
+    "senderr": false,
+    "headers": [],
+    "x": 590,
+    "y": 100,
+    "wires": [
+      [
+        "debug-ok"
+      ]
+    ]
+  },
+  {
+    "id": "debug-ok",
+    "type": "debug",
+    "z": "tab-2n-signalr",
+    "name": "Respuesta backend",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 820,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "debug-error",
+    "type": "debug",
+    "z": "tab-2n-signalr",
+    "name": "Errores SignalR",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 590,
+    "y": 180,
+    "wires": []
+  }
+]

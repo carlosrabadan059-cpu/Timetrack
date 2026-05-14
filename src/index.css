@@ -295,6 +295,11 @@ button {
   color: var(--color-text-secondary);
 }
 
+.badge-purple {
+  background-color: rgba(159, 122, 234, 0.1);
+  color: var(--color-purple, #9F7AEA);
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {

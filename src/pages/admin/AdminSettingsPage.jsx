@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Building2,
     MapPin,
@@ -7,58 +7,73 @@ import {
     Save,
     Trash,
     Plus,
+    Store,
+    Globe,
+    Smartphone,
+    Wifi,
+    Eye,
+    EyeOff,
     CheckCircle,
-    Store
+    XCircle,
+    Loader,
+    Download,
+    Users
 } from 'lucide-react';
 import { Card, Button, Input } from '../../components/ui';
-import { MOCK_SETTINGS } from '../../lib/mockData';
+import { api } from '../../lib/api';
 import './AdminSettingsPage.css';
+
+const DEFAULT_CLOCKING_MODES = {
+    web: true,
+    mobile: true,
+    twoN: { enabled: false, type: null, ac_base_url: '', ac_api_token: '', device_webhook_secret: null },
+};
+
+const DEFAULT_SETTINGS = {
+    company: { name: '', cif: '', address: '', email: '' },
+    branches: [],
+    rules: { geoFenceRadius: 100, courtesyMinutes: 15, latitude: 40.4168, longitude: -3.7038 },
+    work_schedule: { start: '09:00', end: '18:00', days: [1, 2, 3, 4, 5] },
+    holidays: [],
+    clocking_modes: DEFAULT_CLOCKING_MODES,
+};
 
 const AdminSettingsPage = () => {
     const [activeTab, setActiveTab] = useState('general');
+    const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
-
-    // Mock State for Settings - Initialized from MOCK_SETTINGS
-    const [settings, setSettings] = useState({
-        company: {
-            name: MOCK_SETTINGS.company_name || 'TimeTrack Corp',
-            cif: 'B-12345678',
-            address: MOCK_SETTINGS.company_location?.address || 'Calle Principal 123, Madrid',
-            email: 'admin@timetrack.corp'
-        },
-        branches: [
-            { id: 1, name: 'Sede Central', address: 'Madrid' },
-            { id: 2, name: 'Delegación Norte', address: 'Bilbao' }
-        ],
-        rules: {
-            geoFenceRadius: MOCK_SETTINGS.allowed_radius || 100,
-            courtesyMinutes: 15,
-            latitude: MOCK_SETTINGS.company_location?.lat || 40.4168,
-            longitude: MOCK_SETTINGS.company_location?.lng || -3.7038
-        },
-        work_schedule: MOCK_SETTINGS.work_schedule || {
-            start: '09:00',
-            end: '18:00',
-            days: [1, 2, 3, 4, 5]
-        },
-        holidays: [
-            { id: 1, date: '2026-01-01', name: 'Año Nuevo', scope: 'global' },
-            { id: 2, date: '2026-05-01', name: 'Día del Trabajo', scope: 'global' },
-            { id: 3, date: '2026-12-25', name: 'Navidad', scope: 'global' }
-        ]
-    });
+    const [saveStatus, setSaveStatus] = useState(null); // 'ok' | 'error'
+    const [settings, setSettings] = useState(DEFAULT_SETTINGS);
 
     // Forms State
     const [newHoliday, setNewHoliday] = useState({ date: '', name: '', scope: 'global' });
     const [newBranch, setNewBranch] = useState({ name: '', address: '' });
+    const [showAcToken, setShowAcToken] = useState(false);
+    const [acTestStatus, setAcTestStatus] = useState(null); // null | 'testing' | 'ok' | 'error'
+    const [acTestMessage, setAcTestMessage] = useState('');
+    const [acImportStatus, setAcImportStatus] = useState(null); // null | 'importing' | { total_in_ac, created, linked, skipped } | 'error'
+    const [acImportMessage, setAcImportMessage] = useState('');
+
+    useEffect(() => {
+        api.get('/api/admin/settings')
+            .then(res => setSettings({ ...DEFAULT_SETTINGS, ...res.data }))
+            .catch(() => setSettings(DEFAULT_SETTINGS))
+            .finally(() => setIsLoading(false));
+    }, []);
 
     // Handlers
-    const handleSave = () => {
+    const handleSave = async () => {
         setIsSaving(true);
-        setTimeout(() => {
+        setSaveStatus(null);
+        try {
+            await api.patch('/api/admin/settings', settings);
+            setSaveStatus('ok');
+            setTimeout(() => setSaveStatus(null), 3000);
+        } catch {
+            setSaveStatus('error');
+        } finally {
             setIsSaving(false);
-            alert('Configuración guardada correctamente');
-        }, 800);
+        }
     };
 
     const handleCompanyChange = (field, value) => {
@@ -72,6 +87,23 @@ const AdminSettingsPage = () => {
         setSettings(prev => ({
             ...prev,
             rules: { ...prev.rules, [field]: parseFloat(value) || value }
+        }));
+    };
+
+    const handleModesChange = (patch) => {
+        setSettings(prev => ({
+            ...prev,
+            clocking_modes: { ...prev.clocking_modes, ...patch },
+        }));
+    };
+
+    const handleTwoNChange = (patch) => {
+        setSettings(prev => ({
+            ...prev,
+            clocking_modes: {
+                ...prev.clocking_modes,
+                twoN: { ...prev.clocking_modes.twoN, ...patch },
+            },
         }));
     };
 
@@ -110,10 +142,52 @@ const AdminSettingsPage = () => {
         }));
     };
 
+    const handleTestAc = async () => {
+        setAcTestStatus('testing');
+        setAcTestMessage('');
+        try {
+            const res = await api.post('/api/admin/settings/test-ac', {
+                ac_base_url: settings.clocking_modes.twoN.ac_base_url,
+                ac_api_token: settings.clocking_modes.twoN.ac_api_token,
+            });
+            setAcTestStatus('ok');
+            setAcTestMessage(res.data.message ?? 'Conexión establecida correctamente');
+        } catch (err) {
+            setAcTestStatus('error');
+            setAcTestMessage(err?.response?.data?.error?.message ?? err?.message ?? 'Error de conexión');
+        }
+    };
+
+    const handleImportFromAc = async () => {
+        setAcImportStatus('importing');
+        setAcImportMessage('');
+        try {
+            const res = await api.post('/api/admin/settings/import-from-ac', {});
+            setAcImportStatus(res.data);
+            if (res.data?.company_name) {
+                setSettings(prev => ({
+                    ...prev,
+                    company: { ...prev.company, name: res.data.company_name },
+                }));
+            }
+        } catch (err) {
+            setAcImportStatus('error');
+            setAcImportMessage(err?.response?.data?.error?.message ?? err?.message ?? 'Error al importar');
+        }
+    };
+
     const getBranchName = (id) => {
         const branch = settings.branches.find(b => b.id.toString() === id.toString());
         return branch ? branch.name : 'Desconocida';
     };
+
+    if (isLoading) {
+        return (
+            <div className="admin-settings-page">
+                <div className="flex items-center justify-center py-20 text-muted">Cargando configuración...</div>
+            </div>
+        );
+    }
 
     return (
         <div className="admin-settings-page">
@@ -122,9 +196,13 @@ const AdminSettingsPage = () => {
                     <h1>Configuración</h1>
                     <p className="text-muted">Administra los parámetros globales y sucursales</p>
                 </div>
-                <Button onClick={handleSave} disabled={isSaving} icon={isSaving ? undefined : Save}>
-                    {isSaving ? 'Guardando...' : 'Guardar Cambios'}
-                </Button>
+                <div className="flex items-center gap-3">
+                    {saveStatus === 'ok' && <span className="text-sm text-success">✓ Guardado</span>}
+                    {saveStatus === 'error' && <span className="text-sm text-danger">Error al guardar</span>}
+                    <Button onClick={handleSave} disabled={isSaving} icon={isSaving ? undefined : Save}>
+                        {isSaving ? 'Guardando...' : 'Guardar Cambios'}
+                    </Button>
+                </div>
             </header>
 
             {/* Tabs */}
@@ -146,6 +224,12 @@ const AdminSettingsPage = () => {
                     onClick={() => setActiveTab('rules')}
                 >
                     <MapPin size={16} className="inline mr-2" /> Control Horario
+                </button>
+                <button
+                    className={`tab-button ${activeTab === 'modos' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('modos')}
+                >
+                    <Wifi size={16} className="inline mr-2" /> Modos de Fichaje
                 </button>
                 <button
                     className={`tab-button ${activeTab === 'calendar' ? 'active' : ''}`}
@@ -321,6 +405,210 @@ const AdminSettingsPage = () => {
                                 </p>
                             </Card>
                         </div>
+                    </div>
+                )}
+
+                {/* MODOS DE FICHAJE TAB */}
+                {activeTab === 'modos' && (
+                    <div className="settings-section">
+                        <div className="section-header">
+                            <h2 className="section-title">Modos de Fichaje</h2>
+                            <p className="section-description">Configura qué métodos de fichaje están habilitados para tu empresa.</p>
+                        </div>
+                        <Card className="max-w-2xl">
+                            <div className="modes-list">
+                                {/* Web */}
+                                <div className="mode-row">
+                                    <div className="mode-row-info">
+                                        <Globe size={20} className="mode-icon" />
+                                        <div>
+                                            <div className="mode-row-title">Fichaje Web</div>
+                                            <div className="mode-row-desc">Botón en la app del navegador</div>
+                                        </div>
+                                    </div>
+                                    <label className="settings-toggle">
+                                        <input
+                                            type="checkbox"
+                                            checked={settings.clocking_modes?.web ?? true}
+                                            onChange={e => handleModesChange({ web: e.target.checked })}
+                                        />
+                                        <span className="settings-toggle-slider" />
+                                    </label>
+                                </div>
+
+                                {/* Mobile */}
+                                <div className="mode-row">
+                                    <div className="mode-row-info">
+                                        <Smartphone size={20} className="mode-icon" />
+                                        <div>
+                                            <div className="mode-row-title">Fichaje Móvil</div>
+                                            <div className="mode-row-desc">App iOS / Android con GPS opcional</div>
+                                        </div>
+                                    </div>
+                                    <label className="settings-toggle">
+                                        <input
+                                            type="checkbox"
+                                            checked={settings.clocking_modes?.mobile ?? true}
+                                            onChange={e => handleModesChange({ mobile: e.target.checked })}
+                                        />
+                                        <span className="settings-toggle-slider" />
+                                    </label>
+                                </div>
+
+                                {/* 2N */}
+                                <div className="mode-row">
+                                    <div className="mode-row-info">
+                                        <Wifi size={20} className="mode-icon" />
+                                        <div>
+                                            <div className="mode-row-title">Lectores 2N</div>
+                                            <div className="mode-row-desc">Integración con dispositivos físicos 2N</div>
+                                        </div>
+                                    </div>
+                                    <label className="settings-toggle">
+                                        <input
+                                            type="checkbox"
+                                            checked={settings.clocking_modes?.twoN?.enabled ?? false}
+                                            onChange={e => handleTwoNChange({ enabled: e.target.checked, type: e.target.checked ? (settings.clocking_modes?.twoN?.type ?? null) : null })}
+                                        />
+                                        <span className="settings-toggle-slider" />
+                                    </label>
+                                </div>
+
+                                {settings.clocking_modes?.twoN?.enabled && (
+                                    <div className="twoN-settings">
+                                        <div className="settings-group">
+                                            <label className="settings-label">Tipo de integración</label>
+                                            <div className="radio-row">
+                                                <label className="radio-pill">
+                                                    <input
+                                                        type="radio"
+                                                        name="twoN-type-settings"
+                                                        value="ac"
+                                                        checked={settings.clocking_modes.twoN.type === 'ac'}
+                                                        onChange={() => handleTwoNChange({ type: 'ac' })}
+                                                    />
+                                                    2N Access Commander
+                                                </label>
+                                                <label className="radio-pill">
+                                                    <input
+                                                        type="radio"
+                                                        name="twoN-type-settings"
+                                                        value="device"
+                                                        checked={settings.clocking_modes.twoN.type === 'device'}
+                                                        onChange={() => handleTwoNChange({ type: 'device' })}
+                                                    />
+                                                    Dispositivo Directo
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        {settings.clocking_modes.twoN.type === 'ac' && (
+                                            <>
+                                                <div className="settings-group">
+                                                    <label className="settings-label">URL del Access Commander</label>
+                                                    <Input
+                                                        value={settings.clocking_modes.twoN.ac_base_url ?? ''}
+                                                        onChange={e => handleTwoNChange({ ac_base_url: e.target.value })}
+                                                        placeholder="https://192.168.1.1"
+                                                    />
+                                                </div>
+                                                <div className="settings-group">
+                                                    <label className="settings-label">API Token</label>
+                                                    <div className="input-token-row">
+                                                        <Input
+                                                            type={showAcToken ? 'text' : 'password'}
+                                                            value={settings.clocking_modes.twoN.ac_api_token ?? ''}
+                                                            onChange={e => { handleTwoNChange({ ac_api_token: e.target.value }); setAcTestStatus(null); }}
+                                                            placeholder="Token de 2N AC"
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            className="token-toggle-btn"
+                                                            onClick={() => setShowAcToken(v => !v)}
+                                                        >
+                                                            {showAcToken ? <EyeOff size={16} /> : <Eye size={16} />}
+                                                        </button>
+                                                    </div>
+                                                    <p className="settings-help">El token se guarda cifrado. Introduce uno nuevo para actualizarlo.</p>
+                                                </div>
+
+                                                <div className="ac-test-row">
+                                                    <button
+                                                        type="button"
+                                                        className="ac-test-btn"
+                                                        onClick={handleTestAc}
+                                                        disabled={acTestStatus === 'testing' || !settings.clocking_modes.twoN.ac_base_url || !settings.clocking_modes.twoN.ac_api_token}
+                                                    >
+                                                        {acTestStatus === 'testing'
+                                                            ? <><Loader size={14} className="spin" /> Probando...</>
+                                                            : 'Probar conexión'}
+                                                    </button>
+                                                    {acTestStatus === 'ok' && (
+                                                        <span className="ac-test-result ac-test-ok">
+                                                            <CheckCircle size={14} /> {acTestMessage}
+                                                        </span>
+                                                    )}
+                                                    {acTestStatus === 'error' && (
+                                                        <span className="ac-test-result ac-test-error">
+                                                            <XCircle size={14} /> {acTestMessage}
+                                                        </span>
+                                                    )}
+                                                </div>
+
+                                                <div className="ac-import-section">
+                                                    <div className="ac-import-row">
+                                                        <button
+                                                            type="button"
+                                                            className="ac-import-btn"
+                                                            onClick={handleImportFromAc}
+                                                            disabled={acImportStatus === 'importing' || !settings.clocking_modes.twoN.ac_base_url}
+                                                        >
+                                                            {acImportStatus === 'importing'
+                                                                ? <><Loader size={14} className="spin" /> Importando usuarios...</>
+                                                                : <><Download size={14} /> Importar usuarios desde 2N AC</>}
+                                                        </button>
+                                                        <p className="settings-help" style={{ margin: 0 }}>
+                                                            Crea o vincula automáticamente los empleados registrados en el Access Commander.
+                                                        </p>
+                                                    </div>
+                                                    {acImportStatus && acImportStatus !== 'importing' && acImportStatus !== 'error' && (
+                                                        <div className="ac-import-result">
+                                                            <Users size={14} />
+                                                            <span>
+                                                                <strong>{acImportStatus.total_in_ac}</strong> usuarios en AC —{' '}
+                                                                <strong className="text-success">{acImportStatus.created} creados</strong>,{' '}
+                                                                <strong>{acImportStatus.linked} vinculados</strong>,{' '}
+                                                                {acImportStatus.skipped} ya sincronizados
+                                                                {acImportStatus.errors?.length > 0 && (
+                                                                    <span className="ac-import-errors">
+                                                                        {' '}· {acImportStatus.errors.length} error(es)
+                                                                    </span>
+                                                                )}
+                                                            </span>
+                                                        </div>
+                                                    )}
+                                                    {acImportStatus === 'error' && (
+                                                        <span className="ac-test-result ac-test-error">
+                                                            <XCircle size={14} /> {acImportMessage}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </>
+                                        )}
+
+                                        {settings.clocking_modes.twoN.type === 'device' && (
+                                            <div className="device-webhook-info">
+                                                <p className="settings-label">URL del webhook para dispositivos</p>
+                                                <code className="webhook-url">
+                                                    {`${window.location.origin.replace('5173', '3000')}/webhooks/2n-device/[company-id]`}
+                                                </code>
+                                                <p className="settings-help">Configura esta URL en el dispositivo 2N junto con el secreto. El secreto se genera automáticamente.</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </Card>
                     </div>
                 )}
 

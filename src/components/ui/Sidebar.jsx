@@ -12,6 +12,7 @@ import {
     ClipboardList,
     BarChart3,
     Settings,
+    Building2,
     ChevronUp
 } from 'lucide-react';
 import './Sidebar.css';
@@ -55,7 +56,11 @@ const Sidebar = ({ variant = 'employee' }) => {
         { to: '/admin/configuracion', icon: Settings, label: 'Configuración' }
     ];
 
-    const links = variant === 'admin' ? adminLinks : employeeLinks;
+    const superadminLinks = [
+        { to: '/superadmin/empresas', icon: Building2, label: 'Empresas' },
+    ];
+
+    const links = variant === 'superadmin' ? superadminLinks : variant === 'admin' ? adminLinks : employeeLinks;
 
     return (
         <aside className="sidebar">
@@ -96,7 +101,7 @@ const Sidebar = ({ variant = 'employee' }) => {
                     <div className="sidebar-user-info">
                         <span className="sidebar-user-name">{profile?.name || 'Usuario'}</span>
                         <span className="sidebar-user-role">
-                            {profile?.role === 'admin' ? 'Administrador' : 'Empleado'}
+                            {profile?.role === 'superadmin' ? 'Super Admin' : profile?.role === 'admin' ? 'Administrador' : 'Empleado'}
                         </span>
                     </div>
                     <button

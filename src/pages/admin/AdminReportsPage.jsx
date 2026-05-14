@@ -1,201 +1,115 @@
-import { useState, useEffect } from 'react';
-import {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer
-} from 'recharts';
-import {
-    Download,
-    Calendar,
-    Users,
-    Clock,
-    TrendingUp,
-    AlertTriangle,
-    FileText,
-    ChevronLeft,
-    ChevronRight
-} from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Calendar, Users, Clock, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
 import { StatCard, Card, Button } from '../../components/ui';
-import { MOCK_USERS } from '../../lib/mockData';
-import { generateChartData, getReportTableData, calculatePeriodStats } from '../../lib/reportsUtils';
-import { generateCSV, generatePDF } from '../../lib/exportUtils';
-import { startOfMonth, endOfMonth, format, subMonths, parseISO, addMonths } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { api } from '../../lib/api';
 import './AdminReportsPage.css';
 
+const MONTHS_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
 const AdminReportsPage = () => {
-    // State
-    const [dateRange, setDateRange] = useState({
-        start: startOfMonth(new Date()),
-        end: endOfMonth(new Date())
-    });
-    const [selectedEmployee, setSelectedEmployee] = useState('all');
-    const [stats, setStats] = useState({ totalHours: 0, overtimeHours: 0, absenteeism: 0, punctuality: 0 });
-    const [chartData, setChartData] = useState([]);
-    const [tableData, setTableData] = useState([]);
+    const now = new Date();
+    const [month, setMonth] = useState(now.getMonth() + 1);
+    const [year, setYear] = useState(now.getFullYear());
+    const [selectedUserId, setSelectedUserId] = useState('all');
+    const [employees, setEmployees] = useState([]);
+    const [records, setRecords] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    // Update data when filters change
     useEffect(() => {
+        api.get('/api/users', { limit: 100 })
+            .then(res => setEmployees(res.data ?? []))
+            .catch(() => {});
+    }, []);
+
+    const loadReports = useCallback(async () => {
+        setLoading(true);
         try {
-            const newStats = calculatePeriodStats(dateRange.start, dateRange.end, selectedEmployee);
-            const newChart = generateChartData(dateRange.start, dateRange.end, selectedEmployee);
-            const newTable = getReportTableData(dateRange.start, dateRange.end, selectedEmployee);
-
-            setStats(newStats);
-            setChartData(newChart);
-            setTableData(newTable);
-        } catch (e) {
-            console.error('Error updating report data:', e);
+            const lastDay = new Date(year, month, 0).getDate();
+            const mp = String(month).padStart(2, '0');
+            const ldp = String(lastDay).padStart(2, '0');
+            const params = {
+                date_from: `${year}-${mp}-01`,
+                date_to: `${year}-${mp}-${ldp}`,
+                limit: 100,
+            };
+            if (selectedUserId !== 'all') params.user_id = selectedUserId;
+            const res = await api.get('/api/admin/access-logs', params);
+            setRecords(res.data ?? []);
+        } catch {
+            // keep existing
+        } finally {
+            setLoading(false);
         }
-    }, [dateRange, selectedEmployee]);
+    }, [month, year, selectedUserId]);
 
-    // Handlers
-    const handleEmployeeChange = (e) => setSelectedEmployee(e.target.value);
+    useEffect(() => { loadReports(); }, [loadReports]);
 
-    const handleRangeChange = (preset) => {
-        const now = new Date();
-        if (preset === 'month') {
-            setDateRange({ start: startOfMonth(now), end: endOfMonth(now) });
-        } else if (preset === 'prev_month') {
-            const prev = subMonths(now, 1);
-            setDateRange({ start: startOfMonth(prev), end: endOfMonth(prev) });
-        }
-    };
+    const isCurrentMonth = month === now.getMonth() + 1 && year === now.getFullYear();
 
     const handlePrevMonth = () => {
-        const newStart = subMonths(dateRange.start, 1);
-        setDateRange({ start: startOfMonth(newStart), end: endOfMonth(newStart) });
+        if (month === 1) { setMonth(12); setYear(y => y - 1); }
+        else setMonth(m => m - 1);
     };
 
     const handleNextMonth = () => {
-        const newStart = addMonths(dateRange.start, 1);
-        setDateRange({ start: startOfMonth(newStart), end: endOfMonth(newStart) });
+        if (isCurrentMonth) return;
+        if (month === 12) { setMonth(1); setYear(y => y + 1); }
+        else setMonth(m => m + 1);
     };
 
-    const handleExport = (formatType) => {
-        const timestamp = format(new Date(), 'yyyyMMdd_HHmm');
-        const fileName = `Reporte_Asistencia_${timestamp}`;
-
-        if (formatType === 'CSV') {
-            generateCSV(tableData, fileName);
-        } else if (formatType === 'PDF') {
-            const columns = ['Empleado', 'Fecha', 'Tipo', 'Hora', 'Dispositivo'];
-            const rows = tableData.map(row => [
-                row.userName,
-                format(parseISO(row.date), 'dd/MM/yyyy', { locale: es }),
-                row.type === 'check_in' ? 'Entrada' : 'Salida',
-                format(parseISO(row.date), 'HH:mm'),
-                row.device
-            ]);
-            generatePDF('Reporte de Asistencia', columns, rows, fileName);
-        }
-    };
+    const totalFichajes = records.length;
+    const uniqueDays = new Set(records.map(r => r.timestamp?.slice(0, 10))).size;
 
     return (
         <div className="admin-reports-page">
             <header className="page-header">
                 <div>
                     <h1>Informes y Analítica</h1>
-                    <p className="text-muted">Análisis de asistencia y exportación de datos</p>
-                </div>
-                <div className="header-actions">
-                    <Button variant="outline" icon={Download} onClick={() => handleExport('CSV')}>
-                        CSV
-                    </Button>
-                    <Button variant="primary" icon={FileText} onClick={() => handleExport('PDF')}>
-                        PDF
-                    </Button>
+                    <p className="text-muted">Análisis de asistencia por empleado y periodo</p>
                 </div>
             </header>
 
-            {/* Filters */}
             <Card className="filters-card-reports" padding="sm">
                 <div className="filters-row">
                     <div className="filter-group">
                         <Calendar size={18} className="text-muted" />
-                        <span className="filter-label">Periodo:</span>
-                        <div className="date-presets" style={{ display: 'flex', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <Button variant="ghost" icon={ChevronLeft} onClick={handlePrevMonth} className="btn-icon-only preset-btn" style={{ padding: '4px' }} />
-                            <span className="date-display" style={{ margin: '0 8px', minWidth: '120px', textAlign: 'center' }}>
-                                {format(dateRange.start, 'MMMM yyyy', { locale: es })}
+                            <span style={{ minWidth: '140px', textAlign: 'center', fontWeight: 500 }}>
+                                {MONTHS_ES[month - 1]} {year}
                             </span>
-                            <Button variant="ghost" icon={ChevronRight} onClick={handleNextMonth} className="btn-icon-only preset-btn" style={{ padding: '4px' }} />
+                            <Button
+                                variant="ghost"
+                                icon={ChevronRight}
+                                onClick={handleNextMonth}
+                                className="btn-icon-only preset-btn"
+                                disabled={isCurrentMonth}
+                                style={{ padding: '4px' }}
+                            />
                         </div>
                     </div>
-
                     <div className="filter-group">
                         <Users size={18} className="text-muted" />
                         <select
                             className="employee-select"
-                            value={selectedEmployee}
-                            onChange={handleEmployeeChange}
+                            value={selectedUserId}
+                            onChange={(e) => setSelectedUserId(e.target.value)}
                         >
                             <option value="all">Todos los empleados</option>
-                            {MOCK_USERS.filter(u => u.profile.role === 'employee').map(u => (
-                                <option key={u.id} value={u.id}>{u.profile.name}</option>
+                            {employees.filter(e => e.role === 'employee').map(u => (
+                                <option key={u.id} value={u.id}>{u.full_name}</option>
                             ))}
                         </select>
                     </div>
                 </div>
             </Card>
 
-            {/* KPIs */}
             <div className="stats-grid-reports">
-                <StatCard
-                    icon={Clock}
-                    label="Horas Totales"
-                    value={`${stats.totalHours}h`}
-                    subtitle="En periodo seleccionado"
-                    iconColor="primary"
-                />
-                <StatCard
-                    icon={TrendingUp}
-                    label="Horas Extra Estimadas"
-                    value={`~${stats.overtimeHours}h`}
-                    subtitle="Promedio semanal"
-                    iconColor="orange"
-                />
-                <StatCard
-                    icon={AlertTriangle}
-                    label="Ausentismo"
-                    value={`${stats.absenteeism}%`}
-                    subtitle="Tasa global"
-                    iconColor="danger"
-                />
+                <StatCard icon={FileText} label="Total Fichajes" value={String(totalFichajes)} subtitle="En periodo" iconColor="primary" />
+                <StatCard icon={Clock} label="Días con actividad" value={String(uniqueDays)} subtitle="Días únicos" iconColor="blue" />
             </div>
 
-            {/* Main Chart */}
             <div className="reports-layout">
-                {/* Chart commented out for debugging */}
-                {/* 
-                <Card className="chart-card" title="Evolución de Horas Trabajadas">
-                    <div style={{ height: '300px', width: '100%' }}>
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={chartData}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
-                                <XAxis dataKey="name" stroke="var(--color-text-secondary)" fontSize={12} tickLine={false} axisLine={false} />
-                                <YAxis stroke="var(--color-text-secondary)" fontSize={12} tickLine={false} axisLine={false} />
-                                <Tooltip 
-                                    contentStyle={{ 
-                                        backgroundColor: 'var(--color-bg-tertiary)', 
-                                        borderColor: 'var(--color-border)', 
-                                        borderRadius: '8px',
-                                        color: 'var(--color-text-primary)'
-                                    }}
-                                    cursor={{ fill: 'var(--color-bg-secondary)' }}
-                                />
-                                <Bar dataKey="hours" fill="var(--color-primary)" radius={[4, 4, 0, 0]} barSize={30} />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </div>
-                </Card>
-                */}
-
-                {/* Detailed Table */}
                 <Card className="table-card" title="Detalle de Fichajes">
                     <div className="table-responsive">
                         <table className="data-table">
@@ -203,30 +117,49 @@ const AdminReportsPage = () => {
                                 <tr>
                                     <th>Empleado</th>
                                     <th>Fecha</th>
-                                    <th>Tipo</th>
                                     <th>Hora</th>
-                                    <th>Dispositivo</th>
+                                    <th>Tipo</th>
+                                    <th>Origen</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {tableData.slice(0, 10).map((row) => (
-                                    <tr key={row.id}>
-                                        <td className="font-medium">{row.userName}</td>
-                                        <td>{format(parseISO(row.date), 'd MMM yyyy', { locale: es })}</td>
-                                        <td>
-                                            <span className={`type-badge ${row.type}`}>
-                                                {row.type === 'check_in' ? 'Entrada' : 'Salida'}
-                                            </span>
+                                {loading ? (
+                                    <tr>
+                                        <td colSpan={5} style={{ textAlign: 'center', color: 'var(--color-text-muted)', padding: 'var(--space-8)' }}>
+                                            Cargando...
                                         </td>
-                                        <td>{format(parseISO(row.date), 'HH:mm')}</td>
-                                        <td className="text-muted text-sm">{row.device}</td>
                                     </tr>
-                                ))}
+                                ) : records.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={5} style={{ textAlign: 'center', color: 'var(--color-text-muted)', padding: 'var(--space-8)' }}>
+                                            Sin datos para este periodo
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    records.map((row) => {
+                                        const d = new Date(row.timestamp);
+                                        return (
+                                            <tr key={row.id}>
+                                                <td className="font-medium">{row.user_name}</td>
+                                                <td>{d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
+                                                <td>{d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</td>
+                                                <td>
+                                                    <span className={`type-badge ${row.direction === 'in' ? 'check_in' : 'check_out'}`}>
+                                                        {row.direction === 'in' ? 'Entrada' : 'Salida'}
+                                                    </span>
+                                                </td>
+                                                <td className="text-muted text-sm">{row.source}</td>
+                                            </tr>
+                                        );
+                                    })
+                                )}
                             </tbody>
                         </table>
-                        <div className="table-footer">
-                            <span className="text-xs text-muted">Mostrando últimos 10 registros</span>
-                        </div>
+                        {records.length > 0 && (
+                            <div className="table-footer">
+                                <span className="text-xs text-muted">Mostrando {records.length} registros</span>
+                            </div>
+                        )}
                     </div>
                 </Card>
             </div>

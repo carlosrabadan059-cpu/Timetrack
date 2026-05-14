@@ -1,0 +1,10 @@
+[mcp_servers.n8n-mcp]
+args = ["n8n-mcp"]
+command = "npx"
+
+[mcp_servers.n8n-mcp.env]
+DISABLE_CONSOLE_OUTPUT = "true"
+LOG_LEVEL = "error"
+MCP_MODE = "stdio"
+N8N_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlNTg5NjE0YS03OTZjLTQ1ZDgtYTlmZC05NTBkZGVjMzdiM2EiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwianRpIjoiZDJiZDU2ZWUtZjg1Ny00Mzg0LWJmY2UtY2RlOTZhNDdlMjkyIiwiaWF0IjoxNzc3MjQ2NDQxfQ.wD7SpMUGvZVrBeOwXmgkILMTLtxfIwtgq9bDs2WlFpM"
+N8N_API_URL = "https://n8n.rabadanhouse.space"

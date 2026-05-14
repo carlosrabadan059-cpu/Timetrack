@@ -1,94 +1,73 @@
-import React, { useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, Button, StatCard } from '../../components/ui';
-import { FileText, FileSpreadsheet, Calendar, BarChart3, ChevronLeft, ChevronRight } from 'lucide-react';
-import { MOCK_ATTENDANCE, calculateHoursWorked } from '../../lib/mockData';
-import { generateExcel, generatePDF } from '../../lib/exportUtils';
-import { parseISO, format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, addMonths, subMonths } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { api } from '../../lib/api';
+import { FileText, FileSpreadsheet, Calendar, BarChart3, ChevronLeft, ChevronRight, Timer } from 'lucide-react';
 import './ReportsPage.css';
 
+const MONTHS_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+function triggerDownload(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
 const ReportsPage = () => {
-    const { profile } = useAuth();
-    const [selectedMonth, setSelectedMonth] = useState(new Date());
+    const now = new Date();
+    const [month, setMonth] = useState(now.getMonth() + 1);
+    const [year, setYear] = useState(now.getFullYear());
+    const [summary, setSummary] = useState(null);
+    const [activity, setActivity] = useState([]);
+    const [loadingMain, setLoadingMain] = useState(true);
+    const [dlLoading, setDlLoading] = useState({});
 
-    const handlePrevMonth = () => setSelectedMonth(prev => subMonths(prev, 1));
-    const handleNextMonth = () => setSelectedMonth(prev => addMonths(prev, 1));
+    const loadData = useCallback(async () => {
+        setLoadingMain(true);
+        try {
+            const [sumRes, actRes] = await Promise.all([
+                api.get('/api/me/reportes/summary', { month, year }),
+                api.get('/api/me/reportes/activity', { month, year, limit: 100 }),
+            ]);
+            setSummary(sumRes.data);
+            setActivity(actRes.data?.items ?? []);
+        } catch {
+            // keep existing
+        } finally {
+            setLoadingMain(false);
+        }
+    }, [month, year]);
 
-    // Generate monthly stats
-    const getMonthlyStats = () => {
-        const start = startOfMonth(selectedMonth);
-        const end = endOfMonth(selectedMonth);
-        const monthEntries = MOCK_ATTENDANCE.filter(e => {
-            const date = parseISO(e.timestamp);
-            return e.user_id === profile?.id && isSameMonth(date, selectedMonth);
-        });
+    useEffect(() => { loadData(); }, [loadData]);
 
-        // Group by day to calculate totals
-        const days = eachDayOfInterval({ start, end });
-        let totalHours = 0;
-        let daysWorked = 0;
-        let perfectDays = 0; // e.g. >= 8 hours
-
-        days.forEach(day => {
-            const dayEntries = monthEntries.filter(e =>
-                parseISO(e.timestamp).toDateString() === day.toDateString()
-            );
-            if (dayEntries.length > 0) {
-                const { hours, minutes } = calculateHoursWorked(dayEntries, profile?.id);
-                const totalDecimal = hours + minutes / 60;
-
-                if (totalDecimal > 0) daysWorked++;
-                if (totalDecimal >= 8) perfectDays++;
-
-                totalHours += totalDecimal;
-            }
-        });
-
-        return {
-            totalHours: Math.round(totalHours * 10) / 10,
-            daysWorked,
-            averageHours: daysWorked ? Math.round((totalHours / daysWorked) * 10) / 10 : 0
-        };
+    const handlePrevMonth = () => {
+        if (month === 1) { setMonth(12); setYear(y => y - 1); }
+        else setMonth(m => m - 1);
     };
 
-    const stats = getMonthlyStats();
+    const handleNextMonth = () => {
+        if (!summary?.has_next_month) return;
+        if (month === 12) { setMonth(1); setYear(y => y + 1); }
+        else setMonth(m => m + 1);
+    };
 
-    const handleDownloadReport = (formatType, reportType = 'monthly') => {
-        const monthStr = format(selectedMonth, 'yyyy_MM');
-        let fileName = `Mi_Reporte_${monthStr}`;
-        let title = `Reporte Mensual: ${format(selectedMonth, 'MMMM yyyy', { locale: es })}`;
-
-        if (reportType === 'incidents') {
-            fileName = `Reporte_Incidencias_${monthStr}`;
-            title = `Resumen de Incidencias: ${format(selectedMonth, 'MMMM yyyy', { locale: es })}`;
-        }
-
-        // Generate Detailed Data for Export
-        const start = startOfMonth(selectedMonth);
-        const end = endOfMonth(selectedMonth);
-        const monthEntries = MOCK_ATTENDANCE
-            .filter(e => {
-                const date = parseISO(e.timestamp);
-                return e.user_id === profile?.id && isSameMonth(date, selectedMonth);
-            })
-            .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-
-        const exportData = monthEntries.map(entry => ({
-            Fecha: format(parseISO(entry.timestamp), 'dd/MM/yyyy', { locale: es }),
-            Hora: format(parseISO(entry.timestamp), 'HH:mm'),
-            Tipo: entry.type === 'check_in' ? 'Entrada' : 'Salida',
-            Detalle: entry.label || '-'
-        }));
-
-        if (formatType === 'Excel') {
-            generateExcel(exportData, fileName);
-        } else if (formatType === 'PDF') {
-            const columns = ['Fecha', 'Hora', 'Tipo', 'Detalle'];
-            const rows = exportData.map(d => [d.Fecha, d.Hora, d.Tipo, d.Detalle]);
-            generatePDF(title, columns, rows, fileName);
+    const download = async (endpoint, params, filename) => {
+        setDlLoading(prev => ({ ...prev, [filename]: true }));
+        try {
+            const blob = await api.download(endpoint, params);
+            triggerDownload(blob, filename);
+        } catch {
+            // silent
+        } finally {
+            setDlLoading(prev => ({ ...prev, [filename]: false }));
         }
     };
+
+    const mp = String(month).padStart(2, '0');
 
     return (
         <div className="reports-page">
@@ -99,33 +78,40 @@ const ReportsPage = () => {
                 </div>
                 <div className="month-selector" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <Button variant="ghost" icon={ChevronLeft} onClick={handlePrevMonth} className="btn-icon-only" aria-label="Mes anterior" />
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '500', minWidth: '140px', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '500', minWidth: '160px', justifyContent: 'center' }}>
                         <Calendar size={18} />
-                        <span style={{ textTransform: 'capitalize' }}>{format(selectedMonth, 'MMMM yyyy', { locale: es })}</span>
+                        <span style={{ textTransform: 'capitalize' }}>{MONTHS_ES[month - 1]} {year}</span>
                     </div>
-                    <Button variant="ghost" icon={ChevronRight} onClick={handleNextMonth} className="btn-icon-only" aria-label="Mes siguiente" />
+                    <Button
+                        variant="ghost"
+                        icon={ChevronRight}
+                        onClick={handleNextMonth}
+                        className="btn-icon-only"
+                        aria-label="Mes siguiente"
+                        disabled={!summary?.has_next_month}
+                    />
                 </div>
             </header>
 
             <div className="reports-stats-grid">
                 <StatCard
-                    icon={FileText}
+                    icon={Timer}
                     iconColor="blue"
-                    value={`${stats.totalHours}h`}
+                    value={`${summary?.total_hours ?? 0}h`}
                     label="registradas"
                     subtitle="Total Horas"
                 />
                 <StatCard
                     icon={Calendar}
                     iconColor="green"
-                    value={stats.daysWorked.toString()}
+                    value={String(summary?.days_worked ?? 0)}
                     label="días"
                     subtitle="Días Trabajados"
                 />
                 <StatCard
                     icon={BarChart3}
                     iconColor="purple"
-                    value={`${stats.averageHours}h`}
+                    value={`${summary?.daily_average ?? 0}h`}
                     label="por día"
                     subtitle="Promedio Diario"
                 />
@@ -141,7 +127,7 @@ const ReportsPage = () => {
                             <h3>Informe Mensual Detallado</h3>
                             <p>Incluye registros de entrada, salida, pausas y total de horas por día.</p>
                             <div className="report-meta">
-                                <span>Periodo: {format(startOfMonth(selectedMonth), 'dd MMM', { locale: es })} - {format(endOfMonth(selectedMonth), 'dd MMM yyyy', { locale: es })}</span>
+                                <span>Periodo: {summary?.period_label ?? `${mp}/${year}`}</span>
                             </div>
                         </div>
                     </div>
@@ -149,14 +135,24 @@ const ReportsPage = () => {
                         <Button
                             variant="secondary"
                             icon={FileText}
-                            onClick={() => handleDownloadReport('PDF', 'monthly')}
+                            loading={dlLoading[`timetrack-${mp}-${year}.pdf`]}
+                            onClick={() => download(
+                                '/api/me/reportes/download/monthly',
+                                { month, year, format: 'pdf' },
+                                `timetrack-${mp}-${year}.pdf`
+                            )}
                         >
                             Descargar PDF
                         </Button>
                         <Button
                             variant="secondary"
                             icon={FileSpreadsheet}
-                            onClick={() => handleDownloadReport('Excel', 'monthly')}
+                            loading={dlLoading[`timetrack-${mp}-${year}.xlsx`]}
+                            onClick={() => download(
+                                '/api/me/reportes/download/monthly',
+                                { month, year, format: 'excel' },
+                                `timetrack-${mp}-${year}.xlsx`
+                            )}
                         >
                             Descargar Excel
                         </Button>
@@ -171,16 +167,27 @@ const ReportsPage = () => {
                         <div className="report-info">
                             <h3>Resumen de Incidencias</h3>
                             <p>Reporte de correcciones, horas extra y ausencias justificadas.</p>
-                            <div className="report-meta">
-                                <span>Estado: Generado automáticamente</span>
-                            </div>
+                            {summary?.incidencias_summary && (
+                                <div className="report-meta">
+                                    <span>
+                                        Total: {summary.incidencias_summary.total}
+                                        {' · '}Pendientes: {summary.incidencias_summary.pending}
+                                        {' · '}Aprobadas: {summary.incidencias_summary.approved}
+                                    </span>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="report-actions">
                         <Button
                             variant="secondary"
                             icon={FileText}
-                            onClick={() => handleDownloadReport('PDF', 'incidents')}
+                            loading={dlLoading[`incidencias-${mp}-${year}.pdf`]}
+                            onClick={() => download(
+                                '/api/me/reportes/download/incidencias',
+                                { month, year },
+                                `incidencias-${mp}-${year}.pdf`
+                            )}
                         >
                             Descargar PDF
                         </Button>
@@ -188,7 +195,6 @@ const ReportsPage = () => {
                 </Card>
             </div>
 
-            {/* Detailed Table */}
             <Card className="report-card full-width" style={{ marginTop: '2rem' }}>
                 <div className="report-card-header">
                     <div className="report-info">
@@ -205,36 +211,41 @@ const ReportsPage = () => {
                                 <th>Hora</th>
                                 <th>Tipo</th>
                                 <th>Detalle</th>
+                                <th>Origen</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {MOCK_ATTENDANCE
-                                .filter(e => {
-                                    const date = parseISO(e.timestamp);
-                                    return e.user_id === profile?.id && isSameMonth(date, selectedMonth);
-                                })
-                                .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-                                .map((entry) => (
-                                    <tr key={entry.id}>
-                                        <td>{format(parseISO(entry.timestamp), 'dd/MM/yyyy', { locale: es })}</td>
-                                        <td>{format(parseISO(entry.timestamp), 'EEEE', { locale: es })}</td>
-                                        <td><strong>{format(parseISO(entry.timestamp), 'HH:mm')}</strong></td>
+                            {loadingMain ? (
+                                <tr>
+                                    <td colSpan={6} style={{ textAlign: 'center', color: 'var(--color-text-muted)', padding: 'var(--space-8)' }}>
+                                        Cargando...
+                                    </td>
+                                </tr>
+                            ) : activity.length === 0 ? (
+                                <tr>
+                                    <td colSpan={6} style={{ textAlign: 'center', color: 'var(--color-text-muted)', padding: 'var(--space-8)' }}>
+                                        No hay registros para este mes.
+                                    </td>
+                                </tr>
+                            ) : (
+                                activity.map((entry, i) => (
+                                    <tr key={i}>
+                                        <td>{entry.fecha}</td>
+                                        <td style={{ textTransform: 'capitalize' }}>{entry.dia}</td>
+                                        <td><strong>{entry.hora}</strong></td>
                                         <td>
-                                            <span className={`type-badge ${entry.type}`}>
-                                                {entry.type === 'check_in' ? 'Entrada' : 'Salida'}
+                                            <span className={`type-badge ${entry.tipo === 'ENTRADA' ? 'check_in' : 'check_out'}`}>
+                                                {entry.tipo}
                                             </span>
                                         </td>
-                                        <td className="text-muted">{entry.label || '-'}</td>
+                                        <td className="text-muted">{entry.detalle}</td>
+                                        <td className="text-muted">{entry.origen}</td>
                                     </tr>
-                                ))}
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>
-                {MOCK_ATTENDANCE.filter(e => e.user_id === profile?.id && isSameMonth(parseISO(e.timestamp), selectedMonth)).length === 0 && (
-                    <div className="empty-state">
-                        <p>No hay registros para este mes.</p>
-                    </div>
-                )}
             </Card>
         </div>
     );

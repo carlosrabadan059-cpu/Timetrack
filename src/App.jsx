@@ -17,7 +17,8 @@ import AdminReportsPage from './pages/admin/AdminReportsPage';
 import AdminAttendancePage from './pages/admin/AdminAttendancePage';
 import AdminEmployeesPage from './pages/admin/AdminEmployeesPage';
 import AdminSettingsPage from './pages/admin/AdminSettingsPage';
-
+import SuperAdminLayout from './layouts/SuperAdminLayout';
+import SuperAdminCompaniesPage from './pages/superadmin/SuperAdminCompaniesPage';
 
 // Styles
 import './App.css';
@@ -76,6 +77,19 @@ function App() {
                 <Route path="perfil" element={<ProfilePage />} />
             </Route>
 
+            {/* Super-admin routes */}
+            <Route
+                path="/superadmin"
+                element={
+                    <ProtectedRoute requiredRole="superadmin">
+                        <SuperAdminLayout />
+                    </ProtectedRoute>
+                }
+            >
+                <Route index element={<Navigate to="/superadmin/empresas" replace />} />
+                <Route path="empresas" element={<SuperAdminCompaniesPage />} />
+            </Route>
+
             {/* Admin routes */}
             <Route
                 path="/admin"
@@ -94,7 +108,7 @@ function App() {
             </Route>
 
             {/* Fallback */}
-            <Route path="*" element={<Navigate to={isAuthenticated ? (profile?.role === 'admin' ? '/admin' : '/dashboard') : '/login'} replace />} />
+            <Route path="*" element={<Navigate to={isAuthenticated ? (profile?.role === 'superadmin' ? '/superadmin/empresas' : profile?.role === 'admin' || profile?.role === 'manager' ? '/admin' : '/dashboard') : '/login'} replace />} />
         </Routes>
     );
 }

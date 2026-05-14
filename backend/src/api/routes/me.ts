@@ -261,6 +261,7 @@ me.get('/sync-status', async (c) => {
 // ── POST /api/me/fichar ───────────────────────────────────────────────────────
 const ficharSchema = z.object({
   direction: z.enum(['in', 'out']).optional(),
+  detail_type: z.enum(['normal', 'comida', 'descanso', 'medico', 'otro']).optional(),
   latitude: z.number().min(-90).max(90).optional(),
   longitude: z.number().min(-180).max(180).optional(),
   device_info: z.enum(['web', 'ios', 'android']).default('web'),
@@ -292,6 +293,27 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
     );
   }
   const body = parsed.data;
+
+  // Enforce clocking mode for this company
+  if (user.company_id) {
+    const { data: settings } = await supabaseAdmin
+      .from('company_settings')
+      .select('clocking_modes')
+      .eq('company_id', user.company_id)
+      .maybeSingle();
+
+    if (settings?.clocking_modes) {
+      const modes = settings.clocking_modes as { web?: boolean; mobile?: boolean };
+      const isWeb = body.device_info !== 'ios' && body.device_info !== 'android';
+      const modeKey = isWeb ? 'web' : 'mobile';
+      if (modes[modeKey] === false) {
+        return c.json(
+          { error: { code: 'mode_disabled', message: 'Modo de fichaje no habilitado para esta empresa' } },
+          403
+        );
+      }
+    }
+  }
 
   const now = new Date();
   const todayStart = startOfDayISO(now);
@@ -331,7 +353,7 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
   const source: 'web' | 'mobile' =
     body.device_info === 'ios' || body.device_info === 'android' ? 'mobile' : 'web';
 
-  const detail_type = inferDetailType(now.toISOString());
+  const detail_type = body.detail_type ?? inferDetailType(now.toISOString());
 
   // Build insert payload
   const insertPayload: Record<string, unknown> = {
@@ -423,6 +445,13 @@ me.get('/dashboard', async (c) => {
 
   const jornada_status = getJornadaStatus(todayLogs);
 
+  const lastLog = [...todayLogs]
+    .filter((l) => l.event_type !== 'denied')
+    .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+    .at(-1);
+  const current_pause_type =
+    jornada_status === 'paused' ? (lastLog?.detail_type ?? null) : null;
+
   return c.json({
     data: {
       week_total_minutes,
@@ -430,6 +459,7 @@ me.get('/dashboard', async (c) => {
       daily_average_minutes,
       is_inside: todaySummary.is_inside,
       jornada_status,
+      current_pause_type,
       jornada_started_at: todaySummary.first_entry,
       current_time: now.toISOString(),
       weekly_bars: weeklyBars,

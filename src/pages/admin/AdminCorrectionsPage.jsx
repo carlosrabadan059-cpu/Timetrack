@@ -1,73 +1,99 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { StatCard, Card, Button } from '../../components/ui';
-import { MOCK_USERS } from '../../lib/mockData';
+import { api } from '../../lib/api';
 import { useCorrections } from '../../contexts/CorrectionsContext';
-import { format, parseISO } from 'date-fns';
-import { es } from 'date-fns/locale';
-import {
-    CheckCircle,
-    XCircle,
-    Clock,
-    AlertCircle,
-    FileText,
-    Filter,
-    Search
-} from 'lucide-react';
+import { CheckCircle, XCircle, AlertCircle, FileText, Filter, Search, CalendarCheck } from 'lucide-react';
 import './AdminCorrectionsPage.css';
 
-/**
- * Admin Corrections Page
- * Manage employee correction requests and incidents
- */
-const AdminCorrectionsPage = () => {
-    // State
-    const { corrections, updateCorrection } = useCorrections();
-    const [filterStatus, setFilterStatus] = useState('pending'); // pending, approved, rejected, all
-    const [searchTerm, setSearchTerm] = useState('');
+const TYPE_LABELS = {
+    correccion: 'Corrección',
+    olvido:     'Fichaje Olvidado',
+    ausencia:   'Ausencia',
+    hora_extra: 'Hora Extra',
+};
 
-    // Helper to get user details
-    const getUser = (userId) => {
-        const user = MOCK_USERS.find(u => u.id === userId);
-        return user?.profile || { name: 'Usuario Desconocido', role: 'employee' };
-    };
+const STATUS_BADGE = {
+    pending:  <span className="badge badge-warning">Pendiente</span>,
+    approved: <span className="badge badge-success">Aprobada</span>,
+    rejected: <span className="badge badge-error">Rechazada</span>,
+};
 
-    // Filter logic
-    const filteredRequests = corrections.filter(req => {
-        const matchesStatus = filterStatus === 'all' || req.status === filterStatus;
-        const user = getUser(req.user_id);
-        const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            req.reason.toLowerCase().includes(searchTerm.toLowerCase());
-        return matchesStatus && matchesSearch;
+function fmtDateTime(ts) {
+    if (!ts) return '–';
+    return new Date(ts).toLocaleString('es-ES', {
+        day: '2-digit', month: '2-digit', year: '2-digit',
+        hour: '2-digit', minute: '2-digit',
     });
+}
 
-    // Actions
-    const handleApprove = (id) => {
-        updateCorrection(id, 'approved', 'Aprobado por administrador');
-    };
+function fmtCreatedAt(ts) {
+    if (!ts) return '–';
+    return new Date(ts).toLocaleString('es-ES', {
+        day: 'numeric', month: 'short', year: 'numeric',
+        hour: '2-digit', minute: '2-digit',
+    });
+}
 
-    const handleReject = (id) => {
-        // Ejecución directa para evitar bloqueos del navegador con window.confirm
-        updateCorrection(id, 'rejected', 'Rechazado por administrador');
-    };
+const AdminCorrectionsPage = () => {
+    const { refresh: refreshBadge } = useCorrections();
+    const [incidencias, setIncidencias] = useState([]);
+    const [counts, setCounts] = useState({ pending: 0, total: 0 });
+    const [filterStatus, setFilterStatus] = useState('pending');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [actionLoading, setActionLoading] = useState({});
 
-    // UI Helpers
-    const getStatusBadge = (status) => {
-        switch (status) {
-            case 'pending': return <span className="badge badge-warning">Pendiente</span>;
-            case 'approved': return <span className="badge badge-success">Aprobada</span>;
-            case 'rejected': return <span className="badge badge-error">Rechazada</span>;
-            default: return null;
+    const loadIncidencias = useCallback(async () => {
+        setLoading(true);
+        try {
+            const params = { limit: 50 };
+            if (filterStatus !== 'all') params.status = filterStatus;
+            const [mainRes, pendingRes, allRes] = await Promise.all([
+                api.get('/api/incidencias', params),
+                api.get('/api/incidencias', { status: 'pending', limit: 1 }),
+                api.get('/api/incidencias', { limit: 1 }),
+            ]);
+            setIncidencias(mainRes.data?.items ?? []);
+            setCounts({
+                pending: pendingRes.data?.total ?? 0,
+                total: allRes.data?.total ?? 0,
+            });
+        } catch {
+            // keep existing
+        } finally {
+            setLoading(false);
+        }
+    }, [filterStatus]);
+
+    useEffect(() => { loadIncidencias(); }, [loadIncidencias]);
+
+    const handleAction = async (id, status) => {
+        setActionLoading(prev => ({ ...prev, [id]: true }));
+        try {
+            await api.patch(`/api/incidencias/${id}`, {
+                status,
+                manager_note: status === 'approved'
+                    ? 'Aprobado por administrador'
+                    : 'Rechazado por administrador',
+            });
+            loadIncidencias();
+            refreshBadge();
+        } catch {
+            // keep existing
+        } finally {
+            setActionLoading(prev => ({ ...prev, [id]: false }));
         }
     };
 
-    const getTypeLabel = (type) => {
-        switch (type) {
-            case 'correction': return 'Corrección';
-            case 'missing': return 'Fichaje Olvidado';
-            case 'absence': return 'Ausencia';
-            default: return 'Incidencia';
-        }
-    };
+    const filtered = incidencias.filter(inc => {
+        if (!searchTerm) return true;
+        const name = inc.profiles?.full_name ?? '';
+        const reason = inc.reason ?? '';
+        return (
+            name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            reason.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    });
 
     return (
         <div className="admin-corrections-page">
@@ -78,64 +104,30 @@ const AdminCorrectionsPage = () => {
                 </div>
             </header>
 
-            {/* Stats Overview */}
             <div className="stats-grid">
-                <StatCard
-                    icon={AlertCircle}
-                    label="Pendientes"
-                    value={corrections.filter(r => r.status === 'pending').length.toString()}
-                    iconColor="warning"
-                />
-                <StatCard
-                    icon={CheckCircle}
-                    label="Aprobadas (Mes)"
-                    value={corrections.filter(r => r.status === 'approved').length.toString()}
-                    iconColor="success"
-                />
-                <StatCard
-                    icon={FileText}
-                    label="Total Solicitudes"
-                    value={corrections.length.toString()}
-                    iconColor="primary"
-                />
+                <StatCard icon={AlertCircle} label="Pendientes" value={String(counts.pending)} iconColor="warning" />
+                <StatCard icon={FileText} label="Total Solicitudes" value={String(counts.total)} iconColor="primary" />
             </div>
 
-            {/* Filters */}
             <Card className="filters-card" padding="sm">
                 <div className="filters-row">
                     <div className="filter-group">
                         <Filter size={18} className="text-muted" />
-                        <button
-                            className={`filter-btn ${filterStatus === 'pending' ? 'active' : ''}`}
-                            onClick={() => setFilterStatus('pending')}
-                        >
-                            Pendientes
-                        </button>
-                        <button
-                            className={`filter-btn ${filterStatus === 'approved' ? 'active' : ''}`}
-                            onClick={() => setFilterStatus('approved')}
-                        >
-                            Aprobadas
-                        </button>
-                        <button
-                            className={`filter-btn ${filterStatus === 'rejected' ? 'active' : ''}`}
-                            onClick={() => setFilterStatus('rejected')}
-                        >
-                            Rechazadas
-                        </button>
-                        <button
-                            className={`filter-btn ${filterStatus === 'all' ? 'active' : ''}`}
-                            onClick={() => setFilterStatus('all')}
-                        >
-                            Todas
-                        </button>
+                        {[['pending', 'Pendientes'], ['approved', 'Aprobadas'], ['rejected', 'Rechazadas'], ['all', 'Todas']].map(([val, label]) => (
+                            <button
+                                key={val}
+                                className={`filter-btn ${filterStatus === val ? 'active' : ''}`}
+                                onClick={() => setFilterStatus(val)}
+                            >
+                                {label}
+                            </button>
+                        ))}
                     </div>
-
                     <div className="search-group">
                         <Search size={18} className="search-icon" />
                         <input
                             type="text"
-                            placeholder="Buscar empleado..."
+                            placeholder="Buscar empleado o motivo..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="search-input"
@@ -144,90 +136,106 @@ const AdminCorrectionsPage = () => {
                 </div>
             </Card>
 
-            {/* Requests List */}
             <div className="requests-list">
-                {filteredRequests.length > 0 ? (
-                    filteredRequests.map(req => {
-                        const user = getUser(req.user_id);
-                        return (
-                            <Card key={req.id} className="request-card-admin" padding="md">
-                                <div className="req-header">
-                                    <div className="req-user-info">
-                                        <div className="user-avatar-sm">{user.name.charAt(0)}</div>
-                                        <div>
-                                            <span className="user-name">{user.name}</span>
-                                            <span className="req-date">
-                                                {format(parseISO(req.created_at), "d MMM yyyy HH:mm", { locale: es })}
-                                            </span>
-                                        </div>
+                {loading ? (
+                    <div style={{ textAlign: 'center', padding: 'var(--space-12)', color: 'var(--color-text-muted)' }}>
+                        Cargando...
+                    </div>
+                ) : filtered.length > 0 ? (
+                    filtered.map(inc => (
+                        <Card key={inc.id} className="request-card-admin" padding="md">
+                            <div className="req-header">
+                                <div className="req-user-info">
+                                    <div className="user-avatar-sm">
+                                        {(inc.profiles?.full_name ?? 'U').charAt(0).toUpperCase()}
                                     </div>
-                                    <div className="req-status">
-                                        <span className="req-type-badge">{getTypeLabel(req.type)}</span>
-                                        {getStatusBadge(req.status)}
+                                    <div>
+                                        <span className="user-name">{inc.profiles?.full_name ?? 'Desconocido'}</span>
+                                        <span className="req-date">{fmtCreatedAt(inc.created_at)}</span>
                                     </div>
                                 </div>
+                                <div className="req-status">
+                                    <span className="req-type-badge">{TYPE_LABELS[inc.type] ?? inc.type}</span>
+                                    {STATUS_BADGE[inc.status]}
+                                </div>
+                            </div>
 
-                                <div className="req-body">
-                                    <div className="req-details-grid">
-                                        <div className="detail-item">
-                                            <span className="detail-label">Motivo</span>
-                                            <p className="detail-value">{req.reason}</p>
-                                        </div>
-
-                                        {req.type === 'correction' && (
-                                            <div className="detail-item time-change">
-                                                <span className="detail-label">Cambio Propuesto</span>
-                                                <div className="time-arrow">
-                                                    <span className="t-old">{format(parseISO(req.original_timestamp), "HH:mm")}</span>
-                                                    <span>→</span>
-                                                    <span className="t-new">{req.proposed_timestamp}</span>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {(req.type === 'missing' || req.type === 'absence') && (
-                                            <div className="detail-item">
-                                                <span className="detail-label">Fecha/Hora Propuesta</span>
-                                                <p className="detail-value">{format(parseISO(req.proposed_timestamp), "d MMM yyyy - HH:mm", { locale: es })}</p>
-                                            </div>
-                                        )}
+                            <div className="req-body">
+                                <div className="req-details-grid">
+                                    <div className="detail-item">
+                                        <span className="detail-label">Motivo</span>
+                                        <p className="detail-value">{inc.reason}</p>
                                     </div>
 
-                                    {req.comment && (
-                                        <div className="req-comment">
-                                            <p>"{req.comment}"</p>
+                                    {inc.type === 'correccion' && inc.original_timestamp && (
+                                        <div className="detail-item time-change">
+                                            <span className="detail-label">Cambio Propuesto</span>
+                                            <div className="time-arrow">
+                                                <span className="t-old">{fmtDateTime(inc.original_timestamp)}</span>
+                                                <span>→</span>
+                                                <span className="t-new">{fmtDateTime(inc.requested_timestamp)}</span>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {inc.type === 'olvido' && inc.requested_timestamp && (
+                                        <div className="detail-item">
+                                            <span className="detail-label">Fichaje Solicitado</span>
+                                            <p className="detail-value">
+                                                {fmtDateTime(inc.requested_timestamp)}
+                                                {' '}({inc.requested_direction === 'in' ? 'Entrada' : 'Salida'})
+                                            </p>
                                         </div>
                                     )}
                                 </div>
+                            </div>
 
-                                {req.status === 'pending' && (
-                                    <div className="req-actions">
-                                        <Button
-                                            variant="ghost"
-                                            className="btn-reject"
-                                            onClick={() => handleReject(req.id)}
-                                            icon={XCircle}
-                                        >
-                                            Rechazar
-                                        </Button>
-                                        <Button
-                                            variant="primary"
-                                            className="btn-approve"
-                                            onClick={() => handleApprove(req.id)}
-                                            icon={CheckCircle}
-                                        >
-                                            Aprobar Solicitud
-                                        </Button>
-                                    </div>
-                                )}
-                            </Card>
-                        );
-                    })
+                            {inc.status === 'approved' && (inc.type === 'olvido' || inc.type === 'correccion') && (
+                                <div className="req-fichaje-created">
+                                    <CalendarCheck size={14} />
+                                    {inc.type === 'olvido' && inc.requested_timestamp && (
+                                        <span>
+                                            Fichaje registrado: <strong>{fmtDateTime(inc.requested_timestamp)}</strong>
+                                            {' '}({inc.requested_direction === 'in' ? 'Entrada' : 'Salida'})
+                                        </span>
+                                    )}
+                                    {inc.type === 'correccion' && inc.requested_timestamp && (
+                                        <span>
+                                            Fichaje corregido a: <strong>{fmtDateTime(inc.requested_timestamp)}</strong>
+                                        </span>
+                                    )}
+                                </div>
+                            )}
+
+                            {inc.status === 'pending' && (
+                                <div className="req-actions">
+                                    <Button
+                                        variant="ghost"
+                                        className="btn-reject"
+                                        onClick={() => handleAction(inc.id, 'rejected')}
+                                        icon={XCircle}
+                                        loading={!!actionLoading[inc.id]}
+                                    >
+                                        Rechazar
+                                    </Button>
+                                    <Button
+                                        variant="primary"
+                                        className="btn-approve"
+                                        onClick={() => handleAction(inc.id, 'approved')}
+                                        icon={CheckCircle}
+                                        loading={!!actionLoading[inc.id]}
+                                    >
+                                        Aprobar Solicitud
+                                    </Button>
+                                </div>
+                            )}
+                        </Card>
+                    ))
                 ) : (
                     <div className="empty-state-admin">
                         <CheckCircle size={48} />
                         <h3>No hay solicitudes</h3>
-                        <p>No hay correcciones que coincidan con los filtros.</p>
+                        <p>No hay incidencias que coincidan con los filtros.</p>
                     </div>
                 )}
             </div>

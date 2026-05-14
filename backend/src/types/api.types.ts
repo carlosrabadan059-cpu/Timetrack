@@ -19,14 +19,14 @@ export type ApiError = {
 
 export type ApiResponse<T> = ApiSuccess<T> | ApiError;
 
-export type UserRole = 'admin' | 'manager' | 'employee';
+export type UserRole = 'superadmin' | 'admin' | 'manager' | 'employee';
 
 // JWT payload attached by auth middleware
 export type AuthUser = {
   id: string;
   email: string;
   role: UserRole;
-  company_id: string | null;
+  company_id: string | null; // null for superadmin
   ac_external_id: string | null;
   employee_code: string | null;
   ac_synced: boolean;

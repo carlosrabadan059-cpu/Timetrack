@@ -1,12 +1,54 @@
 // Supabase table row types
 // TODO: replace with `supabase gen types typescript` output once project is linked
 
+export type Company = {
+  id: string;
+  name: string;
+  cif: string | null;
+  address: string | null;
+  email: string | null;
+  created_by: string | null;
+  created_at: string;
+};
+
+export type ClockingModes = {
+  web: boolean;
+  mobile: boolean;
+  twoN: {
+    enabled: boolean;
+    type: 'ac' | 'device' | null;
+    ac_base_url: string | null;
+    ac_api_token: string | null;
+    device_webhook_secret: string | null;
+  };
+};
+
+export type CompanySettings = {
+  id: string;
+  company_id: string;
+  company_name: string;
+  company_cif: string;
+  company_address: string;
+  company_email: string;
+  geo_fence_radius: number;
+  courtesy_minutes: number;
+  headquarter_lat: number;
+  headquarter_lon: number;
+  work_schedule_start: string;
+  work_schedule_end: string;
+  work_schedule_days: number[];
+  branches: unknown[];
+  holidays: unknown[];
+  clocking_modes: ClockingModes;
+  updated_at: string | null;
+};
+
 export type Profile = {
   id: string;
   full_name: string | null;
   email: string | null;
   employee_code: string | null;
-  role: 'admin' | 'manager' | 'employee';
+  role: 'superadmin' | 'admin' | 'manager' | 'employee';
   company_id: string | null;
   ac_external_id: string | null;
   ac_synced_at: string | null;
@@ -27,7 +69,7 @@ export type AccessLog = {
   zone_name: string | null;
   event_type: string | null;
   direction: 'in' | 'out' | null;
-  detail_type: 'normal' | 'comida' | 'otro' | null;
+  detail_type: 'normal' | 'comida' | 'descanso' | 'medico' | 'otro' | null;
   timestamp: string;
   source: 'signalr' | 'web' | 'mobile' | 'correction';
   corrected: boolean;

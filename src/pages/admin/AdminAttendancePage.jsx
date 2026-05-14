@@ -1,51 +1,76 @@
-import { useState, useMemo } from 'react';
-import {
-    Search,
-    Filter,
-    MapPin,
-    Smartphone,
-    Globe,
-    AlertCircle,
-    CheckCircle
-} from 'lucide-react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { Search, MapPin, Smartphone, Globe, Lock, PenLine } from 'lucide-react';
 import { Card } from '../../components/ui';
-import { MOCK_ATTENDANCE, MOCK_USERS } from '../../lib/mockData';
-import { format, parseISO, isSameDay } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { api } from '../../lib/api';
 import './AdminAttendancePage.css';
 
+function fmtDateTime(ts) {
+    const d = new Date(ts);
+    return {
+        date: d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' }),
+        time: d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+    };
+}
+
+function SourceIcon({ source }) {
+    if (source === 'mobile')     return <Smartphone size={14} />;
+    if (source === 'signalr')    return <Lock size={14} />;
+    if (source === 'correction') return <PenLine size={14} />;
+    return <Globe size={14} />;
+}
+
+function sourceLabel(source) {
+    if (source === 'mobile')     return 'Móvil';
+    if (source === 'signalr')    return '2N';
+    if (source === 'correction') return 'Corrección';
+    return 'Web';
+}
+
+const LIMIT = 50;
+
 const AdminAttendancePage = () => {
-    // State
+    const [records, setRecords] = useState([]);
+    const [total, setTotal] = useState(0);
+    const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    const [typeFilter, setTypeFilter] = useState('all');
+    const [directionFilter, setDirectionFilter] = useState('all');
     const [dateFilter, setDateFilter] = useState('');
+    const [page, setPage] = useState(1);
+    const debounceRef = useRef(null);
 
-    // Filter Logic
-    const filteredRecords = useMemo(() => {
-        return MOCK_ATTENDANCE.filter(record => {
-            const user = MOCK_USERS.find(u => u.id === record.user_id);
-            const userName = user?.profile?.name || '';
+    const loadLogs = useCallback(async (search, direction, date, pg) => {
+        setLoading(true);
+        try {
+            const params = { limit: LIMIT, page: pg };
+            if (search) params.search = search;
+            if (direction !== 'all') params.direction = direction;
+            if (date) params.date = date;
+            const res = await api.get('/api/admin/access-logs', params);
+            setRecords(res.data ?? []);
+            setTotal(res.meta?.total ?? 0);
+        } catch {
+            // keep existing
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
-            // Text Search
-            const matchesSearch = userName.toLowerCase().includes(searchTerm.toLowerCase());
+    // Debounce filter changes, reset to page 1
+    useEffect(() => {
+        if (debounceRef.current) clearTimeout(debounceRef.current);
+        debounceRef.current = setTimeout(() => {
+            setPage(1);
+            loadLogs(searchTerm, directionFilter, dateFilter, 1);
+        }, 300);
+        return () => clearTimeout(debounceRef.current);
+    }, [searchTerm, directionFilter, dateFilter, loadLogs]);
 
-            // Type Filter
-            const matchesType = typeFilter === 'all' || record.type === typeFilter;
-
-            // Date Filter
-            let matchesDate = true;
-            if (dateFilter) {
-                const recordDate = parseISO(record.timestamp);
-                const filterDate = parseISO(dateFilter);
-                matchesDate = isSameDay(recordDate, filterDate);
-            }
-
-            return matchesSearch && matchesType && matchesDate;
-        }).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-    }, [searchTerm, typeFilter, dateFilter]);
-
-    // Helpers
-    const getUser = (id) => MOCK_USERS.find(u => u.id === id)?.profile || { name: 'Desconocido', email: '' };
+    // Reload when page changes (without resetting)
+    const isFirstRender = useRef(true);
+    useEffect(() => {
+        if (isFirstRender.current) { isFirstRender.current = false; return; }
+        loadLogs(searchTerm, directionFilter, dateFilter, page);
+    }, [page]); // eslint-disable-line
 
     return (
         <div className="admin-attendance-page">
@@ -56,7 +81,6 @@ const AdminAttendancePage = () => {
                 </div>
             </header>
 
-            {/* Filters */}
             <Card className="filters-attendance-card" padding="sm">
                 <div className="filters-row">
                     <div className="search-group">
@@ -69,19 +93,17 @@ const AdminAttendancePage = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-
                     <div className="filter-group">
                         <select
                             className="filter-select"
-                            value={typeFilter}
-                            onChange={(e) => setTypeFilter(e.target.value)}
+                            value={directionFilter}
+                            onChange={(e) => setDirectionFilter(e.target.value)}
                         >
                             <option value="all">Todos los tipos</option>
-                            <option value="check_in">Entradas</option>
-                            <option value="check_out">Salidas</option>
+                            <option value="in">Entradas</option>
+                            <option value="out">Salidas</option>
                         </select>
                     </div>
-
                     <div className="filter-group">
                         <input
                             type="date"
@@ -93,7 +115,6 @@ const AdminAttendancePage = () => {
                 </div>
             </Card>
 
-            {/* Table */}
             <Card className="table-card" padding="none">
                 <div className="attendance-table-container">
                     <table className="attendance-table">
@@ -102,52 +123,55 @@ const AdminAttendancePage = () => {
                                 <th>Fecha / Hora</th>
                                 <th>Empleado</th>
                                 <th>Tipo</th>
-                                <th>Etiqueta</th>
-                                <th>Ubicación</th>
-                                <th>Dispositivo</th>
+                                <th>Detalle</th>
+                                <th>GPS</th>
+                                <th>Origen</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredRecords.length > 0 ? (
-                                filteredRecords.map(record => {
-                                    const user = getUser(record.user_id);
+                            {loading ? (
+                                <tr>
+                                    <td colSpan="6" className="text-center py-8 text-muted">Cargando...</td>
+                                </tr>
+                            ) : records.length > 0 ? (
+                                records.map(record => {
+                                    const { date, time } = fmtDateTime(record.timestamp);
                                     return (
                                         <tr key={record.id}>
                                             <td>
-                                                <div className="font-medium">
-                                                    {format(parseISO(record.timestamp), 'd MMM yyyy', { locale: es })}
-                                                </div>
-                                                <div className="text-muted text-xs">
-                                                    {format(parseISO(record.timestamp), 'HH:mm:ss')}
-                                                </div>
+                                                <div className="font-medium">{date}</div>
+                                                <div className="text-muted text-xs">{time}</div>
                                             </td>
                                             <td>
-                                                <div className="attendance-user">{user.name}</div>
-                                                <div className="attendance-email">{MOCK_USERS.find(u => u.id === record.user_id)?.email}</div>
+                                                <div className="attendance-user">{record.user_name}</div>
+                                                <div className="attendance-email">{record.user_email}</div>
                                             </td>
                                             <td>
-                                                <span className={`type-indicator ${record.type}`}>
-                                                    {record.type === 'check_in' ? 'Entrada' : 'Salida'}
+                                                <span className={`type-indicator ${record.direction === 'in' ? 'check_in' : 'check_out'}`}>
+                                                    {record.direction === 'in' ? 'Entrada' : 'Salida'}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span className="text-sm capitalize">{record.label || 'Normal'}</span>
-                                            </td>
-                                            <td>
-                                                {record.is_in_zone ? (
-                                                    <span className="location-badge in-zone" title="En zona permitida">
-                                                        <CheckCircle size={10} /> En Zona
-                                                    </span>
-                                                ) : (
-                                                    <span className="location-badge out-zone" title="Fuera de zona">
-                                                        <AlertCircle size={10} /> Fuera de Zona
+                                                <span className="text-sm capitalize">{record.detail_type || 'Normal'}</span>
+                                                {(record.corrected || record.source === 'correction') && (
+                                                    <span className="badge badge-info" style={{ marginLeft: '0.25rem', fontSize: '0.65rem' }}>
+                                                        Corrección
                                                     </span>
                                                 )}
                                             </td>
                                             <td>
+                                                {record.has_gps ? (
+                                                    <span className="location-badge in-zone" title="GPS registrado">
+                                                        <MapPin size={10} /> GPS
+                                                    </span>
+                                                ) : (
+                                                    <span className="text-muted text-xs">–</span>
+                                                )}
+                                            </td>
+                                            <td>
                                                 <div className="flex items-center gap-1 text-muted text-sm">
-                                                    {record.origin === 'mobile' ? <Smartphone size={14} /> : <Globe size={14} />}
-                                                    <span className="capitalize">{record.origin || 'Web'}</span>
+                                                    <SourceIcon source={record.source} />
+                                                    <span>{sourceLabel(record.source)}</span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -163,8 +187,27 @@ const AdminAttendancePage = () => {
                         </tbody>
                     </table>
                 </div>
-                <div className="p-4 border-t border-border-light text-center text-xs text-muted">
-                    Mostrando {filteredRecords.length} registros
+                <div className="p-4 border-t border-border-light" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span className="text-xs text-muted">Total: {total} registros</span>
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                        <button
+                            onClick={() => setPage(p => Math.max(1, p - 1))}
+                            disabled={page === 1 || loading}
+                            style={{ padding: '0.25rem 0.75rem', opacity: page === 1 ? 0.4 : 1, cursor: page === 1 ? 'default' : 'pointer', background: 'none', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-sm)' }}
+                        >
+                            ← Anterior
+                        </button>
+                        <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-muted)' }}>
+                            Página {page}
+                        </span>
+                        <button
+                            onClick={() => setPage(p => p + 1)}
+                            disabled={page * LIMIT >= total || loading}
+                            style={{ padding: '0.25rem 0.75rem', opacity: page * LIMIT >= total ? 0.4 : 1, cursor: page * LIMIT >= total ? 'default' : 'pointer', background: 'none', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-sm)' }}
+                        >
+                            Siguiente →
+                        </button>
+                    </div>
                 </div>
             </Card>
         </div>

@@ -158,14 +158,29 @@ incidencias.post(
       );
     }
 
-    // Fire-and-forget: notify manager via n8n
-    void triggerWorkflow('incidencia-nueva', {
-      incidencia_id: incidencia.id as string,
-      user_name: user.email,
-      type: body.type,
-      date: body.date,
-      reason: body.reason,
-    });
+    // Find manager email for notification (fire-and-forget)
+    void (async () => {
+      let manager_email: string | null = null;
+      if (user.company_id) {
+        const { data: mgr } = await supabaseAdmin
+          .from('profiles')
+          .select('email')
+          .eq('company_id', user.company_id)
+          .in('role', ['admin', 'manager'])
+          .neq('id', user.id)
+          .limit(1)
+          .single();
+        manager_email = mgr?.email ?? null;
+      }
+      void triggerWorkflow('incidencia-nueva', {
+        incidencia_id: incidencia.id as string,
+        user_email: user.email,
+        manager_email,
+        type: body.type,
+        date: body.date,
+        reason: body.reason,
+      });
+    })();
 
     return c.json({ data: incidencia }, 201);
   }
@@ -391,13 +406,24 @@ adminIncidencias.patch(
       status,
     });
 
-    // Fire-and-forget: email to employee via n8n
-    void triggerWorkflow('incidencia-resuelta', {
-      incidencia_id: id,
-      user_id: inc.user_id,
-      status,
-      manager_note: manager_note ?? null,
-    });
+    // Fire-and-forget: email to employee via n8n (fetch employee profile first)
+    void (async () => {
+      const { data: empProfile } = await supabaseAdmin
+        .from('profiles')
+        .select('email, full_name')
+        .eq('id', inc.user_id)
+        .single();
+      void triggerWorkflow('incidencia-resuelta', {
+        incidencia_id: id,
+        user_id: inc.user_id as string,
+        user_email: empProfile?.email ?? null,
+        user_name: empProfile?.full_name ?? empProfile?.email ?? 'Empleado',
+        status,
+        type: inc.type as string,
+        date: inc.date as string,
+        manager_note: manager_note ?? null,
+      });
+    })();
 
     return c.json({ data: updated });
   }

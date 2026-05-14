@@ -22,7 +22,8 @@ const LoginPage = () => {
 
     // Redirect if already authenticated
     if (isAuthenticated) {
-        const redirectPath = profile?.role === 'admin' ? '/admin' : '/dashboard';
+        const role = profile?.role;
+        const redirectPath = role === 'superadmin' ? '/superadmin/empresas' : role === 'admin' || role === 'manager' ? '/admin' : '/dashboard';
         return <Navigate to={redirectPath} replace />;
     }
 

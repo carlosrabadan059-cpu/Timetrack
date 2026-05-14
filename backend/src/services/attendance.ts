@@ -94,9 +94,11 @@ export function buildTodayDistribution(todayLogs: AccessLog[]): {
 /**
  * Determines jornada status from today's logs.
  * working: currently inside
- * paused:  last event was 'out' with detail_type 'comida'
+ * paused:  last event was 'out' with detail_type in PAUSE_TYPES
  * out:     no events or last event was normal 'out'
  */
+const PAUSE_TYPES = new Set(['comida', 'descanso', 'medico', 'otro']);
+
 export function getJornadaStatus(
   todayLogs: AccessLog[]
 ): 'working' | 'paused' | 'out' {
@@ -109,14 +111,14 @@ export function getJornadaStatus(
   const last = granted[granted.length - 1];
   if (!last) return 'out';
   if (last.direction === 'in') return 'working';
-  if (last.direction === 'out' && last.detail_type === 'comida') return 'paused';
+  if (last.direction === 'out' && last.detail_type && PAUSE_TYPES.has(last.detail_type)) return 'paused';
   return 'out';
 }
 
 // ── Legacy helpers (kept for backward-compat) ─────────────────────────────────
 
 export type InferredDirection = 'in' | 'out';
-export type DetailType = 'normal' | 'comida';
+export type DetailType = 'normal' | 'comida' | 'descanso' | 'medico' | 'otro';
 
 export function inferDirection(todayLogs: AccessLog[]): InferredDirection {
   if (todayLogs.length === 0) return 'in';
