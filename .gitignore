@@ -56,3 +56,6 @@ screenshots/
 .claude/
 *.webp
 *.png
+
+# PWA icons
+!public/*.png
