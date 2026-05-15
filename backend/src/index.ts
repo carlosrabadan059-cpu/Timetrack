@@ -51,6 +51,15 @@ app.route('/api/users', usersRoutes);
 app.route('/api/admin', adminRoutes);
 app.route('/api/superadmin', superadminRoutes);
 
+// ── Global error handler ───────────────────────────────────────────────────────
+app.onError((err, c) => {
+  console.error(`[error] ${c.req.method} ${c.req.path}:`, err);
+  return c.json(
+    { error: { code: 'internal_error', message: err.message } },
+    500
+  );
+});
+
 // ── 404 catch-all ─────────────────────────────────────────────────────────────
 app.notFound((c) => {
   return c.json({ error: { code: 'not_found', message: `${c.req.path} not found` } }, 404);
