@@ -72,6 +72,9 @@ const port = Number(process.env['PORT'] ?? 3000);
 serve({ fetch: app.fetch, port }, () => {
   console.log(`[server] Running on http://localhost:${port}`);
   console.log(`[server] NODE_ENV=${process.env['NODE_ENV'] ?? 'development'}`);
+  console.log(`[server] SUPABASE_URL present: ${!!process.env['SUPABASE_URL']}`);
+  console.log(`[server] SUPABASE_SERVICE_ROLE_KEY present: ${!!process.env['SUPABASE_SERVICE_ROLE_KEY']}`);
+  console.log(`[server] SUPABASE_ANON_KEY present: ${!!process.env['SUPABASE_ANON_KEY']}`);
   startSignalRListener().catch((err: unknown) => {
     console.warn('[SignalR] No se pudo iniciar el listener:', err instanceof Error ? err.message : err);
   });
