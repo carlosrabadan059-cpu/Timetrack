@@ -461,12 +461,31 @@
         background: rgba(190, 250, 59, 0.12);
     }
 
-    /* Stats container: flex column by default on mobile */
+    /* Info toggle — more visible */
+    .dashboard-info-toggle {
+        width: 40px;
+        height: 40px;
+        background: var(--color-bg-card);
+        border: 1.5px solid var(--color-border);
+        border-radius: var(--radius-full);
+        color: var(--color-text-secondary);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .dashboard-info-toggle.active {
+        border-color: var(--color-accent-primary);
+        color: var(--color-accent-primary);
+        background: rgba(190, 250, 59, 0.12);
+    }
+
+    /* Stats container: grows to fill space, centers clock card */
     .dashboard-stats {
+        flex: 1;
         display: flex;
         flex-direction: column;
+        justify-content: center;
         gap: var(--space-3);
-        margin-bottom: var(--space-4);
+        margin-bottom: 0;
     }
 
     /* Stat cards strip — hidden by default, shown when info-expanded */
@@ -493,9 +512,9 @@
         flex-shrink: 0;
     }
 
-    /* Clock card: always full width, fills remaining space */
+    /* Clock card: natural height, centered by parent */
     .dashboard-clock-card {
-        flex: 1;
+        flex: none;
     }
 
     .clock-controls-container {
@@ -510,19 +529,19 @@
 
     /* Big time */
     .dashboard-clock-time.major {
-        font-size: clamp(3rem, 15vw, 5rem);
+        font-size: clamp(2.5rem, 13vw, 4rem);
         margin: var(--space-2) 0 var(--space-5);
     }
 
     /* Fichar button: tall touch target */
     .btn-start-day,
     .btn-resume-day {
-        height: 64px;
+        height: 60px;
         font-size: var(--font-size-lg) !important;
     }
 
     .btn-finish-day {
-        height: 56px;
+        height: 52px;
     }
 
     .pause-actions-grid {
