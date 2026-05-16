@@ -105,6 +105,16 @@
     margin-bottom: var(--space-6);
 }
 
+/* Info toggle — only on mobile */
+.dashboard-info-toggle {
+    display: none;
+}
+
+/* Desktop: stat-items wrapper is transparent */
+.dashboard-stat-items {
+    display: contents;
+}
+
 /* Clock Control Card */
 .dashboard-clock-card {
     padding: var(--space-5);
@@ -398,10 +408,10 @@
         min-height: 100svh;
     }
 
-    /* Header: just greeting + date, no search/badge */
+    /* Header: greeting + info toggle */
     .dashboard-header {
         flex-direction: row;
-        align-items: flex-start;
+        align-items: center;
         justify-content: space-between;
         margin-bottom: var(--space-4);
         gap: 0;
@@ -430,36 +440,60 @@
         font-size: var(--font-size-lg);
     }
 
-    /* Stats: single horizontal scrolling strip */
+    /* Info toggle button */
+    .dashboard-info-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+        background: var(--color-bg-card);
+        border: none;
+        border-radius: var(--radius-full);
+        color: var(--color-text-muted);
+        cursor: pointer;
+        transition: color var(--transition-fast), background var(--transition-fast);
+    }
+
+    .dashboard-info-toggle.active {
+        color: var(--color-accent-primary);
+        background: rgba(190, 250, 59, 0.12);
+    }
+
+    /* Stats container: flex column by default on mobile */
     .dashboard-stats {
         display: flex;
+        flex-direction: column;
+        gap: var(--space-3);
+        margin-bottom: var(--space-4);
+    }
+
+    /* Stat cards strip — hidden by default, shown when info-expanded */
+    .dashboard-stat-items {
+        display: none;
         flex-direction: row;
         overflow-x: auto;
         gap: var(--space-3);
-        margin-bottom: var(--space-4);
         scrollbar-width: none;
         -webkit-overflow-scrolling: touch;
-        /* Clock card comes first in DOM but last visually — reorder */
     }
 
-    .dashboard-stats::-webkit-scrollbar {
+    .dashboard-stat-items::-webkit-scrollbar {
         display: none;
     }
 
-    /* Push the clock card to full-width below the strip */
-    .dashboard-clock-card {
-        order: 10;
-        min-width: 100%;
+    .info-expanded .dashboard-stat-items {
+        display: flex;
+    }
+
+    /* Each stat card: compact pill in the strip */
+    .dashboard-stat-items > * {
+        min-width: 140px;
         flex-shrink: 0;
     }
 
-    /* Stat cards: compact pill */
-    .dashboard-stats > *:not(.dashboard-clock-card) {
-        min-width: 130px;
-        flex-shrink: 0;
-    }
-
-    /* Clock card: prominent, fills remaining vertical space */
+    /* Clock card: always full width, fills remaining space */
     .dashboard-clock-card {
         flex: 1;
     }
@@ -501,8 +535,13 @@
         font-size: var(--font-size-sm);
     }
 
-    /* Hide charts on mobile — too dense */
+    /* Charts: hidden by default, shown when info-expanded */
     .dashboard-charts {
         display: none;
+    }
+
+    .info-expanded .dashboard-charts {
+        display: grid;
+        grid-template-columns: 1fr;
     }
 }

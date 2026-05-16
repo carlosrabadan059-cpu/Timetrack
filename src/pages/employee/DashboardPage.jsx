@@ -4,7 +4,7 @@ import { api } from '../../lib/api';
 import { supabase } from '../../lib/supabase';
 import {
     Clock, Activity, Timer, Play, Square,
-    MapPin, Search, Calendar, Utensils, Stethoscope, MoreHorizontal, Coffee
+    MapPin, Search, Calendar, Utensils, Stethoscope, MoreHorizontal, Coffee, Info
 } from 'lucide-react';
 import { StatCard, Card, Button } from '../../components/ui';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
@@ -36,6 +36,7 @@ const pauseOptions = [
 const DashboardPage = () => {
     const { profile } = useAuth();
     const [currentTime, setCurrentTime] = useState(new Date());
+    const [showInfo, setShowInfo] = useState(false);
     const [dashData, setDashData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [ficharLoading, setFicharLoading] = useState(false);
@@ -200,12 +201,19 @@ const DashboardPage = () => {
     }
 
     return (
-        <div className="dashboard-page">
+        <div className={`dashboard-page${showInfo ? ' info-expanded' : ''}`}>
             <header className="dashboard-header">
                 <div className="dashboard-greeting">
                     <span className="dashboard-greeting-time">{getGreeting()}</span>
                     <h1 className="dashboard-greeting-name">{profile?.name || profile?.full_name || 'Usuario'}</h1>
                 </div>
+                <button
+                    className={`dashboard-info-toggle${showInfo ? ' active' : ''}`}
+                    onClick={() => setShowInfo(v => !v)}
+                    aria-label="Ver estadísticas"
+                >
+                    <Info size={20} />
+                </button>
                 <div className="dashboard-title">
                     <h2>Control Horario</h2>
                     <p>¡Gestiona tu tiempo de trabajo!</p>
@@ -224,27 +232,29 @@ const DashboardPage = () => {
             </header>
 
             <div className="dashboard-stats">
-                <StatCard
-                    icon={Clock}
-                    iconColor="primary"
-                    value={fmtMinutes(dashData?.week_total_minutes)}
-                    label="esta semana"
-                    subtitle="Horas Trabajadas"
-                />
-                <StatCard
-                    icon={Activity}
-                    iconColor="purple"
-                    value={String(dashData?.days_worked_this_week ?? 0)}
-                    label="días trabajados"
-                    subtitle="Actividad"
-                />
-                <StatCard
-                    icon={Timer}
-                    iconColor="blue"
-                    value={fmtMinutes(dashData?.daily_average_minutes)}
-                    label="por día"
-                    subtitle="Media Diaria"
-                />
+                <div className="dashboard-stat-items">
+                    <StatCard
+                        icon={Clock}
+                        iconColor="primary"
+                        value={fmtMinutes(dashData?.week_total_minutes)}
+                        label="esta semana"
+                        subtitle="Horas Trabajadas"
+                    />
+                    <StatCard
+                        icon={Activity}
+                        iconColor="purple"
+                        value={String(dashData?.days_worked_this_week ?? 0)}
+                        label="días trabajados"
+                        subtitle="Actividad"
+                    />
+                    <StatCard
+                        icon={Timer}
+                        iconColor="blue"
+                        value={fmtMinutes(dashData?.daily_average_minutes)}
+                        label="por día"
+                        subtitle="Media Diaria"
+                    />
+                </div>
 
                 <Card className="dashboard-clock-card">
                     <div className="clock-controls-container">
