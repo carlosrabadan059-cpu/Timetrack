@@ -9,11 +9,12 @@
         bottom: 0;
         left: 0;
         right: 0;
-        height: 64px;
+        height: calc(64px + env(safe-area-inset-bottom));
         background: var(--color-sidebar-bg);
         border-top: 1px solid rgba(255, 255, 255, 0.08);
         z-index: 200;
         padding-bottom: env(safe-area-inset-bottom);
+        align-items: flex-start;
     }
 
     .mobile-nav-item {
