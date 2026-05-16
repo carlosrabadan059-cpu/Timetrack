@@ -12,6 +12,13 @@ import './DashboardPage.css';
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
+function getDeviceInfo() {
+    const ua = navigator.userAgent;
+    if (/iphone|ipad|ipod/i.test(ua)) return 'ios';
+    if (/android/i.test(ua)) return 'android';
+    return 'web';
+}
+
 function fmtMinutes(mins) {
     if (!mins) return '0h 0m';
     const h = Math.floor(mins / 60);
@@ -106,7 +113,7 @@ const DashboardPage = () => {
         setFicharLoading(true);
         setFicharError('');
         try {
-            const body = detailType ? { detail_type: detailType } : {};
+            const body = { device_info: getDeviceInfo(), ...(detailType ? { detail_type: detailType } : {}) };
             const res = await api.post('/api/me/fichar', body);
             const { direction, detail_type, is_inside, timestamp } = res.data;
             const newStatus =

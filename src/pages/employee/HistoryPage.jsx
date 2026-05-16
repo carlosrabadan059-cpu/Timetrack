@@ -80,10 +80,21 @@ function getDetailBadge(detail_type) {
     return DETAIL_BADGE[detail_type] ?? { text: detail_type ?? '–', cls: 'badge-neutral', Icon: null, dotColor: null };
 }
 
-function sourceIcon(source) {
-    if (source === 'web')    return '🖥️';
-    if (source === 'mobile') return '📱';
-    return '🔒'; // signalr — physical reader
+const SOURCE_LABELS = {
+    web:        { icon: '🖥', label: 'App Web' },
+    mobile:     { icon: '📱', label: 'App Móvil' },
+    signalr:    { icon: '🔒', label: 'Lector 2N' },
+    correction: { icon: '✏️', label: 'Corrección' },
+};
+
+function SourceBadge({ source }) {
+    const { icon, label } = SOURCE_LABELS[source] ?? { icon: '?', label: source ?? '—' };
+    return (
+        <span className="source-badge" title={label}>
+            <span className="source-badge-icon">{icon}</span>
+            <span className="source-badge-text">{label}</span>
+        </span>
+    );
 }
 
 function triggerDownload(blob, filename) {
@@ -289,7 +300,7 @@ const HistoryPage = () => {
                                                                             <span className="location-ok">GPS</span>
                                                                         </span>
                                                                     )}
-                                                                    <span className="timeline-origin">{sourceIcon(entry.source)}</span>
+                                                                    <SourceBadge source={entry.source} />
                                                                 </div>
                                                             </div>
                                                         </div>
