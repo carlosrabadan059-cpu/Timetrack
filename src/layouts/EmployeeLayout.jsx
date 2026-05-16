@@ -1,11 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/ui/Sidebar';
+import MobileNav from '../components/ui/MobileNav';
 import './EmployeeLayout.css';
 
-/**
- * Employee Layout
- * Main layout wrapper for employee pages with sidebar
- */
 const EmployeeLayout = () => {
     return (
         <div className="employee-layout">
@@ -13,6 +10,7 @@ const EmployeeLayout = () => {
             <main className="employee-main">
                 <Outlet />
             </main>
+            <MobileNav />
         </div>
     );
 };

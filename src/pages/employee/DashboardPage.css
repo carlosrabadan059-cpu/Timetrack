@@ -389,17 +389,120 @@
     }
 }
 
+/* ── Mobile: minimalist fichar view ────────────────────────── */
 @media (max-width: 768px) {
-    .dashboard-header {
+    .dashboard-page {
+        padding: var(--space-4) var(--space-4) var(--space-2);
+        display: flex;
         flex-direction: column;
+        min-height: 100svh;
+    }
+
+    /* Header: just greeting + date, no search/badge */
+    .dashboard-header {
+        flex-direction: row;
         align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: var(--space-4);
+        gap: 0;
     }
 
     .dashboard-title {
-        text-align: left;
+        display: none;
     }
 
+    .dashboard-header-actions {
+        display: none;
+    }
+
+    .dashboard-greeting {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+
+    .dashboard-greeting-time {
+        font-size: var(--font-size-xs);
+        color: var(--color-text-muted);
+    }
+
+    .dashboard-greeting-name {
+        font-size: var(--font-size-lg);
+    }
+
+    /* Stats: single horizontal scrolling strip */
     .dashboard-stats {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: var(--space-3);
+        margin-bottom: var(--space-4);
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        /* Clock card comes first in DOM but last visually — reorder */
+    }
+
+    .dashboard-stats::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Push the clock card to full-width below the strip */
+    .dashboard-clock-card {
+        order: 10;
+        min-width: 100%;
+        flex-shrink: 0;
+    }
+
+    /* Stat cards: compact pill */
+    .dashboard-stats > *:not(.dashboard-clock-card) {
+        min-width: 130px;
+        flex-shrink: 0;
+    }
+
+    /* Clock card: prominent, fills remaining vertical space */
+    .dashboard-clock-card {
+        flex: 1;
+    }
+
+    .clock-controls-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .dashboard-clock-header.center-header {
+        margin-bottom: var(--space-3);
+    }
+
+    /* Big time */
+    .dashboard-clock-time.major {
+        font-size: clamp(3rem, 15vw, 5rem);
+        margin: var(--space-2) 0 var(--space-5);
+    }
+
+    /* Fichar button: tall touch target */
+    .btn-start-day,
+    .btn-resume-day {
+        height: 64px;
+        font-size: var(--font-size-lg) !important;
+    }
+
+    .btn-finish-day {
+        height: 56px;
+    }
+
+    .pause-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-2);
+    }
+
+    .pause-action-btn {
+        padding: var(--space-3) var(--space-2);
+        font-size: var(--font-size-sm);
+    }
+
+    /* Hide charts on mobile — too dense */
+    .dashboard-charts {
+        display: none;
     }
 }
