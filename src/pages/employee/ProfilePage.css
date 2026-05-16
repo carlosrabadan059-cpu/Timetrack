@@ -161,8 +161,23 @@
     margin: 0;
 }
 
+.profile-signout-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--space-6);
+}
+
 @media (max-width: 1024px) {
     .profile-grid {
         grid-template-columns: 1fr;
+    }
+
+    .profile-signout-row {
+        justify-content: stretch;
+    }
+
+    .profile-signout-row .btn {
+        width: 100%;
+        justify-content: center;
     }
 }

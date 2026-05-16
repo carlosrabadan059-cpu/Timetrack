@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { api } from '../../lib/api';
 import { Card, Button, Input } from '../../components/ui';
-import { User, Mail, Shield, Bell, Key } from 'lucide-react';
+import { User, Mail, Shield, Bell, Key, LogOut } from 'lucide-react';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
-    const { profile } = useAuth();
+    const { profile, signOut } = useAuth();
 
     const [name, setName] = useState(profile?.full_name || profile?.name || '');
     const [saving, setSaving] = useState(false);
@@ -221,6 +221,12 @@ const ProfilePage = () => {
                         </div>
                     </Card>
                 </div>
+            </div>
+
+            <div className="profile-signout-row">
+                <Button variant="danger" onClick={signOut} icon={LogOut}>
+                    Cerrar sesión
+                </Button>
             </div>
         </div>
     );
