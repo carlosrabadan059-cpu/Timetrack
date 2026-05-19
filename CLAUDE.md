@@ -549,8 +549,8 @@ Actualiza los checkboxes al completar cada fase:
 ✅ Fase 1 — Auth + Perfil: GET /api/me con datos reales, toggle notificaciones
 ✅ Fase 2 — Fichajes: SignalR listener + POST /api/me/fichar (web/móvil) + Dashboard + Historial + SSE live
 ✅ Fase 3 — Incidencias: crear + aprobar/rechazar + corrección en access_logs
-🔨 Fase 4 — Reportes: PDF, Excel, tabla actividad, navegación por mes
-Fase 5 — Sync 2N: usuarios vía n8n, callback, reconciliación nocturna
+✅ Fase 4 — Reportes: PDF, Excel, tabla actividad, navegación por mes
+🔨 Fase 5 — Sync 2N: usuarios vía n8n, callback, reconciliación nocturna
 
 Notas de despliegue:
 - Backend desplegado en Docker en Raspberry Pi (192.168.1.10), expuesto vía Cloudflare Tunnel como https://api.rabadanhouse.space
