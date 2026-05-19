@@ -545,12 +545,19 @@ Tipos exportados desde src/types/
 Estado de fases
 Actualiza los checkboxes al completar cada fase:
 
-Fase 0 — Setup backend: estructura, dependencias, middleware auth, GET /health
-Fase 1 — Auth + Perfil: GET /api/me con datos reales, toggle notificaciones
-Fase 2 — Fichajes: SignalR listener + POST /api/me/fichar (web/móvil) + Dashboard + Historial + SSE live
-Fase 3 — Incidencias: crear + aprobar/rechazar + corrección en access_logs
-Fase 4 — Reportes: PDF, Excel, tabla actividad, navegación por mes
+✅ Fase 0 — Setup backend: estructura, dependencias, middleware auth, GET /health
+✅ Fase 1 — Auth + Perfil: GET /api/me con datos reales, toggle notificaciones
+✅ Fase 2 — Fichajes: SignalR listener + POST /api/me/fichar (web/móvil) + Dashboard + Historial + SSE live
+✅ Fase 3 — Incidencias: crear + aprobar/rechazar + corrección en access_logs
+🔨 Fase 4 — Reportes: PDF, Excel, tabla actividad, navegación por mes
 Fase 5 — Sync 2N: usuarios vía n8n, callback, reconciliación nocturna
+
+Notas de despliegue:
+- Backend desplegado en Docker en Raspberry Pi (192.168.1.10), expuesto vía Cloudflare Tunnel como https://api.rabadanhouse.space
+- Imagen Docker: rabadanhouse/timetrack-backend:latest (Docker Hub, arm64)
+- Stack Docker en Portainer junto a n8n (red n8n_net) — compose en Portainer
+- Frontend en Vercel conectado al backend en api.rabadanhouse.space
+- Fix aplicado: conexión SignalR global desactivada cuando hay conexión por empresa (evita fichajes duplicados)
 
 Piensa antes de actuar. Lee los archivos antes de escribir código.
 

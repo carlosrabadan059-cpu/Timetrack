@@ -133,6 +133,18 @@ export async function handleAccessEvent(
 
   const detailType = inferDetailType(timestamp);
 
+  // Dedup: reject duplicate events from parallel SignalR connections (same timestamp + user)
+  const { count: existing } = await supabaseAdmin
+    .from('access_logs')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', profileId)
+    .eq('timestamp', timestamp)
+    .eq('source', 'signalr');
+  if (existing && existing > 0) {
+    console.log(`[2N] Duplicate event skipped — user=${profileId} timestamp=${timestamp}`);
+    return;
+  }
+
   const { data: log, error } = await supabaseAdmin
     .from('access_logs')
     .insert({
@@ -253,17 +265,24 @@ async function startCompanyConnection(
 export async function startSignalRListener(): Promise<void> {
   const sb = getSupabaseAdmin();
 
-  // Also start global connection from env vars if configured (dev/legacy)
-  const globalUrl = process.env['AC_BASE_URL'];
-  const globalToken = process.env['AC_API_TOKEN'];
-  if (globalUrl && globalToken) {
-    await startCompanyConnection('__global__', globalUrl, globalToken, 'global');
-  }
-
   // Load all companies with 2N AC enabled
   const { data: settingsRows } = await sb
     .from('company_settings')
     .select('company_id, company_name, clocking_modes');
+
+  const hasCompanyConnections = (settingsRows ?? []).some((row) => {
+    const modes = row.clocking_modes as ClockingModes | null;
+    return modes?.twoN?.enabled && modes.twoN.type === 'ac' && modes.twoN.ac_base_url && modes.twoN.ac_api_token;
+  });
+
+  // Only start global connection if no company-level connections are configured (dev/legacy fallback)
+  if (!hasCompanyConnections) {
+    const globalUrl = process.env['AC_BASE_URL'];
+    const globalToken = process.env['AC_API_TOKEN'];
+    if (globalUrl && globalToken) {
+      await startCompanyConnection('__global__', globalUrl, globalToken, 'global');
+    }
+  }
 
   for (const row of settingsRows ?? []) {
     const modes = row.clocking_modes as ClockingModes | null;

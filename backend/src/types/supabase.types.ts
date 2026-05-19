@@ -90,6 +90,7 @@ export type Incidencia = {
   date: string;
   original_timestamp: string | null;
   requested_timestamp: string | null;
+  requested_direction: 'in' | 'out' | null;
   reason: string | null;
   manager_note: string | null;
   reviewed_by: string | null;
