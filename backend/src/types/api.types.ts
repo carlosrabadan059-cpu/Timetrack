@@ -35,4 +35,6 @@ export type AuthUser = {
 // Hono context variables
 export type AppVariables = {
   user: AuthUser;
+  companyId?: string;
+  apiScopes?: string[];
 };

@@ -13,6 +13,7 @@ import webhookRoutes from './api/routes/webhooks.js';
 import usersRoutes from './api/routes/users.js';
 import adminRoutes from './api/routes/admin.js';
 import superadminRoutes from './api/routes/superadmin.js';
+import externalRoutes from './api/routes/external.js';
 import type { AppVariables } from './types/api.types.js';
 import { startSignalRListener } from './services/signalr-listener.js';
 
@@ -41,7 +42,12 @@ app.get('/health', (c) => {
 app.route('/webhooks', webhookRoutes);
 
 // ── Protected API ──────────────────────────────────────────────────────────────
-app.use('/api/*', authMiddleware);
+app.use('/api/*', async (c, next) => {
+  if (c.req.path.startsWith('/api/external/')) {
+    return next();
+  }
+  return authMiddleware(c, next);
+});
 
 app.route('/api/me', meRoutes);
 app.route('/api/me/historial', historialRoutes);
@@ -51,6 +57,7 @@ app.route('/api/me/reportes', reportesRoutes);
 app.route('/api/users', usersRoutes);
 app.route('/api/admin', adminRoutes);
 app.route('/api/superadmin', superadminRoutes);
+app.route('/api/external/v1', externalRoutes);
 
 // ── Global error handler ───────────────────────────────────────────────────────
 app.onError((err, c) => {

@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import crypto from 'crypto';
 import { getSupabaseAdmin } from '../../lib/supabase.js';
 import { requireRole } from '../middleware/role.js';
 import { triggerWorkflow } from '../../lib/n8n.js';
@@ -680,6 +681,113 @@ admin.post('/sync-users', requireRole(['admin']), async (c) => {
   }
 
   return c.json({ data: { queued, errors: errors.length > 0 ? errors : undefined } });
+});
+
+// ── POST /api/admin/api-keys ──────────────────────────────────────────────────
+admin.post('/api-keys', requireRole(['admin', 'manager']), async (c) => {
+  const user = c.get('user');
+  const sb = getSupabaseAdmin();
+
+  if (!user.company_id) {
+    return c.json({ error: { code: 'no_company', message: 'Sin empresa asociada' } }, 422);
+  }
+
+  const body = await c.req.json().catch(() => null) as { name?: string; expires_at?: string; scopes?: string[] } | null;
+  const name = body?.name?.trim();
+
+  if (!name) {
+    return c.json({ error: { code: 'invalid_body', message: 'El nombre de la API Key es obligatorio' } }, 400);
+  }
+
+  // Generar clave segura: tt_live_ + 32 hex aleatorios (16 bytes)
+  const randomHex = crypto.randomBytes(16).toString('hex');
+  const apiKey = `tt_live_${randomHex}`;
+  const keyPrefix = apiKey.substring(0, 16); // tt_live_ + 8 caracteres aleatorios
+
+  // Calcular hash SHA-256
+  const keyHash = crypto.createHash('sha256').update(apiKey).digest('hex');
+
+  const expiresAt = body?.expires_at ? new Date(body.expires_at).toISOString() : null;
+  const scopes = body?.scopes ?? ['fichajes:read'];
+
+  const { data, error } = await sb
+    .from('api_keys')
+    .insert({
+      company_id: user.company_id,
+      name,
+      key_prefix: keyPrefix,
+      key_hash: keyHash,
+      scopes,
+      is_active: true,
+      expires_at: expiresAt,
+      created_by: user.id,
+    })
+    .select('id, name, key_prefix, scopes, is_active, expires_at, created_at')
+    .single();
+
+  if (error) {
+    return c.json({ error: { code: 'internal_error', message: `Error al crear la API Key: ${error.message}` } }, 500);
+  }
+
+  // Retornar la API Key en texto plano solo una vez
+  return c.json({
+    data: {
+      ...data,
+      api_key: apiKey,
+    },
+  });
+});
+
+// ── GET /api/admin/api-keys ───────────────────────────────────────────────────
+admin.get('/api-keys', requireRole(['admin', 'manager']), async (c) => {
+  const user = c.get('user');
+  const sb = getSupabaseAdmin();
+
+  if (!user.company_id) {
+    return c.json({ data: [] });
+  }
+
+  const { data, error } = await sb
+    .from('api_keys')
+    .select('id, name, key_prefix, scopes, is_active, expires_at, created_at')
+    .eq('company_id', user.company_id)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    return c.json({ error: { code: 'internal_error', message: `Error al listar las API Keys: ${error.message}` } }, 500);
+  }
+
+  return c.json({ data: data ?? [] });
+});
+
+// ── DELETE /api/admin/api-keys/:id ─────────────────────────────────────────────
+admin.delete('/api-keys/:id', requireRole(['admin', 'manager']), async (c) => {
+  const user = c.get('user');
+  const sb = getSupabaseAdmin();
+  const id = c.req.param('id');
+
+  if (!user.company_id) {
+    return c.json({ error: { code: 'no_company', message: 'Sin empresa asociada' } }, 422);
+  }
+
+  // Comprobar si pertenece a la misma empresa y eliminar (RLS asiste aquí, pero aseguramos en la cláusula)
+  const { data: deleted, error } = await sb
+    .from('api_keys')
+    .delete()
+    .eq('id', id)
+    .eq('company_id', user.company_id)
+    .select('id')
+    .maybeSingle();
+
+  if (error) {
+    return c.json({ error: { code: 'internal_error', message: `Error al revocar la API Key: ${error.message}` } }, 500);
+  }
+
+  if (!deleted) {
+    return c.json({ error: { code: 'not_found', message: 'API Key no encontrada o no pertenece a tu empresa' } }, 404);
+  }
+
+  return c.json({ data: { revoked: true, id } });
 });
 
 export default admin;
