@@ -154,9 +154,9 @@ timetrack/
 - [x] Fase 0 — Setup backend: estructura, dependencias, middleware auth, GET /health
 - [x] Fase 1 — Auth + Perfil: GET /api/me
 - [x] Fase 2 — Fichajes: POST /api/me/fichar + Dashboard + Historial + SSE live
-- [ ] Fase 3 — Incidencias: crear + aprobar/rechazar
-- [ ] Fase 4 — Reportes: PDF, Excel, tabla actividad
-- [ ] Fase 5 — Sync 2N: usuarios vía n8n, reconciliación nocturna
+- [x] Fase 3 — Incidencias: crear + aprobar/rechazar
+- [x] Fase 4 — Reportes: PDF, Excel, tabla actividad
+- [x] Fase 5 — Sync 2N: usuarios vía n8n, reconciliación nocturna
 
 ---
 
