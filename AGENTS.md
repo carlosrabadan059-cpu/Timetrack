@@ -28,7 +28,8 @@ Antigravity / TimeTrack es una plataforma de gestión de control de accesos y fi
 Estado actual:
 
 ✅ Frontend completo con datos mock
-🔨 Backend en construcción — objetivo: sustituir todos los mocks por datos reales
+✅ Backend completo con integración de Supabase, 2N y n8n
+
 
 
 Frontend (YA DESARROLLADO — no modificar salvo integración)
@@ -545,12 +546,12 @@ Tipos exportados desde src/types/
 Estado de fases
 Actualiza los checkboxes al completar cada fase:
 
-Fase 0 — Setup backend: estructura, dependencias, middleware auth, GET /health
-Fase 1 — Auth + Perfil: GET /api/me con datos reales, toggle notificaciones
-Fase 2 — Fichajes: SignalR listener + POST /api/me/fichar (web/móvil) + Dashboard + Historial + SSE live
-Fase 3 — Incidencias: crear + aprobar/rechazar + corrección en access_logs
-Fase 4 — Reportes: PDF, Excel, tabla actividad, navegación por mes
-Fase 5 — Sync 2N: usuarios vía n8n, callback, reconciliación nocturna
+- [x] Fase 0 — Setup backend: estructura, dependencias, middleware auth, GET /health
+- [x] Fase 1 — Auth + Perfil: GET /api/me con datos reales, toggle notificaciones
+- [x] Fase 2 — Fichajes: SignalR listener + POST /api/me/fichar (web/móvil) + Dashboard + Historial + SSE live
+- [x] Fase 3 — Incidencias: crear + aprobar/rechazar + corrección en access_logs
+- [x] Fase 4 — Reportes: PDF, Excel, tabla actividad, navegación por mes
+- [x] Fase 5 — Sync 2N: usuarios vía n8n, callback, reconciliación nocturna
 
 Piensa antes de actuar. Lee los archivos antes de escribir código.
 
