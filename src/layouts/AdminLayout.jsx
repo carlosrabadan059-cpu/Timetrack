@@ -1,11 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/ui/Sidebar';
+import HelpBot from '../components/HelpBot';
 import './AdminLayout.css';
 
-/**
- * Admin Layout
- * Layout wrapper for admin pages with admin sidebar
- */
 const AdminLayout = () => {
     return (
         <div className="admin-layout">
@@ -13,6 +10,7 @@ const AdminLayout = () => {
             <main className="admin-main">
                 <Outlet />
             </main>
+            <HelpBot />
         </div>
     );
 };
