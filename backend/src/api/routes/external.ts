@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
+import PDFDocument from 'pdfkit';
 import { getSupabaseAdmin } from '../../lib/supabase.js';
 import { apiKeyAuthMiddleware } from '../middleware/api-key-auth.js';
 import { humanizeSource } from '../../lib/date-utils.js';
@@ -17,9 +18,121 @@ const fichajesQuerySchema = z.object({
   start_date: z.string().datetime({ precision: 3 }).optional(),
   end_date: z.string().datetime({ precision: 3 }).optional(),
   source: z.enum(['web', 'mobile', 'signalr', 'correction']).optional(),
+  format: z.enum(['json', 'pdf', 'csv']).default('json'),
   page: z.string().regex(/^\d+$/).transform(Number).default('1'),
   limit: z.string().regex(/^\d+$/).transform(Number).default('50'),
 });
+
+const M = 50;
+const PW = 595.28;
+const CW = PW - 2 * M;
+const SAFE_BOTTOM = 841.89 - M - 30;
+
+function pad2(n: number) { return String(n).padStart(2, '0'); }
+function fmtTs(ts: string) {
+  const d = new Date(ts);
+  return `${pad2(d.getDate())}/${pad2(d.getMonth() + 1)}/${d.getFullYear()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+}
+
+type FichajeItem = {
+  id: string;
+  user: { id: string; full_name: string; email: string; employee_code: string };
+  direction: string;
+  detail_type: string;
+  timestamp: string;
+  source: string;
+  source_human: string;
+  device_info: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  corrected: boolean;
+};
+
+function buildFichajesPDF(items: FichajeItem[], empName: string, period: string): Promise<Buffer> {
+  const doc = new PDFDocument({ size: 'A4', margin: M, autoFirstPage: true });
+  const chunks: Buffer[] = [];
+  doc.on('data', (chunk: Buffer) => chunks.push(chunk));
+
+  return new Promise<Buffer>((resolve, reject) => {
+    doc.on('end', () => resolve(Buffer.concat(chunks)));
+    doc.on('error', reject);
+
+    try {
+      const now = new Date();
+      const genDate = `Generado el ${pad2(now.getDate())}/${pad2(now.getMonth() + 1)}/${now.getFullYear()}`;
+
+      // Header
+      doc.font('Helvetica-Bold').fontSize(18).fillColor('#0F172A').text('TimeTrack', M, M);
+      doc.font('Helvetica').fontSize(8).fillColor('#94A3B8').text(genDate, M, M + 6, { width: CW, align: 'right' });
+      let y = M + 28;
+      doc.font('Helvetica').fontSize(11).fillColor('#475569').text('Listado de Fichajes — API Externa', M, y, { width: CW });
+      y += 18;
+      doc.moveTo(M, y).lineTo(PW - M, y).strokeColor('#E2E8F0').lineWidth(1).stroke();
+      y += 12;
+      doc.font('Helvetica').fontSize(9).fillColor('#374151')
+        .text(`Empleado: ${empName}   |   Período: ${period}   |   Total: ${items.length} registros`, M, y, { width: CW });
+      y += 22;
+
+      // Table headers
+      const cols = [90, 55, 60, 70, 130, 90];
+      const headers = ['Fecha/Hora', 'Dirección', 'Tipo', 'Origen', 'Dispositivo', 'Empleado'];
+      doc.font('Helvetica-Bold').fontSize(8).fillColor('#1E293B');
+      let cx = M;
+      for (let i = 0; i < headers.length; i++) {
+        doc.text(headers[i] ?? '', cx, y, { width: (cols[i] ?? 0) - 2, lineBreak: false });
+        cx += cols[i] ?? 0;
+      }
+      y += 12;
+      doc.moveTo(M, y).lineTo(PW - M, y).strokeColor('#CBD5E1').lineWidth(0.5).stroke();
+      y += 5;
+
+      // Rows
+      doc.font('Helvetica').fontSize(8).fillColor('#374151');
+      for (const item of items) {
+        if (y > SAFE_BOTTOM) { doc.addPage(); y = M; }
+        const row = [
+          fmtTs(item.timestamp),
+          item.direction === 'in' ? 'Entrada' : 'Salida',
+          item.detail_type,
+          item.source_human,
+          item.device_info ?? '—',
+          item.user.full_name,
+        ];
+        cx = M;
+        for (let i = 0; i < row.length; i++) {
+          const color = item.direction === 'in' ? '#16A34A' : '#DC2626';
+          doc.fillColor(i === 1 ? color : '#374151')
+            .text(row[i] ?? '', cx, y, { width: (cols[i] ?? 0) - 2, lineBreak: false });
+          cx += cols[i] ?? 0;
+        }
+        y += 14;
+      }
+      doc.end();
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
+function buildFichajesCSV(items: FichajeItem[]): string {
+  const header = 'id,fecha_hora,empleado,codigo,direccion,tipo,origen,dispositivo,latitud,longitud,corregido';
+  const rows = items.map(i =>
+    [
+      i.id,
+      i.timestamp,
+      `"${i.user.full_name}"`,
+      i.user.employee_code,
+      i.direction,
+      i.detail_type,
+      i.source_human,
+      i.device_info ?? '',
+      i.latitude ?? '',
+      i.longitude ?? '',
+      i.corrected,
+    ].join(',')
+  );
+  return [header, ...rows].join('\n');
+}
 
 external.get('/fichajes', async (c) => {
   const companyId = c.get('companyId');
@@ -43,8 +156,9 @@ external.get('/fichajes', async (c) => {
     );
   }
 
-  const { user_id, employee_code, start_date, end_date, source, page, limit, company_name } = parsed.data;
-  const offset = (page - 1) * limit;
+  const { user_id, employee_code, start_date, end_date, source, format, page, limit, company_name } = parsed.data;
+  const effectiveLimit = format !== 'json' ? 1000 : limit;
+  const offset = format !== 'json' ? 0 : (page - 1) * limit;
 
   const sb = getSupabaseAdmin();
 
@@ -102,7 +216,7 @@ external.get('/fichajes', async (c) => {
     .select('*, profiles!inner(id, full_name, email, employee_code)', { count: 'exact' })
     .eq('profiles.company_id', companyId)
     .order('timestamp', { ascending: false })
-    .range(offset, offset + limit - 1);
+    .range(offset, offset + effectiveLimit - 1);
 
   if (targetUserId) {
     q = q.eq('user_id', targetUserId);
@@ -152,12 +266,38 @@ external.get('/fichajes', async (c) => {
     corrected: log.corrected,
   }));
 
+  if (format === 'csv') {
+    const csv = buildFichajesCSV(items);
+    const filename = `fichajes-${employee_code ?? 'todos'}.csv`;
+    return new Response(csv, {
+      headers: {
+        'Content-Type': 'text/csv; charset=utf-8',
+        'Content-Disposition': `attachment; filename="${filename}"`,
+      },
+    });
+  }
+
+  if (format === 'pdf') {
+    const empName = items[0]?.user.full_name ?? employee_code ?? 'Empleado';
+    const from = start_date ? start_date.slice(0, 10) : '—';
+    const to = end_date ? end_date.slice(0, 10) : '—';
+    const period = `${from} / ${to}`;
+    const pdfBuffer = await buildFichajesPDF(items, empName, period);
+    const filename = `fichajes-${employee_code ?? 'todos'}.pdf`;
+    return new Response(pdfBuffer, {
+      headers: {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `attachment; filename="${filename}"`,
+      },
+    });
+  }
+
   return c.json({
     data: items,
     meta: {
       page,
       total: count ?? 0,
-      has_more: offset + limit < (count ?? 0),
+      has_more: offset + effectiveLimit < (count ?? 0),
     },
   });
 });
