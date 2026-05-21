@@ -27,8 +27,9 @@ Antigravity / TimeTrack es una plataforma de gestión de control de accesos y fi
 
 Estado actual:
 
-✅ Frontend completo con datos mock
-🔨 Backend en construcción — objetivo: sustituir todos los mocks por datos reales
+✅ Frontend completo e integrado con el backend real
+✅ Backend completo y desplegado en producción (Raspberry Pi + Cloudflare Tunnel)
+✅ Todas las fases implementadas (0–5) — no hay mocks activos
 
 
 Frontend (YA DESARROLLADO — no modificar salvo integración)
@@ -58,7 +59,7 @@ src/contexts/CorrectionsContext.jsx — sustituir por llamadas a POST /api/me/in
 Cualquier fetch o constante hardcodeada en los servicios de cada página
 
 
-Backend (EN CONSTRUCCIÓN)
+Backend (COMPLETADO ✅)
 Stack
 Tecnología
 Uso
