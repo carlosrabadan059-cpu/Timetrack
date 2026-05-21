@@ -1,5 +1,5 @@
 {
-  "name": "TimeTrack — Help Bot",
+  "name": "TimeTrack — Help Bot (OpenAI)",
   "nodes": [
     {
       "parameters": {
@@ -17,7 +17,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Extraer el body — n8n v2 lo pone en .body, v1 en la raíz\nconst raw = $input.first().json;\nconst body = raw.body ?? raw;\n\nconst message    = String(body.message   ?? '').trim();\nconst history    = Array.isArray(body.history) ? body.history : [];\nconst manual     = String(body.manual    ?? '');\nconst userRole   = String(body.user_role ?? 'employee');\nconst page       = String(body.page      ?? '');\n\nif (!message) throw new Error('El campo message está vacío');\n\nconst roleLabel = userRole === 'admin' || userRole === 'manager'\n  ? 'administrador o manager'\n  : 'empleado';\n\nconst systemPrompt = [\n  'Eres el asistente de ayuda de TimeTrack, una plataforma de control horario.',\n  'Responde siempre en español. Sé conciso, directo y amable.',\n  'Máximo 3-4 párrafos por respuesta. Usa listas cuando ayude a la claridad.',\n  'Solo responde preguntas sobre el uso de la aplicación TimeTrack.',\n  'Si la pregunta no tiene relación con la app, indica amablemente que solo puedes ayudar con TimeTrack.',\n  '',\n  `El usuario es un ${roleLabel}.`,\n  page ? `Está en la pantalla: ${page}.` : '',\n  '',\n  '--- MANUAL DE LA APLICACIÓN ---',\n  manual,\n  '--- FIN DEL MANUAL ---',\n].filter(l => l !== null).join('\\n');\n\n// Construir el array de mensajes respetando el historial de conversación\nconst messages = [\n  ...history\n    .filter(h => h.role === 'user' || h.role === 'assistant')\n    .slice(-10)  // máx 10 turnos de historial\n    .map(h => ({ role: h.role, content: String(h.content) })),\n  { role: 'user', content: message },\n];\n\nreturn [{\n  json: {\n    anthropicRequest: {\n      model: 'claude-sonnet-4-5',\n      max_tokens: 1024,\n      system: systemPrompt,\n      messages,\n    }\n  }\n}];"
+        "jsCode": "// Extraer el body — n8n v2 lo pone en .body, v1 en la raíz\nconst raw = $input.first().json;\nconst body = raw.body ?? raw;\n\nconst message    = String(body.message   ?? '').trim();\nconst history    = Array.isArray(body.history) ? body.history : [];\nconst manual     = String(body.manual    ?? '');\nconst userRole   = String(body.user_role ?? 'employee');\nconst page       = String(body.page      ?? '');\n\nif (!message) throw new Error('El campo message está vacío');\n\nconst roleLabel = userRole === 'admin' || userRole === 'manager'\n  ? 'administrador o manager'\n  : 'empleado';\n\nconst systemContent = [\n  'Eres el asistente de ayuda de TimeTrack, una plataforma de control horario.',\n  'Responde siempre en español. Sé conciso, directo y amable.',\n  'Máximo 3-4 párrafos por respuesta. Usa listas cuando ayude a la claridad.',\n  'Solo responde preguntas sobre el uso de la aplicación TimeTrack.',\n  'Si la pregunta no tiene relación con la app, indica amablemente que solo puedes ayudar con TimeTrack.',\n  '',\n  `El usuario es un ${roleLabel}.`,\n  page ? `Está en la pantalla: ${page}.` : '',\n  '',\n  '--- MANUAL DE LA APLICACIÓN ---',\n  manual,\n  '--- FIN DEL MANUAL ---',\n].filter(l => l !== null).join('\\n');\n\n// OpenAI: el system prompt va como primer mensaje con role 'system'\nconst messages = [\n  { role: 'system', content: systemContent },\n  ...history\n    .filter(h => h.role === 'user' || h.role === 'assistant')\n    .slice(-10)\n    .map(h => ({ role: h.role, content: String(h.content) })),\n  { role: 'user', content: message },\n];\n\nreturn [{\n  json: {\n    openaiRequest: {\n      model: 'gpt-4o-mini',\n      max_tokens: 1024,\n      messages,\n    }\n  }\n}];"
       },
       "id": "a1b2c3d4-0002-0002-0002-000000000002",
       "name": "Build Prompt",
@@ -28,16 +28,12 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://api.anthropic.com/v1/messages",
+        "url": "https://api.openai.com/v1/chat/completions",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            {
-              "name": "anthropic-version",
-              "value": "2023-06-01"
-            },
             {
               "name": "content-type",
               "value": "application/json"
@@ -47,26 +43,26 @@
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
-        "body": "={{ JSON.stringify($json.anthropicRequest) }}",
+        "body": "={{ JSON.stringify($json.openaiRequest) }}",
         "options": {
           "timeout": 25000
         }
       },
       "id": "a1b2c3d4-0003-0003-0003-000000000003",
-      "name": "Call Anthropic",
+      "name": "Call OpenAI",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [680, 300],
       "credentials": {
         "httpHeaderAuth": {
-          "id": "ANTHROPIC_CREDENTIAL_ID",
-          "name": "Anthropic API Key"
+          "id": "OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI API Key"
         }
       }
     },
     {
       "parameters": {
-        "jsCode": "const response = $input.first().json;\n\n// Extraer el texto de la respuesta de Anthropic\nconst answer = response?.content?.[0]?.text\n  ?? response?.error?.message\n  ?? 'Lo siento, no pude procesar tu pregunta. Por favor inténtalo de nuevo.';\n\nreturn [{ json: { answer } }];"
+        "jsCode": "const response = $input.first().json;\n\n// Extraer el texto de la respuesta de OpenAI\nconst answer = response?.choices?.[0]?.message?.content\n  ?? response?.error?.message\n  ?? 'Lo siento, no pude procesar tu pregunta. Por favor inténtalo de nuevo.';\n\nreturn [{ json: { answer } }];"
       },
       "id": "a1b2c3d4-0004-0004-0004-000000000004",
       "name": "Extract Answer",
@@ -107,7 +103,7 @@
         [{ "node": "Call Anthropic", "type": "main", "index": 0 }]
       ]
     },
-    "Call Anthropic": {
+    "Call OpenAI": {
       "main": [
         [{ "node": "Extract Answer", "type": "main", "index": 0 }]
       ]
