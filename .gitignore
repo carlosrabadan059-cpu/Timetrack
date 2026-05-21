@@ -59,3 +59,5 @@ screenshots/
 
 # PWA icons
 !public/*.png
+# Mobile assets
+!mobile/assets/*.png
