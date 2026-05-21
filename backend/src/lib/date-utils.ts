@@ -23,7 +23,7 @@ export function inferDetailType(timestamp: string): 'normal' | 'comida' {
  */
 export function humanizeSource(source: string): string {
   const map: Record<string, string> = {
-    signalr: 'Lector 2N',
+    signalr: 'Lector Físico 2N',
     web: 'App Web',
     mobile: 'App Móvil',
     correction: 'Corrección',

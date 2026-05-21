@@ -14,6 +14,7 @@ import usersRoutes from './api/routes/users.js';
 import adminRoutes from './api/routes/admin.js';
 import superadminRoutes from './api/routes/superadmin.js';
 import externalRoutes from './api/routes/external.js';
+import docsRoutes from './api/routes/docs.js';
 import type { AppVariables } from './types/api.types.js';
 import { startSignalRListener } from './services/signalr-listener.js';
 
@@ -60,6 +61,7 @@ app.route('/api/users', usersRoutes);
 app.route('/api/admin', adminRoutes);
 app.route('/api/superadmin', superadminRoutes);
 app.route('/api/external/v1', externalRoutes);
+app.route('', docsRoutes);
 
 // ── Global error handler ───────────────────────────────────────────────────────
 app.onError((err, c) => {
