@@ -42,7 +42,7 @@ export default defineConfig({
         navigateFallback: '/index.html',
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/timetrack-production-8140\.up\.railway\.app\/.*/i,
+            urlPattern: /^https:\/\/api\.rabadanhouse\.space\/.*/i,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-cache',
