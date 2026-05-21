@@ -20,13 +20,15 @@ import { startSignalRListener } from './services/signalr-listener.js';
 const app = new Hono<{ Variables: AppVariables }>();
 
 // ── Global middleware ──────────────────────────────────────────────────────────
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:4173',
+  'http://localhost:8081',
+  ...(process.env['FRONTEND_URL'] ? process.env['FRONTEND_URL'].split(',').map(o => o.trim()) : []),
+];
+
 app.use('*', cors({
-  origin: [
-    'http://localhost:5173',
-    'http://localhost:4173',
-    'http://localhost:8081',
-    ...(process.env['FRONTEND_URL'] ? [process.env['FRONTEND_URL']] : []),
-  ],
+  origin: (origin: string) => (allowedOrigins.includes(origin) ? origin : null),
   allowHeaders: ['Content-Type', 'Authorization'],
   allowMethods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
