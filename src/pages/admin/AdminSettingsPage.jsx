@@ -17,7 +17,10 @@ import {
     XCircle,
     Loader,
     Download,
-    Users
+    Users,
+    Key,
+    Copy,
+    AlertTriangle,
 } from 'lucide-react';
 import { Card, Button, Input } from '../../components/ui';
 import { api } from '../../lib/api';
@@ -53,6 +56,64 @@ const AdminSettingsPage = () => {
     const [acTestMessage, setAcTestMessage] = useState('');
     const [acImportStatus, setAcImportStatus] = useState(null); // null | 'importing' | { total_in_ac, created, linked, skipped } | 'error'
     const [acImportMessage, setAcImportMessage] = useState('');
+
+    // API Keys state
+    const [apiKeys, setApiKeys] = useState([]);
+    const [apiKeysLoading, setApiKeysLoading] = useState(false);
+    const [newKeyName, setNewKeyName] = useState('');
+    const [newKeyExpires, setNewKeyExpires] = useState('');
+    const [creatingKey, setCreatingKey] = useState(false);
+    const [revealedKey, setRevealedKey] = useState(null); // { id, api_key, name }
+    const [copyDone, setCopyDone] = useState(false);
+
+    const loadApiKeys = async () => {
+        setApiKeysLoading(true);
+        try {
+            const res = await api.get('/api/admin/api-keys');
+            setApiKeys(res.data.data ?? []);
+        } catch {
+            setApiKeys([]);
+        } finally {
+            setApiKeysLoading(false);
+        }
+    };
+
+    const createApiKey = async () => {
+        if (!newKeyName.trim()) return;
+        setCreatingKey(true);
+        try {
+            const body = { name: newKeyName.trim() };
+            if (newKeyExpires) body.expires_at = new Date(newKeyExpires).toISOString();
+            const res = await api.post('/api/admin/api-keys', body);
+            const created = res.data.data;
+            setRevealedKey({ id: created.id, api_key: created.api_key, name: created.name });
+            setNewKeyName('');
+            setNewKeyExpires('');
+            loadApiKeys();
+        } catch {
+            // error handled by api interceptor
+        } finally {
+            setCreatingKey(false);
+        }
+    };
+
+    const revokeApiKey = async (id) => {
+        if (!window.confirm('¿Revocar esta API Key? Los sistemas que la usen dejarán de funcionar.')) return;
+        try {
+            await api.delete(`/api/admin/api-keys/${id}`);
+            setApiKeys(prev => prev.filter(k => k.id !== id));
+        } catch {
+            // error handled by api interceptor
+        }
+    };
+
+    const copyKey = () => {
+        if (!revealedKey) return;
+        navigator.clipboard.writeText(revealedKey.api_key).then(() => {
+            setCopyDone(true);
+            setTimeout(() => setCopyDone(false), 2000);
+        });
+    };
 
     useEffect(() => {
         api.get('/api/admin/settings')
@@ -236,6 +297,12 @@ const AdminSettingsPage = () => {
                     onClick={() => setActiveTab('calendar')}
                 >
                     <Calendar size={16} className="inline mr-2" /> Calendario
+                </button>
+                <button
+                    className={`tab-button ${activeTab === 'apikeys' ? 'active' : ''}`}
+                    onClick={() => { setActiveTab('apikeys'); loadApiKeys(); }}
+                >
+                    <Key size={16} className="inline mr-2" /> API Keys
                 </button>
             </div>
 
@@ -686,6 +753,109 @@ const AdminSettingsPage = () => {
                                     </div>
                                 )}
                             </div>
+                        </Card>
+                    </div>
+                )}
+
+                {/* API KEYS TAB */}
+                {activeTab === 'apikeys' && (
+                    <div className="settings-section">
+                        <div className="section-header">
+                            <h2 className="section-title">API Keys</h2>
+                            <p className="section-description">Claves para integración M2M con ERPs, nóminas u otras plataformas. Cada clave solo se muestra una vez al crearla.</p>
+                        </div>
+
+                        {/* Revealed key banner */}
+                        {revealedKey && (
+                            <div className="apikey-revealed-banner">
+                                <div className="apikey-revealed-header">
+                                    <AlertTriangle size={16} className="text-warning" />
+                                    <span>Copia la clave ahora — no podrás verla de nuevo</span>
+                                    <button className="apikey-revealed-close" onClick={() => setRevealedKey(null)}>✕</button>
+                                </div>
+                                <div className="apikey-revealed-row">
+                                    <code className="apikey-revealed-value">{revealedKey.api_key}</code>
+                                    <button className="apikey-copy-btn" onClick={copyKey}>
+                                        {copyDone ? <CheckCircle size={16} className="text-success" /> : <Copy size={16} />}
+                                        {copyDone ? 'Copiado' : 'Copiar'}
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Create form */}
+                        <Card className="max-w-2xl" style={{ marginBottom: 'var(--space-6)' }}>
+                            <h3 className="font-semibold text-base mb-4">Nueva API Key</h3>
+                            <div className="settings-grid" style={{ gridTemplateColumns: '1fr 1fr auto' }}>
+                                <Input
+                                    placeholder="Nombre identificativo (ej. SAP, Nóminas)"
+                                    value={newKeyName}
+                                    onChange={e => setNewKeyName(e.target.value)}
+                                    onKeyDown={e => e.key === 'Enter' && createApiKey()}
+                                />
+                                <Input
+                                    type="date"
+                                    title="Fecha de expiración (opcional)"
+                                    value={newKeyExpires}
+                                    onChange={e => setNewKeyExpires(e.target.value)}
+                                />
+                                <Button
+                                    variant="primary"
+                                    onClick={createApiKey}
+                                    disabled={creatingKey || !newKeyName.trim()}
+                                    icon={creatingKey ? undefined : Plus}
+                                >
+                                    {creatingKey ? 'Creando...' : 'Crear'}
+                                </Button>
+                            </div>
+                        </Card>
+
+                        {/* Keys list */}
+                        <Card className="max-w-2xl">
+                            {apiKeysLoading ? (
+                                <div className="flex items-center justify-center py-8 gap-2 text-muted">
+                                    <Loader size={18} className="animate-spin" /> Cargando...
+                                </div>
+                            ) : apiKeys.length === 0 ? (
+                                <div className="text-center py-8 text-muted">
+                                    <Key size={32} className="mx-auto mb-2 opacity-30" />
+                                    <p>No hay API Keys creadas</p>
+                                </div>
+                            ) : (
+                                <div className="apikey-list">
+                                    {apiKeys.map(k => {
+                                        const expired = k.expires_at && new Date(k.expires_at) < new Date();
+                                        return (
+                                            <div key={k.id} className="apikey-item">
+                                                <div className="apikey-info">
+                                                    <span className="apikey-name">{k.name}</span>
+                                                    <div className="apikey-meta">
+                                                        <code className="apikey-prefix">{k.key_prefix}…</code>
+                                                        <span className="text-xs text-muted">
+                                                            Creada {new Date(k.created_at).toLocaleDateString()}
+                                                        </span>
+                                                        {k.expires_at && (
+                                                            <span className={`text-xs ${expired ? 'text-danger' : 'text-muted'}`}>
+                                                                {expired ? 'Expirada' : `Expira ${new Date(k.expires_at).toLocaleDateString()}`}
+                                                            </span>
+                                                        )}
+                                                        <span className={`apikey-badge ${k.is_active && !expired ? 'active' : 'inactive'}`}>
+                                                            {k.is_active && !expired ? 'Activa' : 'Inactiva'}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    className="text-text-muted hover:text-danger p-1 transition-colors"
+                                                    onClick={() => revokeApiKey(k.id)}
+                                                    title="Revocar clave"
+                                                >
+                                                    <Trash size={16} />
+                                                </button>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
                         </Card>
                     </div>
                 )}

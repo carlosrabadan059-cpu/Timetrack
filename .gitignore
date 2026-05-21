@@ -61,3 +61,5 @@ screenshots/
 !public/*.png
 # Mobile assets
 !mobile/assets/*.png
+.vercel
+.env*.local
