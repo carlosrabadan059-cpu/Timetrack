@@ -78,7 +78,7 @@ const AdminSettingsPage = () => {
     const [settings, setSettings] = useState(DEFAULT_SETTINGS);
 
     // Forms State
-    const [newHoliday, setNewHoliday] = useState({ date: '', name: '', scope: 'global' });
+    const [newHoliday, setNewHoliday] = useState({ date: '', name: '', scope: 'global', type: 'nacional' });
     const [newBranch, setNewBranch] = useState({ name: '', address: '' });
     const [showAcToken, setShowAcToken] = useState(false);
     const [acTestStatus, setAcTestStatus] = useState(null); // null | 'testing' | 'ok' | 'error'
@@ -222,7 +222,7 @@ const AdminSettingsPage = () => {
                 { id: Date.now(), ...newHoliday }
             ].sort((a, b) => new Date(a.date) - new Date(b.date))
         }));
-        setNewHoliday({ date: '', name: '', scope: 'global' });
+        setNewHoliday({ date: '', name: '', scope: 'global', type: 'nacional' });
     };
 
     const deleteHoliday = (id) => {
@@ -787,7 +787,21 @@ const AdminSettingsPage = () => {
                                     value={newHoliday.name}
                                     onChange={(e) => setNewHoliday({ ...newHoliday, name: e.target.value })}
                                 />
-                                <div className="input-wrapper input-full">
+                                <div className="input-wrapper">
+                                    <div className="input-container">
+                                        <select
+                                            className="input-field"
+                                            style={{ appearance: 'none' }}
+                                            value={newHoliday.type}
+                                            onChange={(e) => setNewHoliday({ ...newHoliday, type: e.target.value })}
+                                        >
+                                            <option value="nacional">🇪🇸 Nacional</option>
+                                            <option value="autonomico">🏛️ Autonómico</option>
+                                            <option value="local">📍 Local</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="input-wrapper">
                                     <div className="input-container">
                                         <select
                                             className="input-field"
@@ -797,7 +811,7 @@ const AdminSettingsPage = () => {
                                         >
                                             <option value="global">🌍 Global (Todas)</option>
                                             {settings.branches.map(b => (
-                                                <option key={b.id} value={b.id}>📍 {b.name}</option>
+                                                <option key={b.id} value={b.id}>🏢 {b.name}</option>
                                             ))}
                                         </select>
                                     </div>
@@ -816,14 +830,16 @@ const AdminSettingsPage = () => {
                                                     <span className="holiday-name font-semibold text-lg">{holiday.name}</span>
                                                     <div className="flex items-center gap-2">
                                                         <span className="holiday-date-badge">
-                                                            {new Date(holiday.date).toLocaleDateString()}
+                                                            {new Date(holiday.date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}
                                                         </span>
-                                                        <span className="text-xs text-muted flex items-center gap-1">
-                                                            {holiday.scope === 'global'
-                                                                ? <>🌍 Nacional / Global</>
-                                                                : <>📍 Solo en {getBranchName(holiday.scope)}</>
-                                                            }
+                                                        <span className={`holiday-type-badge holiday-type-${holiday.type ?? 'nacional'}`}>
+                                                            {holiday.type === 'autonomico' ? '🏛️ Autonómico'
+                                                             : holiday.type === 'local'    ? '📍 Local'
+                                                             :                              '🇪🇸 Nacional'}
                                                         </span>
+                                                        {holiday.scope !== 'global' && (
+                                                            <span className="text-xs text-muted">· {getBranchName(holiday.scope)}</span>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
