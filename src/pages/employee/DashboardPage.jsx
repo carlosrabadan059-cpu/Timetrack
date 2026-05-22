@@ -130,9 +130,7 @@ const DashboardPage = () => {
                 is_inside,
                 jornada_status: newStatus,
                 jornada_started_at:
-                    direction === 'in'
-                        ? (prev.jornada_started_at || timestamp)
-                        : prev.jornada_started_at,
+                    direction === 'in' ? timestamp : prev.jornada_started_at,
             } : prev);
             setCurrentPauseType(newStatus === 'paused' ? detail_type : null);
             loadDashboard();

@@ -445,12 +445,16 @@ me.get('/dashboard', async (c) => {
 
   const jornada_status = getJornadaStatus(todayLogs);
 
-  const lastLog = [...todayLogs]
+  const sortedLogs = [...todayLogs]
     .filter((l) => l.event_type !== 'denied')
-    .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
-    .at(-1);
+    .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+
+  const lastLog = sortedLogs.at(-1);
   const current_pause_type =
     jornada_status === 'paused' ? (lastLog?.detail_type ?? null) : null;
+
+  // Inicio de la sesión actual: último fichaje 'in' del día (no el primero del día)
+  const lastInLog = sortedLogs.filter((l) => l.direction === 'in').at(-1);
 
   return c.json({
     data: {
@@ -460,7 +464,7 @@ me.get('/dashboard', async (c) => {
       is_inside: todaySummary.is_inside,
       jornada_status,
       current_pause_type,
-      jornada_started_at: todaySummary.first_entry,
+      jornada_started_at: lastInLog?.timestamp ?? null,
       current_time: now.toISOString(),
       weekly_bars: weeklyBars,
       today_distribution: todayDistribution,
