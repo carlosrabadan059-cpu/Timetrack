@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Plus, MoreVertical, Edit2, Trash, Search } from 'lucide-react';
 import { Card, Button, Modal, Input } from '../../components/ui';
 import { useAuth } from '../../contexts/AuthContext';
@@ -16,6 +17,7 @@ const ROLE_LABELS = { admin: 'Administrador', manager: 'Manager', employee: 'Emp
 
 const AdminEmployeesPage = () => {
     const { profile } = useAuth();
+    const navigate = useNavigate();
     const [employees, setEmployees] = useState([]);
     const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -163,7 +165,7 @@ const AdminEmployeesPage = () => {
                             ) : (
                                 employees.map((emp) => (
                                     <tr key={emp.id} className="border-b border-border-light last:border-0 hover:bg-bg-secondary/50 transition-colors">
-                                        <td className="p-4">
+                                        <td className="p-4" style={{ cursor: 'pointer' }} onClick={() => navigate(`/admin/empleados/${emp.id}`)}>
                                             <div className="employee-cell">
                                                 <div className="employee-avatar">
                                                     {getInitials(emp.full_name)}

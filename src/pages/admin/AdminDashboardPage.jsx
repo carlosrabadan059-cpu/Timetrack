@@ -86,7 +86,7 @@ const AdminDashboardPage = () => {
                             </p>
                         ) : (
                             (data?.employee_statuses ?? []).map((emp) => (
-                                <Card key={emp.id} padding="md" className="employee-status-card">
+                                <Card key={emp.id} padding="md" className="employee-status-card clickable" onClick={() => navigate(`/admin/empleados/${emp.id}`)}>
                                     <div className="employee-card-header">
                                         <div className="employee-avatar">
                                             {emp.full_name?.charAt(0)?.toUpperCase() || 'U'}

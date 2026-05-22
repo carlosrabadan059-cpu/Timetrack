@@ -16,6 +16,7 @@ import AdminCorrectionsPage from './pages/admin/AdminCorrectionsPage';
 import AdminReportsPage from './pages/admin/AdminReportsPage';
 import AdminAttendancePage from './pages/admin/AdminAttendancePage';
 import AdminEmployeesPage from './pages/admin/AdminEmployeesPage';
+import AdminEmployeeDetailPage from './pages/admin/AdminEmployeeDetailPage';
 import AdminSettingsPage from './pages/admin/AdminSettingsPage';
 import SuperAdminLayout from './layouts/SuperAdminLayout';
 import SuperAdminCompaniesPage from './pages/superadmin/SuperAdminCompaniesPage';
@@ -102,6 +103,7 @@ function App() {
                 <Route index element={<AdminDashboardPage />} />
                 <Route path="correcciones" element={<AdminCorrectionsPage />} />
                 <Route path="empleados" element={<AdminEmployeesPage />} />
+                <Route path="empleados/:id" element={<AdminEmployeeDetailPage />} />
                 <Route path="fichajes" element={<AdminAttendancePage />} />
                 <Route path="informes" element={<AdminReportsPage />} />
                 <Route path="configuracion" element={<AdminSettingsPage />} />

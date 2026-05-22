@@ -57,6 +57,10 @@
     transition: all var(--transition-fast);
 }
 
+.employee-status-card.clickable {
+    cursor: pointer;
+}
+
 .employee-status-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);

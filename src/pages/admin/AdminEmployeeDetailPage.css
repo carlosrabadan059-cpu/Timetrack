@@ -1,0 +1,172 @@
+.employee-detail-page {
+    padding: var(--space-6);
+    animation: fadeIn var(--transition-normal) ease-out;
+}
+
+.employee-detail-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    margin-bottom: var(--space-6);
+}
+
+.employee-detail-identity {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.employee-detail-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--color-accent-primary);
+    color: var(--color-sidebar-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-lg);
+    flex-shrink: 0;
+}
+
+.employee-detail-identity h1 {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    margin: 0 0 var(--space-1);
+}
+
+.detail-loading {
+    text-align: center;
+    padding: var(--space-12);
+    color: var(--color-text-muted);
+}
+
+/* Tabs */
+.detail-tabs {
+    display: flex;
+    gap: var(--space-1);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-6);
+}
+
+.detail-tab {
+    padding: var(--space-2) var(--space-5);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    margin-bottom: -1px;
+}
+
+.detail-tab:hover {
+    color: var(--color-text-primary);
+}
+
+.detail-tab.active {
+    color: var(--color-accent-primary);
+    border-bottom-color: var(--color-accent-primary);
+}
+
+.detail-tab-content {
+    animation: fadeIn var(--transition-fast) ease-out;
+}
+
+/* Info tab */
+.detail-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.detail-info-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.detail-info-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.detail-info-icon {
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    width: 20px;
+}
+
+.detail-info-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    width: 140px;
+    flex-shrink: 0;
+}
+
+.detail-info-value {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+}
+
+/* Tables */
+.table-empty {
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: var(--space-8) !important;
+}
+
+.source-inline {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+.reason-cell {
+    max-width: 260px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+}
+
+.pagination-info {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+/* Role badges (reuse from employees page) */
+.role-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+}
+.role-badge.admin   { background: rgba(239,68,68,.15);  color: #ef4444; }
+.role-badge.manager { background: rgba(168,85,247,.15); color: #a855f7; }
+.role-badge.employee { background: var(--color-bg-tertiary); color: var(--color-text-secondary); }
+
+/* Type/status badges */
+.type-badge { display: inline-block; padding: 2px 8px; border-radius: var(--radius-full); font-size: var(--font-size-xs); font-weight: var(--font-weight-medium); }
+.type-badge.check_in  { background: rgba(16,185,129,.15); color: #10b981; }
+.type-badge.check_out { background: rgba(239,68,68,.15);  color: #ef4444; }
+
+.badge { display: inline-block; padding: 2px 8px; border-radius: var(--radius-full); font-size: var(--font-size-xs); font-weight: var(--font-weight-medium); }
+.badge-warning { background: rgba(245,158,11,.15); color: #f59e0b; }
+.badge-success { background: rgba(16,185,129,.15);  color: #10b981; }
+.badge-danger  { background: rgba(239,68,68,.15);   color: #ef4444; }
+.badge-neutral { background: var(--color-bg-tertiary); color: var(--color-text-secondary); }
