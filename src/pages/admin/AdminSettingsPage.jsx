@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
     Building2,
     MapPin,
@@ -25,9 +25,26 @@ import {
     Moon,
     Monitor,
 } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { Card, Button, Input } from '../../components/ui';
 import { api } from '../../lib/api';
 import { useTheme } from '../../contexts/ThemeContext';
+
+// Fix leaflet default marker icons broken by bundlers
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+    iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+});
+
+function MapCenterUpdater({ lat, lng }) {
+    const map = useMap();
+    useEffect(() => { map.setView([lat, lng], map.getZoom()); }, [lat, lng, map]);
+    return null;
+}
 import './AdminSettingsPage.css';
 
 const DEFAULT_CLOCKING_MODES = {
@@ -451,13 +468,25 @@ const AdminSettingsPage = () => {
                                 </div>
                                 <div className="mt-4">
                                     <label className="settings-label mb-2">Ubicación Central (Default)</label>
-                                    <div className="location-preview">
-                                        <div className="flex flex-col items-center gap-2 z-10">
-                                            <MapPin size={32} className="map-marker" />
-                                            <span className="text-xs font-mono">
-                                                {settings.rules.latitude.toFixed(4)}, {settings.rules.longitude.toFixed(4)}
-                                            </span>
-                                        </div>
+                                    <div className="location-map-wrapper">
+                                        <MapContainer
+                                            center={[settings.rules.latitude, settings.rules.longitude]}
+                                            zoom={15}
+                                            scrollWheelZoom={false}
+                                            style={{ height: '200px', width: '100%', borderRadius: 'var(--radius-lg)' }}
+                                            className="location-map"
+                                        >
+                                            <TileLayer
+                                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                                            />
+                                            <Marker position={[settings.rules.latitude, settings.rules.longitude]} />
+                                            <MapCenterUpdater lat={settings.rules.latitude} lng={settings.rules.longitude} />
+                                        </MapContainer>
+                                        <span className="location-map-coords">
+                                            <MapPin size={12} />
+                                            {settings.rules.latitude.toFixed(4)}, {settings.rules.longitude.toFixed(4)}
+                                        </span>
                                     </div>
                                 </div>
                             </Card>
