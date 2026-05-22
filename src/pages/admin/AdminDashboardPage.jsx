@@ -26,7 +26,11 @@ const AdminDashboardPage = () => {
         }
     }, []);
 
-    useEffect(() => { loadDashboard(); }, [loadDashboard]);
+    useEffect(() => {
+        loadDashboard();
+        const interval = setInterval(loadDashboard, 30_000);
+        return () => clearInterval(interval);
+    }, [loadDashboard]);
 
     return (
         <div className="admin-dashboard">
