@@ -326,7 +326,10 @@ const HistoryPage = () => {
                                     <div className="history-day-entries">
                                         <div className="history-timeline">
                                             {[...filtered]
-                                                .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+                                                .sort((a, b) => {
+                                                    const cmp = new Date(a.timestamp) - new Date(b.timestamp);
+                                                    return sortOrder === 'desc' ? -cmp : cmp;
+                                                })
                                                 .map((entry, index, arr) => {
                                                     const badge = getDetailBadge(entry.detail_type);
                                                     const dirClass = entry.direction === 'in' ? 'check_in' : 'check_out';
