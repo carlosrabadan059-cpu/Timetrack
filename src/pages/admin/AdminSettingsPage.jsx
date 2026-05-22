@@ -7,6 +7,8 @@ import {
     Save,
     Trash,
     Plus,
+    Pencil,
+    X,
     Store,
     Globe,
     Smartphone,
@@ -79,6 +81,7 @@ const AdminSettingsPage = () => {
 
     // Forms State
     const [newHoliday, setNewHoliday] = useState({ date: '', name: '', scope: 'global', type: 'nacional' });
+    const [editingHoliday, setEditingHoliday] = useState(null); // { id, date, name, scope, type }
     const [newBranch, setNewBranch] = useState({ name: '', address: '' });
     const [showAcToken, setShowAcToken] = useState(false);
     const [acTestStatus, setAcTestStatus] = useState(null); // null | 'testing' | 'ok' | 'error'
@@ -230,6 +233,17 @@ const AdminSettingsPage = () => {
             ...prev,
             holidays: prev.holidays.filter(h => h.id !== id)
         }));
+    };
+
+    const updateHoliday = () => {
+        if (!editingHoliday?.date || !editingHoliday?.name) return;
+        setSettings(prev => ({
+            ...prev,
+            holidays: prev.holidays
+                .map(h => h.id === editingHoliday.id ? { ...editingHoliday } : h)
+                .sort((a, b) => new Date(a.date) - new Date(b.date)),
+        }));
+        setEditingHoliday(null);
     };
 
     const handleTestAc = async () => {
@@ -824,6 +838,52 @@ const AdminSettingsPage = () => {
                             <div className="holiday-list">
                                 {settings.holidays.length > 0 ? (
                                     settings.holidays.map(holiday => (
+                                        editingHoliday?.id === holiday.id ? (
+                                            <div key={holiday.id} className="holiday-item holiday-item-editing">
+                                                <div className="holiday-edit-form">
+                                                    <input
+                                                        type="date"
+                                                        className="input-field"
+                                                        value={editingHoliday.date}
+                                                        onChange={e => setEditingHoliday({ ...editingHoliday, date: e.target.value })}
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        className="input-field"
+                                                        placeholder="Nombre del festivo"
+                                                        value={editingHoliday.name}
+                                                        onChange={e => setEditingHoliday({ ...editingHoliday, name: e.target.value })}
+                                                    />
+                                                    <select
+                                                        className="input-field"
+                                                        value={editingHoliday.type}
+                                                        onChange={e => setEditingHoliday({ ...editingHoliday, type: e.target.value })}
+                                                    >
+                                                        <option value="nacional">🇪🇸 Nacional</option>
+                                                        <option value="autonomico">🏛️ Autonómico</option>
+                                                        <option value="local">📍 Local</option>
+                                                    </select>
+                                                    <select
+                                                        className="input-field"
+                                                        value={editingHoliday.scope}
+                                                        onChange={e => setEditingHoliday({ ...editingHoliday, scope: e.target.value })}
+                                                    >
+                                                        <option value="global">🌍 Global (Todas)</option>
+                                                        {settings.branches.map(b => (
+                                                            <option key={b.id} value={b.id}>🏢 {b.name}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                <div className="holiday-edit-actions">
+                                                    <button className="holiday-action-btn save" onClick={updateHoliday} title="Guardar">
+                                                        <Save size={15} />
+                                                    </button>
+                                                    <button className="holiday-action-btn cancel" onClick={() => setEditingHoliday(null)} title="Cancelar">
+                                                        <X size={15} />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ) : (
                                         <div key={holiday.id} className="holiday-item">
                                             <div className="flex items-center gap-3">
                                                 <div className="flex flex-col gap-1">
@@ -843,14 +903,24 @@ const AdminSettingsPage = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button
-                                                className="text-text-muted hover:text-danger p-1 transition-colors"
-                                                onClick={() => deleteHoliday(holiday.id)}
-                                                title="Eliminar festivo"
-                                            >
-                                                <Trash size={16} />
-                                            </button>
+                                            <div className="holiday-row-actions">
+                                                <button
+                                                    className="holiday-action-btn edit"
+                                                    onClick={() => setEditingHoliday({ ...holiday })}
+                                                    title="Editar festivo"
+                                                >
+                                                    <Pencil size={15} />
+                                                </button>
+                                                <button
+                                                    className="holiday-action-btn delete"
+                                                    onClick={() => deleteHoliday(holiday.id)}
+                                                    title="Eliminar festivo"
+                                                >
+                                                    <Trash size={15} />
+                                                </button>
+                                            </div>
                                         </div>
+                                        )
                                     ))
                                 ) : (
                                     <div className="text-center py-6 text-muted">
