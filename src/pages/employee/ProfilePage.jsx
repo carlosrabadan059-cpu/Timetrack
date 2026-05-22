@@ -3,11 +3,11 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { api } from '../../lib/api';
 import { Card, Button, Input } from '../../components/ui';
-import { User, Mail, Shield, Bell, Key, LogOut, Sun, Moon, Monitor } from 'lucide-react';
+import { User, Mail, Shield, Bell, Key, Sun, Moon, Monitor } from 'lucide-react';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
-    const { profile, signOut } = useAuth();
+    const { profile } = useAuth();
     const { theme, setTheme } = useTheme();
 
     const [name, setName] = useState(profile?.full_name || profile?.name || '');
@@ -250,11 +250,6 @@ const ProfilePage = () => {
                 </div>
             </div>
 
-            <div className="profile-signout-row">
-                <Button variant="danger" onClick={signOut} icon={LogOut}>
-                    Cerrar sesión
-                </Button>
-            </div>
         </div>
     );
 };
