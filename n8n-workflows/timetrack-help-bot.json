@@ -100,7 +100,7 @@
     },
     "Build Prompt": {
       "main": [
-        [{ "node": "Call Anthropic", "type": "main", "index": 0 }]
+        [{ "node": "Call OpenAI", "type": "main", "index": 0 }]
       ]
     },
     "Call OpenAI": {
