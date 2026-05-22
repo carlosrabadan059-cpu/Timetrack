@@ -3,6 +3,43 @@ import { MessageCircle, X, Send, Bot, Loader, ChevronDown } from 'lucide-react';
 import { api } from '../lib/api';
 import './HelpBot.css';
 
+function renderMarkdown(text) {
+  const lines = text.split('\n');
+  const elements = [];
+  let listItems = [];
+  let key = 0;
+
+  const flushList = () => {
+    if (listItems.length) {
+      elements.push(<ul key={key++}>{listItems}</ul>);
+      listItems = [];
+    }
+  };
+
+  const parseLine = (line) => {
+    const parts = line.split(/(\*\*[^*]+\*\*)/g);
+    return parts.map((part, i) =>
+      part.startsWith('**') && part.endsWith('**')
+        ? <strong key={i}>{part.slice(2, -2)}</strong>
+        : part
+    );
+  };
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (/^[-*]\s+/.test(trimmed)) {
+      listItems.push(<li key={key++}>{parseLine(trimmed.replace(/^[-*]\s+/, ''))}</li>);
+    } else if (/^\d+\.\s+/.test(trimmed)) {
+      listItems.push(<li key={key++}>{parseLine(trimmed.replace(/^\d+\.\s+/, ''))}</li>);
+    } else {
+      flushList();
+      if (trimmed) elements.push(<p key={key++}>{parseLine(trimmed)}</p>);
+    }
+  }
+  flushList();
+  return <div className="helpbot-md">{elements}</div>;
+}
+
 const SUGGESTIONS = [
   '¿Cómo ficho la entrada?',
   '¿Cómo solicito una corrección?',
@@ -109,7 +146,9 @@ export default function HelpBot() {
                 {msg.role === 'assistant' && (
                   <div className="helpbot-msg-avatar"><Bot size={12} /></div>
                 )}
-                <div className="helpbot-msg-bubble">{msg.content}</div>
+                <div className="helpbot-msg-bubble">
+                  {msg.role === 'assistant' ? renderMarkdown(msg.content) : msg.content}
+                </div>
               </div>
             ))}
 
