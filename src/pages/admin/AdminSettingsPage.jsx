@@ -25,7 +25,7 @@ import {
     Moon,
     Monitor,
 } from 'lucide-react';
-import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Card, Button, Input } from '../../components/ui';
@@ -43,6 +43,13 @@ L.Icon.Default.mergeOptions({
 function MapCenterUpdater({ lat, lng }) {
     const map = useMap();
     useEffect(() => { map.setView([lat, lng], map.getZoom()); }, [lat, lng, map]);
+    return null;
+}
+
+function MapClickHandler({ onLocationChange }) {
+    useMapEvents({
+        click(e) { onLocationChange(e.latlng.lat, e.latlng.lng); },
+    });
     return null;
 }
 import './AdminSettingsPage.css';
@@ -473,19 +480,40 @@ const AdminSettingsPage = () => {
                                             center={[settings.rules.latitude, settings.rules.longitude]}
                                             zoom={15}
                                             scrollWheelZoom={false}
-                                            style={{ height: '200px', width: '100%', borderRadius: 'var(--radius-lg)' }}
+                                            style={{ height: '220px', width: '100%', borderRadius: 'var(--radius-lg)' }}
                                             className="location-map"
                                         >
                                             <TileLayer
                                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                                             />
-                                            <Marker position={[settings.rules.latitude, settings.rules.longitude]} />
+                                            <Marker
+                                                position={[settings.rules.latitude, settings.rules.longitude]}
+                                                draggable
+                                                eventHandlers={{
+                                                    dragend(e) {
+                                                        const { lat, lng } = e.target.getLatLng();
+                                                        setSettings(prev => ({
+                                                            ...prev,
+                                                            rules: { ...prev.rules, latitude: lat, longitude: lng },
+                                                        }));
+                                                    },
+                                                }}
+                                            />
+                                            <MapClickHandler
+                                                onLocationChange={(lat, lng) =>
+                                                    setSettings(prev => ({
+                                                        ...prev,
+                                                        rules: { ...prev.rules, latitude: lat, longitude: lng },
+                                                    }))
+                                                }
+                                            />
                                             <MapCenterUpdater lat={settings.rules.latitude} lng={settings.rules.longitude} />
                                         </MapContainer>
                                         <span className="location-map-coords">
                                             <MapPin size={12} />
                                             {settings.rules.latitude.toFixed(4)}, {settings.rules.longitude.toFixed(4)}
+                                            <span className="location-map-hint">· Haz clic en el mapa o arrastra el marcador para cambiar la ubicación</span>
                                         </span>
                                     </div>
                                 </div>
