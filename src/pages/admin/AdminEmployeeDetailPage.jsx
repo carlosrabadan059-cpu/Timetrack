@@ -146,7 +146,7 @@ function TabIncidencias({ userId }) {
     const load = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await api.get('/api/admin/incidencias', { user_id: userId, page, limit: LIMIT });
+            const res = await api.get('/api/incidencias', { user_id: userId, page, limit: LIMIT });
             setItems(res.data?.items ?? []);
             setTotal(res.data?.total ?? 0);
         } catch { /* keep */ } finally { setLoading(false); }
