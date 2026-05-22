@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import {
     Calendar, Clock, Filter, ChevronDown, ChevronUp,
     FileSpreadsheet, TrendingUp, Timer, CheckCircle, MapPin,
-    Utensils, Coffee, Stethoscope, MoreHorizontal, Briefcase
+    Utensils, Coffee, Stethoscope, MoreHorizontal, Briefcase, ArrowUpDown
 } from 'lucide-react';
 import { Card, Button, Modal } from '../../components/ui';
 import { api } from '../../lib/api';
@@ -117,6 +117,7 @@ const HistoryPage = () => {
     const [exportLoading, setExportLoading] = useState(false);
     const [expandedDay, setExpandedDay] = useState(null);
     const [filterType, setFilterType] = useState('all'); // 'all' | 'in' | 'out'
+    const [sortOrder, setSortOrder] = useState('desc'); // 'desc' = más reciente primero
     const [dateRange, setDateRange] = useState('month');
     const [customStart, setCustomStart] = useState('');
     const [customEnd, setCustomEnd] = useState('');
@@ -197,7 +198,10 @@ const HistoryPage = () => {
     };
 
     const summary = data?.summary;
-    const days = data?.days ?? [];
+    const days = [...(data?.days ?? [])].sort((a, b) => {
+        const cmp = a.date.localeCompare(b.date);
+        return sortOrder === 'desc' ? -cmp : cmp;
+    });
 
     const subtitle = periodSubtitle(dateRange, customStart, customEnd);
 
@@ -261,6 +265,14 @@ const HistoryPage = () => {
                         {label}
                     </button>
                 ))}
+                <button
+                    className="type-filter-btn sort-toggle"
+                    onClick={() => setSortOrder(o => o === 'desc' ? 'asc' : 'desc')}
+                    title={sortOrder === 'desc' ? 'Mostrando más reciente primero' : 'Mostrando más antiguo primero'}
+                >
+                    <ArrowUpDown size={14} />
+                    {sortOrder === 'desc' ? 'Más reciente' : 'Más antiguo'}
+                </button>
             </div>
 
             {/* Day list */}
