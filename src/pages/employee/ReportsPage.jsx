@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Card, Button, StatCard } from '../../components/ui';
 import { api } from '../../lib/api';
+import { supabase } from '../../lib/supabase';
+
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 import { FileText, FileSpreadsheet, Calendar, BarChart3, ChevronLeft, ChevronRight, Timer } from 'lucide-react';
 import './ReportsPage.css';
 
@@ -43,6 +46,53 @@ const ReportsPage = () => {
     }, [month, year]);
 
     useEffect(() => { loadData(); }, [loadData]);
+
+    // SSE: recarga solo si el usuario está viendo el mes actual
+    useEffect(() => {
+        const now = new Date();
+        const isCurrentMonth = month === now.getMonth() + 1 && year === now.getFullYear();
+        if (!isCurrentMonth) return;
+
+        const ctrl = new AbortController();
+
+        async function connect() {
+            try {
+                const { data } = await supabase.auth.getSession();
+                const token = data.session?.access_token;
+                if (!token) return;
+
+                const res = await fetch(`${BASE_URL}/api/me/live`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                    signal: ctrl.signal,
+                });
+
+                const reader = res.body.getReader();
+                const dec = new TextDecoder();
+                let buf = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    buf += dec.decode(value, { stream: true });
+                    const chunks = buf.split('\n\n');
+                    buf = chunks.pop() || '';
+                    for (const chunk of chunks) {
+                        const line = chunk.split('\n').find(l => l.startsWith('data: '));
+                        if (!line) continue;
+                        try {
+                            const event = JSON.parse(line.slice(6));
+                            if (event.type === 'access_event') loadData();
+                        } catch { /* malformed SSE line */ }
+                    }
+                }
+            } catch (err) {
+                if (err.name !== 'AbortError') setTimeout(connect, 5000);
+            }
+        }
+
+        connect();
+        return () => ctrl.abort();
+    }, [month, year, loadData]);
 
     const handlePrevMonth = () => {
         if (month === 1) { setMonth(12); setYear(y => y - 1); }
