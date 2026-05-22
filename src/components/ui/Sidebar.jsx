@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCorrections } from '../../contexts/CorrectionsContext';
 import {
@@ -26,7 +27,11 @@ const Sidebar = ({ variant = 'employee' }) => {
     const { stats } = useCorrections();
     const navigate = useNavigate();
 
+    const [confirmSignOut, setConfirmSignOut] = useState(false);
+
     const handleSignOut = async () => {
+        if (!confirmSignOut) { setConfirmSignOut(true); return; }
+        setConfirmSignOut(false);
         await signOut();
         navigate('/login');
     };
@@ -104,13 +109,21 @@ const Sidebar = ({ variant = 'employee' }) => {
                             {profile?.role === 'superadmin' ? 'Super Admin' : profile?.role === 'admin' ? 'Administrador' : 'Empleado'}
                         </span>
                     </div>
-                    <button
-                        className="sidebar-user-action"
-                        onClick={handleSignOut}
-                        title="Cerrar sesión"
-                    >
-                        <ChevronUp size={18} />
-                    </button>
+                    {confirmSignOut ? (
+                        <div className="sidebar-signout-confirm">
+                            <span>¿Cerrar sesión?</span>
+                            <button className="sidebar-signout-yes" onClick={handleSignOut}>Sí</button>
+                            <button className="sidebar-signout-no" onClick={() => setConfirmSignOut(false)}>No</button>
+                        </div>
+                    ) : (
+                        <button
+                            className="sidebar-user-action"
+                            onClick={handleSignOut}
+                            title="Cerrar sesión"
+                        >
+                            <ChevronUp size={18} />
+                        </button>
+                    )}
                 </div>
             </div>
         </aside>
