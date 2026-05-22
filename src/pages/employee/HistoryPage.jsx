@@ -117,7 +117,8 @@ const HistoryPage = () => {
     const [exportLoading, setExportLoading] = useState(false);
     const [expandedDay, setExpandedDay] = useState(null);
     const [filterType, setFilterType] = useState('all'); // 'all' | 'in' | 'out'
-    const [sortOrder, setSortOrder] = useState('desc'); // 'desc' = más reciente primero
+    const [sortOrder, setSortOrder] = useState('desc');       // orden de días
+    const [entrySortOrder, setEntrySortOrder] = useState('asc'); // orden de fichajes dentro del día
     const [dateRange, setDateRange] = useState('month');
     const [customStart, setCustomStart] = useState('');
     const [customEnd, setCustomEnd] = useState('');
@@ -324,11 +325,21 @@ const HistoryPage = () => {
 
                                 {isExpanded && (
                                     <div className="history-day-entries">
+                                        <div className="history-entries-toolbar">
+                                            <button
+                                                className="type-filter-btn sort-toggle"
+                                                onClick={() => setEntrySortOrder(o => o === 'asc' ? 'desc' : 'asc')}
+                                                title={entrySortOrder === 'asc' ? 'Mostrando más antiguo primero' : 'Mostrando más reciente primero'}
+                                            >
+                                                <ArrowUpDown size={13} />
+                                                {entrySortOrder === 'asc' ? 'Más antiguo' : 'Más reciente'}
+                                            </button>
+                                        </div>
                                         <div className="history-timeline">
                                             {[...filtered]
                                                 .sort((a, b) => {
                                                     const cmp = new Date(a.timestamp) - new Date(b.timestamp);
-                                                    return sortOrder === 'desc' ? -cmp : cmp;
+                                                    return entrySortOrder === 'desc' ? -cmp : cmp;
                                                 })
                                                 .map((entry, index, arr) => {
                                                     const badge = getDetailBadge(entry.detail_type);
