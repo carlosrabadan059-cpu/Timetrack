@@ -152,6 +152,11 @@ const HistoryPage = () => {
                     signal: ctrl.signal,
                 });
 
+                if (!res.ok) {
+                    if (res.status >= 500) setTimeout(connect, 5000);
+                    return;
+                }
+
                 const reader = res.body.getReader();
                 const dec = new TextDecoder();
                 let buf = '';
