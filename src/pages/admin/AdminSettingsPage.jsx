@@ -21,9 +21,13 @@ import {
     Key,
     Copy,
     AlertTriangle,
+    Sun,
+    Moon,
+    Monitor,
 } from 'lucide-react';
 import { Card, Button, Input } from '../../components/ui';
 import { api } from '../../lib/api';
+import { useTheme } from '../../contexts/ThemeContext';
 import './AdminSettingsPage.css';
 
 const DEFAULT_CLOCKING_MODES = {
@@ -43,6 +47,7 @@ const DEFAULT_SETTINGS = {
 
 const AdminSettingsPage = () => {
     const [activeTab, setActiveTab] = useState('general');
+    const { theme, setTheme } = useTheme();
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [saveStatus, setSaveStatus] = useState(null); // 'ok' | 'error'
@@ -316,6 +321,33 @@ const AdminSettingsPage = () => {
                             <h2 className="section-title">Perfil de Empresa</h2>
                             <p className="section-description">Información fiscal y de contacto de la organización.</p>
                         </div>
+                        <Card title="Apariencia">
+                            <div className="settings-item">
+                                <div className="settings-icon"><Monitor size={20} /></div>
+                                <div className="settings-info">
+                                    <h4>Tema de la interfaz</h4>
+                                    <p>Claro, oscuro o según el sistema</p>
+                                </div>
+                                <div className="theme-selector">
+                                    <button
+                                        className={`theme-btn ${theme === 'light' ? 'active' : ''}`}
+                                        onClick={() => setTheme('light')}
+                                        title="Claro"
+                                    ><Sun size={15} /></button>
+                                    <button
+                                        className={`theme-btn ${theme === 'auto' ? 'active' : ''}`}
+                                        onClick={() => setTheme('auto')}
+                                        title="Auto"
+                                    ><Monitor size={15} /></button>
+                                    <button
+                                        className={`theme-btn ${theme === 'dark' ? 'active' : ''}`}
+                                        onClick={() => setTheme('dark')}
+                                        title="Oscuro"
+                                    ><Moon size={15} /></button>
+                                </div>
+                            </div>
+                        </Card>
+
                         <Card>
                             <div className="settings-grid">
                                 <div className="settings-group">

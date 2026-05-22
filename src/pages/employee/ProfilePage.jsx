@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import { api } from '../../lib/api';
 import { Card, Button, Input } from '../../components/ui';
-import { User, Mail, Shield, Bell, Key, LogOut } from 'lucide-react';
+import { User, Mail, Shield, Bell, Key, LogOut, Sun, Moon, Monitor } from 'lucide-react';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
     const { profile, signOut } = useAuth();
+    const { theme, setTheme } = useTheme();
 
     const [name, setName] = useState(profile?.full_name || profile?.name || '');
     const [saving, setSaving] = useState(false);
@@ -218,6 +220,31 @@ const ProfilePage = () => {
                                 tabIndex={0}
                                 onKeyDown={(e) => e.key === 'Enter' && handleNotificationsToggle()}
                             />
+                        </div>
+
+                        <div className="settings-item">
+                            <div className="settings-icon"><Monitor size={20} /></div>
+                            <div className="settings-info">
+                                <h4>Apariencia</h4>
+                                <p>Elige el tema de la interfaz</p>
+                            </div>
+                            <div className="theme-selector">
+                                <button
+                                    className={`theme-btn ${theme === 'light' ? 'active' : ''}`}
+                                    onClick={() => setTheme('light')}
+                                    title="Claro"
+                                ><Sun size={15} /></button>
+                                <button
+                                    className={`theme-btn ${theme === 'auto' ? 'active' : ''}`}
+                                    onClick={() => setTheme('auto')}
+                                    title="Auto"
+                                ><Monitor size={15} /></button>
+                                <button
+                                    className={`theme-btn ${theme === 'dark' ? 'active' : ''}`}
+                                    onClick={() => setTheme('dark')}
+                                    title="Oscuro"
+                                ><Moon size={15} /></button>
+                            </div>
                         </div>
                     </Card>
                 </div>

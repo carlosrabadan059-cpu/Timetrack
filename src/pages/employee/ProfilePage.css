@@ -181,3 +181,33 @@
         justify-content: center;
     }
 }
+/* Theme selector */
+.theme-selector {
+    display: flex;
+    gap: 4px;
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 3px;
+}
+.theme-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-md);
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+}
+.theme-btn:hover {
+    color: var(--color-text-primary);
+    background: var(--color-bg-secondary);
+}
+.theme-btn.active {
+    background: var(--color-accent-primary);
+    color: #111827;
+}
