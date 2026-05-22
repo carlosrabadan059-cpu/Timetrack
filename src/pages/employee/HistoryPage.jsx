@@ -6,7 +6,10 @@ import {
 } from 'lucide-react';
 import { Card, Button, Modal } from '../../components/ui';
 import { api } from '../../lib/api';
+import { supabase } from '../../lib/supabase';
 import './HistoryPage.css';
+
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 function fmtMinutes(mins) {
     if (!mins) return '0h 0m';
@@ -133,6 +136,49 @@ const HistoryPage = () => {
     }, [dateRange, customStart, customEnd]);
 
     useEffect(() => { loadHistorial(); }, [loadHistorial]);
+
+    // SSE: recarga el historial cuando llega un nuevo fichaje (2N, web o móvil)
+    useEffect(() => {
+        const ctrl = new AbortController();
+
+        async function connect() {
+            try {
+                const { data } = await supabase.auth.getSession();
+                const token = data.session?.access_token;
+                if (!token) return;
+
+                const res = await fetch(`${BASE_URL}/api/me/live`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                    signal: ctrl.signal,
+                });
+
+                const reader = res.body.getReader();
+                const dec = new TextDecoder();
+                let buf = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    buf += dec.decode(value, { stream: true });
+                    const chunks = buf.split('\n\n');
+                    buf = chunks.pop() || '';
+                    for (const chunk of chunks) {
+                        const line = chunk.split('\n').find(l => l.startsWith('data: '));
+                        if (!line) continue;
+                        try {
+                            const event = JSON.parse(line.slice(6));
+                            if (event.type === 'access_event') loadHistorial();
+                        } catch { /* malformed SSE line */ }
+                    }
+                }
+            } catch (err) {
+                if (err.name !== 'AbortError') setTimeout(connect, 5000);
+            }
+        }
+
+        connect();
+        return () => ctrl.abort();
+    }, [loadHistorial]);
 
     const handleExport = async () => {
         setExportLoading(true);
