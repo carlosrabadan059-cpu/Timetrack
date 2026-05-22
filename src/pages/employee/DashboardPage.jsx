@@ -275,7 +275,7 @@ const DashboardPage = () => {
 
                         <div className="dashboard-clock-time major">
                             {getTimeDisplay()}
-                            {getEntryTimeDisplay() && (
+                            {(isWorking || isPaused) && getEntryTimeDisplay() && (
                                 <span className="timer-label" style={{ display: 'block', fontSize: '1rem', marginTop: '0.5rem', color: 'var(--color-text-secondary)' }}>
                                     Entrada: {getEntryTimeDisplay()}
                                 </span>
