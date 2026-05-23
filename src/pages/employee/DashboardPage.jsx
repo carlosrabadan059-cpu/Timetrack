@@ -120,6 +120,22 @@ const DashboardPage = () => {
         setFicharError('');
         try {
             const body = { device_info: getDeviceInfo(), ...(detailType ? { detail_type: detailType } : {}) };
+
+            // Capture GPS silently — non-blocking, fichaje proceeds even without it
+            if (navigator.geolocation) {
+                await new Promise((resolve) => {
+                    navigator.geolocation.getCurrentPosition(
+                        (pos) => {
+                            body.latitude = pos.coords.latitude;
+                            body.longitude = pos.coords.longitude;
+                            resolve();
+                        },
+                        () => resolve(), // permission denied or timeout — continue without GPS
+                        { timeout: 5000, maximumAge: 30000 }
+                    );
+                });
+            }
+
             const res = await api.post('/api/me/fichar', body);
             const { direction, detail_type, is_inside, timestamp } = res.data;
             const newStatus =

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
     ArrowLeft, User, Mail, Hash, Shield, Clock, Calendar,
-    CheckCircle, XCircle, AlertTriangle, ChevronLeft, ChevronRight
+    CheckCircle, XCircle, AlertTriangle, ChevronLeft, ChevronRight, MapPin
 } from 'lucide-react';
 import { Card, Button } from '../../components/ui';
 import { api } from '../../lib/api';
@@ -94,7 +94,7 @@ function TabFichajes({ userId }) {
                                 <th>Tipo</th>
                                 <th>Detalle</th>
                                 <th>Origen</th>
-                                <th>GPS</th>
+                                <th>Geofence</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -116,7 +116,11 @@ function TabFichajes({ userId }) {
                                         <td>
                                             <span className="source-inline">{src.icon} {src.label}</span>
                                         </td>
-                                        <td>{f.has_gps ? <CheckCircle size={14} color="var(--color-success)" /> : <span className="text-muted">–</span>}</td>
+                                        <td>
+                                            {f.within_geofence === true  && <CheckCircle size={14} color="var(--color-success)" title="Dentro del geofence" />}
+                                            {f.within_geofence === false && <XCircle size={14} color="var(--color-danger, #ef4444)" title="Fuera del geofence" />}
+                                            {f.within_geofence === null  && <span className="text-muted" title={f.has_gps ? 'GPS sin geofence configurado' : 'Sin GPS'}>–</span>}
+                                        </td>
                                     </tr>
                                 );
                             })}
