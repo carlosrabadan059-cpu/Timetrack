@@ -27,10 +27,10 @@
   color: #fff;
 }
 
-/* On mobile, move above the bottom nav */
+/* On mobile, move above the bottom nav (nav: 68px height + 12px offset + safe area) */
 @media (max-width: 768px) {
   .helpbot-fab {
-    bottom: 88px;
+    bottom: calc(68px + 12px + env(safe-area-inset-bottom) + 20px);
     right: 16px;
   }
 }
@@ -58,7 +58,7 @@
 
 @media (max-width: 768px) {
   .helpbot-panel {
-    bottom: 148px;
+    bottom: calc(68px + 12px + env(safe-area-inset-bottom) + 20px + 60px);
     right: 12px;
     left: 12px;
     width: auto;
