@@ -355,6 +355,30 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
 
   const detail_type = body.detail_type ?? inferDetailType(now.toISOString());
 
+  // Geofence check — only when the request includes GPS coordinates
+  let within_geofence: boolean | null = null;
+  if (body.latitude !== undefined && body.longitude !== undefined && user.company_id) {
+    const { data: settings } = await supabaseAdmin
+      .from('company_settings')
+      .select('headquarter_lat, headquarter_lon, geo_fence_radius')
+      .eq('company_id', user.company_id)
+      .maybeSingle();
+
+    if (settings?.headquarter_lat && settings?.headquarter_lon && settings?.geo_fence_radius) {
+      const R = 6371000; // Earth radius in metres
+      const toRad = (d: number) => (d * Math.PI) / 180;
+      const lat1 = toRad(Number(settings.headquarter_lat));
+      const lat2 = toRad(body.latitude);
+      const dLat = toRad(body.latitude - Number(settings.headquarter_lat));
+      const dLon = toRad(body.longitude - Number(settings.headquarter_lon));
+      const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+      const distance = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      within_geofence = distance <= Number(settings.geo_fence_radius);
+    }
+  }
+
   // Build insert payload
   const insertPayload: Record<string, unknown> = {
     user_id: user.id,
@@ -367,6 +391,7 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
   };
   if (body.latitude !== undefined) insertPayload['latitude'] = body.latitude;
   if (body.longitude !== undefined) insertPayload['longitude'] = body.longitude;
+  if (within_geofence !== null) insertPayload['within_geofence'] = within_geofence;
 
   const { data: log, error } = await supabaseAdmin
     .from('access_logs')
@@ -401,6 +426,7 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
       source,
       detail_type,
       is_inside: direction === 'in',
+      within_geofence,
     },
   });
 });
