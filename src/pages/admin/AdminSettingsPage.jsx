@@ -535,22 +535,10 @@ const AdminSettingsPage = () => {
 
                             <Card title="Tolerancia y Pausas">
                                 <div className="settings-group">
-                                    <label className="settings-label">Cortesía de Entrada (minutos)</label>
-                                    <div className="flex items-center gap-2">
-                                        <Clock size={16} className="text-muted" />
-                                        <Input
-                                            type="number"
-                                            value={settings.rules.courtesyMinutes}
-                                            onChange={(e) => handleRuleChange('courtesyMinutes', e.target.value)}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="settings-group mt-4">
                                     <div className="settings-item" style={{ border: 'none', padding: 0 }}>
                                         <div className="settings-icon"><Clock size={20} /></div>
                                         <div className="settings-info">
-                                            <h4>Horario Flexible</h4>
+                                            <h4>Horario Flexible (minutos)</h4>
                                             <p>Permite a los empleados fichar dentro de una ventana de tiempo como cortesía</p>
                                         </div>
                                         <label className="settings-toggle">
