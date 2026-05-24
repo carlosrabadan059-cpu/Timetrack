@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCorrections } from '../../contexts/CorrectionsContext';
-import { LayoutDashboard, History, ClipboardList, User, LogOut } from 'lucide-react';
+import { LayoutDashboard, History, ClipboardList, User, LogOut, Users, Clock } from 'lucide-react';
 import './MobileNav.css';
 
-const MobileNav = () => {
+const MobileNav = ({ variant = 'employee' }) => {
     const { signOut } = useAuth();
     const { stats } = useCorrections();
     const navigate = useNavigate();
@@ -22,12 +22,21 @@ const MobileNav = () => {
         navigate('/login');
     };
 
-    const links = [
+    const employeeLinks = [
         { to: '/dashboard',    icon: LayoutDashboard, label: 'Inicio',      end: true },
         { to: '/historial',    icon: History,         label: 'Historial' },
         { to: '/correcciones', icon: ClipboardList,   label: 'Incidencias', badge: pending || null },
         { to: '/perfil',       icon: User,            label: 'Perfil' },
     ];
+
+    const adminLinks = [
+        { to: '/admin',              icon: LayoutDashboard, label: 'Inicio',     end: true },
+        { to: '/admin/empleados',    icon: Users,           label: 'Empleados' },
+        { to: '/admin/fichajes',     icon: Clock,           label: 'Fichajes' },
+        { to: '/admin/correcciones', icon: ClipboardList,   label: 'Incidencias', badge: pending || null },
+    ];
+
+    const links = variant === 'admin' ? adminLinks : employeeLinks;
 
     return (
         <nav className="mobile-nav">
