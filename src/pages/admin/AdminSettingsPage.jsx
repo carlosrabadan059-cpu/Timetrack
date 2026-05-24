@@ -65,7 +65,7 @@ const DEFAULT_CLOCKING_MODES = {
 const DEFAULT_SETTINGS = {
     company: { name: '', cif: '', address: '', email: '' },
     branches: [],
-    rules: { geoFenceRadius: 100, courtesyMinutes: 15, latitude: 40.4168, longitude: -3.7038 },
+    rules: { geoFenceRadius: 100, courtesyMinutes: 15, latitude: 40.4168, longitude: -3.7038, flexibleScheduleEnabled: false, flexibleScheduleMinutes: 15 },
     work_schedule: { start: '09:00', end: '18:00', days: [1, 2, 3, 4, 5] },
     holidays: [],
     clocking_modes: DEFAULT_CLOCKING_MODES,
@@ -179,7 +179,7 @@ const AdminSettingsPage = () => {
     const handleRuleChange = (field, value) => {
         setSettings(prev => ({
             ...prev,
-            rules: { ...prev.rules, [field]: parseFloat(value) || value }
+            rules: { ...prev.rules, [field]: typeof value === 'boolean' ? value : (parseFloat(value) || value) }
         }));
     };
 
@@ -544,6 +544,46 @@ const AdminSettingsPage = () => {
                                             onChange={(e) => handleRuleChange('courtesyMinutes', e.target.value)}
                                         />
                                     </div>
+                                </div>
+
+                                <div className="settings-group mt-4">
+                                    <div className="settings-item" style={{ border: 'none', padding: 0 }}>
+                                        <div className="settings-icon"><Clock size={20} /></div>
+                                        <div className="settings-info">
+                                            <h4>Horario Flexible</h4>
+                                            <p>Permite a los empleados fichar dentro de una ventana de tiempo como cortesía</p>
+                                        </div>
+                                        <label className="settings-toggle">
+                                            <input
+                                                type="checkbox"
+                                                checked={settings.rules.flexibleScheduleEnabled ?? false}
+                                                onChange={(e) => handleRuleChange('flexibleScheduleEnabled', e.target.checked)}
+                                            />
+                                            <span className="settings-toggle-slider" />
+                                        </label>
+                                    </div>
+
+                                    {settings.rules.flexibleScheduleEnabled && (
+                                        <div className="mt-3">
+                                            <label className="settings-label">Minutos de flexibilidad (máx. 60)</label>
+                                            <div className="flex items-center gap-2">
+                                                <Clock size={16} className="text-muted" />
+                                                <Input
+                                                    type="number"
+                                                    min={0}
+                                                    max={60}
+                                                    value={settings.rules.flexibleScheduleMinutes ?? 15}
+                                                    onChange={(e) => {
+                                                        const v = Math.min(60, Math.max(0, parseInt(e.target.value) || 0));
+                                                        handleRuleChange('flexibleScheduleMinutes', v);
+                                                    }}
+                                                />
+                                            </div>
+                                            <p className="settings-help">
+                                                Los empleados podrán fichar hasta {settings.rules.flexibleScheduleMinutes ?? 15} minutos fuera del horario establecido sin incidencia.
+                                            </p>
+                                        </div>
+                                    )}
                                 </div>
                             </Card>
 

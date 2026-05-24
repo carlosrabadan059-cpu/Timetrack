@@ -232,7 +232,7 @@ admin.get('/settings', requireRole(['admin', 'manager']), async (c) => {
       data: {
         company: { name: '', cif: '', address: '', email: '' },
         branches: [],
-        rules: { geoFenceRadius: 100, courtesyMinutes: 15, latitude: 40.4168, longitude: -3.7038 },
+        rules: { geoFenceRadius: 100, courtesyMinutes: 15, latitude: 40.4168, longitude: -3.7038, flexibleScheduleEnabled: false, flexibleScheduleMinutes: 15 },
         work_schedule: { start: '09:00', end: '18:00', days: [1, 2, 3, 4, 5] },
         holidays: [],
         clocking_modes: defaultClockingModes,
@@ -264,6 +264,8 @@ admin.get('/settings', requireRole(['admin', 'manager']), async (c) => {
         courtesyMinutes: data.courtesy_minutes,
         latitude: Number(data.headquarter_lat),
         longitude: Number(data.headquarter_lon),
+        flexibleScheduleEnabled: data.flexible_schedule_enabled ?? false,
+        flexibleScheduleMinutes: data.flexible_schedule_minutes ?? 15,
       },
       work_schedule: {
         start: data.work_schedule_start,
@@ -306,6 +308,8 @@ admin.patch('/settings', requireRole(['admin', 'manager']), async (c) => {
     if (body.rules.courtesyMinutes !== undefined) patch['courtesy_minutes'] = Number(body.rules.courtesyMinutes);
     if (body.rules.latitude !== undefined) patch['headquarter_lat'] = Number(body.rules.latitude);
     if (body.rules.longitude !== undefined) patch['headquarter_lon'] = Number(body.rules.longitude);
+    if (body.rules.flexibleScheduleEnabled !== undefined) patch['flexible_schedule_enabled'] = Boolean(body.rules.flexibleScheduleEnabled);
+    if (body.rules.flexibleScheduleMinutes !== undefined) patch['flexible_schedule_minutes'] = Math.min(60, Math.max(0, Number(body.rules.flexibleScheduleMinutes)));
   }
   if (body.work_schedule) {
     if (body.work_schedule.start !== undefined) patch['work_schedule_start'] = String(body.work_schedule.start);
