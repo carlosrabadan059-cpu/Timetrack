@@ -539,7 +539,7 @@ const AdminSettingsPage = () => {
                                         <div className="settings-icon"><Clock size={20} /></div>
                                         <div className="settings-info">
                                             <h4>Horario Flexible (minutos)</h4>
-                                            <p>Permite a los empleados fichar dentro de una ventana de tiempo como cortesía</p>
+                                            <p>Permite a los empleados fichar dentro de una ventana de tiempo</p>
                                         </div>
                                         <label className="settings-toggle">
                                             <input
