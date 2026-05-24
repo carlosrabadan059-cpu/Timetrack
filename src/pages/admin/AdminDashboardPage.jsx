@@ -3,7 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { Users, Clock, AlertTriangle } from 'lucide-react';
 import { StatCard, Card } from '../../components/ui';
 import { api } from '../../lib/api';
+import { supabase } from '../../lib/supabase';
 import './AdminDashboardPage.css';
+
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 function fmtTime(ts) {
     if (!ts) return null;
@@ -30,6 +33,55 @@ const AdminDashboardPage = () => {
         loadDashboard();
         const interval = setInterval(loadDashboard, 30_000);
         return () => clearInterval(interval);
+    }, [loadDashboard]);
+
+    useEffect(() => {
+        const ctrl = new AbortController();
+
+        async function connect() {
+            try {
+                const { data } = await supabase.auth.getSession();
+                const token = data.session?.access_token;
+                if (!token) return;
+
+                const res = await fetch(`${BASE_URL}/api/admin/live`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                    signal: ctrl.signal,
+                });
+
+                if (!res.ok) {
+                    if (res.status >= 500) setTimeout(connect, 5000);
+                    return;
+                }
+
+                const reader = res.body.getReader();
+                const dec = new TextDecoder();
+                let buf = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    buf += dec.decode(value, { stream: true });
+                    const chunks = buf.split('\n\n');
+                    buf = chunks.pop() || '';
+                    for (const chunk of chunks) {
+                        const line = chunk.split('\n').find(l => l.startsWith('data: '));
+                        if (!line) continue;
+                        try {
+                            const event = JSON.parse(line.slice(6));
+                            if (event.type === 'access_event') loadDashboard();
+                        } catch { /* malformed SSE line */ }
+                    }
+                }
+
+                if (!ctrl.signal.aborted) setTimeout(connect, 1000);
+            } catch (err) {
+                if (!ctrl.signal.aborted) setTimeout(connect, 5000);
+            }
+        }
+
+        connect();
+        return () => ctrl.abort();
     }, [loadDashboard]);
 
     return (

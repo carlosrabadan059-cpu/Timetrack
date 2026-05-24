@@ -418,6 +418,18 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
     detail_type,
   });
 
+  // Emit to admin connections for this company
+  if (user.company_id) {
+    sseBroadcaster.emitToCompany(user.company_id, {
+      type: 'access_event',
+      user_id: user.id,
+      direction,
+      timestamp: log.timestamp as string,
+      source,
+      detail_type,
+    });
+  }
+
   return c.json({
     data: {
       id: log.id as string,

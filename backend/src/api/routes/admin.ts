@@ -5,6 +5,7 @@ import { requireRole } from '../middleware/role.js';
 import { triggerWorkflow } from '../../lib/n8n.js';
 import { restartCompanyConnection } from '../../services/signalr-listener.js';
 import { createAcClient } from '../../lib/ac-client.js';
+import { sseBroadcaster } from '../../services/sse-broadcaster.js';
 import type { AppVariables } from '../../types/api.types.js';
 import type { ClockingModes } from '../../types/supabase.types.js';
 import type { AcUser } from '../../types/ac.types.js';
@@ -789,6 +790,61 @@ admin.delete('/api-keys/:id', requireRole(['admin', 'manager']), async (c) => {
   }
 
   return c.json({ data: { revoked: true, id } });
+});
+
+// ── GET /api/admin/live (SSE) ─────────────────────────────────────────────────
+admin.get('/live', requireRole(['admin', 'manager']), (c) => {
+  const user = c.get('user');
+  const companyId = user.company_id;
+
+  if (!companyId) {
+    return c.json({ error: { code: 'no_company', message: 'Sin empresa asignada' } }, 403);
+  }
+
+  const encoder = new TextEncoder();
+  type EmitFn = (event: Record<string, unknown>) => void;
+  let emitFn: EmitFn | null = null;
+  let heartbeatId: ReturnType<typeof setInterval> | null = null;
+
+  const stream = new ReadableStream({
+    start(controller) {
+      emitFn = (event: Record<string, unknown>) => {
+        try {
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify(event)}\n\n`));
+        } catch {
+          // Stream closed
+        }
+      };
+
+      sseBroadcaster.addCompanyConnection(companyId, emitFn);
+
+      controller.enqueue(
+        encoder.encode(`data: ${JSON.stringify({ type: 'heartbeat' })}\n\n`)
+      );
+
+      heartbeatId = setInterval(() => {
+        try {
+          controller.enqueue(
+            encoder.encode(`data: ${JSON.stringify({ type: 'heartbeat' })}\n\n`)
+          );
+        } catch {
+          if (heartbeatId) clearInterval(heartbeatId);
+        }
+      }, 30_000);
+    },
+    cancel() {
+      if (heartbeatId) clearInterval(heartbeatId);
+      if (emitFn) sseBroadcaster.removeCompanyConnection(companyId, emitFn);
+    },
+  });
+
+  return new Response(stream, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+    },
+  });
 });
 
 export default admin;
