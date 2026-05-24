@@ -2,8 +2,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { StatCard, Card, Button } from '../../components/ui';
 import { api } from '../../lib/api';
 import { useCorrections } from '../../contexts/CorrectionsContext';
+import { supabase } from '../../lib/supabase';
 import { CheckCircle, XCircle, AlertCircle, FileText, Filter, Search, CalendarCheck } from 'lucide-react';
 import './AdminCorrectionsPage.css';
+
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const TYPE_LABELS = {
     correccion: 'Corrección',
@@ -66,6 +69,47 @@ const AdminCorrectionsPage = () => {
     }, [filterStatus]);
 
     useEffect(() => { loadIncidencias(); }, [loadIncidencias]);
+
+    // SSE: reload on new or resolved incidencia
+    useEffect(() => {
+        const ctrl = new AbortController();
+        async function connect() {
+            try {
+                const { data } = await supabase.auth.getSession();
+                const token = data.session?.access_token;
+                if (!token) return;
+                const res = await fetch(`${BASE_URL}/api/admin/live`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                    signal: ctrl.signal,
+                });
+                if (!res.ok) { if (res.status >= 500) setTimeout(connect, 5000); return; }
+                const reader = res.body.getReader();
+                const dec = new TextDecoder();
+                let buf = '';
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    buf += dec.decode(value, { stream: true });
+                    const chunks = buf.split('\n\n');
+                    buf = chunks.pop() || '';
+                    for (const chunk of chunks) {
+                        const line = chunk.split('\n').find(l => l.startsWith('data: '));
+                        if (!line) continue;
+                        try {
+                            const event = JSON.parse(line.slice(6));
+                            if (event.type === 'incidencia_event') {
+                                loadIncidencias();
+                                refreshBadge();
+                            }
+                        } catch { /* ignore */ }
+                    }
+                }
+                if (!ctrl.signal.aborted) setTimeout(connect, 1000);
+            } catch { if (!ctrl.signal.aborted) setTimeout(connect, 5000); }
+        }
+        connect();
+        return () => ctrl.abort();
+    }, [loadIncidencias, refreshBadge]);
 
     const handleAction = async (id, status) => {
         setActionLoading(prev => ({ ...prev, [id]: true }));

@@ -182,6 +182,14 @@ incidencias.post(
       });
     })();
 
+    if (user.company_id) {
+      sseBroadcaster.emitToCompany(user.company_id, {
+        type: 'incidencia_event',
+        action: 'created',
+        incidencia_id: incidencia.id as string,
+      });
+    }
+
     return c.json({ data: incidencia }, 201);
   }
 );
@@ -405,6 +413,16 @@ adminIncidencias.patch(
       incidencia_id: id,
       status,
     });
+
+    // Notify admin connections
+    if (manager.company_id) {
+      sseBroadcaster.emitToCompany(manager.company_id, {
+        type: 'incidencia_event',
+        action: 'resolved',
+        incidencia_id: id,
+        status,
+      });
+    }
 
     // Fire-and-forget: email to employee via n8n (fetch employee profile first)
     void (async () => {
