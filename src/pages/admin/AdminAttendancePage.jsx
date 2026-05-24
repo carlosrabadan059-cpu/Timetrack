@@ -204,6 +204,11 @@ const AdminAttendancePage = () => {
                                                         Corrección
                                                     </span>
                                                 )}
+                                                {record.out_of_schedule && (
+                                                    <span className="badge badge-warning" style={{ marginLeft: '0.25rem', fontSize: '0.65rem' }}>
+                                                        Fuera de horario
+                                                    </span>
+                                                )}
                                             </td>
                                             <td>
                                                 {record.has_gps ? (

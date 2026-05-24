@@ -19,6 +19,34 @@ export function inferDetailType(timestamp: string): 'normal' | 'comida' {
 }
 
 /**
+ * Returns true if the fichaje falls outside the valid schedule window.
+ * Entry ('in'):  valid within [scheduleStart, scheduleStart + flexMinutes].
+ * Exit  ('out'): valid within [scheduleEnd,   scheduleEnd   + flexMinutes].
+ * Also returns true when the day is not a working day.
+ */
+export function checkOutOfSchedule(
+  ts: Date,
+  direction: 'in' | 'out',
+  scheduleStart: string,
+  scheduleEnd: string,
+  flexMinutes: number,
+  workDays: number[],
+): boolean {
+  if (!workDays.includes(ts.getDay())) return true;
+
+  const totalMins = ts.getHours() * 60 + ts.getMinutes();
+  const [sh = 9, sm = 0] = scheduleStart.split(':').map(Number);
+  const [eh = 18, em = 0] = scheduleEnd.split(':').map(Number);
+  const startMins = sh * 60 + sm;
+  const endMins   = eh * 60 + em;
+
+  if (direction === 'in') {
+    return totalMins < startMins || totalMins > startMins + flexMinutes;
+  }
+  return totalMins < endMins || totalMins > endMins + flexMinutes;
+}
+
+/**
  * Human-readable source label for exports and display.
  */
 export function humanizeSource(source: string): string {

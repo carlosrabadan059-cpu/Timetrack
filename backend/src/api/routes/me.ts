@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { zValidator } from '@hono/zod-validator';
 import { getSupabaseAdmin } from '../../lib/supabase.js';
 import type { AppVariables } from '../../types/api.types.js';
-import { inferDetailType, startOfDayISO, toDateString, getWeekStart } from '../../lib/date-utils.js';
+import { inferDetailType, checkOutOfSchedule, startOfDayISO, toDateString, getWeekStart } from '../../lib/date-utils.js';
 import { sseBroadcaster } from '../../services/sse-broadcaster.js';
 import { fichajeRateLimit, recordFichaje } from '../middleware/rate-limit.js';
 import {
@@ -355,27 +355,45 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
 
   const detail_type = body.detail_type ?? inferDetailType(now.toISOString());
 
-  // Geofence check — only when the request includes GPS coordinates
+  // Geofence + schedule check
   let within_geofence: boolean | null = null;
-  if (body.latitude !== undefined && body.longitude !== undefined && user.company_id) {
+  let out_of_schedule = false;
+
+  if (user.company_id) {
     const { data: settings } = await supabaseAdmin
       .from('company_settings')
-      .select('headquarter_lat, headquarter_lon, geo_fence_radius')
+      .select('headquarter_lat, headquarter_lon, geo_fence_radius, flexible_schedule_enabled, flexible_schedule_minutes, work_schedule_start, work_schedule_end, work_schedule_days')
       .eq('company_id', user.company_id)
       .maybeSingle();
 
-    if (settings?.headquarter_lat && settings?.headquarter_lon && settings?.geo_fence_radius) {
-      const R = 6371000; // Earth radius in metres
-      const toRad = (d: number) => (d * Math.PI) / 180;
-      const lat1 = toRad(Number(settings.headquarter_lat));
-      const lat2 = toRad(body.latitude);
-      const dLat = toRad(body.latitude - Number(settings.headquarter_lat));
-      const dLon = toRad(body.longitude - Number(settings.headquarter_lon));
-      const a =
-        Math.sin(dLat / 2) ** 2 +
-        Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
-      const distance = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      within_geofence = distance <= Number(settings.geo_fence_radius);
+    if (settings) {
+      // Geofence (only when GPS coordinates provided)
+      if (body.latitude !== undefined && body.longitude !== undefined &&
+          settings.headquarter_lat && settings.headquarter_lon && settings.geo_fence_radius) {
+        const R = 6371000;
+        const toRad = (d: number) => (d * Math.PI) / 180;
+        const lat1 = toRad(Number(settings.headquarter_lat));
+        const lat2 = toRad(body.latitude);
+        const dLat = toRad(body.latitude - Number(settings.headquarter_lat));
+        const dLon = toRad(body.longitude - Number(settings.headquarter_lon));
+        const a =
+          Math.sin(dLat / 2) ** 2 +
+          Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+        const distance = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        within_geofence = distance <= Number(settings.geo_fence_radius);
+      }
+
+      // Out-of-schedule check (only when flexible schedule is enabled)
+      if (settings.flexible_schedule_enabled && settings.work_schedule_start && settings.work_schedule_end) {
+        out_of_schedule = checkOutOfSchedule(
+          now,
+          direction,
+          settings.work_schedule_start as string,
+          settings.work_schedule_end as string,
+          (settings.flexible_schedule_minutes as number | null) ?? 15,
+          (settings.work_schedule_days as number[] | null) ?? [1, 2, 3, 4, 5],
+        );
+      }
     }
   }
 
@@ -388,6 +406,7 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
     timestamp: now.toISOString(),
     source,
     device_info: body.device_info,
+    out_of_schedule,
   };
   if (body.latitude !== undefined) insertPayload['latitude'] = body.latitude;
   if (body.longitude !== undefined) insertPayload['longitude'] = body.longitude;
@@ -439,6 +458,7 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
       detail_type,
       is_inside: direction === 'in',
       within_geofence,
+      out_of_schedule,
     },
   });
 });

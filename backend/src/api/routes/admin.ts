@@ -145,7 +145,7 @@ admin.get('/access-logs', requireRole(['admin', 'manager']), async (c) => {
 
   let logsQuery = sb
     .from('access_logs')
-    .select('id, user_id, direction, detail_type, timestamp, source, corrected, latitude, longitude, within_geofence', { count: 'exact' })
+    .select('id, user_id, direction, detail_type, timestamp, source, corrected, latitude, longitude, within_geofence, out_of_schedule', { count: 'exact' })
     .in('user_id', matchingIds)
     .order('timestamp', { ascending: false })
     .range(offset, offset + limit - 1);
@@ -195,6 +195,7 @@ admin.get('/access-logs', requireRole(['admin', 'manager']), async (c) => {
       corrected: l.corrected,
       has_gps: !!(l.latitude && l.longitude),
       within_geofence: l.within_geofence ?? null,
+      out_of_schedule: l.out_of_schedule ?? false,
     };
   });
 
