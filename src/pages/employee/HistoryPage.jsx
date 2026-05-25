@@ -372,9 +372,13 @@ const HistoryPage = () => {
                                                                         <span className="badge badge-info">Corregido</span>
                                                                     )}
                                                                     {(entry.latitude || entry.longitude) && (
-                                                                        <span className="timeline-location">
+                                                                        <span className={`timeline-location${entry.within_geofence === false ? ' location-outside' : ''}`}>
                                                                             <MapPin size={12} />
-                                                                            <span className="location-ok">GPS</span>
+                                                                            <span>
+                                                                                {entry.within_geofence === true  && 'En sede'}
+                                                                                {entry.within_geofence === false && 'Fuera de sede'}
+                                                                                {entry.within_geofence == null  && 'GPS'}
+                                                                            </span>
                                                                         </span>
                                                                     )}
                                                                     <SourceBadge source={entry.source} />
