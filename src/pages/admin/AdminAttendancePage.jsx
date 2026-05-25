@@ -211,8 +211,16 @@ const AdminAttendancePage = () => {
                                                 )}
                                             </td>
                                             <td>
-                                                {record.has_gps ? (
-                                                    <span className="location-badge in-zone" title="GPS registrado">
+                                                {record.within_geofence === true ? (
+                                                    <span className="location-badge in-zone" title="Dentro de la sede">
+                                                        <MapPin size={10} /> En sede
+                                                    </span>
+                                                ) : record.within_geofence === false ? (
+                                                    <span className="location-badge out-zone" title="Fuera de la sede">
+                                                        <MapPin size={10} /> Fuera
+                                                    </span>
+                                                ) : record.has_gps ? (
+                                                    <span className="location-badge" title="GPS registrado, geofence no configurado">
                                                         <MapPin size={10} /> GPS
                                                     </span>
                                                 ) : (
