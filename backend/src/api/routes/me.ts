@@ -383,8 +383,9 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
         within_geofence = distance <= Number(settings.geo_fence_radius);
       }
 
-      // Out-of-schedule check (only when flexible schedule is enabled)
-      if (settings.flexible_schedule_enabled && settings.work_schedule_start && settings.work_schedule_end) {
+      // Out-of-schedule check: only for day-start entry and day-end exit, never for breaks
+      const isBreak = ['comida', 'descanso', 'medico', 'otro'].includes(detail_type);
+      if (!isBreak && settings.flexible_schedule_enabled && settings.work_schedule_start && settings.work_schedule_end) {
         out_of_schedule = checkOutOfSchedule(
           now,
           direction,
