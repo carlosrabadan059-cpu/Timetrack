@@ -42,6 +42,7 @@ const DashboardPage = () => {
     const [ficharLoading, setFicharLoading] = useState(false);
     const [ficharError, setFicharError] = useState('');
     const [currentPauseType, setCurrentPauseType] = useState(null);
+    const [geoStatus, setGeoStatus] = useState(null); // null | 'inside' | 'outside' | 'no_gps'
     const ficharErrorTimer = useRef(null);
 
     useEffect(() => {
@@ -122,12 +123,14 @@ const DashboardPage = () => {
             const body = { device_info: getDeviceInfo(), ...(detailType ? { detail_type: detailType } : {}) };
 
             // Capture GPS silently — non-blocking, fichaje proceeds even without it
+            let hadGps = false;
             if (navigator.geolocation) {
                 await new Promise((resolve) => {
                     navigator.geolocation.getCurrentPosition(
                         (pos) => {
                             body.latitude = pos.coords.latitude;
                             body.longitude = pos.coords.longitude;
+                            hadGps = true;
                             resolve();
                         },
                         () => resolve(), // permission denied or timeout — continue without GPS
@@ -137,7 +140,17 @@ const DashboardPage = () => {
             }
 
             const res = await api.post('/api/me/fichar', body);
-            const { direction, detail_type, is_inside, timestamp } = res.data;
+            const { direction, detail_type, is_inside, timestamp, within_geofence } = res.data;
+
+            if (!hadGps) {
+                setGeoStatus('no_gps');
+            } else if (within_geofence === true) {
+                setGeoStatus('inside');
+            } else if (within_geofence === false) {
+                setGeoStatus('outside');
+            } else {
+                setGeoStatus(null); // geofence not configured
+            }
             const newStatus =
                 direction === 'in' ? 'working' :
                 PAUSE_TYPES.has(detail_type) ? 'paused' : 'out';
@@ -330,10 +343,16 @@ const DashboardPage = () => {
                                     <Button variant="danger" size="lg" fullWidth className="btn-finish-day" icon={Square} onClick={() => handleFichar()} loading={ficharLoading}>
                                         Finalizar Jornada
                                     </Button>
-                                    <div className="location-verified">
-                                        <MapPin size={14} />
-                                        <span>Ubicación verificada</span>
-                                    </div>
+                                    {geoStatus && (
+                                        <div className={`location-verified${geoStatus === 'outside' ? ' location-outside' : geoStatus === 'no_gps' ? ' location-no-gps' : ''}`}>
+                                            <MapPin size={14} />
+                                            <span>
+                                                {geoStatus === 'inside'  && 'Dentro de la sede'}
+                                                {geoStatus === 'outside' && 'Fuera de la sede'}
+                                                {geoStatus === 'no_gps'  && 'Sin GPS disponible'}
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>
