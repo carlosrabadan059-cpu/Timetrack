@@ -41,7 +41,7 @@
   right: 24px;
   width: 360px;
   max-height: 520px;
-  background: #ffffff;
+  background: var(--color-bg-primary);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   display: flex;
@@ -124,7 +124,7 @@
   flex-direction: column;
   gap: var(--space-3);
   scrollbar-width: thin;
-  background: #f8f8fa;
+  background: var(--color-bg-secondary);
 }
 
 .helpbot-empty {
@@ -153,7 +153,7 @@
   font-size: var(--font-size-xs);
   border: 1px solid var(--color-border);
   border-radius: 9999px;
-  background: #ffffff;
+  background: var(--color-bg-primary);
   color: var(--color-text-secondary);
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -161,7 +161,7 @@
 }
 .helpbot-suggestion:hover {
   border-color: var(--color-accent-primary);
-  color: #111827;
+  color: var(--color-text-primary);
   background: rgba(190, 250, 59, 0.1);
 }
 
@@ -198,7 +198,7 @@
   border-bottom-right-radius: 4px;
 }
 .helpbot-msg--assistant .helpbot-msg-bubble {
-  background: #ffffff;
+  background: var(--color-bg-primary);
   color: var(--color-text-primary);
   border-bottom-left-radius: 4px;
   border: 1px solid var(--color-border);
@@ -213,7 +213,7 @@
 }
 .helpbot-md strong {
   font-weight: var(--font-weight-semibold);
-  color: #111827;
+  color: var(--color-text-primary);
 }
 .helpbot-md ul,
 .helpbot-md ol {
@@ -263,7 +263,7 @@
   gap: var(--space-2);
   padding: var(--space-3);
   border-top: 1px solid var(--color-border);
-  background: #ffffff;
+  background: var(--color-bg-primary);
   border-radius: 0 0 var(--radius-xl) var(--radius-xl);
   flex-shrink: 0;
 }
