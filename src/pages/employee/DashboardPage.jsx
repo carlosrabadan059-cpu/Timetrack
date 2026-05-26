@@ -43,6 +43,7 @@ const DashboardPage = () => {
     const [ficharError, setFicharError] = useState('');
     const [currentPauseType, setCurrentPauseType] = useState(null);
     const [geoStatus, setGeoStatus] = useState(null); // null | 'inside' | 'outside' | 'no_gps'
+    const [locationPermission, setLocationPermission] = useState(null); // null | 'granted' | 'denied' | 'prompt'
     const ficharErrorTimer = useRef(null);
 
     useEffect(() => {
@@ -51,6 +52,15 @@ const DashboardPage = () => {
     }, []);
 
     useEffect(() => () => clearTimeout(ficharErrorTimer.current), []);
+
+    // Check location permission on mount
+    useEffect(() => {
+        if (!navigator.permissions) return;
+        navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+            setLocationPermission(result.state);
+            result.onchange = () => setLocationPermission(result.state);
+        }).catch(() => {});
+    }, []);
 
     const loadDashboard = useCallback(async () => {
         try {
@@ -309,6 +319,18 @@ const DashboardPage = () => {
                             )}
                         </div>
 
+                        {locationPermission === 'denied' && (
+                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 'var(--radius-md)', padding: 'var(--space-2) var(--space-3)', marginBottom: 'var(--space-3)', fontSize: 'var(--font-size-xs)', color: 'var(--color-error, #ef4444)' }}>
+                                <MapPin size={13} style={{ flexShrink: 0, marginTop: 1 }} />
+                                <span>La ubicación está bloqueada en este navegador. Actívala en los ajustes del navegador para registrar el geofence.</span>
+                            </div>
+                        )}
+                        {locationPermission === 'prompt' && (
+                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.2)', borderRadius: 'var(--radius-md)', padding: 'var(--space-2) var(--space-3)', marginBottom: 'var(--space-3)', fontSize: 'var(--font-size-xs)', color: 'var(--color-warning, #eab308)' }}>
+                                <MapPin size={13} style={{ flexShrink: 0, marginTop: 1 }} />
+                                <span>Acepta el permiso de ubicación cuando el navegador lo solicite para registrar el geofence.</span>
+                            </div>
+                        )}
                         {ficharError && (
                             <p style={{ color: 'var(--color-danger, #ef4444)', fontSize: 'var(--font-size-sm)', textAlign: 'center', margin: '0 0 var(--space-3)' }}>
                                 {ficharError}
