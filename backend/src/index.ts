@@ -4,6 +4,7 @@ import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
+import { bodyLimit } from 'hono/body-limit';
 import { authMiddleware } from './api/middleware/auth.js';
 import meRoutes from './api/routes/me.js';
 import historialRoutes from './api/routes/historial.js';
@@ -35,7 +36,10 @@ app.use('*', cors({
   allowMethods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 }));
-app.use('*', logger());
+app.use('*', bodyLimit({ maxSize: 1 * 1024 * 1024 })); // 1 MB global limit
+if (process.env['NODE_ENV'] !== 'production') {
+  app.use('*', logger());
+}
 
 // ── Public endpoints ───────────────────────────────────────────────────────────
 app.get('/health', (c) => {
@@ -68,8 +72,9 @@ app.route('', docsRoutes);
 // ── Global error handler ───────────────────────────────────────────────────────
 app.onError((err, c) => {
   console.error(`[error] ${c.req.method} ${c.req.path}:`, err);
+  const isProd = process.env['NODE_ENV'] === 'production';
   return c.json(
-    { error: { code: 'internal_error', message: err.message } },
+    { error: { code: 'internal_error', message: isProd ? 'Error interno del servidor' : err.message } },
     500
   );
 });

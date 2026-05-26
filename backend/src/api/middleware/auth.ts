@@ -32,10 +32,16 @@ export const auth = createMiddleware<{ Variables: AppVariables }>(async (c, next
     .eq('id', user.id)
     .single();
 
+  const VALID_ROLES = ['superadmin', 'admin', 'manager', 'employee'] as const;
+  const rawRole = profile?.role ?? 'employee';
+  const validatedRole = (VALID_ROLES as readonly string[]).includes(rawRole)
+    ? (rawRole as AuthUser['role'])
+    : 'employee';
+
   const authUser: AuthUser = {
     id: user.id,
     email: user.email ?? '',
-    role: (profile?.role as AuthUser['role']) ?? 'employee',
+    role: validatedRole,
     company_id: profile?.company_id ?? null,
     ac_external_id: profile?.ac_external_id ?? null,
     employee_code: profile?.employee_code ?? null,

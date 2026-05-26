@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
+import { timingSafeEqual } from 'crypto';
 import { getSupabaseAdmin } from '../../lib/supabase.js';
 import { acClient } from '../../lib/ac-client.js';
 import { dispatchN8nWebhook, type N8nWorkflow } from '../../lib/n8n.js';
@@ -8,9 +9,15 @@ import type { SyncQueueEntry, ClockingModes } from '../../types/supabase.types.j
 
 const webhooks = new Hono();
 
+function safeCompare(a: string | undefined, b: string | undefined): boolean {
+  if (!a || !b) return false;
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  return bufA.length === bufB.length && timingSafeEqual(bufA, bufB);
+}
+
 function verifyN8nSecret(c: { req: { header: (name: string) => string | undefined } }): boolean {
-  const secret = c.req.header('X-N8N-Secret');
-  return !!secret && secret === process.env['N8N_WEBHOOK_SECRET'];
+  return safeCompare(c.req.header('X-N8N-Secret'), process.env['N8N_WEBHOOK_SECRET']);
 }
 
 // ── POST /webhooks/n8n/callback ───────────────────────────────────────────────
@@ -287,7 +294,7 @@ webhooks.post('/2n-device/:companyId', async (c) => {
   }
 
   const secret = c.req.header('X-2N-Secret');
-  if (!secret || secret !== modes.twoN.device_webhook_secret) {
+  if (!safeCompare(secret, modes.twoN.device_webhook_secret ?? undefined)) {
     return c.json({ error: { code: 'unauthorized', message: 'Secret inválido' } }, 401);
   }
 
@@ -310,7 +317,7 @@ const nodeRedEventSchema = z.record(z.unknown());
 
 webhooks.post('/node-red/access-event', async (c) => {
   const secret = c.req.header('X-Node-Red-Secret');
-  if (!secret || secret !== process.env['NODE_RED_SECRET']) {
+  if (!safeCompare(secret, process.env['NODE_RED_SECRET'])) {
     return c.json({ error: { code: 'unauthorized', message: 'Invalid secret' } }, 401);
   }
 
