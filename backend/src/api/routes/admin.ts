@@ -410,6 +410,22 @@ admin.post('/settings/test-ac', requireRole(['admin', 'manager']), async (c) => 
     return c.json({ error: { code: 'missing_config', message: 'URL y token son obligatorios para probar la conexión' } }, 422);
   }
 
+  // Prevent SSRF: only allow https:// or http:// and reject metadata/loopback targets
+  let parsedUrl: URL;
+  try {
+    parsedUrl = new URL(baseUrl);
+  } catch {
+    return c.json({ error: { code: 'invalid_url', message: 'La URL de 2N AC no es válida' } }, 422);
+  }
+  if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+    return c.json({ error: { code: 'invalid_url', message: 'La URL de 2N AC debe usar http o https' } }, 422);
+  }
+  // Block cloud metadata endpoints and localhost that are not the AC device
+  const blocked = /^(169\.254\.|0\.0\.0\.0|::1$|metadata\.google|169\.254\.169\.254)/i;
+  if (blocked.test(parsedUrl.hostname)) {
+    return c.json({ error: { code: 'invalid_url', message: 'URL de destino no permitida' } }, 422);
+  }
+
   try {
     const url = `${baseUrl.replace(/\/$/, '')}/api/v3/users?limit=1`;
     const res = await fetch(url, {

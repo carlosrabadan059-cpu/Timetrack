@@ -67,7 +67,9 @@ app.route('/api/admin', adminRoutes);
 app.route('/api/superadmin', superadminRoutes);
 app.route('/api/external/v1', externalRoutes);
 app.route('/api/help', helpRoutes);
-app.route('', docsRoutes);
+if (process.env['NODE_ENV'] !== 'production') {
+  app.route('', docsRoutes);
+}
 
 // ── Global error handler ───────────────────────────────────────────────────────
 app.onError((err, c) => {
