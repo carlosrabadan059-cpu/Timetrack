@@ -114,18 +114,23 @@ function buildFichajesPDF(items: FichajeItem[], empName: string, period: string)
   });
 }
 
+function sanitizeCsvCell(value: string): string {
+  const s = String(value ?? '');
+  return /^[=+\-@\t\r\n]/.test(s) ? `'${s}` : s;
+}
+
 function buildFichajesCSV(items: FichajeItem[]): string {
   const header = 'id,fecha_hora,empleado,codigo,direccion,tipo,origen,dispositivo,latitud,longitud,corregido';
   const rows = items.map(i =>
     [
       i.id,
       i.timestamp,
-      `"${i.user.full_name}"`,
-      i.user.employee_code,
+      `"${sanitizeCsvCell(i.user.full_name)}"`,
+      sanitizeCsvCell(i.user.employee_code ?? ''),
       i.direction,
       i.detail_type,
       i.source_human,
-      i.device_info ?? '',
+      sanitizeCsvCell(i.device_info ?? ''),
       i.latitude ?? '',
       i.longitude ?? '',
       i.corrected,

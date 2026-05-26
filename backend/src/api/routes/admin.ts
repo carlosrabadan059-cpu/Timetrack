@@ -294,6 +294,11 @@ admin.patch('/settings', requireRole(['admin', 'manager']), async (c) => {
     return c.json({ error: { code: 'invalid_body', message: 'Body inválido' } }, 400);
   }
 
+  // Only admin can update 2N AC credentials
+  if (body.clocking_modes?.twoN?.ac_api_token !== undefined && user.role !== 'admin') {
+    return c.json({ error: { code: 'forbidden', message: 'Solo el administrador puede modificar las credenciales de acceso físico' } }, 403);
+  }
+
   const patch: Record<string, unknown> = { company_id: user.company_id, updated_at: new Date().toISOString() };
 
   if (body.company) {

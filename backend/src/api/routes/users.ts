@@ -13,11 +13,17 @@ const users = new Hono<{ Variables: AppVariables }>();
 const createUserSchema = z.object({
   full_name: z.string().min(1).max(200),
   email: z.string().email(),
-  company_id: z.string().uuid(),
   group_id: z.string().optional(),
 });
 
 users.post('/', requireRole(['admin', 'manager']), async (c) => {
+  const authUser = c.get('user');
+  const company_id = authUser.company_id;
+
+  if (!company_id) {
+    return c.json({ error: { code: 'no_company', message: 'Sin empresa asociada' } }, 422);
+  }
+
   const body = await c.req.json().catch(() => null);
   const parsed = createUserSchema.safeParse(body);
   if (!parsed.success) {
@@ -32,7 +38,7 @@ users.post('/', requireRole(['admin', 'manager']), async (c) => {
       400
     );
   }
-  const { full_name, email, company_id, group_id } = parsed.data;
+  const { full_name, email, group_id } = parsed.data;
 
   const sb = getSupabaseAdmin();
 
