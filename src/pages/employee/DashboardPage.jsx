@@ -144,7 +144,7 @@ const DashboardPage = () => {
                             resolve();
                         },
                         () => resolve(), // permission denied or timeout — continue without GPS
-                        { timeout: 5000, maximumAge: 30000 }
+                        { timeout: 10000, maximumAge: 60000, enableHighAccuracy: false }
                     );
                 });
             }
