@@ -5,6 +5,7 @@ import { requireRole } from '../middleware/role.js';
 import { triggerWorkflow } from '../../lib/n8n.js';
 import { restartCompanyConnection } from '../../services/signalr-listener.js';
 import { createAcClient } from '../../lib/ac-client.js';
+import { encryptSetting, decryptSetting } from '../../lib/crypto-settings.js';
 import { sseBroadcaster } from '../../services/sse-broadcaster.js';
 import type { AppVariables } from '../../types/api.types.js';
 import type { ClockingModes } from '../../types/supabase.types.js';
@@ -333,12 +334,16 @@ admin.patch('/settings', requireRole(['admin', 'manager']), async (c) => {
       .eq('company_id', user.company_id)
       .maybeSingle();
     const currentModes = (current?.clocking_modes ?? {}) as Partial<ClockingModes>;
-    const currentToken = currentModes.twoN?.ac_api_token ?? null;
+    const storedToken = currentModes.twoN?.ac_api_token ?? null;
 
-    const mergedToken =
-      incoming.twoN?.ac_api_token && incoming.twoN.ac_api_token !== '••••••••'
-        ? incoming.twoN.ac_api_token
-        : currentToken;
+    // Determine the plaintext token to persist (encrypt later before upsert)
+    const incomingToken = incoming.twoN?.ac_api_token;
+    const plaintextToken =
+      incomingToken && incomingToken !== '••••••••'
+        ? incomingToken
+        : (storedToken ? decryptSetting(storedToken) : null);
+
+    const mergedToken = plaintextToken ? encryptSetting(plaintextToken) : null;
 
     const newModes: ClockingModes = {
       web: incoming.web ?? currentModes.web ?? true,
@@ -403,7 +408,8 @@ admin.post('/settings/test-ac', requireRole(['admin', 'manager']), async (c) => 
       .maybeSingle();
     const modes = current?.clocking_modes as { twoN?: { ac_base_url?: string; ac_api_token?: string } } | null;
     if (!baseUrl) baseUrl = modes?.twoN?.ac_base_url ?? '';
-    apiToken = modes?.twoN?.ac_api_token ?? '';
+    const rawToken = modes?.twoN?.ac_api_token ?? '';
+    apiToken = rawToken ? decryptSetting(rawToken) : '';
   }
 
   if (!baseUrl || !apiToken) {
@@ -468,7 +474,8 @@ admin.post('/settings/import-from-ac', requireRole(['admin']), async (c) => {
 
   const modes = settingsRow?.clocking_modes as ClockingModes | null;
   const baseUrl = (modes?.twoN?.ac_base_url ?? '').trim();
-  const apiToken = (modes?.twoN?.ac_api_token ?? '').trim();
+  const rawToken = (modes?.twoN?.ac_api_token ?? '').trim();
+  const apiToken = rawToken ? decryptSetting(rawToken) : '';
 
   if (!baseUrl || !apiToken) {
     return c.json(

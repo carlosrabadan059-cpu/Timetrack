@@ -2,6 +2,7 @@ import * as signalR from '@microsoft/signalr';
 import { getSupabaseAdmin } from '../lib/supabase.js';
 import { inferDetailType, startOfDayISO } from '../lib/date-utils.js';
 import { sseBroadcaster } from './sse-broadcaster.js';
+import { decryptSetting } from '../lib/crypto-settings.js';
 import type { ClockingModes } from '../types/supabase.types.js';
 
 // ── Core event handler ─────────────────────────────────────────────────────────
@@ -295,7 +296,7 @@ export async function startSignalRListener(): Promise<void> {
       await startCompanyConnection(
         row.company_id,
         modes.twoN.ac_base_url,
-        modes.twoN.ac_api_token,
+        decryptSetting(modes.twoN.ac_api_token),
         row.company_name ?? row.company_id
       );
     }
@@ -331,7 +332,7 @@ export async function restartCompanyConnection(companyId: string): Promise<void>
     await startCompanyConnection(
       companyId,
       modes.twoN.ac_base_url,
-      modes.twoN.ac_api_token,
+      decryptSetting(modes.twoN.ac_api_token),
       row.company_name ?? companyId
     );
   }
