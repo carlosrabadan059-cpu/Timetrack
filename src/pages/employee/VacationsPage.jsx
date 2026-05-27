@@ -388,7 +388,6 @@ export default function VacationsPage() {
                                                 className={`vreq-cancel-btn${confirmCancel === r.id ? ' confirm' : ''}`}
                                                 onClick={() => handleCancel(r.id)}
                                                 disabled={cancelling && confirmCancel === r.id}
-                                                onBlur={() => setConfirmCancel(null)}
                                             >
                                                 {confirmCancel === r.id
                                                     ? (cancelling ? 'Cancelando...' : '¿Confirmar cancelación?')
