@@ -259,6 +259,47 @@ vacaciones.post(
   }
 );
 
+// ── DELETE /api/me/vacaciones/:id ─────────────────────────────────────────────
+vacaciones.delete('/:id', async (c) => {
+  const user = c.get('user');
+  const { id } = c.req.param();
+  const supabaseAdmin = getSupabaseAdmin();
+
+  const { data: vac, error: fetchError } = await supabaseAdmin
+    .from('vacation_requests')
+    .select('id, status, company_id')
+    .eq('id', id)
+    .eq('user_id', user.id)
+    .single();
+
+  if (fetchError || !vac) {
+    return c.json({ error: { code: 'not_found', message: 'Solicitud no encontrada' } }, 404);
+  }
+
+  if ((vac as { status: string }).status !== 'pending') {
+    return c.json({ error: { code: 'conflict', message: 'Solo se pueden cancelar solicitudes pendientes' } }, 409);
+  }
+
+  const { error: deleteError } = await supabaseAdmin
+    .from('vacation_requests')
+    .delete()
+    .eq('id', id);
+
+  if (deleteError) {
+    return c.json({ error: { code: 'internal_error', message: 'Error al cancelar la solicitud' } }, 500);
+  }
+
+  if (user.company_id) {
+    sseBroadcaster.emitToCompany(user.company_id, {
+      type: 'vacacion_event',
+      action: 'cancelled',
+      vacacion_id: id,
+    });
+  }
+
+  return c.json({ data: { cancelled: true } });
+});
+
 export default vacaciones;
 
 // ── Admin/Manager routes (/api/vacaciones) ────────────────────────────────────

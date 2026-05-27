@@ -178,6 +178,10 @@ export default function VacationsPage() {
     const [formError, setFormError] = useState('');
     const [submitting, setSubmitting] = useState(false);
 
+    // Cancel state: id of request pending confirmation, null otherwise
+    const [confirmCancel, setConfirmCancel] = useState(null);
+    const [cancelling, setCancelling] = useState(false);
+
     const loadData = useCallback(async () => {
         setLoading(true);
         try {
@@ -230,6 +234,20 @@ export default function VacationsPage() {
             setFormError(err?.data?.error?.message ?? err?.message ?? 'Error al enviar solicitud');
         } finally {
             setSubmitting(false);
+        }
+    };
+
+    const handleCancel = async (id) => {
+        if (confirmCancel !== id) { setConfirmCancel(id); return; }
+        setCancelling(true);
+        try {
+            await api.delete(`/api/me/vacaciones/${id}`);
+            setConfirmCancel(null);
+            loadData();
+        } catch (err) {
+            setConfirmCancel(null);
+        } finally {
+            setCancelling(false);
         }
     };
 
@@ -362,6 +380,20 @@ export default function VacationsPage() {
                                         <div className="vreq-manager-note">
                                             <Info size={13} />
                                             <span>{r.manager_note}</span>
+                                        </div>
+                                    )}
+                                    {r.status === 'pending' && (
+                                        <div className="vreq-cancel-row">
+                                            <button
+                                                className={`vreq-cancel-btn${confirmCancel === r.id ? ' confirm' : ''}`}
+                                                onClick={() => handleCancel(r.id)}
+                                                disabled={cancelling && confirmCancel === r.id}
+                                                onBlur={() => setConfirmCancel(null)}
+                                            >
+                                                {confirmCancel === r.id
+                                                    ? (cancelling ? 'Cancelando...' : '¿Confirmar cancelación?')
+                                                    : 'Cancelar solicitud'}
+                                            </button>
                                         </div>
                                     )}
                                 </Card>
