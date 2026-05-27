@@ -2,11 +2,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Users, Clock, AlertTriangle } from 'lucide-react';
 import { StatCard, Card } from '../../components/ui';
-import { api } from '../../lib/api';
+import { api, BASE_URL } from '../../lib/api';
 import { supabase } from '../../lib/supabase';
 import './AdminDashboardPage.css';
-
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 function fmtTime(ts) {
     if (!ts) return null;

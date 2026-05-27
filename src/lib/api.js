@@ -1,7 +1,8 @@
 import { supabase } from './supabase';
 
-// Conexión del cliente API con el backend (inyectado desde variables de entorno o local)
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+export { BASE_URL };
 
 async function getToken() {
     const { data } = await supabase.auth.getSession();

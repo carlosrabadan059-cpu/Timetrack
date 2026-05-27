@@ -1,11 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Search, MapPin, Smartphone, Globe, Lock, PenLine } from 'lucide-react';
 import { Card } from '../../components/ui';
-import { api } from '../../lib/api';
+import { api, BASE_URL } from '../../lib/api';
 import { supabase } from '../../lib/supabase';
 import './AdminAttendancePage.css';
-
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 function fmtDateTime(ts) {
     const d = new Date(ts);

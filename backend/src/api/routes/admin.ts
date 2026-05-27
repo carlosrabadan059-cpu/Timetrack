@@ -426,8 +426,8 @@ admin.post('/settings/test-ac', requireRole(['admin', 'manager']), async (c) => 
   if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
     return c.json({ error: { code: 'invalid_url', message: 'La URL de 2N AC debe usar http o https' } }, 422);
   }
-  // Block cloud metadata endpoints and localhost that are not the AC device
-  const blocked = /^(169\.254\.|0\.0\.0\.0|::1$|metadata\.google|169\.254\.169\.254)/i;
+  // Block cloud metadata and loopback — LAN IPs allowed because the AC lives at 192.168.x.x
+  const blocked = /^(169\.254\.|0\.0\.0\.0|::1$|metadata\.google|169\.254\.169\.254|127\.)/i;
   if (blocked.test(parsedUrl.hostname)) {
     return c.json({ error: { code: 'invalid_url', message: 'URL de destino no permitida' } }, 422);
   }

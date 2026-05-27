@@ -5,11 +5,9 @@ import {
     Utensils, Coffee, Stethoscope, MoreHorizontal, Briefcase, ArrowUpDown
 } from 'lucide-react';
 import { Card, Button, Modal } from '../../components/ui';
-import { api } from '../../lib/api';
+import { api, BASE_URL } from '../../lib/api';
 import { supabase } from '../../lib/supabase';
 import './HistoryPage.css';
-
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 function fmtMinutes(mins) {
     if (!mins) return '0h 0m';

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { api } from '../../lib/api';
+import { api, BASE_URL } from '../../lib/api';
 import { supabase } from '../../lib/supabase';
 import {
     Clock, Activity, Timer, Play, Square,
@@ -9,8 +9,6 @@ import {
 import { StatCard, Card, Button } from '../../components/ui';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import './DashboardPage.css';
-
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 function getDeviceInfo() {
     const ua = navigator.userAgent;

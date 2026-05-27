@@ -5,6 +5,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { bodyLimit } from 'hono/body-limit';
+import { secureHeaders } from 'hono/secure-headers';
 import { authMiddleware } from './api/middleware/auth.js';
 import meRoutes from './api/routes/me.js';
 import historialRoutes from './api/routes/historial.js';
@@ -37,6 +38,7 @@ app.use('*', cors({
   credentials: true,
 }));
 app.use('*', bodyLimit({ maxSize: 1 * 1024 * 1024 })); // 1 MB global limit
+app.use('*', secureHeaders());
 if (process.env['NODE_ENV'] !== 'production') {
   app.use('*', logger());
 }

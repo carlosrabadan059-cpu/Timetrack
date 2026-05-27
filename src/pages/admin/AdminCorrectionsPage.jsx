@@ -1,12 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { StatCard, Card, Button } from '../../components/ui';
-import { api } from '../../lib/api';
+import { api, BASE_URL } from '../../lib/api';
 import { useCorrections } from '../../contexts/CorrectionsContext';
 import { supabase } from '../../lib/supabase';
 import { CheckCircle, XCircle, AlertCircle, FileText, Filter, Search, CalendarCheck } from 'lucide-react';
 import './AdminCorrectionsPage.css';
-
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const TYPE_LABELS = {
     correccion: 'Corrección',

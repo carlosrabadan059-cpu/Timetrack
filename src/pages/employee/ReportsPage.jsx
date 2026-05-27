@@ -1,9 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Card, Button, StatCard } from '../../components/ui';
-import { api } from '../../lib/api';
+import { api, BASE_URL } from '../../lib/api';
 import { supabase } from '../../lib/supabase';
-
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 import { FileText, FileSpreadsheet, Calendar, BarChart3, ChevronLeft, ChevronRight, Timer } from 'lucide-react';
 import './ReportsPage.css';
 
