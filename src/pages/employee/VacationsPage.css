@@ -213,29 +213,29 @@
     font-weight: var(--font-weight-semibold);
 }
 
-/* Nacional: rojo */
+/* Nacional: rojo vivo */
 .vcal-cell.holiday-nacional {
-    background: #fee2e2;
-    outline: 1px solid #ef4444;
-    outline-offset: -1px;
+    background: #fecaca;
+    outline: 2px solid #dc2626;
+    outline-offset: -2px;
 }
-.vcal-cell.holiday-nacional .vcal-day-num { color: #991b1b; }
+.vcal-cell.holiday-nacional .vcal-day-num { color: #7f1d1d; font-weight: var(--font-weight-bold); }
 
-/* Autonómico: naranja */
+/* Autonómico: azul */
 .vcal-cell.holiday-autonomico {
-    background: #ffedd5;
-    outline: 1px solid #f97316;
-    outline-offset: -1px;
+    background: #bfdbfe;
+    outline: 2px solid #2563eb;
+    outline-offset: -2px;
 }
-.vcal-cell.holiday-autonomico .vcal-day-num { color: #9a3412; }
+.vcal-cell.holiday-autonomico .vcal-day-num { color: #1e3a8a; font-weight: var(--font-weight-bold); }
 
-/* Local: ámbar */
+/* Local: verde */
 .vcal-cell.holiday-local {
-    background: #fef3c7;
-    outline: 1px solid #f59e0b;
-    outline-offset: -1px;
+    background: #bbf7d0;
+    outline: 2px solid #16a34a;
+    outline-offset: -2px;
 }
-.vcal-cell.holiday-local .vcal-day-num { color: #92400e; }
+.vcal-cell.holiday-local .vcal-day-num { color: #14532d; font-weight: var(--font-weight-bold); }
 
 /* Cells with approved requests — text becomes white */
 .vcal-cell.has-request.status-approved .vcal-day-num {
@@ -276,10 +276,10 @@
     border: 1px solid var(--color-border);
 }
 
-.legend-swatch.holiday-swatch { border: 1px solid; }
-.legend-swatch.holiday-swatch.holiday-nacional  { background: #fee2e2; border-color: #ef4444; }
-.legend-swatch.holiday-swatch.holiday-autonomico { background: #ffedd5; border-color: #f97316; }
-.legend-swatch.holiday-swatch.holiday-local     { background: #fef3c7; border-color: #f59e0b; }
+.legend-swatch.holiday-swatch { border: 2px solid; }
+.legend-swatch.holiday-swatch.holiday-nacional  { background: #fecaca; border-color: #dc2626; }
+.legend-swatch.holiday-swatch.holiday-autonomico { background: #bfdbfe; border-color: #2563eb; }
+.legend-swatch.holiday-swatch.holiday-local     { background: #bbf7d0; border-color: #16a34a; }
 
 .legend-swatch.pending-swatch {
     background: #d1fae5;
