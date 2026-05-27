@@ -583,4 +583,40 @@ me.get('/live', (c) => {
   });
 });
 
+// ── GET /api/me/company-settings ─────────────────────────────────────────────
+// Public company settings accessible to all authenticated employees
+
+me.get('/company-settings', async (c) => {
+  const user = c.get('user');
+  const sb = getSupabaseAdmin();
+
+  if (!user.company_id) {
+    return c.json({
+      data: {
+        holidays: [],
+        work_schedule_days: [1, 2, 3, 4, 5],
+        vacation_days_per_year: 22,
+      },
+    });
+  }
+
+  const { data, error } = await sb
+    .from('company_settings')
+    .select('holidays, work_schedule_days, vacation_days_per_year')
+    .eq('company_id', user.company_id)
+    .maybeSingle();
+
+  if (error) {
+    return c.json({ error: { code: 'internal_error', message: error.message } }, 500);
+  }
+
+  return c.json({
+    data: {
+      holidays: (data as { holidays?: unknown[] } | null)?.holidays ?? [],
+      work_schedule_days: (data as { work_schedule_days?: number[] } | null)?.work_schedule_days ?? [1, 2, 3, 4, 5],
+      vacation_days_per_year: (data as { vacation_days_per_year?: number } | null)?.vacation_days_per_year ?? 22,
+    },
+  });
+});
+
 export default me;

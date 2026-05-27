@@ -188,13 +188,13 @@ export default function VacationsPage() {
             const [reqRes, balRes, settingsRes] = await Promise.all([
                 api.get('/api/me/vacaciones', { year, limit: 100 }),
                 api.get('/api/me/vacaciones/balance', { year }),
-                api.get('/api/admin/settings').catch(() => null),
+                api.get('/api/me/company-settings').catch(() => null),
             ]);
             setRequests(reqRes.data?.items ?? []);
             setBalance(balRes.data ?? { total: 22, used: 0, remaining: 22 });
             if (settingsRes?.data) {
                 setSettings({
-                    work_schedule_days: settingsRes.data.work_schedule?.days ?? [1,2,3,4,5],
+                    work_schedule_days: settingsRes.data.work_schedule_days ?? [1,2,3,4,5],
                     holidays: settingsRes.data.holidays ?? [],
                 });
             }
