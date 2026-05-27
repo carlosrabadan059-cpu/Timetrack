@@ -5,7 +5,7 @@ import type { AppVariables } from '../../types/api.types.js';
 // TODO: replace with Redis for multi-instance deployments
 const fichajeTimestamps = new Map<string, number>();
 
-const FICHAJE_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
+const FICHAJE_WINDOW_MS = 5 * 1000; // 5 seconds
 
 /**
  * Rate limiter for POST /api/me/fichar.
