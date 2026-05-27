@@ -181,6 +181,7 @@ export default function VacationsPage() {
     // Cancel state: id of request pending confirmation, null otherwise
     const [confirmCancel, setConfirmCancel] = useState(null);
     const [cancelling, setCancelling] = useState(false);
+    const [cancelError, setCancelError] = useState('');
 
     const loadData = useCallback(async () => {
         setLoading(true);
@@ -238,13 +239,15 @@ export default function VacationsPage() {
     };
 
     const handleCancel = async (id) => {
-        if (confirmCancel !== id) { setConfirmCancel(id); return; }
+        if (confirmCancel !== id) { setConfirmCancel(id); setCancelError(''); return; }
         setCancelling(true);
+        setCancelError('');
         try {
             await api.delete(`/api/me/vacaciones/${id}`);
             setConfirmCancel(null);
             loadData();
         } catch (err) {
+            setCancelError(err?.message ?? 'Error al cancelar');
             setConfirmCancel(null);
         } finally {
             setCancelling(false);
@@ -384,6 +387,11 @@ export default function VacationsPage() {
                                     )}
                                     {r.status === 'pending' && (
                                         <div className="vreq-cancel-row">
+                                            {cancelError && confirmCancel === null && (
+                                                <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-error)', marginRight: 'auto' }}>
+                                                    {cancelError}
+                                                </span>
+                                            )}
                                             <button
                                                 className={`vreq-cancel-btn${confirmCancel === r.id ? ' confirm' : ''}`}
                                                 onClick={() => handleCancel(r.id)}
