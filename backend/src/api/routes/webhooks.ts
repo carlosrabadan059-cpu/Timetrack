@@ -313,7 +313,7 @@ webhooks.post('/2n-device/:companyId', async (c) => {
 // each event. Auth: X-Node-Red-Secret header matches NODE_RED_SECRET env var.
 
 // Accept both flat (our tests) and native 2N AC format (Category/Person/Device/...)
-const nodeRedEventSchema = z.record(z.unknown());
+const nodeRedEventSchema = z.record(z.string(), z.unknown());
 
 webhooks.post('/node-red/access-event', async (c) => {
   const secret = c.req.header('X-Node-Red-Secret');

@@ -15,12 +15,12 @@ const fichajesQuerySchema = z.object({
   user_id: z.string().uuid().optional(),
   employee_code: z.string().optional(),
   company_name: z.string().optional(),
-  start_date: z.string().datetime({ precision: 3 }).optional(),
-  end_date: z.string().datetime({ precision: 3 }).optional(),
+  start_date: z.string().datetime().optional(),
+  end_date: z.string().datetime().optional(),
   source: z.enum(['web', 'mobile', 'signalr', 'correction']).optional(),
   format: z.enum(['json', 'pdf', 'csv']).default('json'),
-  page: z.string().regex(/^\d+$/).transform(Number).default('1'),
-  limit: z.string().regex(/^\d+$/).transform(Number).default('50'),
+  page: z.string().regex(/^\d+$/).transform(Number).default(1),
+  limit: z.string().regex(/^\d+$/).transform(Number).default(50),
 });
 
 const M = 50;

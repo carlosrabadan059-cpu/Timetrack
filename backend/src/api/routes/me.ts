@@ -18,7 +18,7 @@ import {
 // which has `data: never` on failure). This type matches the actual hook argument.
 type HookResult<T> =
   | { success: true; data: T; target: string }
-  | { success: false; error: z.ZodError; data: T; target: string };
+  | { success: false; error: { issues: Array<{ message: string }> }; data: T; target: string };
 
 function zodErrorHook<T>(result: HookResult<T>, c: Context): Response | void {
   if (!result.success) {

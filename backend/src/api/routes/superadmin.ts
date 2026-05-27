@@ -21,8 +21,8 @@ const clockingModesSchema = z.object({
     ac_base_url: z.string().url().nullable().default(null),
     ac_api_token: z.string().nullable().default(null),
     device_webhook_secret: z.string().nullable().default(null),
-  }).default({}),
-}).default({});
+  }).default({ enabled: false, type: null, ac_base_url: null, ac_api_token: null, device_webhook_secret: null }),
+}).default({ web: true, mobile: true, twoN: { enabled: false, type: null, ac_base_url: null, ac_api_token: null, device_webhook_secret: null } });
 
 const createCompanySchema = z.object({
   name: z.string().min(1).max(200),
