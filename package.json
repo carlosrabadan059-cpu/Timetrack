@@ -16,7 +16,7 @@
     "jspdf-autotable": "^5.0.8",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.468.0",
-    "react": "^18.3.1",
+    "react": "^19.2.6",
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
     "react-router-dom": "^7.1.1",
@@ -28,7 +28,7 @@
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@tailwindcss/postcss": "^4.2.1",
-    "@types/react": "^18.3.18",
+    "@types/react": "^19.2.15",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^5.2.0",
     "autoprefixer": "^10.4.24",
