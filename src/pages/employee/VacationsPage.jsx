@@ -52,10 +52,16 @@ function fmtDate(str) {
     return new Date(str + 'T12:00:00').toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
+const HOLIDAY_TYPE_LABELS = {
+    nacional:   'Nacional',
+    autonomico: 'Autonómico',
+    local:      'Local',
+};
+
 // ── MonthGrid component ───────────────────────────────────────────────────────
 function MonthGrid({ year, month, holidays, workDays, requests, onDayClick }) {
     const holidayMap = {};
-    holidays.forEach(h => { holidayMap[h.date] = h.name; });
+    holidays.forEach(h => { holidayMap[h.date] = { name: h.name, type: h.type ?? 'nacional' }; });
 
     const workDaySet = new Set(workDays);
 
@@ -95,16 +101,19 @@ function MonthGrid({ year, month, holidays, workDays, requests, onDayClick }) {
         const ds = toDateStr(date);
         const dow = date.getDay(); // 0=Sun, 6=Sat
         const isWeekend = dow === 0 || dow === 6;
-        const isHoliday = !!holidayMap[ds];
+        const holidayInfo = holidayMap[ds];
+        const isHoliday = !!holidayInfo;
         const isBlocked = isWeekend || isHoliday;
         const dayReqs = dayRequests[ds] ?? [];
 
         let cellClass = 'vcal-cell';
         let cellStyle = {};
-        let title = isHoliday ? holidayMap[ds] : undefined;
+        let title = isHoliday
+            ? `${holidayInfo.name} · ${HOLIDAY_TYPE_LABELS[holidayInfo.type] ?? holidayInfo.type}`
+            : undefined;
 
         if (isWeekend) cellClass += ' weekend';
-        else if (isHoliday) cellClass += ' holiday';
+        else if (isHoliday) cellClass += ` holiday holiday-${holidayInfo.type ?? 'nacional'}`;
         else if (dayReqs.length > 0) {
             const req = dayReqs[0];
             const cfg = TYPE_CONFIG[req.type];
@@ -290,8 +299,16 @@ export default function VacationsPage() {
                     <span>Fin de semana</span>
                 </div>
                 <div className="legend-item">
-                    <div className="legend-swatch holiday-swatch" />
-                    <span>Festivo</span>
+                    <div className="legend-swatch holiday-swatch holiday-nacional" />
+                    <span>Festivo nacional</span>
+                </div>
+                <div className="legend-item">
+                    <div className="legend-swatch holiday-swatch holiday-autonomico" />
+                    <span>Festivo autonómico</span>
+                </div>
+                <div className="legend-item">
+                    <div className="legend-swatch holiday-swatch holiday-local" />
+                    <span>Festivo local</span>
                 </div>
                 {Object.entries(TYPE_CONFIG).map(([type, cfg]) => (
                     <div className="legend-item" key={type}>
