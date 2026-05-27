@@ -265,15 +265,18 @@ vacaciones.delete('/:id', async (c) => {
   const { id } = c.req.param();
   const supabaseAdmin = getSupabaseAdmin();
 
-  const { data: vac, error: fetchError } = await supabaseAdmin
+  const { data: vac } = await supabaseAdmin
     .from('vacation_requests')
-    .select('id, status, company_id')
+    .select('id, status, user_id, company_id')
     .eq('id', id)
-    .eq('user_id', user.id)
-    .single();
+    .maybeSingle();
 
-  if (fetchError || !vac) {
+  if (!vac) {
     return c.json({ error: { code: 'not_found', message: 'Solicitud no encontrada' } }, 404);
+  }
+
+  if ((vac as { user_id: string }).user_id !== user.id) {
+    return c.json({ error: { code: 'forbidden', message: 'No tienes permiso para cancelar esta solicitud' } }, 403);
   }
 
   if ((vac as { status: string }).status !== 'pending') {
