@@ -18,6 +18,8 @@ import AdminAttendancePage from './pages/admin/AdminAttendancePage';
 import AdminEmployeesPage from './pages/admin/AdminEmployeesPage';
 import AdminEmployeeDetailPage from './pages/admin/AdminEmployeeDetailPage';
 import AdminSettingsPage from './pages/admin/AdminSettingsPage';
+import AdminVacacionesPage from './pages/admin/AdminVacacionesPage';
+import VacationsPage from './pages/employee/VacationsPage';
 import SuperAdminLayout from './layouts/SuperAdminLayout';
 import SuperAdminCompaniesPage from './pages/superadmin/SuperAdminCompaniesPage';
 
@@ -74,6 +76,7 @@ function App() {
                 <Route path="dashboard" element={<DashboardPage />} />
                 <Route path="historial" element={<HistoryPage />} />
                 <Route path="correcciones" element={<CorrectionPage />} />
+                <Route path="vacaciones" element={<VacationsPage />} />
                 <Route path="reportes" element={<ReportsPage />} />
                 <Route path="perfil" element={<ProfilePage />} />
             </Route>
@@ -102,6 +105,7 @@ function App() {
             >
                 <Route index element={<AdminDashboardPage />} />
                 <Route path="correcciones" element={<AdminCorrectionsPage />} />
+                <Route path="vacaciones" element={<AdminVacacionesPage />} />
                 <Route path="empleados" element={<AdminEmployeesPage />} />
                 <Route path="empleados/:id" element={<AdminEmployeeDetailPage />} />
                 <Route path="fichajes" element={<AdminAttendancePage />} />

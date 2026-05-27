@@ -1,0 +1,490 @@
+/* VacationsPage Styles */
+
+.vacations-page {
+    padding: var(--space-6);
+    animation: fadeIn var(--transition-normal) ease-out;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────────── */
+
+.vacations-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--space-6);
+}
+
+.vacations-title {
+    font-size: var(--font-size-2xl);
+    margin: 0 0 var(--space-1);
+}
+
+.vacations-subtitle {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    margin: 0;
+}
+
+/* ── Balance Pills ───────────────────────────────────────────────────────────── */
+
+.vacation-balance {
+    display: flex;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+    flex-wrap: wrap;
+}
+
+.balance-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-lg);
+    min-width: 100px;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+}
+
+.balance-pill.total {
+    border-left: 3px solid var(--color-text-muted);
+}
+
+.balance-pill.used {
+    border-left: 3px solid var(--color-warning);
+}
+
+.balance-pill.remaining {
+    border-left: 3px solid var(--color-success);
+}
+
+.balance-num {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+}
+
+.balance-lbl {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    margin-top: var(--space-1);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* ── Year navigation ─────────────────────────────────────────────────────────── */
+
+.vacation-year-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+}
+
+.year-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-card);
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    transition: background var(--transition-fast);
+}
+
+.year-nav-btn:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+}
+
+.year-label {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    min-width: 60px;
+    text-align: center;
+}
+
+/* ── Annual Calendar Grid ────────────────────────────────────────────────────── */
+
+.vcal-annual {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+}
+
+@media (max-width: 1100px) {
+    .vcal-annual { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+    .vcal-annual { grid-template-columns: 1fr; }
+}
+
+/* ── Monthly grid ──────────────────────────────────────────────────────────── */
+
+.vcal-month {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+}
+
+.vcal-month-title {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-bottom: var(--space-3);
+}
+
+.vcal-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: var(--space-1);
+}
+
+.vcal-weekday {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-muted);
+    text-align: center;
+    padding: var(--space-1) 0;
+}
+
+.vcal-weekday:nth-child(6),
+.vcal-weekday:nth-child(7) {
+    color: var(--color-error);
+    opacity: 0.6;
+}
+
+.vcal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.vcal-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background var(--transition-fast);
+    position: relative;
+}
+
+.vcal-cell.empty {
+    cursor: default;
+}
+
+.vcal-cell:not(.empty):not(.weekend):not(.holiday):not(.has-request):hover {
+    background: var(--color-bg-secondary);
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: -2px;
+}
+
+.vcal-day-num {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Weekend cells */
+.vcal-cell.weekend {
+    background: var(--color-border-light);
+    cursor: default;
+}
+
+.vcal-cell.weekend .vcal-day-num {
+    color: var(--color-text-muted);
+}
+
+/* Holiday cells */
+.vcal-cell.holiday {
+    background: #FEF3C7;
+    cursor: default;
+    outline: 1px solid #F59E0B;
+    outline-offset: -1px;
+}
+
+.vcal-cell.holiday .vcal-day-num {
+    color: #92400E;
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Cells with approved requests — text becomes white */
+.vcal-cell.has-request.status-approved .vcal-day-num {
+    color: #fff;
+    font-weight: var(--font-weight-semibold);
+}
+
+/* ── Legend ─────────────────────────────────────────────────────────────────── */
+
+.vcal-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.legend-swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+}
+
+.legend-swatch.weekend-swatch {
+    background: var(--color-border-light);
+    border: 1px solid var(--color-border);
+}
+
+.legend-swatch.holiday-swatch {
+    background: #FEF3C7;
+    border: 1px solid #F59E0B;
+}
+
+.legend-swatch.pending-swatch {
+    background: #d1fae5;
+    outline: 2px dashed var(--color-success);
+    outline-offset: -2px;
+}
+
+/* ── Requests section ───────────────────────────────────────────────────────── */
+
+.vacation-requests-section h2 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-4);
+}
+
+.vacation-request-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.vacation-request-card {
+    transition: transform var(--transition-fast);
+}
+
+.vacation-request-card:hover {
+    transform: translateX(4px);
+}
+
+.vreq-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.vreq-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.vreq-type-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.vreq-type-label {
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+}
+
+.vreq-dates {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.vreq-days {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+}
+
+.vreq-reason {
+    margin: var(--space-2) 0 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.vreq-manager-note {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-secondary);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+/* ── Empty state ─────────────────────────────────────────────────────────────── */
+
+.vacations-empty {
+    text-align: center;
+    padding: var(--space-12) var(--space-6) !important;
+}
+
+.vacations-empty .empty-icon {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-3);
+}
+
+.vacations-loading {
+    text-align: center;
+    padding: var(--space-12);
+    color: var(--color-text-muted);
+}
+
+/* ── Modal Form ──────────────────────────────────────────────────────────────── */
+
+.vacation-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.vform-type-selector {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.vform-type-btn {
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--color-border);
+    background: var(--color-bg-card);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    color: var(--color-text-primary);
+}
+
+.vform-type-btn:hover {
+    border-color: var(--type-color, var(--color-success));
+    color: var(--type-color, var(--color-success));
+}
+
+.vform-type-btn.active {
+    border-color: var(--type-color, var(--color-success));
+    background: var(--type-color, var(--color-success));
+    color: #fff;
+    font-weight: var(--font-weight-semibold);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.form-label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+}
+
+.form-label-hint {
+    font-weight: var(--font-weight-normal);
+    color: var(--color-text-muted);
+}
+
+.form-input,
+.form-textarea {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    background: var(--color-bg-card);
+    color: var(--color-text-primary);
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color var(--transition-fast);
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--color-accent-primary);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.vform-days-preview {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.days-ok { color: var(--color-success); font-weight: var(--font-weight-medium); }
+.days-warning { color: var(--color-error); font-weight: var(--font-weight-medium); }
+
+.form-error {
+    color: var(--color-error);
+    font-size: var(--font-size-sm);
+    margin: 0;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-border);
+}
+
+/* ── Badges ──────────────────────────────────────────────────────────────────── */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    border-radius: var(--radius-full, 9999px);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    white-space: nowrap;
+}
+
+.badge-success  { background: #d1fae5; color: #065f46; }
+.badge-warning  { background: #fef3c7; color: #92400e; }
+.badge-danger   { background: #fee2e2; color: #991b1b; }

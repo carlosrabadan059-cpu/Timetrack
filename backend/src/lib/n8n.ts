@@ -15,6 +15,8 @@ const WEBHOOK_PATHS = {
   'credential-pin': '/webhook/credential-pin',
   'incidencia-nueva': '/webhook/incidencia-nueva',
   'incidencia-resuelta': '/webhook/incidencia-resuelta',
+  'vacacion-nueva': '/webhook/vacacion-nueva',
+  'vacacion-resuelta': '/webhook/vacacion-resuelta',
 } as const;
 
 export type N8nWorkflow = keyof typeof WEBHOOK_PATHS;

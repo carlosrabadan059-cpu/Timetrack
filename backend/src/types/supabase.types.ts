@@ -39,6 +39,7 @@ export type CompanySettings = {
   work_schedule_days: number[];
   branches: unknown[];
   holidays: unknown[];
+  vacation_days_per_year: number;
   clocking_modes: ClockingModes;
   updated_at: string | null;
 };
@@ -96,6 +97,22 @@ export type Incidencia = {
   reviewed_by: string | null;
   reviewed_at: string | null;
   access_log_id: string | null;
+  created_at: string;
+};
+
+export type VacationRequest = {
+  id: string;
+  user_id: string;
+  company_id: string;
+  type: 'vacaciones' | 'permiso_retribuido' | 'asuntos_propios';
+  start_date: string;
+  end_date: string;
+  working_days: number;
+  reason: string | null;
+  status: 'pending' | 'approved' | 'rejected';
+  manager_note: string | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
   created_at: string;
 };
 

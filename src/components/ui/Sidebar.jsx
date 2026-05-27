@@ -14,7 +14,9 @@ import {
     BarChart3,
     Settings,
     Building2,
-    ChevronUp
+    ChevronUp,
+    Calendar,
+    CalendarRange,
 } from 'lucide-react';
 import './Sidebar.css';
 
@@ -43,6 +45,7 @@ const Sidebar = ({ variant = 'employee' }) => {
         { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
         { to: '/historial', icon: History, label: 'Historial' },
         { to: '/correcciones', icon: ClipboardList, label: 'Incidencias' },
+        { to: '/vacaciones', icon: Calendar, label: 'Vacaciones' },
         { to: '/reportes', icon: FileText, label: 'Reportes' },
         { to: '/perfil', icon: User, label: 'Perfil' }
     ];
@@ -57,6 +60,7 @@ const Sidebar = ({ variant = 'employee' }) => {
             label: 'Incidencias',
             badge: pendingIncidents > 0 ? pendingIncidents : null
         },
+        { to: '/admin/vacaciones', icon: CalendarRange, label: 'Vacaciones' },
         { to: '/admin/informes', icon: BarChart3, label: 'Informes' },
         { to: '/admin/configuracion', icon: Settings, label: 'Configuración' }
     ];

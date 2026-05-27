@@ -65,7 +65,7 @@ const DEFAULT_CLOCKING_MODES = {
 const DEFAULT_SETTINGS = {
     company: { name: '', cif: '', address: '', email: '' },
     branches: [],
-    rules: { geoFenceRadius: 100, courtesyMinutes: 15, latitude: 40.4168, longitude: -3.7038, flexibleScheduleEnabled: false, flexibleScheduleMinutes: 15 },
+    rules: { geoFenceRadius: 100, courtesyMinutes: 15, latitude: 40.4168, longitude: -3.7038, flexibleScheduleEnabled: false, flexibleScheduleMinutes: 15, vacationDaysPerYear: 22 },
     work_schedule: { start: '09:00', end: '18:00', days: [1, 2, 3, 4, 5] },
     holidays: [],
     clocking_modes: DEFAULT_CLOCKING_MODES,
@@ -572,6 +572,25 @@ const AdminSettingsPage = () => {
                                             </p>
                                         </div>
                                     )}
+                                </div>
+                            </Card>
+
+                            <Card title="Vacaciones">
+                                <div className="settings-group">
+                                    <label className="settings-label">Días de vacaciones anuales</label>
+                                    <Input
+                                        type="number"
+                                        min={1}
+                                        max={365}
+                                        value={settings.rules?.vacationDaysPerYear ?? 22}
+                                        onChange={(e) => {
+                                            const v = Math.min(365, Math.max(1, parseInt(e.target.value) || 22));
+                                            handleRuleChange('vacationDaysPerYear', v);
+                                        }}
+                                    />
+                                    <p className="settings-help">
+                                        Días laborables de vacaciones anuales para todos los empleados.
+                                    </p>
                                 </div>
                             </Card>
 

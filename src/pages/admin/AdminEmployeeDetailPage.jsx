@@ -207,11 +207,97 @@ function TabIncidencias({ userId }) {
     );
 }
 
+// ── Tab: Vacaciones ───────────────────────────────────────────────────────────
+const VAC_TYPE_CONFIG = {
+    vacaciones:         { label: 'Vacaciones',        color: '#10B981' },
+    permiso_retribuido: { label: 'Permiso retribuido', color: '#3B82F6' },
+    asuntos_propios:    { label: 'Asuntos propios',    color: '#7C3AED' },
+};
+
+function TabVacaciones({ userId }) {
+    const [items, setItems]   = useState([]);
+    const [total, setTotal]   = useState(0);
+    const [page, setPage]     = useState(1);
+    const [loading, setLoading] = useState(true);
+    const LIMIT = 20;
+
+    const load = useCallback(async () => {
+        setLoading(true);
+        try {
+            const res = await api.get('/api/vacaciones', { user_id: userId, page, limit: LIMIT });
+            setItems(res.data?.items ?? []);
+            setTotal(res.data?.total ?? 0);
+        } catch { /* keep */ } finally { setLoading(false); }
+    }, [userId, page]);
+
+    useEffect(() => { load(); }, [load]);
+
+    const totalPages = Math.max(1, Math.ceil(total / LIMIT));
+
+    return (
+        <div>
+            <Card padding="none">
+                <div className="table-responsive">
+                    <table className="data-table">
+                        <thead>
+                            <tr>
+                                <th>Período</th>
+                                <th>Tipo</th>
+                                <th>Días</th>
+                                <th>Estado</th>
+                                <th>Solicitada</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {loading ? (
+                                <tr><td colSpan={5} className="table-empty">Cargando...</td></tr>
+                            ) : items.length === 0 ? (
+                                <tr><td colSpan={5} className="table-empty">Sin solicitudes</td></tr>
+                            ) : items.map((v) => {
+                                const cfg = VAC_TYPE_CONFIG[v.type] ?? VAC_TYPE_CONFIG.vacaciones;
+                                return (
+                                    <tr key={v.id}>
+                                        <td>
+                                            <strong>{fmtDate(v.start_date)}</strong>
+                                            {v.start_date !== v.end_date && <> – {fmtDate(v.end_date)}</>}
+                                        </td>
+                                        <td>
+                                            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: cfg.color, flexShrink: 0 }} />
+                                                {cfg.label}
+                                            </span>
+                                        </td>
+                                        <td className="text-muted">{v.working_days}</td>
+                                        <td>
+                                            <span className={`badge ${STATUS_CLS[v.status] ?? 'badge-neutral'}`}>
+                                                {STATUS_LABELS[v.status] ?? v.status}
+                                            </span>
+                                        </td>
+                                        <td className="text-muted">{fmtDate(v.created_at)}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </Card>
+            {totalPages > 1 && (
+                <div className="pagination">
+                    <Button variant="ghost" icon={ChevronLeft} onClick={() => setPage(p => p - 1)} disabled={page === 1} className="btn-icon-only" />
+                    <span className="pagination-info">Página {page} de {totalPages}</span>
+                    <Button variant="ghost" icon={ChevronRight} onClick={() => setPage(p => p + 1)} disabled={page === totalPages} className="btn-icon-only" />
+                </div>
+            )}
+        </div>
+    );
+}
+
 // ── Main Page ─────────────────────────────────────────────────────────────────
 const TABS = [
     { id: 'info',        label: 'Información' },
     { id: 'fichajes',    label: 'Fichajes' },
     { id: 'incidencias', label: 'Incidencias' },
+    { id: 'vacaciones',  label: 'Vacaciones' },
 ];
 
 const AdminEmployeeDetailPage = () => {
@@ -274,6 +360,7 @@ const AdminEmployeeDetailPage = () => {
                         {tab === 'info'        && <Card padding="md"><TabInfo profile={profile} /></Card>}
                         {tab === 'fichajes'    && <TabFichajes userId={id} />}
                         {tab === 'incidencias' && <TabIncidencias userId={id} />}
+                        {tab === 'vacaciones'  && <TabVacaciones userId={id} />}
                     </div>
                 </>
             )}
