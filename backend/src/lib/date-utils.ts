@@ -10,12 +10,16 @@ const DAYS_ES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 const DAYS_FULL_ES = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 
 /**
- * Infers the detail_type based on fichaje timestamp hour (local time).
- * 13:00–15:59 → 'comida', otherwise → 'normal'
+ * Infers the detail_type based on fichaje timestamp hour (UTC).
+ * The server runs in UTC; Spain is UTC+1 (CET) or UTC+2 (CEST).
+ * Spanish lunch 13:00–15:59 local maps to:
+ *   - CEST (UTC+2): 11:00–13:59 UTC
+ *   - CET  (UTC+1): 12:00–14:59 UTC
+ * Using UTC 11:00–14:59 covers both winter and summer.
  */
 export function inferDetailType(timestamp: string): 'normal' | 'comida' {
-  const hour = new Date(timestamp).getHours();
-  return hour >= 13 && hour < 16 ? 'comida' : 'normal';
+  const hour = new Date(timestamp).getUTCHours();
+  return hour >= 11 && hour < 15 ? 'comida' : 'normal';
 }
 
 /**
