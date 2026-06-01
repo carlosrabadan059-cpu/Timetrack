@@ -24,7 +24,13 @@ const ForgotPasswordPage = () => {
         setLoading(false);
 
         if (resetError) {
-            setError(resetError);
+            const errorMap = {
+                'email rate limit exceeded': 'Demasiados intentos. Espera unos minutos antes de volver a intentarlo.',
+                'for security purposes': 'Por seguridad, espera unos segundos antes de volver a intentarlo.',
+                'user not found': 'No existe ninguna cuenta con ese email.',
+            };
+            const known = Object.entries(errorMap).find(([key]) => resetError.toLowerCase().includes(key));
+            setError(known ? known[1] : resetError);
             return;
         }
 
