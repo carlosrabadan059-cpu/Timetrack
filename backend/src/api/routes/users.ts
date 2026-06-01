@@ -13,6 +13,7 @@ const users = new Hono<{ Variables: AppVariables }>();
 const createUserSchema = z.object({
   full_name: z.string().min(1).max(200),
   email: z.string().email(),
+  role: z.enum(['admin', 'manager', 'employee']).optional().default('employee'),
   group_id: z.string().optional(),
 });
 
@@ -38,7 +39,7 @@ users.post('/', requireRole(['admin', 'manager']), async (c) => {
       400
     );
   }
-  const { full_name, email, group_id } = parsed.data;
+  const { full_name, email, role, group_id } = parsed.data;
 
   const sb = getSupabaseAdmin();
 
@@ -61,7 +62,11 @@ users.post('/', requireRole(['admin', 'manager']), async (c) => {
 
   const supabase_user_id = authData.user.id;
 
-  // Profile is created by DB trigger — should exist immediately after auth.admin.createUser
+  // Update role if not the default — the DB trigger creates the profile with role='employee'
+  if (role !== 'employee') {
+    await sb.from('profiles').update({ role }).eq('id', supabase_user_id);
+  }
+
   const { data: profile } = await sb
     .from('profiles')
     .select('*')

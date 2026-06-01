@@ -107,6 +107,7 @@ const AdminEmployeesPage = () => {
                 const payload = {
                     full_name: formData.full_name.trim(),
                     email: formData.email.trim(),
+                    role: formData.role,
                     company_id: profile.company_id,
                 };
                 await api.post('/api/users', payload);
