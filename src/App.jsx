@@ -6,6 +6,8 @@ import AdminLayout from './layouts/AdminLayout';
 
 // Pages
 import LoginPage from './pages/LoginPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import DashboardPage from './pages/employee/DashboardPage';
 import HistoryPage from './pages/employee/HistoryPage';
 import CorrectionPage from './pages/employee/CorrectionPage';
@@ -59,8 +61,9 @@ function App() {
     return (
         <Routes>
             {/* Public routes */}
-            {/* Public routes */}
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
 
 
             {/* Employee routes */}

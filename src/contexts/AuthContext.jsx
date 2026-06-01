@@ -57,6 +57,17 @@ export const AuthProvider = ({ children }) => {
         await supabase.auth.signOut();
     };
 
+    const resetPassword = async (email) => {
+        const redirectTo = `${window.location.origin}/reset-password`;
+        const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+        return { error: error?.message ?? null };
+    };
+
+    const updatePassword = async (newPassword) => {
+        const { error } = await supabase.auth.updateUser({ password: newPassword });
+        return { error: error?.message ?? null };
+    };
+
     const hasRole = (role) => profile?.role === role;
     const isAdmin = () => profile?.role === 'admin' || profile?.role === 'manager';
     const isEmployee = () => profile?.role === 'employee';
@@ -67,6 +78,8 @@ export const AuthProvider = ({ children }) => {
         loading,
         signIn,
         signOut,
+        resetPassword,
+        updatePassword,
         hasRole,
         isAdmin,
         isEmployee,

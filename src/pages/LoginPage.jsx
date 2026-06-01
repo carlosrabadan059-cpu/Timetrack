@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate, Navigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Clock, Mail, Lock, Eye, EyeOff, Check } from 'lucide-react';
 import Button from '../components/ui/Button';
@@ -19,6 +19,8 @@ const LoginPage = () => {
 
     const { signIn, isAuthenticated, profile } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const passwordReset = location.state?.passwordReset;
 
     // Redirect if already authenticated
     if (isAuthenticated) {
@@ -60,6 +62,11 @@ const LoginPage = () => {
                         </div>
 
                         <form onSubmit={handleSubmit} className="login-form">
+                            {passwordReset && (
+                                <div className="login-success">
+                                    Contraseña actualizada correctamente. Puedes iniciar sesión.
+                                </div>
+                            )}
                             {error && (
                                 <div className="login-error">
                                     {error}
@@ -103,7 +110,7 @@ const LoginPage = () => {
                                     <input type="checkbox" />
                                     <span>Recordarme</span>
                                 </label>
-                                <a href="#" className="login-forgot">¿Olvidaste tu contraseña?</a>
+                                <Link to="/forgot-password" className="login-forgot">¿Olvidaste tu contraseña?</Link>
                             </div>
 
                             <Button

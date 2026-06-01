@@ -78,6 +78,16 @@
     font-size: var(--font-size-sm);
 }
 
+.login-success {
+    padding: var(--space-3) var(--space-4);
+    background: rgba(34, 197, 94, 0.1);
+    border: none;
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-lg);
+    color: var(--color-success, #16a34a);
+    font-size: var(--font-size-sm);
+}
+
 .login-password-field {
     position: relative;
 }
