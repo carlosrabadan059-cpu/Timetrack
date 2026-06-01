@@ -25,9 +25,22 @@ const AdminEmployeesPage = () => {
     const [openActionId, setOpenActionId] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingEmployee, setEditingEmployee] = useState(null);
-    const [formData, setFormData] = useState({ full_name: '', email: '', role: 'employee' });
+    const [formData, setFormData] = useState({ full_name: '', email: '', role: 'employee', manager_id: '' });
     const [formError, setFormError] = useState('');
     const [formLoading, setFormLoading] = useState(false);
+    const [managers, setManagers] = useState([]);
+
+    const isAdmin = profile?.role === 'admin';
+
+    useEffect(() => {
+        if (profile?.role === 'admin') {
+            api.get('/api/users', { role: 'manager', limit: 100 })
+                .then(res => setManagers(res.data ?? []))
+                .catch(() => {});
+        }
+    }, [profile?.role]);
+
+    const managersMap = Object.fromEntries(managers.map(m => [m.id, m.full_name]));
 
     const loadEmployees = useCallback(async () => {
         setLoading(true);
@@ -51,14 +64,14 @@ const AdminEmployeesPage = () => {
 
     const openCreate = () => {
         setEditingEmployee(null);
-        setFormData({ full_name: '', email: '', role: 'employee' });
+        setFormData({ full_name: '', email: '', role: 'employee', manager_id: '' });
         setFormError('');
         setIsModalOpen(true);
     };
 
     const openEdit = (emp) => {
         setEditingEmployee(emp);
-        setFormData({ full_name: emp.full_name, email: emp.email, role: emp.role });
+        setFormData({ full_name: emp.full_name, email: emp.email, role: emp.role, manager_id: emp.manager_id ?? '' });
         setFormError('');
         setIsModalOpen(true);
         setOpenActionId(null);
@@ -80,18 +93,23 @@ const AdminEmployeesPage = () => {
         setFormLoading(true);
         try {
             if (editingEmployee) {
-                await api.patch(`/api/users/${editingEmployee.id}`, {
+                const payload = {
                     full_name: formData.full_name.trim(),
                     role: formData.role,
-                });
+                };
+                if (isAdmin) {
+                    payload.manager_id = formData.manager_id || null;
+                }
+                await api.patch(`/api/users/${editingEmployee.id}`, payload);
             } else {
                 if (!formData.email.trim()) { setFormError('El email es obligatorio'); return; }
                 if (!profile?.company_id) { setFormError('Sin empresa asignada'); return; }
-                await api.post('/api/users', {
+                const payload = {
                     full_name: formData.full_name.trim(),
                     email: formData.email.trim(),
                     company_id: profile.company_id,
-                });
+                };
+                await api.post('/api/users', payload);
             }
             closeModal();
             loadEmployees();
@@ -142,9 +160,10 @@ const AdminEmployeesPage = () => {
                     <table className="employees-table">
                         <thead>
                             <tr>
-                                <th style={{ width: '35%' }}>Empleado</th>
+                                <th style={{ width: '30%' }}>Empleado</th>
                                 <th>Código</th>
                                 <th>Rol</th>
+                                {isAdmin && <th>Supervisor</th>}
                                 <th>Sync 2N</th>
                                 <th style={{ textAlign: 'right' }}>Acciones</th>
                             </tr>
@@ -152,13 +171,13 @@ const AdminEmployeesPage = () => {
                         <tbody>
                             {loading ? (
                                 <tr>
-                                    <td colSpan={5} style={{ textAlign: 'center', padding: 'var(--space-8)', color: 'var(--color-text-muted)' }}>
+                                    <td colSpan={isAdmin ? 6 : 5} style={{ textAlign: 'center', padding: 'var(--space-8)', color: 'var(--color-text-muted)' }}>
                                         Cargando...
                                     </td>
                                 </tr>
                             ) : employees.length === 0 ? (
                                 <tr>
-                                    <td colSpan={5} style={{ textAlign: 'center', padding: 'var(--space-8)', color: 'var(--color-text-muted)' }}>
+                                    <td colSpan={isAdmin ? 6 : 5} style={{ textAlign: 'center', padding: 'var(--space-8)', color: 'var(--color-text-muted)' }}>
                                         No hay empleados
                                     </td>
                                 </tr>
@@ -184,6 +203,13 @@ const AdminEmployeesPage = () => {
                                                 {ROLE_LABELS[emp.role] ?? emp.role}
                                             </span>
                                         </td>
+                                        {isAdmin && (
+                                            <td className="p-4">
+                                                <span className="text-sm text-muted">
+                                                    {emp.manager_id ? (managersMap[emp.manager_id] ?? '–') : '–'}
+                                                </span>
+                                            </td>
+                                        )}
                                         <td className="p-4">
                                             <span className={`status-badge ${emp.ac_synced ? 'active' : 'inactive'}`}>
                                                 {emp.ac_synced ? 'Synced' : 'Pendiente'}
@@ -261,13 +287,28 @@ const AdminEmployeesPage = () => {
                         <select
                             className="input-field"
                             value={formData.role}
-                            onChange={e => setFormData(prev => ({ ...prev, role: e.target.value }))}
+                            onChange={e => setFormData(prev => ({ ...prev, role: e.target.value, manager_id: '' }))}
                         >
                             <option value="employee">Empleado</option>
-                            <option value="manager">Manager</option>
+                            <option value="manager">Supervisor</option>
                             <option value="admin">Administrador</option>
                         </select>
                     </div>
+                    {isAdmin && formData.role === 'employee' && managers.length > 0 && (
+                        <div className="form-group full">
+                            <label>Supervisor asignado</label>
+                            <select
+                                className="input-field"
+                                value={formData.manager_id}
+                                onChange={e => setFormData(prev => ({ ...prev, manager_id: e.target.value }))}
+                            >
+                                <option value="">Sin supervisor (gestiona el admin)</option>
+                                {managers.map(m => (
+                                    <option key={m.id} value={m.id}>{m.full_name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
                     {formError && (
                         <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-danger, #ef4444)', margin: 0 }}>
                             {formError}

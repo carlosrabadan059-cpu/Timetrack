@@ -109,6 +109,9 @@ users.get('/', requireRole(['admin', 'manager']), async (c) => {
     .order('full_name', { ascending: true })
     .range(offset, offset + limit - 1);
 
+  if (authUser.role === 'manager') {
+    query = query.eq('manager_id', authUser.id);
+  }
   if (role && ['admin', 'manager', 'employee'].includes(role)) {
     query = query.eq('role', role);
   }
@@ -156,6 +159,9 @@ users.get('/:id', requireRole(['admin', 'manager']), async (c) => {
 
   if (profile.company_id !== authUser.company_id) {
     return c.json({ error: { code: 'forbidden', message: 'Usuario de otra empresa' } }, 403);
+  }
+  if (authUser.role === 'manager' && (profile as Profile & { manager_id?: string }).manager_id !== authUser.id) {
+    return c.json({ error: { code: 'forbidden', message: 'Sin acceso a este usuario' } }, 403);
   }
 
   const { data: lastLog } = await sb
@@ -240,6 +246,7 @@ const patchUserSchema = z.object({
   access_valid_from: z.string().datetime().nullable().optional(),
   access_valid_to: z.string().datetime().nullable().optional(),
   notifications_email: z.boolean().optional(),
+  manager_id: z.string().uuid().nullable().optional(),
 });
 
 users.patch('/:id', requireRole(['admin', 'manager']), async (c) => {
@@ -265,7 +272,7 @@ users.patch('/:id', requireRole(['admin', 'manager']), async (c) => {
 
   const { data: existing, error: fetchErr } = await sb
     .from('profiles')
-    .select('company_id, ac_external_id')
+    .select('company_id, ac_external_id, manager_id')
     .eq('id', id)
     .maybeSingle();
 
@@ -275,6 +282,9 @@ users.patch('/:id', requireRole(['admin', 'manager']), async (c) => {
   if (existing.company_id !== authUser.company_id) {
     return c.json({ error: { code: 'forbidden', message: 'Usuario de otra empresa' } }, 403);
   }
+  if (authUser.role === 'manager' && (existing as { manager_id?: string }).manager_id !== authUser.id) {
+    return c.json({ error: { code: 'forbidden', message: 'Sin acceso a este usuario' } }, 403);
+  }
 
   const changes: Record<string, unknown> = {};
   const d = parsed.data;
@@ -283,6 +293,8 @@ users.patch('/:id', requireRole(['admin', 'manager']), async (c) => {
   if (d.access_valid_from !== undefined) changes['access_valid_from'] = d.access_valid_from;
   if (d.access_valid_to !== undefined) changes['access_valid_to'] = d.access_valid_to;
   if (d.notifications_email !== undefined) changes['notifications_email'] = d.notifications_email;
+  // Solo admin puede asignar/reasignar supervisor
+  if (d.manager_id !== undefined && authUser.role === 'admin') changes['manager_id'] = d.manager_id;
 
   if (Object.keys(changes).length === 0) {
     return c.json({ error: { code: 'bad_request', message: 'Sin campos a actualizar' } }, 400);

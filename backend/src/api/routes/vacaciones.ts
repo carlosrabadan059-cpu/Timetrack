@@ -337,6 +337,19 @@ adminVacaciones.get(
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
 
+    if (user.role === 'manager') {
+      const { data: employees } = await supabaseAdmin
+        .from('profiles')
+        .select('id')
+        .eq('manager_id', user.id)
+        .eq('company_id', user.company_id);
+      const employeeIds = (employees ?? []).map((e: { id: string }) => e.id);
+      if (employeeIds.length === 0) {
+        return c.json({ data: { items: [], total: 0, page, has_more: false } });
+      }
+      query = query.in('user_id', employeeIds);
+    }
+
     if (statusFilter && ['pending', 'approved', 'rejected'].includes(statusFilter)) {
       query = query.eq('status', statusFilter);
     }
@@ -392,6 +405,17 @@ adminVacaciones.patch(
 
     if ((vac as { company_id: string }).company_id !== manager.company_id) {
       return c.json({ error: { code: 'forbidden', message: 'Solicitud de otra empresa' } }, 403);
+    }
+
+    if (manager.role === 'manager') {
+      const { data: emp } = await supabaseAdmin
+        .from('profiles')
+        .select('manager_id')
+        .eq('id', (vac as { user_id: string }).user_id)
+        .maybeSingle();
+      if ((emp as { manager_id?: string } | null)?.manager_id !== manager.id) {
+        return c.json({ error: { code: 'forbidden', message: 'Sin acceso a este empleado' } }, 403);
+      }
     }
 
     if ((vac as { status: string }).status !== 'pending') {
