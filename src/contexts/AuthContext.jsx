@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }) => {
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user ?? null);
             if (session?.user) {
+                setProfile(null); // limpiar perfil anterior antes de cargar el nuevo
                 loadProfile();
             } else {
                 setProfile(null);

@@ -22,9 +22,9 @@ const LoginPage = () => {
     const location = useLocation();
     const passwordReset = location.state?.passwordReset;
 
-    // Redirect if already authenticated
-    if (isAuthenticated) {
-        const role = profile?.role;
+    // Redirect if already authenticated and profile is loaded
+    if (isAuthenticated && profile) {
+        const role = profile.role;
         const redirectPath = role === 'superadmin' ? '/superadmin/empresas' : role === 'admin' || role === 'manager' ? '/admin' : '/dashboard';
         return <Navigate to={redirectPath} replace />;
     }
