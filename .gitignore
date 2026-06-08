@@ -63,3 +63,6 @@ screenshots/
 !mobile/assets/*.png
 .vercel
 .env*.local
+
+# Graphify cache (generado, no commitear)
+graphify-out/cache/

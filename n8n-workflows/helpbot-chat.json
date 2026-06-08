@@ -1,0 +1,91 @@
+{
+  "name": "TimeTrack HelpBot",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "help-chat",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body ?? $input.first().json;\nconst message = body.message ?? '';\nconst history = body.history ?? [];\nconst userRole = body.user_role ?? 'employee';\nconst manual = body.manual ?? '';\nconst page = body.page ?? '';\n\nconst systemPrompt = `Eres el asistente de ayuda de TimeTrack, una aplicación de control de fichajes y accesos. Responde SIEMPRE en español, de forma concisa y amigable. Máximo 3 párrafos o una lista corta.\n\nRol del usuario: ${userRole}\nPágina actual: ${page || 'desconocida'}\n\nManual de la aplicación:\n${manual}`;\n\nconst messages = [];\nfor (const h of history) {\n  messages.push({ role: h.role, content: h.content });\n}\nmessages.push({ role: 'user', content: message });\n\nreturn [{ json: { systemPrompt, messages } }];"
+      },
+      "id": "build-prompt",
+      "name": "Construir prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key", "value": "={{ $env.ANTHROPIC_API_KEY }}" },
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 1024, system: $json.systemPrompt, messages: $json.messages }) }}",
+        "options": {}
+      },
+      "id": "call-anthropic",
+      "name": "Llamar Anthropic API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst answer = data.content?.[0]?.text ?? 'No pude generar una respuesta. Inténtalo de nuevo.';\nreturn [{ json: { answer } }];"
+      },
+      "id": "extract-answer",
+      "name": "Extraer respuesta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { answer: $json.answer } }}",
+        "options": {}
+      },
+      "id": "respond-webhook",
+      "name": "Responder",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{ "node": "Construir prompt", "type": "main", "index": 0 }]]
+    },
+    "Construir prompt": {
+      "main": [[{ "node": "Llamar Anthropic API", "type": "main", "index": 0 }]]
+    },
+    "Llamar Anthropic API": {
+      "main": [[{ "node": "Extraer respuesta", "type": "main", "index": 0 }]]
+    },
+    "Extraer respuesta": {
+      "main": [[{ "node": "Responder", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
