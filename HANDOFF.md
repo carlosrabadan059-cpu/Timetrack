@@ -1,68 +1,80 @@
 # Handoff — Antigravity / TimeTrack
 **Date:** 2026-06-08  
 **Repo:** https://github.com/carlosrabadan059-cpu/Timetrack  
-**Branch:** `main` (commit `fa96904`)
+**Branch:** `main` (commit `b90fef3`)
 
 ---
 
 ## What happened this session
 
-### Graphify installed and graph built
-- Installed `graphifyy` via `pipx install graphifyy`
-- Ran `graphify claude install` from the project root, which:
-  - Added a `## graphify` section to `CLAUDE.md` with query/path/explain rules
-  - Registered `PreToolUse` hooks in `.claude/settings.json` (Bash search + Read/Glob)
-- Built the code-only knowledge graph with `graphify update .`:
-  - **3,536 nodes, 3,658 edges, 381 communities**
-  - Output: `graphify-out/graph.json`, `graphify-out/graph.html`, `graphify-out/GRAPH_REPORT.md`
-- Added `graphify-out/cache/` to `.gitignore` (generated AST files, not worth tracking)
+### Graphify installed (commits `fa96904`, `e964cdc`)
+- `graphifyy` installed via `pipx install graphifyy`
+- `graphify claude install` añadió sección a `CLAUDE.md` y hooks `PreToolUse` en `.claude/settings.json`
+- Grafo construido con `graphify update .`: 3,536 nodos, 3,658 aristas, 381 comunidades (solo código, sin LLM key)
+- `graphify-out/cache/` excluido de git via `.gitignore`
+- Skills de agente añadidos en `.agents/skills/` y docs en `docs/agents/`
 
-### Agent skills added
-- `.agents/skills/` populated with skills (caveman, diagnose, grill-me, grill-with-docs, handoff, improve-codebase-architecture, prototype, tdd, to-issues, to-prd, triage, write-a-skill, zoom-out)
-- `docs/agents/` added with domain, issue-tracker, and triage-labels docs
+### Auth bug fixed (commits `4004298`, `b90fef3`)
 
-### All changes committed and pushed
-- Commit `fa96904`: `chore: instalar graphify y añadir skills de agente`
+**Root cause:** Race condition en `src/contexts/AuthContext.jsx`.  
+Al hacer login con otro usuario, `onAuthStateChange` seteaba el nuevo `user` pero `profile` seguía teniendo los datos del usuario anterior. `LoginPage` redirigía en cuanto `isAuthenticated = true` usando el perfil stale — siempre entraba en el dashboard del usuario equivocado (Carlos Rabadán en lugar de Admin).
+
+**Fixes aplicados:**
+1. `src/contexts/AuthContext.jsx`: `setProfile(null)` antes de llamar a `loadProfile()` en `onAuthStateChange` — limpia el perfil anterior antes de cargar el nuevo.
+2. `src/pages/LoginPage.jsx`: la redirección ahora requiere `isAuthenticated && profile` — espera al perfil real antes de navegar.
+3. `src/contexts/AuthContext.jsx`: `loadProfile()` tiene fallback directo a Supabase `profiles` si `/api/me` no responde — el login funciona aunque el backend esté caído.
+4. `src/pages/LoginPage.jsx`: timeout de 8s muestra error y desbloquea el botón si el perfil nunca llega.
+
+### Incidente de infraestructura (resuelto)
+- El contenedor `cloudflared` perdió la red `n8n_net` de Docker tras un fallo de recreación en Portainer — causó errores 502/1033 en `api.rabadanhouse.space`.
+- Resuelto con redeploy completo del stack desde Portainer (Stacks → n8n → Update the stack).
+- Backend confirmado healthy: `GET /health` devuelve `{"status":"ok"}`.
 
 ---
 
 ## Current project state
 
-The project is **fully implemented** (Phases 0–5 complete). No active bugs or pending work from this session.
+Todas las fases 0–5 completadas. Sin trabajo pendiente. App operativa.
 
-See `CLAUDE.md` for full architecture reference — do not re-derive from code what is already documented there.
+- Backend: `https://api.rabadanhouse.space` (Docker en Raspberry Pi 192.168.1.10 via Cloudflare Tunnel)
+- Frontend: Vercel (auto-deploy desde `main`)
+- Stack compose: Portainer → Stack `n8n` (postgres, n8n, backend, cloudflared en red `n8n_net`)
 
-Key facts:
-- Backend: Node.js + Hono + Supabase, deployed on Raspberry Pi via Cloudflare Tunnel (`https://api.rabadanhouse.space`)
-- Frontend: React 19 + Vite, deployed on Vercel
-- 2N Access Commander integration via REST + SignalR
-- n8n for async workflows (user sync, incidencias, reconciliation)
+Ver `CLAUDE.md` para referencia completa de arquitectura, schema y endpoints.
 
 ---
 
-## How to use the knowledge graph
+## Cómo usar el grafo de conocimiento
 
 ```bash
-# Focused question (preferred — much smaller than grepping)
+# Pregunta focalizada (preferido — mucho más pequeño que grep)
 graphify query "how does the fichar endpoint work"
 
-# Relationship between two nodes
+# Relación entre dos nodos
 graphify path "POST /api/me/fichar" "access_logs"
 
-# Explain a concept
+# Explicar un concepto
 graphify explain "SignalR listener"
 
-# Update after code changes (no API key needed)
+# Actualizar tras cambios de código (no necesita API key)
 graphify update .
 ```
 
-The graph does NOT include docs/images (no LLM key was provided). To add semantic extraction for docs, set `ANTHROPIC_API_KEY` and run `graphify .`.
+El grafo NO incluye docs/imágenes. Para añadir extracción semántica: `ANTHROPIC_API_KEY=<key> graphify .`
+
+---
+
+## Si el backend vuelve a dar 502/530
+
+1. Portainer → Container `backend` — comprobar que está running
+2. Portainer → Container `cloudflared` — comprobar que está en red `n8n_net`
+3. Si alguno no está en la red: Stacks → n8n → **Update the stack**
 
 ---
 
 ## Suggested skills
 
-- **`antigravity-backend`** — always load before touching backend routes, Supabase schema, SignalR, n8n workflows, or fichaje logic
-- **`graphify`** — use before any codebase exploration; `graphify-out/` exists and is populated
-- **`verification-before-completion`** — run before claiming any fix or feature is done
-- **`requesting-code-review`** — invoke before merging significant changes
+- **`antigravity-backend`** — cargar siempre antes de tocar rutas backend, schema Supabase, SignalR, n8n o lógica de fichaje
+- **`graphify`** — `graphify-out/` existe y está poblado; usar `graphify query` antes de explorar código fuente
+- **`verification-before-completion`** — ejecutar antes de dar cualquier fix o feature por terminado
+- **`systematic-debugging`** — usar si aparecen nuevos bugs; el flujo de auth está corregido pero pueden surgir edge cases en SSE/SignalR
