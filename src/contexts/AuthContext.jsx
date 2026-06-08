@@ -15,12 +15,21 @@ export const AuthProvider = ({ children }) => {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    async function loadProfile() {
+    async function loadProfile(fallbackUserId = null) {
         try {
             const res = await api.get('/api/me');
             const p = res.data;
             setProfile({ ...p, name: p.full_name });
         } catch {
+            // Fallback directo a Supabase cuando el backend no responde
+            const uid = fallbackUserId || (await supabase.auth.getUser()).data.user?.id;
+            if (uid) {
+                const { data: p } = await supabase.from('profiles').select('*').eq('id', uid).single();
+                if (p) {
+                    setProfile({ ...p, name: p.full_name });
+                    return;
+                }
+            }
             setProfile(null);
         }
     }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Navigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Clock, Mail, Lock, Eye, EyeOff, Check } from 'lucide-react';
@@ -21,6 +21,14 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const passwordReset = location.state?.passwordReset;
+
+    // Timeout de seguridad: si tras 8s de login exitoso no hay perfil, mostrar error
+    const [profileTimeout, setProfileTimeout] = useState(false);
+    useEffect(() => {
+        if (!loading || !isAuthenticated) return;
+        const t = setTimeout(() => setProfileTimeout(true), 8000);
+        return () => clearTimeout(t);
+    }, [loading, isAuthenticated]);
 
     // Redirect if already authenticated and profile is loaded
     if (isAuthenticated && profile) {
@@ -67,9 +75,11 @@ const LoginPage = () => {
                                     Contraseña actualizada correctamente. Puedes iniciar sesión.
                                 </div>
                             )}
-                            {error && (
+                            {(error || profileTimeout) && (
                                 <div className="login-error">
-                                    {error}
+                                    {profileTimeout && !error
+                                        ? 'No se pudo conectar con el servidor. Inténtalo de nuevo.'
+                                        : error}
                                 </div>
                             )}
 
@@ -117,7 +127,7 @@ const LoginPage = () => {
                                 type="submit"
                                 variant="primary"
                                 fullWidth
-                                loading={loading}
+                                loading={loading && !profileTimeout}
                             >
                                 Iniciar Sesión
                             </Button>
