@@ -108,6 +108,7 @@ function MonthGrid({ year, month, holidays, workDays, requests, onDayClick, minD
         const isHoliday = !!holidayInfo;
         const isPast = minDate ? ds < minDate : false;
         const isBlocked = isWeekend || isHoliday || isPast;
+        const showAsPast = isPast && !isHoliday && !isWeekend;
         const dayReqs = dayRequests[ds] ?? [];
 
         let cellClass = 'vcal-cell';
@@ -117,8 +118,8 @@ function MonthGrid({ year, month, holidays, workDays, requests, onDayClick, minD
             : undefined;
 
         if (isWeekend) cellClass += ' weekend';
-        else if (isPast) cellClass += ' past';
         else if (isHoliday) cellClass += ` holiday holiday-${holidayInfo.type ?? 'nacional'}`;
+        else if (showAsPast) cellClass += ' past';
         else if (dayReqs.length > 0) {
             const req = dayReqs[0];
             const cfg = TYPE_CONFIG[req.type];
