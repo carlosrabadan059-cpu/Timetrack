@@ -882,4 +882,73 @@ admin.get('/live', requireRole(['admin', 'manager']), (c) => {
   });
 });
 
+// ── POST /api/admin/fichaje-overrides ────────────────────────────────────────
+admin.post('/fichaje-overrides', requireRole(['admin', 'manager']), async (c) => {
+  const user = c.get('user');
+  const supabaseAdmin = getSupabaseAdmin();
+
+  let body: { user_id?: unknown; date?: unknown; reason?: unknown } = {};
+  try { body = await c.req.json(); } catch { /* empty body ok */ }
+
+  const targetUserId = typeof body.user_id === 'string' ? body.user_id : null;
+  const date = typeof body.date === 'string' ? body.date : null;
+  const reason = typeof body.reason === 'string' ? body.reason : null;
+
+  if (!targetUserId || !date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return c.json({ error: { code: 'validation_error', message: 'user_id y date (YYYY-MM-DD) son obligatorios' } }, 400);
+  }
+
+  // Verify target employee belongs to same company
+  const { data: targetProfile } = await supabaseAdmin
+    .from('profiles')
+    .select('id, company_id, manager_id')
+    .eq('id', targetUserId)
+    .maybeSingle();
+
+  if (!targetProfile || targetProfile.company_id !== user.company_id) {
+    return c.json({ error: { code: 'not_found', message: 'Empleado no encontrado' } }, 404);
+  }
+
+  // Managers can only authorize their own employees
+  if (user.role === 'manager' && targetProfile.manager_id !== user.id) {
+    return c.json({ error: { code: 'forbidden', message: 'Solo puedes autorizar fichajes de tus empleados' } }, 403);
+  }
+
+  const token = crypto.randomUUID();
+  const expiresAt = new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString(); // 8 hours
+
+  const { error } = await supabaseAdmin
+    .from('fichaje_overrides')
+    .insert({
+      user_id: targetUserId,
+      company_id: user.company_id,
+      date,
+      reason,
+      token,
+      created_by: user.id,
+      expires_at: expiresAt,
+    });
+
+  if (error) {
+    return c.json({ error: { code: 'internal_error', message: 'Error al crear autorización' } }, 500);
+  }
+
+  return c.json({ data: { token, expires_at: expiresAt } }, 201);
+});
+
+// ── GET /api/admin/fichaje-overrides ─────────────────────────────────────────
+admin.get('/fichaje-overrides', requireRole(['admin', 'manager']), async (c) => {
+  const user = c.get('user');
+  const supabaseAdmin = getSupabaseAdmin();
+
+  const { data: overrides } = await supabaseAdmin
+    .from('fichaje_overrides')
+    .select('id, user_id, date, reason, token, used, used_at, created_by, created_at, expires_at, profiles!fichaje_overrides_user_id_fkey(full_name, email, employee_code)')
+    .eq('company_id', user.company_id)
+    .order('created_at', { ascending: false })
+    .limit(50);
+
+  return c.json({ data: overrides ?? [] });
+});
+
 export default admin;

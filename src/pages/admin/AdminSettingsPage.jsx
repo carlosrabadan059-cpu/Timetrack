@@ -98,6 +98,43 @@ const AdminSettingsPage = () => {
     const [revealedKey, setRevealedKey] = useState(null); // { id, api_key, name }
     const [copyDone, setCopyDone] = useState(false);
 
+    // ── Fichaje overrides state ─────────────────────────────────────────────
+    const [employees, setEmployees] = useState([]);
+    const [overrideForm, setOverrideForm] = useState({ user_id: '', date: new Date().toISOString().split('T')[0], reason: '' });
+    const [creatingOverride, setCreatingOverride] = useState(false);
+    const [overrideResult, setOverrideResult] = useState(null); // { token, expires_at }
+    const [overrideError, setOverrideError] = useState('');
+    const [overrideCopied, setOverrideCopied] = useState(false);
+
+    const loadOverridesTab = async () => {
+        try {
+            const res = await api.get('/api/users', { limit: 200 });
+            setEmployees((res.data?.items ?? []).filter(u => u.role === 'employee'));
+        } catch { /* keep */ }
+    };
+
+    const createOverride = async () => {
+        if (!overrideForm.user_id || !overrideForm.date) {
+            setOverrideError('Selecciona un empleado y una fecha');
+            return;
+        }
+        setCreatingOverride(true);
+        setOverrideError('');
+        setOverrideResult(null);
+        try {
+            const res = await api.post('/api/admin/fichaje-overrides', {
+                user_id: overrideForm.user_id,
+                date: overrideForm.date,
+                reason: overrideForm.reason || undefined,
+            });
+            setOverrideResult(res.data);
+        } catch (e) {
+            setOverrideError(e.message ?? 'Error al crear autorización');
+        } finally {
+            setCreatingOverride(false);
+        }
+    };
+
     const loadApiKeys = async () => {
         setApiKeysLoading(true);
         try {
@@ -346,6 +383,12 @@ const AdminSettingsPage = () => {
                     onClick={() => { setActiveTab('apikeys'); loadApiKeys(); }}
                 >
                     <Key size={16} className="inline mr-2" /> API Keys
+                </button>
+                <button
+                    className={`tab-button ${activeTab === 'overrides' ? 'active' : ''}`}
+                    onClick={() => { setActiveTab('overrides'); loadOverridesTab(); }}
+                >
+                    <CheckCircle size={16} className="inline mr-2" /> Autorizaciones
                 </button>
             </div>
 
@@ -1078,6 +1121,97 @@ const AdminSettingsPage = () => {
                                     })}
                                 </div>
                             )}
+                        </Card>
+                    </div>
+                )}
+
+                {/* OVERRIDES TAB */}
+                {activeTab === 'overrides' && (
+                    <div className="settings-section">
+                        <Card padding="md">
+                            <h2 className="settings-section-title">
+                                <CheckCircle size={18} /> Autorizar fichaje en día no laborable
+                            </h2>
+                            <p className="settings-section-desc">
+                                Genera un código de un solo uso (válido 8 horas) para que un empleado pueda fichar en festivo o fin de semana.
+                            </p>
+                            <div className="override-form">
+                                <div className="form-group">
+                                    <label className="form-label">Empleado</label>
+                                    <select
+                                        className="form-input"
+                                        value={overrideForm.user_id}
+                                        onChange={e => setOverrideForm(f => ({ ...f, user_id: e.target.value }))}
+                                    >
+                                        <option value="">-- Selecciona un empleado --</option>
+                                        {employees.map(emp => (
+                                            <option key={emp.id} value={emp.id}>
+                                                {emp.full_name || emp.email} {emp.employee_code ? `(${emp.employee_code})` : ''}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Fecha</label>
+                                    <input
+                                        type="date"
+                                        className="form-input"
+                                        value={overrideForm.date}
+                                        onChange={e => setOverrideForm(f => ({ ...f, date: e.target.value }))}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Motivo <span className="form-label-hint">(opcional)</span></label>
+                                    <input
+                                        type="text"
+                                        className="form-input"
+                                        placeholder="Ej: Guardia, trabajo urgente..."
+                                        value={overrideForm.reason}
+                                        onChange={e => setOverrideForm(f => ({ ...f, reason: e.target.value }))}
+                                        maxLength={200}
+                                    />
+                                </div>
+                                {overrideError && <p className="form-error">{overrideError}</p>}
+                                {overrideResult && (
+                                    <div className="override-result">
+                                        <p className="override-result-label">Código de autorización generado:</p>
+                                        <div className="override-token-row">
+                                            <code className="override-token">{overrideResult.token}</code>
+                                            <button
+                                                className="override-copy-btn"
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(overrideResult.token);
+                                                    setOverrideCopied(true);
+                                                    setTimeout(() => setOverrideCopied(false), 2000);
+                                                }}
+                                            >
+                                                {overrideCopied ? <CheckCircle size={16} /> : <Copy size={16} />}
+                                                {overrideCopied ? 'Copiado' : 'Copiar'}
+                                            </button>
+                                        </div>
+                                        <p className="override-expires">
+                                            Válido hasta: {new Date(overrideResult.expires_at).toLocaleString('es-ES')}
+                                        </p>
+                                    </div>
+                                )}
+                                <div className="form-actions">
+                                    {overrideResult && (
+                                        <button
+                                            className="btn btn-ghost"
+                                            onClick={() => { setOverrideResult(null); setOverrideForm(f => ({ ...f, user_id: '', reason: '' })); }}
+                                        >
+                                            Nueva autorización
+                                        </button>
+                                    )}
+                                    <Button
+                                        variant="primary"
+                                        onClick={createOverride}
+                                        disabled={creatingOverride || !!overrideResult}
+                                    >
+                                        {creatingOverride ? 'Generando...' : 'Generar código'}
+                                    </Button>
+                                </div>
+                            </div>
                         </Card>
                     </div>
                 )}

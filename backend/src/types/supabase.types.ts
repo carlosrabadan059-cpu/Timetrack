@@ -79,6 +79,7 @@ export type AccessLog = {
   longitude: number | null;
   device_info: string | null;
   raw_payload: Record<string, unknown> | null;
+  override: boolean;
   created_at: string;
 };
 
@@ -114,6 +115,20 @@ export type VacationRequest = {
   reviewed_by: string | null;
   reviewed_at: string | null;
   created_at: string;
+};
+
+export type FichajeOverride = {
+  id: string;
+  user_id: string;
+  company_id: string;
+  date: string;
+  reason: string | null;
+  token: string;
+  used: boolean;
+  used_at: string | null;
+  created_by: string | null;
+  created_at: string;
+  expires_at: string;
 };
 
 export type SyncQueueEntry = {

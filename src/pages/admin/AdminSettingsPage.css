@@ -632,3 +632,71 @@
     background: var(--color-accent-primary);
     color: #111827;
 }
+
+/* ── Fichaje overrides panel ─────────────────────────────────────────────── */
+
+.override-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 480px;
+}
+
+.override-result {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.override-result-label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: #166534;
+    margin: 0;
+}
+
+.override-token-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.override-token {
+    font-family: monospace;
+    font-size: var(--font-size-sm);
+    background: #dcfce7;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    color: #14532d;
+    word-break: break-all;
+    flex: 1;
+}
+
+.override-copy-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid #86efac;
+    border-radius: var(--radius-sm);
+    background: #fff;
+    color: #166534;
+    font-size: var(--font-size-xs);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background var(--transition-fast);
+}
+
+.override-copy-btn:hover {
+    background: #dcfce7;
+}
+
+.override-expires {
+    font-size: var(--font-size-xs);
+    color: #166534;
+    margin: 0;
+}

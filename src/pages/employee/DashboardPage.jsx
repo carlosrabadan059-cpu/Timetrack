@@ -43,6 +43,10 @@ const DashboardPage = () => {
     const [geoStatus, setGeoStatus] = useState(null); // null | 'inside' | 'outside' | 'no_gps'
     const [locationPermission, setLocationPermission] = useState(null); // null | 'granted' | 'denied' | 'prompt'
     const ficharErrorTimer = useRef(null);
+    const [nonWorkingDay, setNonWorkingDay] = useState(null); // null | { detail: 'holiday'|'weekend', message: string }
+    const [overrideToken, setOverrideToken] = useState('');
+    const [overrideLoading, setOverrideLoading] = useState(false);
+    const [overrideError, setOverrideError] = useState('');
 
     useEffect(() => {
         const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -172,6 +176,10 @@ const DashboardPage = () => {
             setCurrentPauseType(newStatus === 'paused' ? detail_type : null);
             loadDashboard();
         } catch (e) {
+            if (e.code === 'non_working_day') {
+                setNonWorkingDay({ detail: e.detail ?? e.data?.error?.detail, message: e.message });
+                return;
+            }
             setFicharError(e.message);
             if (e.code === 'rate_limit') {
                 const match = e.message.match(/\d+/);
@@ -181,6 +189,39 @@ const DashboardPage = () => {
             }
         } finally {
             setFicharLoading(false);
+        }
+    };
+
+    const handleOverrideFichar = async () => {
+        if (!overrideToken.trim()) {
+            setOverrideError('Introduce el código de autorización');
+            return;
+        }
+        setOverrideLoading(true);
+        setOverrideError('');
+        try {
+            const body = { device_info: getDeviceInfo(), override_token: overrideToken.trim() };
+            const res = await api.post('/api/me/fichar', body);
+            const { direction, detail_type, is_inside, timestamp, within_geofence } = res.data;
+            const newStatus =
+                direction === 'in' ? 'working' :
+                PAUSE_TYPES.has(detail_type) ? 'paused' : 'out';
+            setDashData(prev => prev ? {
+                ...prev,
+                is_inside,
+                jornada_status: newStatus,
+                jornada_started_at: direction === 'in' ? timestamp : prev.jornada_started_at,
+            } : prev);
+            setCurrentPauseType(newStatus === 'paused' ? detail_type : null);
+            if (within_geofence === true) setGeoStatus('inside');
+            else if (within_geofence === false) setGeoStatus('outside');
+            setNonWorkingDay(null);
+            setOverrideToken('');
+            loadDashboard();
+        } catch (e) {
+            setOverrideError(e.message ?? 'Token no válido o expirado');
+        } finally {
+            setOverrideLoading(false);
         }
     };
 
@@ -421,6 +462,39 @@ const DashboardPage = () => {
                     </div>
                 </Card>
             </div>
+
+            {/* ── Non-working-day override modal ───────────────────────────── */}
+            {nonWorkingDay && (
+                <div className="nwd-overlay" onClick={() => { setNonWorkingDay(null); setOverrideToken(''); setOverrideError(''); }}>
+                    <div className="nwd-modal" onClick={e => e.stopPropagation()}>
+                        <div className="nwd-icon">
+                            <Calendar size={28} />
+                        </div>
+                        <h3 className="nwd-title">
+                            {nonWorkingDay.detail === 'holiday' ? 'Día festivo' : 'Fin de semana'}
+                        </h3>
+                        <p className="nwd-message">{nonWorkingDay.message}</p>
+                        <p className="nwd-hint">Si tienes un código de autorización de tu supervisor, introdúcelo aquí:</p>
+                        <input
+                            className="nwd-input"
+                            type="text"
+                            placeholder="Código de autorización"
+                            value={overrideToken}
+                            onChange={e => setOverrideToken(e.target.value)}
+                            onKeyDown={e => e.key === 'Enter' && handleOverrideFichar()}
+                        />
+                        {overrideError && <p className="nwd-error">{overrideError}</p>}
+                        <div className="nwd-actions">
+                            <button className="nwd-btn-cancel" onClick={() => { setNonWorkingDay(null); setOverrideToken(''); setOverrideError(''); }}>
+                                Cancelar
+                            </button>
+                            <button className="nwd-btn-confirm" onClick={handleOverrideFichar} disabled={overrideLoading}>
+                                {overrideLoading ? 'Fichando...' : 'Fichar con autorización'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

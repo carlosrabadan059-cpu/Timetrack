@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { zValidator } from '@hono/zod-validator';
 import { getSupabaseAdmin } from '../../lib/supabase.js';
 import type { AppVariables } from '../../types/api.types.js';
-import { inferDetailType, checkOutOfSchedule, startOfDayISO, toDateString, getWeekStart } from '../../lib/date-utils.js';
+import { inferDetailType, checkOutOfSchedule, checkNonWorkingDay, startOfDayISO, toDateString, getWeekStart } from '../../lib/date-utils.js';
 import { sseBroadcaster } from '../../services/sse-broadcaster.js';
 import { fichajeRateLimit, recordFichaje } from '../middleware/rate-limit.js';
 import {
@@ -265,6 +265,7 @@ const ficharSchema = z.object({
   latitude: z.number().min(-90).max(90).optional(),
   longitude: z.number().min(-180).max(180).optional(),
   device_info: z.enum(['web', 'ios', 'android']).default('web'),
+  override_token: z.string().uuid().optional(),
 });
 
 me.post('/fichar', fichajeRateLimit, async (c) => {
@@ -355,18 +356,56 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
 
   const detail_type = body.detail_type ?? inferDetailType(now.toISOString());
 
-  // Geofence + schedule check
+  // Geofence + schedule + non-working-day check
   let within_geofence: boolean | null = null;
   let out_of_schedule = false;
+  let overrideId: string | null = null;
 
   if (user.company_id) {
     const { data: settings } = await supabaseAdmin
       .from('company_settings')
-      .select('headquarter_lat, headquarter_lon, geo_fence_radius, flexible_schedule_enabled, flexible_schedule_minutes, work_schedule_start, work_schedule_end, work_schedule_days')
+      .select('headquarter_lat, headquarter_lon, geo_fence_radius, flexible_schedule_enabled, flexible_schedule_minutes, work_schedule_start, work_schedule_end, work_schedule_days, holidays')
       .eq('company_id', user.company_id)
       .maybeSingle();
 
     if (settings) {
+      // ── Non-working-day check ─────────────────────────────────────────────
+      const workDays = (settings.work_schedule_days as number[] | null) ?? [1, 2, 3, 4, 5];
+      const holidays = (settings.holidays as { date: string }[] | null) ?? [];
+      const nonWorkingKind = checkNonWorkingDay(now, workDays, holidays);
+      if (nonWorkingKind && !body.override_token) {
+        return c.json(
+          {
+            error: {
+              code: 'non_working_day',
+              message:
+                nonWorkingKind === 'holiday'
+                  ? 'No puedes fichar en un día festivo sin autorización de tu supervisor'
+                  : 'No puedes fichar en fin de semana sin autorización de tu supervisor',
+              detail: nonWorkingKind,
+            },
+          },
+          422
+        );
+      }
+      if (nonWorkingKind && body.override_token) {
+        const todayDate = now.toISOString().split('T')[0] ?? '';
+        const { data: ovr } = await supabaseAdmin
+          .from('fichaje_overrides')
+          .select('id, used, expires_at')
+          .eq('token', body.override_token)
+          .eq('user_id', user.id)
+          .eq('date', todayDate)
+          .maybeSingle();
+        if (!ovr || ovr.used || new Date(ovr.expires_at as string) < now) {
+          return c.json(
+            { error: { code: 'invalid_override_token', message: 'El token de autorización no es válido o ha expirado' } },
+            403
+          );
+        }
+        overrideId = ovr.id as string;
+      }
+
       // Geofence (only when GPS coordinates provided)
       if (body.latitude !== undefined && body.longitude !== undefined &&
           settings.headquarter_lat && settings.headquarter_lon && settings.geo_fence_radius) {
@@ -412,6 +451,7 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
   if (body.latitude !== undefined) insertPayload['latitude'] = body.latitude;
   if (body.longitude !== undefined) insertPayload['longitude'] = body.longitude;
   if (within_geofence !== null) insertPayload['within_geofence'] = within_geofence;
+  if (overrideId) insertPayload['override'] = true;
 
   const { data: log, error } = await supabaseAdmin
     .from('access_logs')
@@ -424,6 +464,14 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
       { error: { code: 'internal_error', message: 'Error al registrar fichaje' } },
       500
     );
+  }
+
+  // Mark override token as used (single-use)
+  if (overrideId) {
+    await supabaseAdmin
+      .from('fichaje_overrides')
+      .update({ used: true, used_at: now.toISOString() })
+      .eq('id', overrideId);
   }
 
   // Record for rate limiting only after successful insert
