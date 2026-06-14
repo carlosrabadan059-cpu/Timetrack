@@ -547,3 +547,16 @@
 .badge-success  { background: #d1fae5; color: #065f46; }
 .badge-warning  { background: #fef3c7; color: #92400e; }
 .badge-danger   { background: #fee2e2; color: #991b1b; }
+
+.vacation-pending-warning {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+    border-radius: 8px;
+    font-size: var(--font-size-sm);
+    margin-bottom: 4px;
+}

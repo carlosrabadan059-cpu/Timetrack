@@ -147,7 +147,7 @@ function MonthGrid({ year, month, holidays, workDays, requests, onDayClick }) {
                 className={cellClass}
                 style={cellStyle}
                 title={title}
-                onClick={isBlocked ? undefined : () => onDayClick(ds)}
+                onClick={isBlocked || !onDayClick ? undefined : () => onDayClick(ds)}
             >
                 <span className="vcal-day-num">{d}</span>
             </div>
@@ -169,7 +169,8 @@ function MonthGrid({ year, month, holidays, workDays, requests, onDayClick }) {
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function VacationsPage() {
-    const [year, setYear] = useState(new Date().getFullYear());
+    const currentYear = new Date().getFullYear();
+    const [year, setYear] = useState(currentYear);
     const [requests, setRequests] = useState([]);
     const [balance, setBalance] = useState({ total: 22, used: 0, remaining: 22 });
     const [settings, setSettings] = useState({ work_schedule_days: [1,2,3,4,5], holidays: [] });
@@ -206,6 +207,11 @@ export default function VacationsPage() {
     }, [year]);
 
     useEffect(() => { loadData(); }, [loadData]);
+
+    const hasPending = requests.some(r => r.status === 'pending');
+
+    const yearStart = `${currentYear}-01-01`;
+    const yearEnd   = `${currentYear}-12-31`;
 
     const workingDaysPreview = calcWorkingDays(
         form.start_date, form.end_date,
@@ -267,10 +273,24 @@ export default function VacationsPage() {
                     <h1 className="vacations-title">Vacaciones y Ausencias</h1>
                     <p className="vacations-subtitle">Solicita y consulta tus periodos de descanso</p>
                 </div>
-                <Button variant="primary" icon={Plus} onClick={() => openModal()}>
+                <Button
+                    variant="primary"
+                    icon={Plus}
+                    onClick={() => openModal()}
+                    disabled={hasPending}
+                    title={hasPending ? 'Tienes una solicitud pendiente de autorización' : undefined}
+                >
                     Nueva Solicitud
                 </Button>
             </div>
+
+            {/* ── Pending warning ──────────────────────────────────────────── */}
+            {hasPending && (
+                <div className="vacation-pending-warning">
+                    <Info size={15} />
+                    <span>Tienes una solicitud pendiente de autorización. No puedes crear otra hasta que sea resuelta.</span>
+                </div>
+            )}
 
             {/* ── Balance pills ────────────────────────────────────────────── */}
             <div className="vacation-balance">
@@ -290,11 +310,11 @@ export default function VacationsPage() {
 
             {/* ── Year navigation ──────────────────────────────────────────── */}
             <div className="vacation-year-nav">
-                <button className="year-nav-btn" onClick={() => setYear(y => y - 1)}>
+                <button className="year-nav-btn" disabled style={{ visibility: 'hidden' }}>
                     <ChevronLeft size={18} />
                 </button>
                 <span className="year-label">{year}</span>
-                <button className="year-nav-btn" onClick={() => setYear(y => y + 1)}>
+                <button className="year-nav-btn" disabled style={{ visibility: 'hidden' }}>
                     <ChevronRight size={18} />
                 </button>
             </div>
@@ -312,7 +332,7 @@ export default function VacationsPage() {
                             holidays={settings.holidays}
                             workDays={settings.work_schedule_days}
                             requests={requests}
-                            onDayClick={(ds) => openModal(ds)}
+                            onDayClick={hasPending ? undefined : (ds) => openModal(ds)}
                         />
                     ))}
                 </div>
@@ -449,6 +469,8 @@ export default function VacationsPage() {
                                 type="date"
                                 className="form-input"
                                 value={form.start_date}
+                                min={yearStart}
+                                max={yearEnd}
                                 onChange={e => setForm(f => ({ ...f, start_date: e.target.value }))}
                                 required
                             />
@@ -459,7 +481,8 @@ export default function VacationsPage() {
                                 type="date"
                                 className="form-input"
                                 value={form.end_date}
-                                min={form.start_date}
+                                min={form.start_date || yearStart}
+                                max={yearEnd}
                                 onChange={e => setForm(f => ({ ...f, end_date: e.target.value }))}
                                 required
                             />
