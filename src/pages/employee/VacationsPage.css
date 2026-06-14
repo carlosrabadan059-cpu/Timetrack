@@ -560,3 +560,8 @@
     font-size: var(--font-size-sm);
     margin-bottom: 4px;
 }
+
+.vcal-cell.past {
+    opacity: 0.35;
+    cursor: not-allowed;
+}

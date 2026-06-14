@@ -62,7 +62,7 @@ const HOLIDAY_TYPE_LABELS = {
 };
 
 // ── MonthGrid component ───────────────────────────────────────────────────────
-function MonthGrid({ year, month, holidays, workDays, requests, onDayClick }) {
+function MonthGrid({ year, month, holidays, workDays, requests, onDayClick, minDate }) {
     const holidayMap = {};
     holidays.forEach(h => { holidayMap[h.date] = { name: h.name, type: h.type ?? 'nacional' }; });
 
@@ -106,7 +106,8 @@ function MonthGrid({ year, month, holidays, workDays, requests, onDayClick }) {
         const isWeekend = dow === 0 || dow === 6;
         const holidayInfo = holidayMap[ds];
         const isHoliday = !!holidayInfo;
-        const isBlocked = isWeekend || isHoliday;
+        const isPast = minDate ? ds < minDate : false;
+        const isBlocked = isWeekend || isHoliday || isPast;
         const dayReqs = dayRequests[ds] ?? [];
 
         let cellClass = 'vcal-cell';
@@ -116,6 +117,7 @@ function MonthGrid({ year, month, holidays, workDays, requests, onDayClick }) {
             : undefined;
 
         if (isWeekend) cellClass += ' weekend';
+        else if (isPast) cellClass += ' past';
         else if (isHoliday) cellClass += ` holiday holiday-${holidayInfo.type ?? 'nacional'}`;
         else if (dayReqs.length > 0) {
             const req = dayReqs[0];
@@ -210,8 +212,8 @@ export default function VacationsPage() {
 
     const hasPending = requests.some(r => r.status === 'pending');
 
-    const yearStart = `${currentYear}-01-01`;
-    const yearEnd   = `${currentYear}-12-31`;
+    const today      = toDateStr(new Date());
+    const yearEnd    = `${currentYear}-12-31`;
 
     const workingDaysPreview = calcWorkingDays(
         form.start_date, form.end_date,
@@ -227,7 +229,9 @@ export default function VacationsPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!form.start_date || !form.end_date) { setFormError('Selecciona las fechas'); return; }
+        if (form.start_date < today) { setFormError('No puedes solicitar vacaciones en fechas pasadas'); return; }
         if (form.start_date > form.end_date) { setFormError('La fecha de fin debe ser igual o posterior'); return; }
+        if (form.start_date.slice(0, 4) !== String(currentYear) || form.end_date.slice(0, 4) !== String(currentYear)) { setFormError(`Solo puedes solicitar vacaciones dentro de ${currentYear}`); return; }
         if (workingDaysPreview < 1) { setFormError('El rango no contiene días laborables'); return; }
         setSubmitting(true);
         setFormError('');
@@ -333,6 +337,7 @@ export default function VacationsPage() {
                             workDays={settings.work_schedule_days}
                             requests={requests}
                             onDayClick={hasPending ? undefined : (ds) => openModal(ds)}
+                            minDate={today}
                         />
                     ))}
                 </div>
@@ -469,7 +474,7 @@ export default function VacationsPage() {
                                 type="date"
                                 className="form-input"
                                 value={form.start_date}
-                                min={yearStart}
+                                min={today}
                                 max={yearEnd}
                                 onChange={e => setForm(f => ({ ...f, start_date: e.target.value }))}
                                 required
@@ -481,7 +486,7 @@ export default function VacationsPage() {
                                 type="date"
                                 className="form-input"
                                 value={form.end_date}
-                                min={form.start_date || yearStart}
+                                min={form.start_date || today}
                                 max={yearEnd}
                                 onChange={e => setForm(f => ({ ...f, end_date: e.target.value }))}
                                 required
