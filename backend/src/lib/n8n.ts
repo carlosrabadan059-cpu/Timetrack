@@ -76,6 +76,9 @@ export async function triggerWorkflow(
     await dispatchN8nWebhook(workflow, queueId ? { ...payload, _queue_id: queueId } : payload);
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
+    // Silencia 404 en workflows de notificación pura (sin queue) — workflow no configurado en n8n
+    const is404 = msg.includes('→ 404');
+    if (!queueId && is404) return;
     console.error(`[n8n] ${workflow} webhook failed:`, msg);
 
     if (queueId) {
