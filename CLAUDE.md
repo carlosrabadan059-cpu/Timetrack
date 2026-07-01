@@ -560,6 +560,7 @@ Notas de despliegue:
 - Frontend en Vercel conectado al backend en api.rabadanhouse.space
 - Fix aplicado: conexión SignalR global desactivada cuando hay conexión por empresa (evita fichajes duplicados)
 - Fix aplicado (2026-07-01): el listener SignalR reintenta con backoff (2s→5s→15s→30s→60s→120s) si falla al conectar o se cierra tras agotar la reconexión nativa — antes se quedaba colgado en silencio hasta un restart manual del contenedor. Estado por empresa expuesto en `GET /health` (`signalr: [...]`); si una conexión lleva 10+ min caída se dispara `POST /webhook/2n-connection-down` a n8n, que reenvía un aviso a Telegram. Detalle en `docs/signalr-resilience.md`. Requiere `N8N_WEBHOOK_SECRET` también en el servicio `n8n` del compose (antes solo estaba en `backend`), y que el workflow `2N Connection Down Alert` esté activo en n8n.
+- Fix aplicado (2026-07-01): `depends_on` en cascada en el compose de Portainer (postgres→n8n→backend→cloudflared con `condition: service_healthy`) para evitar que un despliegue completo deje conexiones rotas entre servicios. Ojo: un "Update the stack" con re-pull en Portainer no siempre refresca la imagen del registry — verificar con `docker images --digests rabadanhouse/timetrack-backend` que el digest coincide tras publicar una imagen nueva; si no, `docker pull` manual + recrear el contenedor. Detalle en `docs/signalr-resilience.md`.
 
 Piensa antes de actuar. Lee los archivos antes de escribir código.
 

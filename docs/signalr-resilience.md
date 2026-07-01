@@ -62,14 +62,16 @@ necesita el mismo valor en el servicio `n8n` para poder validarlo al recibir
 el webhook. Añadido como variable de entorno del stack — ver
 `docs/n8n-stack.env.example` para la lista completa de variables externalizadas.
 
-## Pendiente (no aplicado aún)
+## `depends_on` en cascada (aplicado 2026-07-01)
 
-El compose de Portainer no tiene `depends_on` entre `backend` y `n8n`, ni entre
-`cloudflared` y `backend`. Esto puede causar que un despliegue completo del
-stack (los 4 contenedores a la vez) arranque el backend antes de que n8n esté
-realmente sano, o que el túnel termine de negociar sus rutas de ingress antes
-de que el backend acepte conexiones — requiriendo reiniciar contenedores uno
-a uno tras un `docker compose up` completo. Fix propuesto (no aplicado):
+El compose de Portainer no tenía `depends_on` entre `backend` y `n8n`, ni entre
+`cloudflared` y `backend`. Esto causaba que un despliegue completo del stack
+(los 4 contenedores a la vez) arrancara el backend antes de que n8n estuviera
+realmente sano, o que el túnel terminara de negociar sus rutas de ingress
+antes de que el backend aceptara conexiones — requiriendo reiniciar
+contenedores uno a uno tras un `docker compose up` completo.
+
+Aplicado en el stack de Portainer:
 
 ```yaml
   backend:
@@ -89,4 +91,44 @@ a uno tras un `docker compose up` completo. Fix propuesto (no aplicado):
 
 La imagen `rabadanhouse/timetrack-backend:latest` ya trae un `HEALTHCHECK`
 en su Dockerfile (`wget -qO- http://localhost:3000/health`), así que Compose
-puede usar `condition: service_healthy` sin configuración adicional.
+usa `condition: service_healthy` sin configuración adicional.
+
+## Portainer "re-pull" no siempre refresca la imagen — verificar el digest
+
+Tras aplicar el fix de arriba y publicar una nueva imagen
+(`docker buildx build --platform linux/arm64 --push`), un "Update the stack"
+en Portainer con la opción de re-pull marcada **no garantiza** que el
+contenedor arranque con la imagen nueva. En un caso real, el stack se
+actualizó (orden de arranque correcto, todos `healthy`), pero `n8n-backend-1`
+seguía corriendo una imagen de dos semanas atrás sin el fix — síntoma:
+`GET /health` no traía el campo `signalr`.
+
+Causa: Portainer no forzó el pull real del registry en ese ciclo de update.
+
+**Cómo detectarlo** — comparar el digest del contenedor corriendo contra el
+digest publicado:
+
+```bash
+docker inspect n8n-backend-1 --format '{{.Image}}'
+docker images --digests rabadanhouse/timetrack-backend
+```
+
+Si el `IMAGE ID`/`CREATED` no coincide con el build reciente, la imagen no se
+refrescó.
+
+**Cómo forzarlo** — pull manual en la Pi y recrear solo el contenedor
+afectado (se mantiene gestionado por el stack, Portainer lo vuelve a levantar
+con la imagen ya en caché local):
+
+```bash
+docker pull rabadanhouse/timetrack-backend:latest
+docker stop n8n-backend-1 && docker rm n8n-backend-1
+# luego "Update the stack" en Portainer — ya no re-descarga, usa la local
+```
+
+Verificar que la imagen correcta quedó activa:
+
+```bash
+docker exec n8n-backend-1 wget -qO- localhost:3000/health
+# debe incluir "signalr": [...] con connected:true
+```
