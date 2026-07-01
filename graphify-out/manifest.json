@@ -65,8 +65,8 @@
     "semantic_hash": ""
   },
   "backend/src/api/routes/admin.ts": {
-    "mtime": 1779910389.730433,
-    "ast_hash": "0c5d786b0b596b80ed9960034d2d09bd",
+    "mtime": 1781473290.7221642,
+    "ast_hash": "84b95d2c03916fad07a28ffc2883abe9",
     "semantic_hash": ""
   },
   "backend/src/api/routes/docs.ts": {
@@ -95,8 +95,8 @@
     "semantic_hash": ""
   },
   "backend/src/api/routes/me.ts": {
-    "mtime": 1779917384.871915,
-    "ast_hash": "6f938e116cbc95eaf035a44703268449",
+    "mtime": 1781473268.0724125,
+    "ast_hash": "c288262bde2841522e8dc71b68fe228c",
     "semantic_hash": ""
   },
   "backend/src/api/routes/reportes.ts": {
@@ -125,8 +125,8 @@
     "semantic_hash": ""
   },
   "backend/src/index.ts": {
-    "mtime": 1779910369.653203,
-    "ast_hash": "3727ae701d9b360916d1e8531d7af48c",
+    "mtime": 1782929959.084709,
+    "ast_hash": "8ce6caf00e2304adf8415e7b049b174c",
     "semantic_hash": ""
   },
   "backend/src/lib/ac-client.ts": {
@@ -140,8 +140,8 @@
     "semantic_hash": ""
   },
   "backend/src/lib/date-utils.ts": {
-    "mtime": 1779984195.5803046,
-    "ast_hash": "edf022985b941ee30b22283cfad931e8",
+    "mtime": 1781473203.4249384,
+    "ast_hash": "ddb0e6eb3e541ce0d29941e216f77081",
     "semantic_hash": ""
   },
   "backend/src/lib/device-client.ts": {
@@ -150,8 +150,8 @@
     "semantic_hash": ""
   },
   "backend/src/lib/n8n.ts": {
-    "mtime": 1779910280.5929635,
-    "ast_hash": "1bf1ee3dc3271098c2d993dc6bf8cd58",
+    "mtime": 1782929889.9779968,
+    "ast_hash": "ae9717125c1e7bb254b8853ab28626ab",
     "semantic_hash": ""
   },
   "backend/src/lib/supabase.ts": {
@@ -170,8 +170,8 @@
     "semantic_hash": ""
   },
   "backend/src/services/signalr-listener.ts": {
-    "mtime": 1779876913.3032,
-    "ast_hash": "c51f4be2a893b8b467e413d15cce6a5d",
+    "mtime": 1782929990.233748,
+    "ast_hash": "f4a007f6dcce3f2bb3c5464afb84ab5d",
     "semantic_hash": ""
   },
   "backend/src/services/sse-broadcaster.ts": {
@@ -195,8 +195,8 @@
     "semantic_hash": ""
   },
   "backend/src/types/supabase.types.ts": {
-    "mtime": 1779910275.7745743,
-    "ast_hash": "70f187af5936b4ae073d01f5f9069a20",
+    "mtime": 1781473216.4849107,
+    "ast_hash": "66bf4661518da8b4ccfb5fb42bd93c3a",
     "semantic_hash": ""
   },
   "backend/sync-users-once.ts": {
@@ -615,8 +615,8 @@
     "semantic_hash": ""
   },
   "src/contexts/AuthContext.jsx": {
-    "mtime": 1780334481.9160903,
-    "ast_hash": "b994ffba883105159cfe8704802a0514",
+    "mtime": 1780943948.8570774,
+    "ast_hash": "8116ca4f6f81fcd642505803552f1b18",
     "semantic_hash": ""
   },
   "src/contexts/CorrectionsContext.jsx": {
@@ -665,8 +665,8 @@
     "semantic_hash": ""
   },
   "src/pages/LoginPage.jsx": {
-    "mtime": 1780334502.1858563,
-    "ast_hash": "89524bb8befb59ffb80875c0cbc5765e",
+    "mtime": 1780943972.458747,
+    "ast_hash": "9e31c6a3d73dce6e77ef2d121a26f711",
     "semantic_hash": ""
   },
   "src/pages/ResetPasswordPage.jsx": {
@@ -705,8 +705,8 @@
     "semantic_hash": ""
   },
   "src/pages/admin/AdminSettingsPage.jsx": {
-    "mtime": 1779910696.9430056,
-    "ast_hash": "959ca9e73833d0004a420eb294bb0075",
+    "mtime": 1781473452.8675694,
+    "ast_hash": "11503e68fef85d03726b9de9f87b6a48",
     "semantic_hash": ""
   },
   "src/pages/admin/AdminVacacionesPage.jsx": {
@@ -720,8 +720,8 @@
     "semantic_hash": ""
   },
   "src/pages/employee/DashboardPage.jsx": {
-    "mtime": 1779877377.943364,
-    "ast_hash": "3587f20ac9830ace773c00c1ab488c49",
+    "mtime": 1781473372.2593079,
+    "ast_hash": "34264e8b50da00a1e8d22f51f7878826",
     "semantic_hash": ""
   },
   "src/pages/employee/HistoryPage.jsx": {
@@ -740,8 +740,8 @@
     "semantic_hash": ""
   },
   "src/pages/employee/VacationsPage.jsx": {
-    "mtime": 1779920036.8392515,
-    "ast_hash": "704051280a97eef1405dc7e3e03f6a6c",
+    "mtime": 1781472554.1883574,
+    "ast_hash": "eb36746ca70deec62fe39435db1238cd",
     "semantic_hash": ""
   },
   "src/pages/superadmin/SuperAdminCompaniesPage.jsx": {
@@ -970,8 +970,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1780768489.2216098,
-    "ast_hash": "10cead4dc3d77cb9491546c863027a06",
+    "mtime": 1782933106.729873,
+    "ast_hash": "c6cd4c4411175360f04bcc3daa3c9872",
     "semantic_hash": ""
   },
   "HELPBOT_TESTS.md": {
@@ -1277,6 +1277,16 @@
   "public/icon-512.png": {
     "mtime": 1779373818.1733925,
     "ast_hash": "602e3eb9d074bf5e3e933ec534632684",
+    "semantic_hash": ""
+  },
+  "HANDOFF.md": {
+    "mtime": 1780945464.119477,
+    "ast_hash": "13fd3146efca332c665c2b4b11cfa46d",
+    "semantic_hash": ""
+  },
+  "docs/signalr-resilience.md": {
+    "mtime": 1782933130.8582928,
+    "ast_hash": "3f745faeed870c6c4dc3312f3c374bfc",
     "semantic_hash": ""
   }
 }
