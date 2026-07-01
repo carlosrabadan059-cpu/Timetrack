@@ -13,6 +13,8 @@ node_modules/
 .env.*.local
 backend/.env
 backend/.env.local
+docs/n8n-stack.env
+n8n-stack.env
 
 # ========================
 # Build outputs

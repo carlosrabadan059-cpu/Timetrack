@@ -17,6 +17,7 @@ const WEBHOOK_PATHS = {
   'incidencia-resuelta': '/webhook/incidencia-resuelta',
   'vacacion-nueva': '/webhook/vacacion-nueva',
   'vacacion-resuelta': '/webhook/vacacion-resuelta',
+  '2n-connection-down': '/webhook/2n-connection-down',
 } as const;
 
 export type N8nWorkflow = keyof typeof WEBHOOK_PATHS;

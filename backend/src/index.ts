@@ -20,7 +20,7 @@ import externalRoutes from './api/routes/external.js';
 import docsRoutes from './api/routes/docs.js';
 import helpRoutes from './api/routes/help.js';
 import type { AppVariables } from './types/api.types.js';
-import { startSignalRListener } from './services/signalr-listener.js';
+import { startSignalRListener, getSignalRStatus } from './services/signalr-listener.js';
 
 const app = new Hono<{ Variables: AppVariables }>();
 
@@ -46,7 +46,11 @@ if (process.env['NODE_ENV'] !== 'production') {
 
 // ── Public endpoints ───────────────────────────────────────────────────────────
 app.get('/health', (c) => {
-  return c.json({ status: 'ok', timestamp: new Date().toISOString() });
+  return c.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    signalr: getSignalRStatus(),
+  });
 });
 
 // ── Webhook endpoints (own auth via X-N8N-Secret / X-Node-Red-Secret) ─────────

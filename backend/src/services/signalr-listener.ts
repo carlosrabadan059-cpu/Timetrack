@@ -3,7 +3,73 @@ import { getSupabaseAdmin } from '../lib/supabase.js';
 import { inferDetailType, startOfDayISO } from '../lib/date-utils.js';
 import { sseBroadcaster } from './sse-broadcaster.js';
 import { decryptSetting } from '../lib/crypto-settings.js';
+import { dispatchN8nWebhook } from '../lib/n8n.js';
 import type { ClockingModes } from '../types/supabase.types.js';
+
+const DOWN_ALERT_THRESHOLD_MS = 10 * 60 * 1000; // 10 minutos caído antes de alertar
+const RETRY_DELAYS_MS = [2000, 5000, 15000, 30000, 60000, 120000]; // backoff, tope 2 min
+
+export type ConnectionStatus = {
+  label: string;
+  connected: boolean;
+  lastError: string | null;
+  disconnectedSince: string | null; // ISO timestamp, null si conectado
+  alertSent: boolean;
+};
+
+const connectionStatus = new Map<string, ConnectionStatus>();
+
+export function getSignalRStatus(): ConnectionStatus[] {
+  return Array.from(connectionStatus.values());
+}
+
+function markDown(companyId: string, label: string, errorMessage: string): void {
+  const existing = connectionStatus.get(companyId);
+  connectionStatus.set(companyId, {
+    label,
+    connected: false,
+    lastError: errorMessage,
+    disconnectedSince: existing?.disconnectedSince ?? new Date().toISOString(),
+    alertSent: existing?.alertSent ?? false,
+  });
+}
+
+function markUp(companyId: string, label: string): void {
+  connectionStatus.set(companyId, {
+    label,
+    connected: true,
+    lastError: null,
+    disconnectedSince: null,
+    alertSent: false,
+  });
+}
+
+async function checkAndAlertDownConnections(): Promise<void> {
+  const now = Date.now();
+  for (const [companyId, status] of connectionStatus) {
+    if (status.connected || status.alertSent || !status.disconnectedSince) continue;
+    if (now - new Date(status.disconnectedSince).getTime() < DOWN_ALERT_THRESHOLD_MS) continue;
+
+    status.alertSent = true;
+    try {
+      await dispatchN8nWebhook('2n-connection-down', {
+        company_id: companyId,
+        company_label: status.label,
+        disconnected_since: status.disconnectedSince,
+        last_error: status.lastError,
+      });
+    } catch (err) {
+      console.error(
+        `[SignalR][${status.label}] No se pudo enviar alerta de caída a n8n:`,
+        err instanceof Error ? err.message : err
+      );
+    }
+  }
+}
+
+setInterval(() => {
+  void checkAndAlertDownConnections();
+}, 60_000);
 
 // ── Core event handler ─────────────────────────────────────────────────────────
 // companyId is passed when the event comes from a per-company SignalR connection.
@@ -202,7 +268,9 @@ function buildConnection(acBaseUrl: string, acApiToken: string): signalR.HubConn
 function attachHandlers(
   conn: signalR.HubConnection,
   companyId: string,
-  label: string
+  label: string,
+  acBaseUrl: string,
+  acApiToken: string
 ): void {
   conn.on('ReceiveMessage', (message: unknown) => {
     if (typeof message !== 'object' || message === null) return;
@@ -226,17 +294,49 @@ function attachHandlers(
 
   conn.onreconnected(() => {
     console.log(`[SignalR][${label}] Reconectado`);
+    markUp(companyId, label);
     void conn.invoke('Subscribe', 'accesslog', null).catch((err: unknown) => {
       console.warn(`[SignalR][${label}] Error re-suscribiendo:`, err instanceof Error ? err.message : err);
     });
   });
+
+  conn.onreconnecting((err) => {
+    markDown(companyId, label, err instanceof Error ? err.message : 'reconectando');
+  });
+
+  conn.onclose((err) => {
+    // withAutomaticReconnect agotó sus reintentos y se rindió — reintentar desde cero.
+    const msg = err instanceof Error ? err.message : 'conexión cerrada';
+    console.warn(`[SignalR][${label}] Conexión cerrada definitivamente:`, msg);
+    markDown(companyId, label, msg);
+    connections.delete(companyId);
+    void retryConnectionLoop(companyId, acBaseUrl, acApiToken, label);
+  });
+}
+
+async function retryConnectionLoop(
+  companyId: string,
+  acBaseUrl: string,
+  acApiToken: string,
+  label: string
+): Promise<void> {
+  let attempt = 0;
+  // Se detiene si la conexión se restablece o si la empresa deshabilitó 2N mientras tanto
+  while (!connections.has(companyId) && connectionStatus.has(companyId)) {
+    const delay = RETRY_DELAYS_MS[Math.min(attempt, RETRY_DELAYS_MS.length - 1)]!;
+    await new Promise((resolve) => setTimeout(resolve, delay));
+    attempt += 1;
+    if (!connectionStatus.has(companyId)) break;
+    await startCompanyConnection(companyId, acBaseUrl, acApiToken, label, false);
+  }
 }
 
 async function startCompanyConnection(
   companyId: string,
   acBaseUrl: string,
   acApiToken: string,
-  label: string
+  label: string,
+  spawnRetryOnFailure = true
 ): Promise<void> {
   // Stop existing connection if any
   const existing = connections.get(companyId);
@@ -246,18 +346,21 @@ async function startCompanyConnection(
   }
 
   const conn = buildConnection(acBaseUrl, acApiToken);
-  attachHandlers(conn, companyId, label);
+  attachHandlers(conn, companyId, label, acBaseUrl, acApiToken);
 
   try {
     await conn.start();
     await conn.invoke('Subscribe', 'accesslog', null);
     console.log(`[SignalR][${label}] Conectado`);
     connections.set(companyId, conn);
+    markUp(companyId, label);
   } catch (err) {
-    console.warn(
-      `[SignalR][${label}] No se pudo conectar:`,
-      err instanceof Error ? err.message : err
-    );
+    const msg = err instanceof Error ? err.message : String(err);
+    console.warn(`[SignalR][${label}] No se pudo conectar:`, msg);
+    markDown(companyId, label, msg);
+    if (spawnRetryOnFailure) {
+      void retryConnectionLoop(companyId, acBaseUrl, acApiToken, label);
+    }
   }
 }
 
@@ -335,6 +438,9 @@ export async function restartCompanyConnection(companyId: string): Promise<void>
       decryptSetting(modes.twoN.ac_api_token),
       row.company_name ?? companyId
     );
+  } else {
+    // 2N deshabilitado para esta empresa — no reportar como conexión caída
+    connectionStatus.delete(companyId);
   }
 }
 
