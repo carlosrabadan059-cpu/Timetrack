@@ -62,11 +62,13 @@ const Sidebar = ({ variant = 'employee' }) => {
         },
         { to: '/admin/vacaciones', icon: CalendarRange, label: 'Vacaciones' },
         { to: '/admin/informes', icon: BarChart3, label: 'Informes' },
-        { to: '/admin/configuracion', icon: Settings, label: 'Configuración' }
+        { to: '/admin/configuracion', icon: Settings, label: 'Configuración' },
+        { to: '/admin/perfil', icon: User, label: 'Perfil' }
     ];
 
     const superadminLinks = [
         { to: '/superadmin/empresas', icon: Building2, label: 'Empresas' },
+        { to: '/superadmin/perfil', icon: User, label: 'Perfil' },
     ];
 
     const links = variant === 'superadmin' ? superadminLinks : variant === 'admin' ? adminLinks : employeeLinks;

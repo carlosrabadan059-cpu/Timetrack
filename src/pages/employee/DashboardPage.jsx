@@ -6,7 +6,8 @@ import {
     Clock, Activity, Timer, Play, Square,
     MapPin, Search, Calendar, Utensils, Stethoscope, MoreHorizontal, Coffee, Info
 } from 'lucide-react';
-import { StatCard, Card, Button } from '../../components/ui';
+import { Link } from 'react-router-dom';
+import { StatCard, Card, Button, Modal } from '../../components/ui';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import './DashboardPage.css';
 
@@ -32,7 +33,9 @@ const pauseOptions = [
 ];
 
 const DashboardPage = () => {
-    const { profile } = useAuth();
+    const { profile, refreshProfile } = useAuth();
+    const [gpsNotice, setGpsNotice] = useState(null); // null | { detailType }
+    const gpsDeclined = useRef(false);
     const [currentTime, setCurrentTime] = useState(new Date());
     const [showInfo, setShowInfo] = useState(false);
     const [dashData, setDashData] = useState(null);
@@ -128,15 +131,43 @@ const DashboardPage = () => {
 
     const PAUSE_TYPES = new Set(['comida', 'descanso', 'medico', 'otro']);
 
-    const handleFichar = async (detailType = null) => {
+    // Art. 90 LOPDGDD: the employee must be informed before any location is captured
+    const handleFichar = (detailType = null) => {
+        if (navigator.geolocation && !profile?.gps_notice_accepted_at && !gpsDeclined.current) {
+            setGpsNotice({ detailType });
+            return;
+        }
+        doFichar(detailType, !!profile?.gps_notice_accepted_at);
+    };
+
+    const handleGpsNoticeAccept = async () => {
+        const { detailType } = gpsNotice;
+        setGpsNotice(null);
+        try {
+            await api.post('/api/me/gps-notice');
+            await refreshProfile();
+            doFichar(detailType, true);
+        } catch {
+            doFichar(detailType, false);
+        }
+    };
+
+    const handleGpsNoticeDecline = () => {
+        const { detailType } = gpsNotice;
+        gpsDeclined.current = true;
+        setGpsNotice(null);
+        doFichar(detailType, false);
+    };
+
+    const doFichar = async (detailType, withGps) => {
         setFicharLoading(true);
         setFicharError('');
         try {
             const body = { device_info: getDeviceInfo(), ...(detailType ? { detail_type: detailType } : {}) };
 
-            // Capture GPS silently — non-blocking, fichaje proceeds even without it
+            // Non-blocking: the fichaje proceeds even without a position
             let hadGps = false;
-            if (navigator.geolocation) {
+            if (withGps && navigator.geolocation) {
                 await new Promise((resolve) => {
                     navigator.geolocation.getCurrentPosition(
                         (pos) => {
@@ -364,7 +395,7 @@ const DashboardPage = () => {
                                 <span>La ubicación está bloqueada en este navegador. Actívala en los ajustes del navegador para registrar el geofence.</span>
                             </div>
                         )}
-                        {locationPermission === 'prompt' && (
+                        {locationPermission === 'prompt' && profile?.gps_notice_accepted_at && (
                             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.2)', borderRadius: 'var(--radius-md)', padding: 'var(--space-2) var(--space-3)', marginBottom: 'var(--space-3)', fontSize: 'var(--font-size-xs)', color: 'var(--color-warning, #eab308)' }}>
                                 <MapPin size={13} style={{ flexShrink: 0, marginTop: 1 }} />
                                 <span>Acepta el permiso de ubicación cuando el navegador lo solicite para registrar el geofence.</span>
@@ -495,6 +526,37 @@ const DashboardPage = () => {
                     </div>
                 </div>
             )}
+
+            <Modal
+                isOpen={!!gpsNotice}
+                onClose={handleGpsNoticeDecline}
+                title="Información sobre tu ubicación"
+                closeOnOverlay={false}
+                footer={
+                    <>
+                        <Button variant="outline" onClick={handleGpsNoticeDecline}>Fichar sin ubicación</Button>
+                        <Button variant="primary" icon={MapPin} onClick={handleGpsNoticeAccept}>Entendido, fichar</Button>
+                    </>
+                }
+            >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', fontSize: 'var(--font-size-sm)' }}>
+                    <p>
+                        Antes de registrar tu ubicación te informamos, según el art. 90 de la LOPDGDD y el art. 13 del RGPD:
+                    </p>
+                    <ul style={{ paddingLeft: 'var(--space-5)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                        <li><strong>Responsable:</strong> tu empresa, como empleadora.</li>
+                        <li><strong>Qué se guarda:</strong> tus coordenadas GPS solo en el momento exacto de fichar. No hay seguimiento continuo.</li>
+                        <li><strong>Para qué:</strong> comprobar que el fichaje se hace desde el centro de trabajo, como parte del control laboral (art. 20.3 del Estatuto de los Trabajadores). Base jurídica: interés legítimo (art. 6.1.f RGPD).</li>
+                        <li><strong>Quién lo ve:</strong> tú y los responsables de RR. HH. de tu empresa.</li>
+                        <li><strong>Cuánto tiempo:</strong> el mismo plazo que el registro de jornada (4 años).</li>
+                        <li><strong>Tus derechos:</strong> acceso, rectificación, supresión, limitación y oposición, ante tu empresa. También puedes reclamar ante la AEPD.</li>
+                    </ul>
+                    <p>
+                        Si no quieres compartir tu ubicación, puedes fichar sin ella; el fichaje se registra igual.
+                        Más información en la <Link to="/privacidad">política de privacidad</Link>.
+                    </p>
+                </div>
+            </Modal>
         </div>
     );
 };

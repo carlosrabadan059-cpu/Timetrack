@@ -8,6 +8,7 @@ import AdminLayout from './layouts/AdminLayout';
 import LoginPage from './pages/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import PrivacyPage from './pages/PrivacyPage';
 import DashboardPage from './pages/employee/DashboardPage';
 import HistoryPage from './pages/employee/HistoryPage';
 import CorrectionPage from './pages/employee/CorrectionPage';
@@ -64,6 +65,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/privacidad" element={<PrivacyPage />} />
 
 
             {/* Employee routes */}
@@ -95,6 +97,7 @@ function App() {
             >
                 <Route index element={<Navigate to="/superadmin/empresas" replace />} />
                 <Route path="empresas" element={<SuperAdminCompaniesPage />} />
+                <Route path="perfil" element={<ProfilePage />} />
             </Route>
 
             {/* Admin routes */}
@@ -114,6 +117,7 @@ function App() {
                 <Route path="fichajes" element={<AdminAttendancePage />} />
                 <Route path="informes" element={<AdminReportsPage />} />
                 <Route path="configuracion" element={<AdminSettingsPage />} />
+                <Route path="perfil" element={<ProfilePage />} />
             </Route>
 
             {/* Fallback */}

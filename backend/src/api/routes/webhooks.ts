@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { timingSafeEqual } from 'crypto';
 import { getSupabaseAdmin } from '../../lib/supabase.js';
 import { acClient } from '../../lib/ac-client.js';
-import { dispatchN8nWebhook, type N8nWorkflow } from '../../lib/n8n.js';
+import { dispatchN8nWebhook, withQueueSecrets, stripQueueSecrets, type N8nWorkflow } from '../../lib/n8n.js';
 import { handleAccessEvent } from '../../services/signalr-listener.js';
 import type { SyncQueueEntry, ClockingModes } from '../../types/supabase.types.js';
 
@@ -67,12 +67,15 @@ webhooks.post('/n8n/callback', async (c) => {
         .from('sync_queue')
         .update({ status: 'done', updated_at: now })
         .eq('id', queue_id);
+      await stripQueueSecrets([queue_id]);
     } else {
-      await sb
+      const { data: doneRows } = await sb
         .from('sync_queue')
         .update({ status: 'done', updated_at: now })
         .eq('payload->>supabase_user_id', supabase_user_id)
-        .in('status', ['pending', 'processing']);
+        .in('status', ['pending', 'processing'])
+        .select('id');
+      await stripQueueSecrets(((doneRows ?? []) as Array<{ id: string }>).map((r) => r.id));
     }
 
     return c.json({ data: { received: true } });
@@ -109,6 +112,7 @@ webhooks.post('/n8n/callback', async (c) => {
       .from('sync_queue')
       .update({ status: 'abandoned', error_message: errMsg ?? null, updated_at: now })
       .eq('id', queueRow.id);
+    await stripQueueSecrets([queueRow.id]);
 
     try {
       await sb.from('security_alerts').insert({
@@ -168,7 +172,7 @@ webhooks.post('/n8n/sync-retry', async (c) => {
 
   for (const row of rows) {
     const workflow = ACTION_TO_WORKFLOW[row.action];
-    const dispatchPayload = { ...(row.payload as Record<string, unknown>), _queue_id: row.id };
+    const dispatchPayload = { ...withQueueSecrets(row.payload as Record<string, unknown>), _queue_id: row.id };
 
     await sb
       .from('sync_queue')

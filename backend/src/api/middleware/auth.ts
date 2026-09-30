@@ -2,6 +2,15 @@ import { createMiddleware } from 'hono/factory';
 import { getSupabaseAdmin } from '../../lib/supabase.js';
 import type { AuthUser, AppVariables } from '../../types/api.types.js';
 
+function readAal(token: string): string | null {
+  try {
+    const payload = JSON.parse(Buffer.from(token.split('.')[1] ?? '', 'base64url').toString('utf8')) as { aal?: unknown };
+    return typeof payload.aal === 'string' ? payload.aal : null;
+  } catch {
+    return null;
+  }
+}
+
 export const auth = createMiddleware<{ Variables: AppVariables }>(async (c, next) => {
   const token = c.req.header('Authorization')?.replace('Bearer ', '');
 
@@ -22,6 +31,15 @@ export const auth = createMiddleware<{ Variables: AppVariables }>(async (c, next
   if (error || !user) {
     return c.json(
       { error: { code: 'unauthorized', message: 'Token inválido o expirado' } },
+      401
+    );
+  }
+
+  // Token signature already validated by getUser; decode only to read the assurance level.
+  const hasVerifiedFactor = (user.factors ?? []).some((f) => f.status === 'verified');
+  if (hasVerifiedFactor && readAal(token) !== 'aal2') {
+    return c.json(
+      { error: { code: 'mfa_required', message: 'Se requiere verificación en dos pasos' } },
       401
     );
   }

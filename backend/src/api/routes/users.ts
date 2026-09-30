@@ -411,8 +411,9 @@ users.post('/:id/cards', requireRole(['admin', 'manager']), async (c) => {
   try {
     await triggerWorkflow(
       'credential-card',
-      { supabase_user_id: id, ac_external_id: profile.ac_external_id, action: 'assign', card_number: parsed.data.card_number },
-      'assign_card'
+      { supabase_user_id: id, ac_external_id: profile.ac_external_id, action: 'assign' },
+      'assign_card',
+      { card_number: parsed.data.card_number }
     );
   } catch (err) {
     console.error('[users] triggerWorkflow credential-card assign failed:', err);
@@ -498,8 +499,9 @@ users.post('/:id/pin', requireRole(['admin', 'manager']), async (c) => {
   try {
     await triggerWorkflow(
       'credential-pin',
-      { supabase_user_id: id, ac_external_id: profile.ac_external_id, action: 'assign', pin: parsed.data.pin },
-      'assign_pin'
+      { supabase_user_id: id, ac_external_id: profile.ac_external_id, action: 'assign' },
+      'assign_pin',
+      { pin: parsed.data.pin }
     );
   } catch (err) {
     console.error('[users] triggerWorkflow credential-pin assign failed:', err);

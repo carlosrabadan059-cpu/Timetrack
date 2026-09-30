@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Navigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Clock, Mail, Lock, Eye, EyeOff, Check } from 'lucide-react';
+import { Clock, Mail, Lock, Eye, EyeOff, Check, ShieldCheck } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import './LoginPage.css';
@@ -17,7 +17,8 @@ const LoginPage = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const { signIn, isAuthenticated, profile } = useAuth();
+    const [mfaCode, setMfaCode] = useState('');
+    const { signIn, signOut, verifyMfa, mfaPending, isAuthenticated, profile } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const passwordReset = location.state?.passwordReset;
@@ -29,6 +30,10 @@ const LoginPage = () => {
         const t = setTimeout(() => setProfileTimeout(true), 8000);
         return () => clearTimeout(t);
     }, [loading, isAuthenticated]);
+
+    useEffect(() => {
+        if (mfaPending) setLoading(false);
+    }, [mfaPending]);
 
     // Redirect if already authenticated and profile is loaded
     if (isAuthenticated && profile) {
@@ -53,6 +58,24 @@ const LoginPage = () => {
         // Navigate will happen via the redirect above on re-render
     };
 
+    const handleMfaSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        setLoading(true);
+        const { error: mfaError } = await verifyMfa(mfaCode.trim());
+        if (mfaError) {
+            setError(mfaError);
+            setLoading(false);
+        }
+    };
+
+    const handleMfaCancel = async () => {
+        await signOut();
+        setMfaCode('');
+        setError('');
+        setLoading(false);
+    };
+
     return (
         <div className="login-page">
             <div className="login-container">
@@ -69,6 +92,29 @@ const LoginPage = () => {
                             <p>Introduce tus credenciales para acceder</p>
                         </div>
 
+                        {mfaPending ? (
+                        <form onSubmit={handleMfaSubmit} className="login-form">
+                            {error && <div className="login-error">{error}</div>}
+                            <p>Introduce el código de 6 dígitos de tu app de autenticación.</p>
+                            <Input
+                                label="Código de verificación"
+                                icon={ShieldCheck}
+                                value={mfaCode}
+                                onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                                placeholder="123456"
+                                inputMode="numeric"
+                                autoComplete="one-time-code"
+                                required
+                                autoFocus
+                            />
+                            <Button type="submit" variant="primary" fullWidth loading={loading} disabled={mfaCode.length !== 6}>
+                                Verificar
+                            </Button>
+                            <Button type="button" variant="outline" fullWidth onClick={handleMfaCancel}>
+                                Cancelar
+                            </Button>
+                        </form>
+                        ) : (
                         <form onSubmit={handleSubmit} className="login-form">
                             {passwordReset && (
                                 <div className="login-success">
@@ -132,6 +178,11 @@ const LoginPage = () => {
                                 Iniciar Sesión
                             </Button>
                         </form>
+                        )}
+
+                        <p className="login-legal">
+                            <Link to="/privacidad">Política de privacidad</Link>
+                        </p>
 
                         <div className="login-demo-credentials">
                             <p>Credenciales de prueba:</p>

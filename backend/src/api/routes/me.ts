@@ -67,6 +67,7 @@ me.get('/', async (c) => {
       ac_synced: !!profile.ac_synced_at,
       notifications_email: profile.notifications_email,
       two_factor_enabled: profile.two_factor_enabled,
+      gps_notice_accepted_at: profile.gps_notice_accepted_at ?? null,
       avatar_url: profile.avatar_url ?? null,
       access_valid_from: profile.access_valid_from ?? null,
       access_valid_to: profile.access_valid_to ?? null,
@@ -123,6 +124,7 @@ me.patch('/', zValidator('json', patchMeSchema, zodErrorHook), async (c) => {
       ac_synced: !!profile.ac_synced_at,
       notifications_email: profile.notifications_email,
       two_factor_enabled: profile.two_factor_enabled,
+      gps_notice_accepted_at: profile.gps_notice_accepted_at ?? null,
       avatar_url: profile.avatar_url ?? null,
       access_valid_from: profile.access_valid_from ?? null,
       access_valid_to: profile.access_valid_to ?? null,
@@ -196,15 +198,23 @@ me.post('/notifications', zValidator('json', notificationsSchema, zodErrorHook),
   return c.json({ data: { notifications_email: data.notifications_email } });
 });
 
-// ── POST /api/me/2fa/toggle ───────────────────────────────────────────────────
-const twoFaSchema = z.object({
-  enabled: z.boolean(),
-});
-
-me.post('/2fa/toggle', zValidator('json', twoFaSchema, zodErrorHook), async (c) => {
+// ── POST /api/me/2fa/sync ─────────────────────────────────────────────────────
+// Enrolment happens client-side via Supabase MFA; this mirrors the real factor state
+// into profiles.two_factor_enabled so it can never claim protection that doesn't exist.
+me.post('/2fa/sync', async (c) => {
   const user = c.get('user');
-  const { enabled } = c.req.valid('json');
   const supabaseAdmin = getSupabaseAdmin();
+
+  const { data: factorData, error: factorError } = await supabaseAdmin.auth.admin.mfa.listFactors({
+    userId: user.id,
+  });
+  if (factorError) {
+    return c.json(
+      { error: { code: 'internal_error', message: 'Error al consultar 2FA' } },
+      500
+    );
+  }
+  const enabled = factorData.factors.some((f) => f.status === 'verified');
 
   const { data, error } = await supabaseAdmin
     .from('profiles')
@@ -221,6 +231,34 @@ me.post('/2fa/toggle', zValidator('json', twoFaSchema, zodErrorHook), async (c) 
   }
 
   return c.json({ data: { two_factor_enabled: data.two_factor_enabled } });
+});
+
+// ── POST /api/me/gps-notice ───────────────────────────────────────────────────
+// Records that the employee received the prior geolocation notice (art. 90 LOPDGDD).
+me.post('/gps-notice', async (c) => {
+  const user = c.get('user');
+  const supabaseAdmin = getSupabaseAdmin();
+
+  await supabaseAdmin
+    .from('profiles')
+    .update({ gps_notice_accepted_at: new Date().toISOString() })
+    .eq('id', user.id)
+    .is('gps_notice_accepted_at', null);
+
+  const { data, error } = await supabaseAdmin
+    .from('profiles')
+    .select('gps_notice_accepted_at')
+    .eq('id', user.id)
+    .single();
+
+  if (error || !data) {
+    return c.json(
+      { error: { code: 'internal_error', message: 'Error al registrar el aviso' } },
+      500
+    );
+  }
+
+  return c.json({ data: { gps_notice_accepted_at: data.gps_notice_accepted_at } });
 });
 
 // ── GET /api/me/sync-status ───────────────────────────────────────────────────
@@ -294,6 +332,17 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
     );
   }
   const body = parsed.data;
+
+  // Art. 90 LOPDGDD: coordinates are only stored once the employee has received the prior notice
+  const { data: gpsProfile } = await supabaseAdmin
+    .from('profiles')
+    .select('gps_notice_accepted_at')
+    .eq('id', user.id)
+    .maybeSingle();
+  const gps =
+    gpsProfile?.gps_notice_accepted_at && body.latitude !== undefined && body.longitude !== undefined
+      ? { latitude: body.latitude, longitude: body.longitude }
+      : null;
 
   // Enforce clocking mode for this company
   if (user.company_id) {
@@ -407,14 +456,13 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
       }
 
       // Geofence (only when GPS coordinates provided)
-      if (body.latitude !== undefined && body.longitude !== undefined &&
-          settings.headquarter_lat && settings.headquarter_lon && settings.geo_fence_radius) {
+      if (gps && settings.headquarter_lat && settings.headquarter_lon && settings.geo_fence_radius) {
         const R = 6371000;
         const toRad = (d: number) => (d * Math.PI) / 180;
         const lat1 = toRad(Number(settings.headquarter_lat));
-        const lat2 = toRad(body.latitude);
-        const dLat = toRad(body.latitude - Number(settings.headquarter_lat));
-        const dLon = toRad(body.longitude - Number(settings.headquarter_lon));
+        const lat2 = toRad(gps.latitude);
+        const dLat = toRad(gps.latitude - Number(settings.headquarter_lat));
+        const dLon = toRad(gps.longitude - Number(settings.headquarter_lon));
         const a =
           Math.sin(dLat / 2) ** 2 +
           Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
@@ -448,8 +496,10 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
     device_info: body.device_info,
     out_of_schedule,
   };
-  if (body.latitude !== undefined) insertPayload['latitude'] = body.latitude;
-  if (body.longitude !== undefined) insertPayload['longitude'] = body.longitude;
+  if (gps) {
+    insertPayload['latitude'] = gps.latitude;
+    insertPayload['longitude'] = gps.longitude;
+  }
   if (within_geofence !== null) insertPayload['within_geofence'] = within_geofence;
   if (overrideId) insertPayload['override'] = true;
 

@@ -34,6 +34,7 @@ const MobileNav = ({ variant = 'employee' }) => {
         { to: '/admin/empleados',    icon: Users,           label: 'Empleados' },
         { to: '/admin/fichajes',     icon: Clock,           label: 'Fichajes' },
         { to: '/admin/correcciones', icon: ClipboardList,   label: 'Incidencias', badge: pending || null },
+        { to: '/admin/perfil',       icon: User,            label: 'Perfil' },
     ];
 
     const links = variant === 'admin' ? adminLinks : employeeLinks;

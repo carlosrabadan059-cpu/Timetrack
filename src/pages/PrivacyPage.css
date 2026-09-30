@@ -1,0 +1,110 @@
+.privacy-page {
+    min-height: 100vh;
+    background: var(--color-bg-primary);
+    padding: var(--space-8) var(--space-4);
+}
+
+.privacy-content {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--color-bg-secondary, var(--color-bg-primary));
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-8) var(--space-6);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+}
+
+.privacy-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-6);
+}
+
+.privacy-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: var(--font-weight-semibold, 600);
+    font-size: var(--font-size-lg);
+    color: var(--color-accent-primary);
+}
+
+.privacy-back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+}
+
+.privacy-content h1 {
+    margin-bottom: var(--space-1);
+}
+
+.privacy-content h2 {
+    font-size: var(--font-size-lg);
+    margin: var(--space-6) 0 var(--space-2);
+}
+
+.privacy-content p,
+.privacy-content ul {
+    margin-bottom: var(--space-3);
+}
+
+.privacy-content ul {
+    padding-left: var(--space-5);
+}
+
+.privacy-content li {
+    margin-bottom: var(--space-1);
+}
+
+.privacy-content a {
+    color: var(--color-accent-secondary, var(--color-accent-primary));
+    text-decoration: underline;
+}
+
+.privacy-updated {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.privacy-table-wrap {
+    overflow-x: auto;
+    margin-bottom: var(--space-3);
+}
+
+.privacy-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+}
+
+.privacy-table th,
+.privacy-table td {
+    text-align: left;
+    vertical-align: top;
+    padding: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.privacy-table th {
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium, 500);
+}
+
+.privacy-footer {
+    margin-top: var(--space-8);
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .privacy-content {
+        padding: var(--space-6) var(--space-4);
+    }
+}

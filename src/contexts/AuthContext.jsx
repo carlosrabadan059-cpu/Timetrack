@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { api } from '../lib/api';
 
@@ -14,6 +14,34 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [mfaPending, setMfaPending] = useState(false);
+    const currentUid = useRef(null);
+
+    async function needsMfa() {
+        const { data } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+        return data?.nextLevel === 'aal2' && data?.currentLevel !== 'aal2';
+    }
+
+    async function handleSession(session) {
+        const uid = session?.user?.id ?? null;
+        setUser(session?.user ?? null);
+        if (!uid) {
+            currentUid.current = null;
+            setMfaPending(false);
+            setProfile(null);
+            return;
+        }
+        if (await needsMfa()) {
+            setMfaPending(true);
+            return;
+        }
+        setMfaPending(false);
+        if (currentUid.current !== uid) {
+            currentUid.current = uid;
+            setProfile(null); // limpiar perfil anterior antes de cargar el nuevo
+            await loadProfile();
+        }
+    }
 
     async function loadProfile(fallbackUserId = null) {
         try {
@@ -36,22 +64,12 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
-            setUser(session?.user ?? null);
-            if (session?.user) {
-                loadProfile().finally(() => setLoading(false));
-            } else {
-                setLoading(false);
-            }
+            handleSession(session).finally(() => setLoading(false));
         });
 
+        // supabase-js deadlocks if other auth calls are awaited inside this callback — defer them
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            setUser(session?.user ?? null);
-            if (session?.user) {
-                setProfile(null); // limpiar perfil anterior antes de cargar el nuevo
-                loadProfile();
-            } else {
-                setProfile(null);
-            }
+            setTimeout(() => { handleSession(session); }, 0);
         });
 
         return () => subscription.unsubscribe();
@@ -61,6 +79,17 @@ export const AuthProvider = ({ children }) => {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) return { user: null, error: error.message };
         return { user, error: null };
+    };
+
+    const verifyMfa = async (code) => {
+        const { data: factors, error: listError } = await supabase.auth.mfa.listFactors();
+        const factor = factors?.totp?.[0];
+        if (listError || !factor) return { error: 'No hay ningún factor 2FA configurado' };
+        const { error } = await supabase.auth.mfa.challengeAndVerify({ factorId: factor.id, code });
+        if (error) return { error: 'Código incorrecto o caducado' };
+        const { data: { session } } = await supabase.auth.getSession();
+        await handleSession(session);
+        return { error: null };
     };
 
     const signOut = async () => {
@@ -90,10 +119,13 @@ export const AuthProvider = ({ children }) => {
         signOut,
         resetPassword,
         updatePassword,
+        verifyMfa,
+        refreshProfile: loadProfile,
+        mfaPending,
         hasRole,
         isAdmin,
         isEmployee,
-        isAuthenticated: !!user,
+        isAuthenticated: !!user && !mfaPending,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

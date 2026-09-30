@@ -2,7 +2,29 @@
 // Pattern: always insert into sync_queue first, then fire the webhook
 
 import { getSupabaseAdmin } from './supabase.js';
+import { encryptSetting, decryptSetting } from './crypto-settings.js';
 import type { SyncQueueEntry } from '../types/supabase.types.js';
+
+const SECRETS_KEY = '_secrets';
+
+/** Rebuilds the dispatch payload from a sync_queue row, decrypting any stored credentials. */
+export function withQueueSecrets(payload: Record<string, unknown>): Record<string, unknown> {
+  const { [SECRETS_KEY]: enc, ...rest } = payload;
+  if (typeof enc !== 'string') return rest;
+  return { ...rest, ...(JSON.parse(decryptSetting(enc)) as Record<string, string>) };
+}
+
+/** Removes encrypted credentials from finished sync_queue rows (data minimisation). */
+export async function stripQueueSecrets(ids: string[]): Promise<void> {
+  if (ids.length === 0) return;
+  const sb = getSupabaseAdmin();
+  const { data } = await sb.from('sync_queue').select('id, payload').in('id', ids);
+  for (const row of (data ?? []) as Array<{ id: string; payload: Record<string, unknown> | null }>) {
+    if (!row.payload || !(SECRETS_KEY in row.payload)) continue;
+    const { [SECRETS_KEY]: _removed, ...rest } = row.payload;
+    await sb.from('sync_queue').update({ payload: rest }).eq('id', row.id);
+  }
+}
 
 const N8N_BASE = process.env['N8N_WEBHOOK_BASE_URL'] ?? '';
 const N8N_SECRET = process.env['N8N_WEBHOOK_SECRET'] ?? '';
@@ -50,18 +72,24 @@ export async function dispatchN8nWebhook(
  *   Webhook failures are caught, status updated to 'failed' (retry cron handles the rest).
  * - If queueAction is omitted (notification-only workflows like incidencia-*):
  *   No sync_queue entry. Webhook failure is logged but not re-thrown.
+ * - `secrets` (PINs, card numbers) are stored AES-GCM encrypted in sync_queue and only
+ *   sent in clear to n8n.
  */
 export async function triggerWorkflow(
   workflow: N8nWorkflow,
   payload: Record<string, unknown>,
-  queueAction?: SyncQueueEntry['action']
+  queueAction?: SyncQueueEntry['action'],
+  secrets?: Record<string, string>
 ): Promise<void> {
   let queueId: string | null = null;
 
   if (queueAction) {
+    const storedPayload = secrets
+      ? { ...payload, [SECRETS_KEY]: encryptSetting(JSON.stringify(secrets)) }
+      : payload;
     const { data, error } = await getSupabaseAdmin()
       .from('sync_queue')
-      .insert({ action: queueAction, payload, status: 'pending' })
+      .insert({ action: queueAction, payload: storedPayload, status: 'pending' })
       .select('id')
       .single();
 
@@ -74,7 +102,8 @@ export async function triggerWorkflow(
   }
 
   try {
-    await dispatchN8nWebhook(workflow, queueId ? { ...payload, _queue_id: queueId } : payload);
+    const fullPayload = secrets ? { ...payload, ...secrets } : payload;
+    await dispatchN8nWebhook(workflow, queueId ? { ...fullPayload, _queue_id: queueId } : fullPayload);
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     // Silencia 404 en workflows de notificación pura (sin queue) — workflow no configurado en n8n

@@ -210,7 +210,8 @@ GET   /api/me                    Perfil completo
 PATCH /api/me                    Actualiza nombre, notificaciones, avatar
 POST  /api/me/change-password    Cambiar contraseña
 POST  /api/me/notifications      Toggle notificaciones email
-POST  /api/me/2fa/toggle         Toggle 2FA
+POST  /api/me/2fa/sync           Sincroniza two_factor_enabled con los factores TOTP reales (Supabase MFA)
+POST  /api/me/gps-notice         Registra el aviso previo de geolocalización (art. 90 LOPDGDD)
 GET   /api/me/sync-status        Estado sync con 2N AC
 
 POST  /api/me/fichar             Fichar desde web o móvil
