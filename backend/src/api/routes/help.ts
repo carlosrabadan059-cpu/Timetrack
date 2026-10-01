@@ -122,7 +122,10 @@ help.post('/chat', async (c) => {
   try {
     const res = await fetch(webhookUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-N8N-Secret': process.env['N8N_WEBHOOK_SECRET'] ?? '',
+      },
       body: JSON.stringify({
         message,
         history,
