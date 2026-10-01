@@ -214,7 +214,19 @@ historial.get('/export', async (c) => {
     });
   }
 
-  // Excel
+  const buffer = await buildRegistroXlsx(logs);
+
+  return new Response(buffer, {
+    headers: {
+      'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'Content-Disposition': `attachment; filename="${filename}.xlsx"`,
+    },
+  });
+});
+
+/** Excel del registro de jornada; `title` añade una fila de cabecera (p. ej. nombre y código del empleado). */
+export async function buildRegistroXlsx(logs: AccessLog[], title?: string): Promise<ExcelJS.Buffer> {
+  const DAYS_ES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
   const workbook = new ExcelJS.Workbook();
   workbook.creator = 'Antigravity TimeTrack';
   workbook.created = new Date();
@@ -254,14 +266,12 @@ historial.get('/export', async (c) => {
     });
   }
 
-  const buffer = await workbook.xlsx.writeBuffer();
+  if (title) {
+    ws.insertRow(1, [title]);
+    ws.getRow(1).font = { bold: true, size: 13 };
+  }
 
-  return new Response(buffer, {
-    headers: {
-      'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'Content-Disposition': `attachment; filename="${filename}.xlsx"`,
-    },
-  });
-});
+  return workbook.xlsx.writeBuffer();
+}
 
 export default historial;

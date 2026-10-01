@@ -548,7 +548,7 @@ const DashboardPage = () => {
                         <li><strong>Qué se guarda:</strong> tus coordenadas GPS solo en el momento exacto de fichar. No hay seguimiento continuo.</li>
                         <li><strong>Para qué:</strong> comprobar que el fichaje se hace desde el centro de trabajo, como parte del control laboral (art. 20.3 del Estatuto de los Trabajadores). Base jurídica: interés legítimo (art. 6.1.f RGPD).</li>
                         <li><strong>Quién lo ve:</strong> tú y los responsables de RR. HH. de tu empresa.</li>
-                        <li><strong>Cuánto tiempo:</strong> el mismo plazo que el registro de jornada (4 años).</li>
+                        <li><strong>Cuánto tiempo:</strong> el plazo que fije tu empresa (30 días por defecto); después, y siempre al dejar la empresa, se borran las coordenadas y solo se conserva si fichaste dentro o fuera de la sede.</li>
                         <li><strong>Tus derechos:</strong> acceso, rectificación, supresión, limitación y oposición, ante tu empresa. También puedes reclamar ante la AEPD.</li>
                     </ul>
                     <p>

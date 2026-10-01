@@ -281,6 +281,26 @@ webhooks.post('/n8n/reconcile', async (c) => {
   return c.json({ data: { queued, discrepancies } });
 });
 
+// ── POST /webhooks/n8n/retention ──────────────────────────────────────────────
+// n8n cron diario — purga de conservación (GPS a los N días o en la baja; registro de jornada a los 4 años)
+
+webhooks.post('/n8n/retention', async (c) => {
+  if (!verifyN8nSecret(c)) {
+    return c.json({ error: { code: 'unauthorized', message: 'Invalid secret' } }, 401);
+  }
+
+  const dryRun = c.req.query('dry_run') === 'true';
+  const { data, error } = await getSupabaseAdmin().rpc('purge_retention', { p_dry_run: dryRun });
+
+  if (error) {
+    console.error('[retention] purge failed:', error.message);
+    return c.json({ error: { code: 'internal_error', message: 'Error en la purga de conservación' } }, 500);
+  }
+
+  console.log('[retention]', JSON.stringify(data));
+  return c.json({ data });
+});
+
 // ── POST /webhooks/2n-device/:companyId ───────────────────────────────────────
 // Webhook recibido directamente desde un lector 2N (modo Dispositivo Directo).
 // Auth: X-2N-Secret header debe coincidir con clocking_modes.twoN.device_webhook_secret

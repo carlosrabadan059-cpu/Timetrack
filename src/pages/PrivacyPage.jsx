@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Clock, ArrowLeft } from 'lucide-react';
 import './PrivacyPage.css';
 
-const LAST_UPDATED = '30 de septiembre de 2026';
+const LAST_UPDATED = '1 de octubre de 2026';
 
 const PrivacyPage = () => {
     const navigate = useNavigate();
@@ -98,13 +98,23 @@ const PrivacyPage = () => {
                 <h2>4. Cuánto tiempo se conservan</h2>
                 <ul>
                     <li>
-                        <strong>Registro de jornada y ubicación asociada:</strong> 4 años, como exige el
-                        art. 34.9 del Estatuto de los Trabajadores.
+                        <strong>Registro de jornada</strong> (fichajes, correcciones e incidencias): 4 años desde
+                        cada registro, como exige el art. 34.9 del Estatuto de los Trabajadores. Después se borra
+                        automáticamente.
                     </li>
                     <li>
-                        <strong>Datos de tu cuenta, credenciales, incidencias y vacaciones:</strong> mientras
-                        dure la relación laboral y, después, durante los plazos de prescripción de las
-                        obligaciones legales aplicables.
+                        <strong>Coordenadas GPS:</strong> el plazo que fije tu empresa (30 días por defecto) y, en
+                        todo caso, se borran cuando dejas la empresa. Después solo se conserva si el fichaje se hizo
+                        dentro o fuera de la sede.
+                    </li>
+                    <li>
+                        <strong>Datos de tu cuenta y vacaciones:</strong> mientras dure la relación laboral. Al dejar
+                        la empresa se bloquean: se conservan sin uso, solo para atender obligaciones legales o
+                        reclamaciones (art. 32 LOPDGDD), y se borran cuando ya no queda ningún registro tuyo dentro
+                        del plazo de 4 años.
+                    </li>
+                    <li>
+                        <strong>Credenciales de acceso físico</strong> (tarjeta, PIN): se eliminan al dejar la empresa.
                     </li>
                 </ul>
 

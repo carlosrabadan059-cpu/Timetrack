@@ -46,9 +46,17 @@ export const auth = createMiddleware<{ Variables: AppVariables }>(async (c, next
 
   const { data: profile } = await supabaseAdmin
     .from('profiles')
-    .select('role, company_id, ac_external_id, employee_code, ac_synced_at')
+    .select('role, company_id, ac_external_id, employee_code, ac_synced_at, access_valid_to')
     .eq('id', user.id)
     .single();
+
+  // Ex-employees keep their records (art. 34.9 ET) but lose app access; covers tokens issued before the ban
+  if (profile?.access_valid_to && new Date(profile.access_valid_to as string) <= new Date()) {
+    return c.json(
+      { error: { code: 'account_disabled', message: 'Tu cuenta está dada de baja' } },
+      403
+    );
+  }
 
   const VALID_ROLES = ['superadmin', 'admin', 'manager', 'employee'] as const;
   const rawRole = profile?.role ?? 'employee';

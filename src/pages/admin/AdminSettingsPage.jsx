@@ -65,7 +65,7 @@ const DEFAULT_CLOCKING_MODES = {
 const DEFAULT_SETTINGS = {
     company: { name: '', cif: '', address: '', email: '' },
     branches: [],
-    rules: { geoFenceRadius: 100, courtesyMinutes: 15, latitude: 40.4168, longitude: -3.7038, flexibleScheduleEnabled: false, flexibleScheduleMinutes: 15, vacationDaysPerYear: 22 },
+    rules: { geoFenceRadius: 100, courtesyMinutes: 15, latitude: 40.4168, longitude: -3.7038, flexibleScheduleEnabled: false, flexibleScheduleMinutes: 15, vacationDaysPerYear: 22, gpsRetentionDays: 30 },
     work_schedule: { start: '09:00', end: '18:00', days: [1, 2, 3, 4, 5] },
     holidays: [],
     clocking_modes: DEFAULT_CLOCKING_MODES,
@@ -529,6 +529,21 @@ const AdminSettingsPage = () => {
                                         onChange={(e) => handleRuleChange('geoFenceRadius', e.target.value)}
                                     />
                                     <p className="settings-help">Distancia máxima desde el centro de trabajo.</p>
+                                </div>
+                                <div className="settings-group mt-4">
+                                    <label className="settings-label">Conservar coordenadas GPS (días)</label>
+                                    <Input
+                                        type="number"
+                                        min={1}
+                                        max={1460}
+                                        value={settings.rules.gpsRetentionDays ?? 30}
+                                        onChange={(e) => handleRuleChange('gpsRetentionDays', e.target.value)}
+                                    />
+                                    <p className="settings-help">
+                                        Pasado este plazo, y siempre al dar de baja a un empleado, se borran las coordenadas de sus
+                                        fichajes y se conserva solo si fichó dentro o fuera de la sede (art. 5.1.c RGPD). Solo lo
+                                        puede cambiar un administrador. Recomendado: 30.
+                                    </p>
                                 </div>
                                 <div className="mt-4">
                                     <label className="settings-label mb-2">Ubicación Central (Default)</label>

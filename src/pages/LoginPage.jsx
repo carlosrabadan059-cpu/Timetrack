@@ -18,6 +18,13 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false);
 
     const [mfaCode, setMfaCode] = useState('');
+    const [accountDisabled] = useState(() => {
+        try {
+            const flag = sessionStorage.getItem('tt_account_disabled') === '1';
+            sessionStorage.removeItem('tt_account_disabled');
+            return flag;
+        } catch { return false; }
+    });
     const { signIn, signOut, verifyMfa, mfaPending, isAuthenticated, profile } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -116,6 +123,11 @@ const LoginPage = () => {
                         </form>
                         ) : (
                         <form onSubmit={handleSubmit} className="login-form">
+                            {accountDisabled && !error && (
+                                <div className="login-error">
+                                    Tu cuenta está dada de baja. Contacta con tu empresa.
+                                </div>
+                            )}
                             {passwordReset && (
                                 <div className="login-success">
                                     Contraseña actualizada correctamente. Puedes iniciar sesión.

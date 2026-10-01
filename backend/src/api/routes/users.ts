@@ -4,9 +4,23 @@ import { getSupabaseAdmin } from '../../lib/supabase.js';
 import { requireRole } from '../middleware/role.js';
 import { triggerWorkflow } from '../../lib/n8n.js';
 import type { AppVariables } from '../../types/api.types.js';
-import type { Profile } from '../../types/supabase.types.js';
+import type { Profile, AccessLog } from '../../types/supabase.types.js';
+import { buildRegistroXlsx } from './historial.js';
 
 const users = new Hono<{ Variables: AppVariables }>();
+
+/** Blocks Supabase Auth sign-in (and token refresh) while the employee is de-registered. */
+async function syncAuthBan(
+  sb: ReturnType<typeof getSupabaseAdmin>,
+  userId: string,
+  accessValidTo: string | null
+): Promise<void> {
+  const disabled = !!accessValidTo && new Date(accessValidTo) <= new Date();
+  const { error } = await sb.auth.admin.updateUserById(userId, {
+    ban_duration: disabled ? '876000h' : 'none',
+  });
+  if (error) console.error('[users] ban sync failed:', error.message);
+}
 
 // ── POST /api/users ───────────────────────────────────────────────────────────
 
@@ -122,6 +136,14 @@ users.get('/', requireRole(['admin', 'manager']), async (c) => {
   }
   if (search) {
     query = query.or(`full_name.ilike.%${search}%,email.ilike.%${search}%`);
+  }
+
+  // Ex-empleados: datos bloqueados (art. 32 LOPDGDD) — fuera del listado diario, solo visibles para admin
+  const nowIso = new Date().toISOString();
+  if (c.req.query('status') === 'inactive' && authUser.role === 'admin') {
+    query = query.lte('access_valid_to', nowIso);
+  } else {
+    query = query.or(`access_valid_to.is.null,access_valid_to.gt.${nowIso}`);
   }
 
   const { data, error, count } = await query;
@@ -295,11 +317,18 @@ users.patch('/:id', requireRole(['admin', 'manager']), async (c) => {
   const d = parsed.data;
   if (d.full_name !== undefined) changes['full_name'] = d.full_name;
   if (d.role !== undefined) changes['role'] = d.role;
-  if (d.access_valid_from !== undefined) changes['access_valid_from'] = d.access_valid_from;
-  if (d.access_valid_to !== undefined) changes['access_valid_to'] = d.access_valid_to;
   if (d.notifications_email !== undefined) changes['notifications_email'] = d.notifications_email;
-  // Solo admin puede asignar/reasignar supervisor
-  if (d.manager_id !== undefined && authUser.role === 'admin') changes['manager_id'] = d.manager_id;
+  // Solo admin puede dar de alta/baja o asignar supervisor
+  if (authUser.role === 'admin') {
+    if (d.access_valid_from !== undefined) changes['access_valid_from'] = d.access_valid_from;
+    if (d.access_valid_to !== undefined) {
+      if (d.access_valid_to && id === authUser.id) {
+        return c.json({ error: { code: 'forbidden', message: 'No puedes darte de baja a ti mismo' } }, 403);
+      }
+      changes['access_valid_to'] = d.access_valid_to;
+    }
+    if (d.manager_id !== undefined) changes['manager_id'] = d.manager_id;
+  }
 
   if (Object.keys(changes).length === 0) {
     return c.json({ error: { code: 'bad_request', message: 'Sin campos a actualizar' } }, 400);
@@ -319,6 +348,10 @@ users.patch('/:id', requireRole(['admin', 'manager']), async (c) => {
     );
   }
 
+  if (changes['access_valid_to'] !== undefined) {
+    await syncAuthBan(sb, id, changes['access_valid_to'] as string | null);
+  }
+
   if (existing.ac_external_id) {
     void triggerWorkflow(
       'user-update',
@@ -328,6 +361,53 @@ users.patch('/:id', requireRole(['admin', 'manager']), async (c) => {
   }
 
   return c.json({ data: updated });
+});
+
+// ── GET /api/users/:id/registro/export ────────────────────────────────────────
+// Registro de jornada completo (últimos 4 años, art. 34.9 ET) para entregar al trabajador en su baja
+
+users.get('/:id/registro/export', requireRole(['admin']), async (c) => {
+  const authUser = c.get('user');
+  const { id } = c.req.param();
+  const sb = getSupabaseAdmin();
+
+  const { data: target } = await sb
+    .from('profiles')
+    .select('company_id, full_name, employee_code')
+    .eq('id', id)
+    .maybeSingle();
+
+  if (!target) {
+    return c.json({ error: { code: 'not_found', message: 'Usuario no encontrado' } }, 404);
+  }
+  if (target.company_id !== authUser.company_id) {
+    return c.json({ error: { code: 'forbidden', message: 'Usuario de otra empresa' } }, 403);
+  }
+
+  const since = new Date();
+  since.setFullYear(since.getFullYear() - 4);
+
+  const { data: logs, error } = await sb
+    .from('access_logs')
+    .select('*')
+    .eq('user_id', id)
+    .gte('timestamp', since.toISOString())
+    .order('timestamp', { ascending: true });
+
+  if (error) {
+    return c.json({ error: { code: 'internal_error', message: 'Error al generar el registro' } }, 500);
+  }
+
+  const code = (target.employee_code as string | null) ?? id.slice(0, 8);
+  const title = `Registro de jornada — ${target.full_name ?? ''} (${code}) — generado ${new Date().toLocaleDateString('es-ES')}`;
+  const buffer = await buildRegistroXlsx((logs ?? []) as AccessLog[], title);
+
+  return new Response(buffer, {
+    headers: {
+      'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'Content-Disposition': `attachment; filename="registro-jornada-${code}.xlsx"`,
+    },
+  });
 });
 
 // ── DELETE /api/users/:id ─────────────────────────────────────────────────────
@@ -349,11 +429,15 @@ users.delete('/:id', requireRole(['admin']), async (c) => {
   if (existing.company_id !== authUser.company_id) {
     return c.json({ error: { code: 'forbidden', message: 'Usuario de otra empresa' } }, 403);
   }
+  if (id === authUser.id) {
+    return c.json({ error: { code: 'forbidden', message: 'No puedes darte de baja a ti mismo' } }, 403);
+  }
 
-  // Soft delete: revoke access by setting access_valid_to = now()
+  // Baja lógica: el registro de jornada se conserva 4 años (art. 34.9 ET); solo se revoca el acceso
+  const now = new Date().toISOString();
   const { error: softDeleteErr } = await sb
     .from('profiles')
-    .update({ access_valid_to: new Date().toISOString() })
+    .update({ access_valid_to: now })
     .eq('id', id);
 
   if (softDeleteErr) {
@@ -363,11 +447,23 @@ users.delete('/:id', requireRole(['admin']), async (c) => {
     );
   }
 
-  void triggerWorkflow(
-    'user-delete',
-    { supabase_user_id: id, ac_external_id: existing.ac_external_id ?? null },
-    'delete_user'
-  );
+  await syncAuthBan(sb, id, now);
+
+  // GPS no forma parte del registro legal: se conserva solo within_geofence (art. 5.1.c RGPD)
+  const { error: gpsErr } = await sb
+    .from('access_logs')
+    .update({ latitude: null, longitude: null })
+    .eq('user_id', id)
+    .or('latitude.not.is.null,longitude.not.is.null');
+  if (gpsErr) console.error('[users] GPS purge on baja failed:', gpsErr.message);
+
+  if (existing.ac_external_id) {
+    void triggerWorkflow(
+      'user-delete',
+      { supabase_user_id: id, ac_external_id: existing.ac_external_id },
+      'delete_user'
+    );
+  }
 
   return c.json({ data: { deleted: true } });
 });

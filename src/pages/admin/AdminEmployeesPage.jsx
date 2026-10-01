@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, MoreVertical, Edit2, Trash, Search } from 'lucide-react';
+import { Plus, MoreVertical, Edit2, Trash, Search, Download, RotateCcw } from 'lucide-react';
 import { Card, Button, Modal, Input } from '../../components/ui';
 import { useAuth } from '../../contexts/AuthContext';
 import { api } from '../../lib/api';
@@ -14,6 +14,17 @@ function getInitials(name) {
 }
 
 const ROLE_LABELS = { admin: 'Administrador', manager: 'Manager', employee: 'Empleado' };
+
+function triggerDownload(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
 
 const AdminEmployeesPage = () => {
     const { profile } = useAuth();
@@ -29,6 +40,11 @@ const AdminEmployeesPage = () => {
     const [formError, setFormError] = useState('');
     const [formLoading, setFormLoading] = useState(false);
     const [managers, setManagers] = useState([]);
+    const [view, setView] = useState('active'); // 'active' | 'inactive'
+    const [bajaTarget, setBajaTarget] = useState(null);
+    const [bajaLoading, setBajaLoading] = useState(false);
+    const [bajaError, setBajaError] = useState('');
+    const [exportingId, setExportingId] = useState(null);
 
     const isAdmin = profile?.role === 'admin';
 
@@ -47,6 +63,7 @@ const AdminEmployeesPage = () => {
         try {
             const params = { limit: 50 };
             if (searchTerm) params.search = searchTerm;
+            if (view === 'inactive') params.status = 'inactive';
             const res = await api.get('/api/users', params);
             setEmployees(res.data ?? []);
             setTotal(res.meta?.total ?? 0);
@@ -55,7 +72,7 @@ const AdminEmployeesPage = () => {
         } finally {
             setLoading(false);
         }
-    }, [searchTerm]);
+    }, [searchTerm, view]);
 
     useEffect(() => {
         const t = setTimeout(loadEmployees, 300);
@@ -121,10 +138,44 @@ const AdminEmployeesPage = () => {
         }
     };
 
-    const handleDeactivate = async (id) => {
+    const handleExport = async (emp) => {
         setOpenActionId(null);
+        setExportingId(emp.id);
         try {
-            await api.delete(`/api/users/${id}`);
+            const blob = await api.download(`/api/users/${emp.id}/registro/export`);
+            triggerDownload(blob, `registro-jornada-${emp.employee_code ?? emp.id.slice(0, 8)}.xlsx`);
+        } catch (err) {
+            alert(`No se pudo descargar el registro: ${err.message}`);
+        } finally {
+            setExportingId(null);
+        }
+    };
+
+    const openBaja = (emp) => {
+        setOpenActionId(null);
+        setBajaError('');
+        setBajaTarget(emp);
+    };
+
+    const confirmBaja = async () => {
+        setBajaLoading(true);
+        setBajaError('');
+        try {
+            await api.delete(`/api/users/${bajaTarget.id}`);
+            setBajaTarget(null);
+            loadEmployees();
+        } catch (err) {
+            setBajaError(err.message);
+        } finally {
+            setBajaLoading(false);
+        }
+    };
+
+    const handleReactivate = async (emp) => {
+        setOpenActionId(null);
+        if (!window.confirm(`¿Reactivar a ${emp.full_name}? Podrá volver a entrar en la app. El acceso físico (2N) hay que volver a darlo de alta.`)) return;
+        try {
+            await api.patch(`/api/users/${emp.id}`, { access_valid_to: null });
             loadEmployees();
         } catch (err) {
             alert(err.message);
@@ -154,7 +205,33 @@ const AdminEmployeesPage = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
+                {isAdmin && (
+                    <div className="employees-view-toggle" role="tablist">
+                        <button
+                            role="tab"
+                            aria-selected={view === 'active'}
+                            className={view === 'active' ? 'active' : ''}
+                            onClick={() => setView('active')}
+                        >
+                            Activos
+                        </button>
+                        <button
+                            role="tab"
+                            aria-selected={view === 'inactive'}
+                            className={view === 'inactive' ? 'active' : ''}
+                            onClick={() => setView('inactive')}
+                        >
+                            Ex-empleados
+                        </button>
+                    </div>
+                )}
             </div>
+            {view === 'inactive' && (
+                <p className="employees-inactive-note">
+                    Datos bloqueados (art. 32 LOPDGDD): el registro de jornada de los ex-empleados se conserva 4 años
+                    (art. 34.9 ET) solo para entregarlo al trabajador, a sus representantes o a la Inspección de Trabajo.
+                </p>
+            )}
 
             <Card padding="none" className="employees-table-card">
                 <div className="table-responsive">
@@ -212,9 +289,15 @@ const AdminEmployeesPage = () => {
                                             </td>
                                         )}
                                         <td className="p-4">
-                                            <span className={`status-badge ${emp.ac_synced ? 'active' : 'inactive'}`}>
-                                                {emp.ac_synced ? 'Synced' : 'Pendiente'}
-                                            </span>
+                                            {view === 'inactive' ? (
+                                                <span className="text-sm text-muted">
+                                                    Baja: {emp.access_valid_to ? new Date(emp.access_valid_to).toLocaleDateString('es-ES') : '–'}
+                                                </span>
+                                            ) : (
+                                                <span className={`status-badge ${emp.ac_synced ? 'active' : 'inactive'}`}>
+                                                    {emp.ac_synced ? 'Synced' : 'Pendiente'}
+                                                </span>
+                                            )}
                                         </td>
                                         <td className="p-4 text-right">
                                             <div className="relative">
@@ -229,18 +312,39 @@ const AdminEmployeesPage = () => {
                                                 </button>
                                                 {openActionId === emp.id && (
                                                     <div className="employee-action-menu">
-                                                        <button
-                                                            className="employee-action-btn"
-                                                            onClick={(e) => { e.stopPropagation(); openEdit(emp); }}
-                                                        >
-                                                            <Edit2 size={16} className="text-muted" /> Editar
-                                                        </button>
-                                                        <button
-                                                            className="employee-action-btn delete"
-                                                            onClick={(e) => { e.stopPropagation(); handleDeactivate(emp.id); }}
-                                                        >
-                                                            <Trash size={16} /> Revocar acceso
-                                                        </button>
+                                                        {view === 'active' && (
+                                                            <button
+                                                                className="employee-action-btn"
+                                                                onClick={(e) => { e.stopPropagation(); openEdit(emp); }}
+                                                            >
+                                                                <Edit2 size={16} className="text-muted" /> Editar
+                                                            </button>
+                                                        )}
+                                                        {isAdmin && (
+                                                            <button
+                                                                className="employee-action-btn"
+                                                                disabled={exportingId === emp.id}
+                                                                onClick={(e) => { e.stopPropagation(); handleExport(emp); }}
+                                                            >
+                                                                <Download size={16} className="text-muted" /> Descargar registro
+                                                            </button>
+                                                        )}
+                                                        {isAdmin && view === 'active' && emp.id !== profile?.id && (
+                                                            <button
+                                                                className="employee-action-btn delete"
+                                                                onClick={(e) => { e.stopPropagation(); openBaja(emp); }}
+                                                            >
+                                                                <Trash size={16} /> Dar de baja
+                                                            </button>
+                                                        )}
+                                                        {isAdmin && view === 'inactive' && (
+                                                            <button
+                                                                className="employee-action-btn"
+                                                                onClick={(e) => { e.stopPropagation(); handleReactivate(emp); }}
+                                                            >
+                                                                <RotateCcw size={16} className="text-muted" /> Reactivar
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 )}
                                             </div>
@@ -257,6 +361,39 @@ const AdminEmployeesPage = () => {
                     </div>
                 )}
             </Card>
+
+            <Modal
+                isOpen={!!bajaTarget}
+                onClose={() => !bajaLoading && setBajaTarget(null)}
+                title={`Dar de baja a ${bajaTarget?.full_name ?? ''}`}
+                footer={
+                    <>
+                        <Button
+                            variant="secondary"
+                            icon={Download}
+                            loading={exportingId === bajaTarget?.id}
+                            onClick={() => handleExport(bajaTarget)}
+                        >
+                            Descargar registro
+                        </Button>
+                        <Button variant="danger" loading={bajaLoading} onClick={confirmBaja}>
+                            Confirmar baja
+                        </Button>
+                    </>
+                }
+            >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', fontSize: 'var(--font-size-sm)' }}>
+                    <p>Al dar de baja a este empleado:</p>
+                    <ul style={{ paddingLeft: 'var(--space-5)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                        <li>Pierde el acceso a la app y a las instalaciones (lector 2N, tarjeta y PIN).</li>
+                        <li>Se borran las coordenadas GPS de sus fichajes; se mantiene solo si fichó dentro o fuera de la sede.</li>
+                        <li>Su registro de jornada <strong>se conserva 4 años</strong> (art. 34.9 ET), bloqueado, y después se borra automáticamente.</li>
+                        <li>Pasa a la pestaña <em>Ex-empleados</em>, desde donde se puede reactivar.</li>
+                    </ul>
+                    <p>Antes de confirmar, descarga su registro para entregarle una copia.</p>
+                    {bajaError && <p style={{ color: 'var(--color-danger, #ef4444)', margin: 0 }}>{bajaError}</p>}
+                </div>
+            </Modal>
 
             <Modal
                 isOpen={isModalOpen}

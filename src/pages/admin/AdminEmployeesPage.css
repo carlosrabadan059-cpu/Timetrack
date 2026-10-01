@@ -30,6 +30,34 @@
     /* Optional: stick to top if needed, but keeping it simple for now */
 }
 
+.employees-view-toggle {
+    display: inline-flex;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.employees-view-toggle button {
+    padding: var(--space-2) var(--space-4);
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+}
+
+.employees-view-toggle button.active {
+    background: var(--color-accent-primary);
+    color: #fff;
+}
+
+.employees-inactive-note {
+    margin: calc(-1 * var(--space-4)) 0 var(--space-4);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+}
+
 .search-container {
     position: relative;
     flex: 1;

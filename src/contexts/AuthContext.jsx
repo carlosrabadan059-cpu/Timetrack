@@ -48,7 +48,13 @@ export const AuthProvider = ({ children }) => {
             const res = await api.get('/api/me');
             const p = res.data;
             setProfile({ ...p, name: p.full_name });
-        } catch {
+        } catch (e) {
+            if (e?.code === 'account_disabled') {
+                try { sessionStorage.setItem('tt_account_disabled', '1'); } catch { /* storage blocked */ }
+                await supabase.auth.signOut();
+                setProfile(null);
+                return;
+            }
             // Fallback directo a Supabase cuando el backend no responde
             const uid = fallbackUserId || (await supabase.auth.getUser()).data.user?.id;
             if (uid) {
@@ -77,7 +83,10 @@ export const AuthProvider = ({ children }) => {
 
     const signIn = async (email, password) => {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) return { user: null, error: error.message };
+        if (error) {
+            const banned = error.code === 'user_banned' || /banned/i.test(error.message);
+            return { user: null, error: banned ? 'Tu cuenta está dada de baja. Contacta con tu empresa.' : error.message };
+        }
         return { user, error: null };
     };
 

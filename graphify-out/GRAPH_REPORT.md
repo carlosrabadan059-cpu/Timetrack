@@ -1,16 +1,16 @@
-# Graph Report - Timetrack  (2026-09-30)
+# Graph Report - Timetrack  (2026-10-01)
 
 ## Corpus Check
-- 251 files · ~199,899 words
+- 251 files · ~201,450 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3714 nodes · 4078 edges · 401 communities (382 shown, 19 thin omitted)
+- 3719 nodes · 4088 edges · 401 communities (383 shown, 18 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `bfd3b111`
+- Built from commit: `7b14dcf4`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -218,6 +218,7 @@
 - [[_COMMUNITY_Community 201|Community 201]]
 - [[_COMMUNITY_Community 202|Community 202]]
 - [[_COMMUNITY_Community 203|Community 203]]
+- [[_COMMUNITY_Community 204|Community 204]]
 - [[_COMMUNITY_Community 205|Community 205]]
 - [[_COMMUNITY_Community 206|Community 206]]
 - [[_COMMUNITY_Community 207|Community 207]]
@@ -422,7 +423,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (401 total, 19 thin omitted)
+## Communities (401 total, 18 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.20
@@ -453,8 +454,8 @@ Cohesion: 0.04
 Nodes (44): 1. missing_required, 2. invalid_value, 3. type_mismatch, 4. invalid_expression, 5. invalid_reference, 6. best_practice, 7. deprecated, 8. performance (+36 more)
 
 ### Community 7 - "Community 7"
-Cohesion: 0.07
-Nodes (32): checkNonWorkingDay(), checkOutOfSchedule(), DAYS_ES, DAYS_FULL_ES, formatDateLabel(), getWeekStart(), MONTHS_ES, monthYearLabel() (+24 more)
+Cohesion: 0.06
+Nodes (40): checkNonWorkingDay(), checkOutOfSchedule(), DAYS_ES, DAYS_FULL_ES, formatDateLabel(), getWeekStart(), humanizeSource(), MONTHS_ES (+32 more)
 
 ### Community 8 - "Community 8"
 Cohesion: 0.05
@@ -469,8 +470,8 @@ Cohesion: 0.05
 Nodes (40): Advanced Patterns, Auto-Sanitization and Dependencies, Basic Format, Best Practices, Common Dependency Patterns, Complex Dependency Examples, displayOptions Structure, ✅ Do (+32 more)
 
 ### Community 11 - "Community 11"
-Cohesion: 0.06
-Nodes (40): dependencies, date-fns, jspdf, jspdf-autotable, leaflet, lucide-react, react, react-dom (+32 more)
+Cohesion: 0.05
+Nodes (42): dependencies, date-fns, jspdf, jspdf-autotable, leaflet, lucide-react, react, react-dom (+34 more)
 
 ### Community 12 - "Community 12"
 Cohesion: 0.05
@@ -501,12 +502,12 @@ Cohesion: 0.06
 Nodes (32): 1. n8n Expression Syntax, 2. n8n MCP Tools Expert (HIGHEST PRIORITY), 3. n8n Workflow Patterns, 4. n8n Validation Expert, 5. n8n Node Configuration, 6. n8n Code JavaScript, 7. n8n Code Python, Credential Management (+24 more)
 
 ### Community 19 - "Community 19"
-Cohesion: 0.12
-Nodes (8): adminIncidencias, createIncidenciaSchema, HookResult, incidencias, resolveSchema, EmitFn, SseBroadcaster, SseEvent
+Cohesion: 0.11
+Nodes (9): adminVacaciones, createVacacionSchema, HolidayEntry, HookResult, resolveSchema, vacaciones, EmitFn, SseBroadcaster (+1 more)
 
 ### Community 20 - "Community 20"
-Cohesion: 0.06
-Nodes (34): apiKeyAuthMiddleware, auth, requireRole(), docs, spec, external, FichajeItem, fichajesQuerySchema (+26 more)
+Cohesion: 0.08
+Nodes (25): apiKeyAuthMiddleware, auth, docs, spec, external, FichajeItem, fichajesQuerySchema, fmtTs() (+17 more)
 
 ### Community 21 - "Community 21"
 Cohesion: 0.07
@@ -521,8 +522,8 @@ Cohesion: 0.07
 Nodes (26): 1. n8n-mcp MCP Server, 2. Claude Access, Advanced Configuration, Custom Skill Location, Installation Guide, Installation Methods, MCP Tools Not Available, Method 1: Claude Code (Recommended) (+18 more)
 
 ### Community 24 - "Community 24"
-Cohesion: 0.12
-Nodes (22): humanizeSource(), DAYS_FULL, MONTHS_SHORT, reportes, buildDayMap(), Cell, DAYS_FULL, fmtDate() (+14 more)
+Cohesion: 0.09
+Nodes (26): DAYS_FULL, MONTHS_SHORT, reportes, buildDayMap(), Cell, DAYS_FULL, fmtDate(), fmtTime() (+18 more)
 
 ### Community 25 - "Community 25"
 Cohesion: 0.07
@@ -581,12 +582,12 @@ Cohesion: 0.10
 Nodes (19): 1. Expression Syntax (Skill #1), 2. MCP Tools Expert (Skill #2), 3. Workflow Patterns (Skill #3), 4. Validation Expert (Skill #4), 5. Node Configuration (Skill #5), Critical Findings for Skills, Database Statistics, Generated: 2025-10-20 (+11 more)
 
 ### Community 40 - "Community 40"
-Cohesion: 0.12
-Nodes (7): MONTHS_ES, download(), getToken(), supabase, AuthContext, api, request()
+Cohesion: 0.11
+Nodes (3): MONTHS_ES, supabase, AuthContext
 
 ### Community 41 - "Community 41"
-Cohesion: 0.09
-Nodes (22): AcClient, AcCompany, createAcClient(), ListResponse, admin, EmitFn, clockingModesSchema, createCompanySchema (+14 more)
+Cohesion: 0.10
+Nodes (19): AcClient, AcCompany, createAcClient(), ListResponse, requireRole(), admin, EmitFn, clockingModesSchema (+11 more)
 
 ### Community 42 - "Community 42"
 Cohesion: 0.10
@@ -614,7 +615,7 @@ Nodes (10): getEnv(), getSupabaseAdmin(), getSupabasePublic(), supabaseAdmin, su
 
 ### Community 48 - "Community 48"
 Cohesion: 0.11
-Nodes (5): ROLE_LABELS, MONTHS_ES, defaultClockingModes, defaultForm, TABS
+Nodes (4): ROLE_LABELS, MONTHS_ES, STATUS_BADGE, TYPE_LABELS
 
 ### Community 49 - "Community 49"
 Cohesion: 0.15
@@ -1064,6 +1065,10 @@ Nodes (6): 4. Top 5 Error Patterns to Avoid, Error #1: Empty Code (23% of valida
 Cohesion: 0.33
 Nodes (6): 9. Additional Resources, Common Use Cases Quick Reference, n8n Community Resources, Official n8n Documentation, Related n8n Nodes, When to Use CODE Node vs Other Nodes
 
+### Community 162 - "Community 162"
+Cohesion: 0.60
+Nodes (4): download(), getToken(), api, request()
+
 ### Community 163 - "Community 163"
 Cohesion: 0.29
 Nodes (5): 1. Frame the problem space, 2. Spawn sub-agents, 3. Present and compare, Interface Design, Process
@@ -1227,6 +1232,10 @@ Nodes (6): Checklist for Webhook Workflows, Data Handling, Error Handling, Secur
 ### Community 203 - "Community 203"
 Cohesion: 0.29
 Nodes (5): Before exploring, read these, Domain Docs, File structure, Flag ADR conflicts, Use the glossary's vocabulary
+
+### Community 204 - "Community 204"
+Cohesion: 0.13
+Nodes (3): defaultClockingModes, defaultForm, TABS
 
 ### Community 205 - "Community 205"
 Cohesion: 0.48
@@ -1865,21 +1874,21 @@ Cohesion: 0.67
 Nodes (3): Best Practices, ✅ Do, ❌ Don't
 
 ## Knowledge Gaps
-- **2249 isolated node(s):** `dev`, `build`, `start`, `@hono/node-server`, `@hono/zod-validator` (+2244 more)
+- **2250 isolated node(s):** `dev`, `build`, `start`, `@hono/node-server`, `@hono/zod-validator` (+2245 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **18 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `skills` connect `Community 356` to `Community 256`, `Community 257`, `Community 258`, `Community 259`, `Community 260`, `Community 261`, `Community 262`, `Community 263`, `Community 264`, `Community 265`, `Community 266`, `Community 267`, `Community 268`, `Community 269`, `Community 270`, `Community 250`, `Community 251`, `Community 252`, `Community 253`, `Community 254`, `Community 255`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
-- **Why does `supabase` connect `Community 40` to `Community 33`, `Community 66`, `Community 71`, `Community 39`, `Community 204`, `Community 49`, `Community 212`, `Community 52`?**
+- **Why does `supabase` connect `Community 40` to `Community 33`, `Community 66`, `Community 162`, `Community 71`, `Community 39`, `Community 49`, `Community 212`, `Community 52`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **Why does `getSupabaseAdmin()` connect `Community 47` to `Community 7`, `Community 41`, `Community 43`, `Community 19`, `Community 20`, `Community 24`?**
   _High betweenness centrality (0.001) - this node is a cross-community bridge._
 - **What connects `dev`, `build`, `start` to the rest of the system?**
-  _2249 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _2250 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
