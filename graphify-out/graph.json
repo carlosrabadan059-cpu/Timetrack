@@ -556,7 +556,7 @@
       "source_file": "backend/src/api/middleware/role.ts",
       "source_location": "L1",
       "id": "middleware_role",
-      "community": 41,
+      "community": 20,
       "norm_label": "role.ts"
     },
     {
@@ -565,7 +565,7 @@
       "source_file": "backend/src/api/middleware/role.ts",
       "source_location": "L4",
       "id": "middleware_role_requirerole",
-      "community": 41,
+      "community": 20,
       "norm_label": "requirerole()"
     },
     {
@@ -581,7 +581,7 @@
       "label": "admin",
       "file_type": "code",
       "source_file": "backend/src/api/routes/admin.ts",
-      "source_location": "L14",
+      "source_location": "L15",
       "id": "routes_admin_admin",
       "community": 41,
       "norm_label": "admin"
@@ -590,7 +590,7 @@
       "label": "EmitFn",
       "file_type": "code",
       "source_file": "backend/src/api/routes/admin.ts",
-      "source_location": "L846",
+      "source_location": "L847",
       "id": "routes_admin_emitfn",
       "community": 41,
       "norm_label": "emitfn"
@@ -599,7 +599,7 @@
       "label": "start()",
       "file_type": "code",
       "source_file": "backend/src/api/routes/admin.ts",
-      "source_location": "L851",
+      "source_location": "L852",
       "id": "routes_admin_start",
       "community": 41,
       "norm_label": "start()"
@@ -608,7 +608,7 @@
       "label": "cancel()",
       "file_type": "code",
       "source_file": "backend/src/api/routes/admin.ts",
-      "source_location": "L876",
+      "source_location": "L877",
       "id": "routes_admin_cancel",
       "community": 41,
       "norm_label": "cancel()"
@@ -754,7 +754,7 @@
       "source_file": "backend/src/api/routes/historial.ts",
       "source_location": "L1",
       "id": "routes_historial",
-      "community": 7,
+      "community": 401,
       "norm_label": "historial.ts"
     },
     {
@@ -763,7 +763,7 @@
       "source_file": "backend/src/api/routes/historial.ts",
       "source_location": "L15",
       "id": "routes_historial_historial",
-      "community": 7,
+      "community": 401,
       "norm_label": "historial"
     },
     {
@@ -772,7 +772,7 @@
       "source_file": "backend/src/api/routes/historial.ts",
       "source_location": "L19",
       "id": "routes_historial_builddaterange",
-      "community": 7,
+      "community": 401,
       "norm_label": "builddaterange()"
     },
     {
@@ -781,7 +781,7 @@
       "source_file": "backend/src/api/routes/historial.ts",
       "source_location": "L228",
       "id": "routes_historial_buildregistroxlsx",
-      "community": 7,
+      "community": 401,
       "norm_label": "buildregistroxlsx()"
     },
     {
@@ -1051,61 +1051,61 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L1",
       "id": "routes_users",
-      "community": 7,
+      "community": 401,
       "norm_label": "users.ts"
     },
     {
       "label": "users",
       "file_type": "code",
       "source_file": "backend/src/api/routes/users.ts",
-      "source_location": "L10",
+      "source_location": "L11",
       "id": "routes_users_users",
-      "community": 7,
+      "community": 401,
       "norm_label": "users"
     },
     {
       "label": "syncAuthBan()",
       "file_type": "code",
       "source_file": "backend/src/api/routes/users.ts",
-      "source_location": "L13",
+      "source_location": "L14",
       "id": "routes_users_syncauthban",
-      "community": 7,
+      "community": 401,
       "norm_label": "syncauthban()"
     },
     {
       "label": "createUserSchema",
       "file_type": "code",
       "source_file": "backend/src/api/routes/users.ts",
-      "source_location": "L27",
+      "source_location": "L28",
       "id": "routes_users_createuserschema",
-      "community": 7,
+      "community": 401,
       "norm_label": "createuserschema"
     },
     {
       "label": "patchUserSchema",
       "file_type": "code",
       "source_file": "backend/src/api/routes/users.ts",
-      "source_location": "L270",
+      "source_location": "L271",
       "id": "routes_users_patchuserschema",
-      "community": 7,
+      "community": 401,
       "norm_label": "patchuserschema"
     },
     {
       "label": "assignCardSchema",
       "file_type": "code",
       "source_file": "backend/src/api/routes/users.ts",
-      "source_location": "L473",
+      "source_location": "L474",
       "id": "routes_users_assigncardschema",
-      "community": 7,
+      "community": 401,
       "norm_label": "assigncardschema"
     },
     {
       "label": "assignPinSchema",
       "file_type": "code",
       "source_file": "backend/src/api/routes/users.ts",
-      "source_location": "L561",
+      "source_location": "L562",
       "id": "routes_users_assignpinschema",
-      "community": 7,
+      "community": 401,
       "norm_label": "assignpinschema"
     },
     {
@@ -1456,7 +1456,7 @@
       "source_file": "backend/src/lib/date-utils.ts",
       "source_location": "L72",
       "id": "lib_date_utils_humanizesource",
-      "community": 7,
+      "community": 401,
       "norm_label": "humanizesource()"
     },
     {
@@ -1465,7 +1465,7 @@
       "source_file": "backend/src/lib/date-utils.ts",
       "source_location": "L85",
       "id": "lib_date_utils_startofdayiso",
-      "community": 7,
+      "community": 401,
       "norm_label": "startofdayiso()"
     },
     {
@@ -1510,7 +1510,7 @@
       "source_file": "backend/src/lib/date-utils.ts",
       "source_location": "L137",
       "id": "lib_date_utils_monthyearlabel",
-      "community": 7,
+      "community": 401,
       "norm_label": "monthyearlabel()"
     },
     {
@@ -1602,6 +1602,24 @@
       "id": "lib_n8n_triggerworkflow",
       "community": 43,
       "norm_label": "triggerworkflow()"
+    },
+    {
+      "label": "postgrest.ts",
+      "file_type": "code",
+      "source_file": "backend/src/lib/postgrest.ts",
+      "source_location": "L1",
+      "id": "lib_postgrest",
+      "community": 41,
+      "norm_label": "postgrest.ts"
+    },
+    {
+      "label": "ilikeAnyFilter()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/postgrest.ts",
+      "source_location": "L6",
+      "id": "lib_postgrest_ilikeanyfilter",
+      "community": 41,
+      "norm_label": "ilikeanyfilter()"
     },
     {
       "label": "supabase.ts",
@@ -2012,7 +2030,7 @@
       "label": "connections",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L254",
+      "source_location": "L256",
       "id": "services_signalr_listener_connections",
       "community": 43,
       "norm_label": "connections"
@@ -2021,7 +2039,7 @@
       "label": "buildConnection()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L256",
+      "source_location": "L258",
       "id": "services_signalr_listener_buildconnection",
       "community": 43,
       "norm_label": "buildconnection()"
@@ -2030,7 +2048,7 @@
       "label": "attachHandlers()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L268",
+      "source_location": "L270",
       "id": "services_signalr_listener_attachhandlers",
       "community": 43,
       "norm_label": "attachhandlers()"
@@ -2039,7 +2057,7 @@
       "label": "retryConnectionLoop()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L317",
+      "source_location": "L319",
       "id": "services_signalr_listener_retryconnectionloop",
       "community": 43,
       "norm_label": "retryconnectionloop()"
@@ -2048,7 +2066,7 @@
       "label": "startCompanyConnection()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L334",
+      "source_location": "L336",
       "id": "services_signalr_listener_startcompanyconnection",
       "community": 43,
       "norm_label": "startcompanyconnection()"
@@ -2057,7 +2075,7 @@
       "label": "startSignalRListener()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L369",
+      "source_location": "L371",
       "id": "services_signalr_listener_startsignalrlistener",
       "community": 43,
       "norm_label": "startsignalrlistener()"
@@ -2066,7 +2084,7 @@
       "label": "restartCompanyConnection()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L410",
+      "source_location": "L412",
       "id": "services_signalr_listener_restartcompanyconnection",
       "community": 43,
       "norm_label": "restartcompanyconnection()"
@@ -2075,7 +2093,7 @@
       "label": "stopSignalRListener()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L447",
+      "source_location": "L449",
       "id": "services_signalr_listener_stopsignalrlistener",
       "community": 43,
       "norm_label": "stopsignalrlistener()"
@@ -2284,7 +2302,7 @@
       "source_file": "backend/src/types/api.types.ts",
       "source_location": "L22",
       "id": "types_api_types_userrole",
-      "community": 41,
+      "community": 20,
       "norm_label": "userrole"
     },
     {
@@ -2311,7 +2329,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L1",
       "id": "types_supabase_types",
-      "community": 24,
+      "community": 401,
       "norm_label": "supabase.types.ts"
     },
     {
@@ -2320,7 +2338,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L4",
       "id": "types_supabase_types_company",
-      "community": 24,
+      "community": 401,
       "norm_label": "company"
     },
     {
@@ -2329,7 +2347,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L14",
       "id": "types_supabase_types_clockingmodes",
-      "community": 41,
+      "community": 401,
       "norm_label": "clockingmodes"
     },
     {
@@ -2338,7 +2356,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L26",
       "id": "types_supabase_types_companysettings",
-      "community": 24,
+      "community": 401,
       "norm_label": "companysettings"
     },
     {
@@ -2347,7 +2365,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L47",
       "id": "types_supabase_types_profile",
-      "community": 24,
+      "community": 401,
       "norm_label": "profile"
     },
     {
@@ -2356,7 +2374,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L64",
       "id": "types_supabase_types_accesslog",
-      "community": 7,
+      "community": 401,
       "norm_label": "accesslog"
     },
     {
@@ -2365,7 +2383,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L86",
       "id": "types_supabase_types_incidencia",
-      "community": 24,
+      "community": 401,
       "norm_label": "incidencia"
     },
     {
@@ -2374,7 +2392,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L104",
       "id": "types_supabase_types_vacationrequest",
-      "community": 24,
+      "community": 401,
       "norm_label": "vacationrequest"
     },
     {
@@ -2383,7 +2401,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L120",
       "id": "types_supabase_types_fichajeoverride",
-      "community": 24,
+      "community": 401,
       "norm_label": "fichajeoverride"
     },
     {
@@ -34716,6 +34734,28 @@
       "target": "lib_n8n_triggerworkflow"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/admin.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "routes_admin",
+      "target": "lib_postgrest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/admin.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "routes_admin",
+      "target": "lib_postgrest_ilikeanyfilter",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -35221,9 +35261,9 @@
       "source_file": "backend/src/api/routes/historial.ts",
       "source_location": "L228",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_historial",
-      "target": "routes_historial_buildregistroxlsx",
-      "confidence_score": 1.0
+      "target": "routes_historial_buildregistroxlsx"
     },
     {
       "relation": "contains",
@@ -35308,9 +35348,9 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_users",
-      "target": "routes_historial",
-      "confidence_score": 1.0
+      "target": "routes_historial"
     },
     {
       "relation": "imports_from",
@@ -35363,9 +35403,9 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_users",
-      "target": "routes_historial_buildregistroxlsx",
-      "confidence_score": 1.0
+      "target": "routes_historial_buildregistroxlsx"
     },
     {
       "relation": "imports_from",
@@ -36222,6 +36262,28 @@
       "target": "lib_n8n_triggerworkflow"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/users.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "routes_users",
+      "target": "lib_postgrest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/users.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "routes_users",
+      "target": "lib_postgrest_ilikeanyfilter",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -36278,9 +36340,9 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_users",
-      "target": "routes_users_syncauthban",
-      "confidence_score": 1.0
+      "target": "routes_users_syncauthban"
     },
     {
       "relation": "contains",
@@ -36332,9 +36394,9 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_users",
-      "target": "types_supabase_types_accesslog",
-      "confidence_score": 1.0
+      "target": "types_supabase_types_accesslog"
     },
     {
       "relation": "imports",
@@ -37586,6 +37648,16 @@
       "confidence_score": 1.0,
       "source": "services_sync_queue",
       "target": "lib_n8n_triggerworkflow"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/postgrest.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "lib_postgrest",
+      "target": "lib_postgrest_ilikeanyfilter",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -46146,9 +46218,9 @@
       "source_file": "package.json",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_engines",
-      "confidence_score": 1.0
+      "target": "package_engines"
     },
     {
       "relation": "contains",
@@ -46256,9 +46328,9 @@
       "source_file": "package.json",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "package_engines",
-      "target": "package_engines_node",
-      "confidence_score": 1.0
+      "target": "package_engines_node"
     },
     {
       "relation": "contains",
@@ -49620,9 +49692,9 @@
       "source_file": "src/pages/admin/AdminEmployeesPage.jsx",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_adminemployeespage",
-      "target": "admin_adminemployeespage_triggerdownload",
-      "confidence_score": 1.0
+      "target": "admin_adminemployeespage_triggerdownload"
     },
     {
       "relation": "contains",
@@ -74782,5 +74854,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "7b14dcf449ed72d9fb1f7ea5d8bd94cc0bd55279"
+  "built_at_commit": "f0c13cb9148fb3386a31000a4d749fa7a386d542"
 }

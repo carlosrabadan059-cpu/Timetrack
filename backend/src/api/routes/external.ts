@@ -43,8 +43,8 @@ type FichajeItem = {
   source: string;
   source_human: string;
   device_info: string | null;
-  latitude: number | null;
-  longitude: number | null;
+  // Minimización (art. 5.1.c RGPD): a terceros solo se expone si se fichó en la sede, nunca coordenadas
+  within_geofence: boolean | null;
   corrected: boolean;
 };
 
@@ -120,7 +120,7 @@ function sanitizeCsvCell(value: string): string {
 }
 
 function buildFichajesCSV(items: FichajeItem[]): string {
-  const header = 'id,fecha_hora,empleado,codigo,direccion,tipo,origen,dispositivo,latitud,longitud,corregido';
+  const header = 'id,fecha_hora,empleado,codigo,direccion,tipo,origen,dispositivo,dentro_sede,corregido';
   const rows = items.map(i =>
     [
       i.id,
@@ -131,8 +131,7 @@ function buildFichajesCSV(items: FichajeItem[]): string {
       i.detail_type,
       i.source_human,
       sanitizeCsvCell(i.device_info ?? ''),
-      i.latitude ?? '',
-      i.longitude ?? '',
+      i.within_geofence === null ? '' : i.within_geofence,
       i.corrected,
     ].join(',')
   );
@@ -266,8 +265,7 @@ external.get('/fichajes', async (c) => {
     source: log.source,
     source_human: humanizeSource(log.source),
     device_info: log.device_info,
-    latitude: log.latitude ? Number(log.latitude) : null,
-    longitude: log.longitude ? Number(log.longitude) : null,
+    within_geofence: typeof log.within_geofence === 'boolean' ? log.within_geofence : null,
     corrected: log.corrected,
   }));
 

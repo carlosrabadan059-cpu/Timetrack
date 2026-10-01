@@ -65,18 +65,18 @@
     "semantic_hash": ""
   },
   "backend/src/api/routes/admin.ts": {
-    "mtime": 1790889797.3288827,
-    "ast_hash": "3732a076c07db6480a8ac256c93b9bfa",
+    "mtime": 1790892239.2331681,
+    "ast_hash": "a9cfe8807fdce2e78f55d81b5723d4d9",
     "semantic_hash": ""
   },
   "backend/src/api/routes/docs.ts": {
-    "mtime": 1779396022.536931,
-    "ast_hash": "42a6c5473c02c54dc675c92f43a22fa9",
+    "mtime": 1790892210.0334597,
+    "ast_hash": "db876bcb2de30e32aa4184ce2b6fd8b0",
     "semantic_hash": ""
   },
   "backend/src/api/routes/external.ts": {
-    "mtime": 1779896576.8214226,
-    "ast_hash": "fc04d80575c686946aeda54a29b3f530",
+    "mtime": 1790892207.938412,
+    "ast_hash": "0ed1ef6c12c780b8508c389467687fa5",
     "semantic_hash": ""
   },
   "backend/src/api/routes/help.ts": {
@@ -110,8 +110,8 @@
     "semantic_hash": ""
   },
   "backend/src/api/routes/users.ts": {
-    "mtime": 1790889625.151586,
-    "ast_hash": "aa45988c2dfdfac9a33ae601d3a985d6",
+    "mtime": 1790892226.0513153,
+    "ast_hash": "2019225559f3fa6989706774e9943812",
     "semantic_hash": ""
   },
   "backend/src/api/routes/vacaciones.ts": {
@@ -170,8 +170,8 @@
     "semantic_hash": ""
   },
   "backend/src/services/signalr-listener.ts": {
-    "mtime": 1782929990.233748,
-    "ast_hash": "f4a007f6dcce3f2bb3c5464afb84ab5d",
+    "mtime": 1790892268.4349906,
+    "ast_hash": "fc4b0341bf1021491494d611a1bdd4ea",
     "semantic_hash": ""
   },
   "backend/src/services/sse-broadcaster.ts": {
@@ -695,8 +695,8 @@
     "semantic_hash": ""
   },
   "src/pages/admin/AdminEmployeesPage.jsx": {
-    "mtime": 1790889701.1730378,
-    "ast_hash": "76789295c24955453d742bc19f9f23cb",
+    "mtime": 1790891256.0276108,
+    "ast_hash": "c429e2976c1c343e6812793dd1d66186",
     "semantic_hash": ""
   },
   "src/pages/admin/AdminReportsPage.jsx": {
@@ -1292,6 +1292,11 @@
   "src/pages/PrivacyPage.jsx": {
     "mtime": 1790889855.2082725,
     "ast_hash": "a7b6bf30b6e3023bdd3263da7e939999",
+    "semantic_hash": ""
+  },
+  "backend/src/lib/postgrest.ts": {
+    "mtime": 1790892223.909939,
+    "ast_hash": "db7a7c25af083d853e6234a8a3ebbcbe",
     "semantic_hash": ""
   }
 }

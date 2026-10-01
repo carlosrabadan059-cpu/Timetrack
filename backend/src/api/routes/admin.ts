@@ -7,6 +7,7 @@ import { restartCompanyConnection } from '../../services/signalr-listener.js';
 import { createAcClient } from '../../lib/ac-client.js';
 import { encryptSetting, decryptSetting } from '../../lib/crypto-settings.js';
 import { sseBroadcaster } from '../../services/sse-broadcaster.js';
+import { ilikeAnyFilter } from '../../lib/postgrest.js';
 import type { AppVariables } from '../../types/api.types.js';
 import type { ClockingModes } from '../../types/supabase.types.js';
 import type { AcUser } from '../../types/ac.types.js';
@@ -132,7 +133,7 @@ admin.get('/access-logs', requireRole(['admin', 'manager']), async (c) => {
   if (userId) {
     profileQuery = profileQuery.eq('id', userId);
   } else if (search) {
-    profileQuery = profileQuery.or(`full_name.ilike.%${search}%,email.ilike.%${search}%`);
+    profileQuery = profileQuery.or(ilikeAnyFilter(['full_name', 'email'], search));
   }
 
   const { data: matchedProfiles } = await profileQuery;

@@ -1,16 +1,16 @@
-# Graph Report - Timetrack  (2026-10-01)
+# Graph Report - Timetrack  (2026-10-02)
 
 ## Corpus Check
-- 251 files · ~201,450 words
+- 252 files · ~201,702 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3719 nodes · 4088 edges · 401 communities (383 shown, 18 thin omitted)
+- 3721 nodes · 4093 edges · 402 communities (384 shown, 18 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7b14dcf4`
+- Built from commit: `f0c13cb9`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -395,6 +395,7 @@
 - [[_COMMUNITY_Community 393|Community 393]]
 - [[_COMMUNITY_Community 394|Community 394]]
 - [[_COMMUNITY_Community 395|Community 395]]
+- [[_COMMUNITY_Community 401|Community 401]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `getSupabaseAdmin()` - 35 edges
@@ -423,7 +424,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (401 total, 18 thin omitted)
+## Communities (402 total, 18 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.20
@@ -454,8 +455,8 @@ Cohesion: 0.04
 Nodes (44): 1. missing_required, 2. invalid_value, 3. type_mismatch, 4. invalid_expression, 5. invalid_reference, 6. best_practice, 7. deprecated, 8. performance (+36 more)
 
 ### Community 7 - "Community 7"
-Cohesion: 0.06
-Nodes (40): checkNonWorkingDay(), checkOutOfSchedule(), DAYS_ES, DAYS_FULL_ES, formatDateLabel(), getWeekStart(), humanizeSource(), MONTHS_ES (+32 more)
+Cohesion: 0.08
+Nodes (28): checkNonWorkingDay(), checkOutOfSchedule(), DAYS_ES, DAYS_FULL_ES, formatDateLabel(), getWeekStart(), MONTHS_ES, shortDayName() (+20 more)
 
 ### Community 8 - "Community 8"
 Cohesion: 0.05
@@ -506,8 +507,8 @@ Cohesion: 0.11
 Nodes (9): adminVacaciones, createVacacionSchema, HolidayEntry, HookResult, resolveSchema, vacaciones, EmitFn, SseBroadcaster (+1 more)
 
 ### Community 20 - "Community 20"
-Cohesion: 0.08
-Nodes (25): apiKeyAuthMiddleware, auth, docs, spec, external, FichajeItem, fichajesQuerySchema, fmtTs() (+17 more)
+Cohesion: 0.07
+Nodes (27): apiKeyAuthMiddleware, auth, requireRole(), docs, spec, external, FichajeItem, fichajesQuerySchema (+19 more)
 
 ### Community 21 - "Community 21"
 Cohesion: 0.07
@@ -522,8 +523,8 @@ Cohesion: 0.07
 Nodes (26): 1. n8n-mcp MCP Server, 2. Claude Access, Advanced Configuration, Custom Skill Location, Installation Guide, Installation Methods, MCP Tools Not Available, Method 1: Claude Code (Recommended) (+18 more)
 
 ### Community 24 - "Community 24"
-Cohesion: 0.09
-Nodes (26): DAYS_FULL, MONTHS_SHORT, reportes, buildDayMap(), Cell, DAYS_FULL, fmtDate(), fmtTime() (+18 more)
+Cohesion: 0.12
+Nodes (20): DAYS_FULL, MONTHS_SHORT, reportes, buildDayMap(), Cell, DAYS_FULL, fmtDate(), fmtTime() (+12 more)
 
 ### Community 25 - "Community 25"
 Cohesion: 0.07
@@ -587,7 +588,7 @@ Nodes (3): MONTHS_ES, supabase, AuthContext
 
 ### Community 41 - "Community 41"
 Cohesion: 0.10
-Nodes (19): AcClient, AcCompany, createAcClient(), ListResponse, requireRole(), admin, EmitFn, clockingModesSchema (+11 more)
+Nodes (17): AcClient, AcCompany, createAcClient(), ListResponse, ilikeAnyFilter(), admin, EmitFn, clockingModesSchema (+9 more)
 
 ### Community 42 - "Community 42"
 Cohesion: 0.10
@@ -1873,6 +1874,10 @@ Nodes (3): Google Sheets Node, Node-Specific Configuration Notes, SplitInBatches
 Cohesion: 0.67
 Nodes (3): Best Practices, ✅ Do, ❌ Don't
 
+### Community 401 - "Community 401"
+Cohesion: 0.11
+Nodes (19): humanizeSource(), monthYearLabel(), startOfDayISO(), buildDateRange(), buildRegistroXlsx(), historial, assignCardSchema, assignPinSchema (+11 more)
+
 ## Knowledge Gaps
 - **2250 isolated node(s):** `dev`, `build`, `start`, `@hono/node-server`, `@hono/zod-validator` (+2245 more)
   These have ≤1 connection - possible missing edges or undocumented components.
@@ -1884,8 +1889,8 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `skills` connect `Community 356` to `Community 256`, `Community 257`, `Community 258`, `Community 259`, `Community 260`, `Community 261`, `Community 262`, `Community 263`, `Community 264`, `Community 265`, `Community 266`, `Community 267`, `Community 268`, `Community 269`, `Community 270`, `Community 250`, `Community 251`, `Community 252`, `Community 253`, `Community 254`, `Community 255`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **Why does `supabase` connect `Community 40` to `Community 33`, `Community 66`, `Community 162`, `Community 71`, `Community 39`, `Community 49`, `Community 212`, `Community 52`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
-- **Why does `getSupabaseAdmin()` connect `Community 47` to `Community 7`, `Community 41`, `Community 43`, `Community 19`, `Community 20`, `Community 24`?**
+  _High betweenness centrality (0.001) - this node is a cross-community bridge._
+- **Why does `getSupabaseAdmin()` connect `Community 47` to `Community 7`, `Community 41`, `Community 43`, `Community 401`, `Community 19`, `Community 20`, `Community 24`?**
   _High betweenness centrality (0.001) - this node is a cross-community bridge._
 - **What connects `dev`, `build`, `start` to the rest of the system?**
   _2250 weakly-connected nodes found - possible documentation gaps or missing edges._

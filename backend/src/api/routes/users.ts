@@ -6,6 +6,7 @@ import { triggerWorkflow } from '../../lib/n8n.js';
 import type { AppVariables } from '../../types/api.types.js';
 import type { Profile, AccessLog } from '../../types/supabase.types.js';
 import { buildRegistroXlsx } from './historial.js';
+import { ilikeAnyFilter } from '../../lib/postgrest.js';
 
 const users = new Hono<{ Variables: AppVariables }>();
 
@@ -135,7 +136,7 @@ users.get('/', requireRole(['admin', 'manager']), async (c) => {
     query = query.eq('role', role);
   }
   if (search) {
-    query = query.or(`full_name.ilike.%${search}%,email.ilike.%${search}%`);
+    query = query.or(ilikeAnyFilter(['full_name', 'email'], search));
   }
 
   // Ex-empleados: datos bloqueados (art. 32 LOPDGDD) — fuera del listado diario, solo visibles para admin

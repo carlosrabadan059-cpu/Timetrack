@@ -225,7 +225,9 @@ export async function handleAccessEvent(
       timestamp,
       source: 'signalr',
       device_info: deviceName,
-      raw_payload: data,
+      // Credentials lleva la tarjeta/PIN usado: no se guarda (minimización, art. 5.1.c RGPD).
+      // El resto del payload solo sirve para depurar y la purga nocturna lo borra a los 30 días.
+      raw_payload: Object.fromEntries(Object.entries(data).filter(([k]) => k !== 'Credentials' && k !== 'credentials')),
     })
     .select('id, direction, timestamp, detail_type')
     .single();
