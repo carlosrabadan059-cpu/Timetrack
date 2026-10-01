@@ -304,13 +304,11 @@
 }
 
 /* Action Menu Styles */
+/* fixed: la tarjeta y la tabla recortan el overflow, así que el menú se posiciona respecto a la ventana */
 .employee-action-menu {
-    position: absolute;
-    right: 0;
-    top: 100%;
-    margin-top: var(--space-2);
-    width: 150px;
-    z-index: 50;
+    position: fixed;
+    width: 200px;
+    z-index: 1000;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     border: 1px solid var(--color-border-light);

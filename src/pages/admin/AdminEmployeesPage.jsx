@@ -34,6 +34,7 @@ const AdminEmployeesPage = () => {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [openActionId, setOpenActionId] = useState(null);
+    const [menuPos, setMenuPos] = useState(null); // estilo fixed del menú de acciones
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingEmployee, setEditingEmployee] = useState(null);
     const [formData, setFormData] = useState({ full_name: '', email: '', role: 'employee', manager_id: '' });
@@ -57,6 +58,19 @@ const AdminEmployeesPage = () => {
     }, [profile?.role]);
 
     const managersMap = Object.fromEntries(managers.map(m => [m.id, m.full_name]));
+
+    useEffect(() => {
+        if (!openActionId) return;
+        const close = () => setOpenActionId(null);
+        window.addEventListener('scroll', close, true);
+        window.addEventListener('resize', close);
+        document.addEventListener('click', close);
+        return () => {
+            window.removeEventListener('scroll', close, true);
+            window.removeEventListener('resize', close);
+            document.removeEventListener('click', close);
+        };
+    }, [openActionId]);
 
     const loadEmployees = useCallback(async () => {
         setLoading(true);
@@ -305,13 +319,20 @@ const AdminEmployeesPage = () => {
                                                     className="employee-action-trigger"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        setOpenActionId(openActionId === emp.id ? null : emp.id);
+                                                        if (openActionId === emp.id) { setOpenActionId(null); return; }
+                                                        const r = e.currentTarget.getBoundingClientRect();
+                                                        const right = Math.max(8, window.innerWidth - r.right);
+                                                        // Abrir hacia arriba si no caben ~3 opciones debajo
+                                                        setMenuPos(window.innerHeight - r.bottom < 170
+                                                            ? { right, bottom: window.innerHeight - r.top + 4 }
+                                                            : { right, top: r.bottom + 4 });
+                                                        setOpenActionId(emp.id);
                                                     }}
                                                 >
                                                     <MoreVertical size={18} />
                                                 </button>
                                                 {openActionId === emp.id && (
-                                                    <div className="employee-action-menu">
+                                                    <div className="employee-action-menu" style={menuPos ?? undefined}>
                                                         {view === 'active' && (
                                                             <button
                                                                 className="employee-action-btn"
