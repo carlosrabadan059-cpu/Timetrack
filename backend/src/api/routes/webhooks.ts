@@ -218,7 +218,7 @@ webhooks.post('/n8n/reconcile', async (c) => {
   // Fetch all users from 2N AC
   let acUsers: { Id: string }[] = [];
   try {
-    acUsers = await acClient.getUsers();
+    acUsers = await acClient.getAllUsers();
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     return c.json({ error: { code: 'ac_unreachable', message: `Error al conectar con 2N AC: ${msg}` } }, 502);
@@ -234,6 +234,15 @@ webhooks.post('/n8n/reconcile', async (c) => {
 
     if (!acIds.has(profile.ac_external_id)) {
       discrepancies.push({ supabase_user_id: profile.id, issue: 'missing_in_ac' });
+
+      // Don't stack a new re-create while a previous one is still in flight or retrying
+      const { count: inFlight } = await sb
+        .from('sync_queue')
+        .select('id', { count: 'exact', head: true })
+        .eq('action', 'create_user')
+        .eq('payload->>supabase_user_id', profile.id)
+        .in('status', ['pending', 'processing', 'failed']);
+      if ((inFlight ?? 0) > 0) continue;
 
       // Queue a re-create
       const { data: queueRow } = await sb

@@ -17,6 +17,7 @@ export type AcCompany = { Id: string; Name: string; [key: string]: unknown };
 
 export function createAcClient(baseUrl: string, apiToken: string): {
   getUsers(query?: string): Promise<AcUser[]>;
+  getAllUsers(): Promise<AcUser[]>;
   getCompanies(): Promise<AcCompany[]>;
   createUser(data: Omit<AcUser, 'Id'>): Promise<AcUser>;
   updateUser(acId: string, data: Partial<Omit<AcUser, 'Id'>>): Promise<AcUser>;
@@ -61,6 +62,21 @@ export function createAcClient(baseUrl: string, apiToken: string): {
       const qs = query ? `?${query}` : '';
       const res = await request<ListResponse<AcUser>>('GET', `/users${qs}`);
       return extractList(res);
+    },
+
+    async getAllUsers(): Promise<AcUser[]> {
+      const PAGE = 100;
+      const all: AcUser[] = [];
+      const seen = new Set<string>();
+      // Cap pages in case the API ignores limit/offset and keeps returning the same page
+      for (let offset = 0, page = 0; page < 100; offset += PAGE, page++) {
+        const res = await request<ListResponse<AcUser>>('GET', `/users?limit=${PAGE}&offset=${offset}`);
+        const batch = extractList(res).filter((u) => !seen.has(u.Id));
+        batch.forEach((u) => seen.add(u.Id));
+        all.push(...batch);
+        if (batch.length < PAGE) break;
+      }
+      return all;
     },
 
     async getCompanies(): Promise<AcCompany[]> {
