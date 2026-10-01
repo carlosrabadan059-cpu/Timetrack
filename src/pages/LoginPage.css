@@ -154,27 +154,6 @@
     text-decoration: underline;
 }
 
-.login-demo-credentials {
-    margin-top: var(--space-8);
-    padding: var(--space-4);
-    background: var(--color-bg-primary);
-    border-radius: var(--radius-lg);
-    text-align: center;
-}
-
-.login-demo-credentials p {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
-    margin-bottom: var(--space-2);
-}
-
-.login-demo-credentials code {
-    display: block;
-    font-size: var(--font-size-xs);
-    color: var(--color-text-secondary);
-    margin-top: var(--space-1);
-}
-
 /* Hero Section */
 .login-hero-section {
     flex: 1;

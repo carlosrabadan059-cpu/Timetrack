@@ -183,12 +183,6 @@ const LoginPage = () => {
                         <p className="login-legal">
                             <Link to="/privacidad">Política de privacidad</Link>
                         </p>
-
-                        <div className="login-demo-credentials">
-                            <p>Credenciales de prueba:</p>
-                            <code>empleado@timetrack.com / 123456</code>
-                            <code>admin@timetrack.com / 123456</code>
-                        </div>
                     </div>
                 </div>
 
