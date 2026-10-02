@@ -8,6 +8,7 @@ import { requireRole } from '../middleware/role.js';
 import { inferDetailType } from '../../lib/date-utils.js';
 import { sseBroadcaster } from '../../services/sse-broadcaster.js';
 import { triggerWorkflow } from '../../lib/n8n.js';
+import { audited, recordAudit } from '../../lib/audit.js';
 
 type HookResult<T> =
   | { success: true; data: T; target: string }
@@ -227,6 +228,7 @@ export const adminIncidencias = new Hono<{ Variables: AppVariables }>();
 adminIncidencias.get(
   '/',
   requireRole(['admin', 'manager']),
+  audited('DATA_VIEW', 'incidencias'),
   async (c) => {
     const user = c.get('user');
     const supabaseAdmin = getSupabaseAdmin();
@@ -438,6 +440,25 @@ adminIncidencias.patch(
         500
       );
     }
+
+    await recordAudit({
+      actorId: manager.id,
+      companyId: manager.company_id,
+      action: status === 'approved' ? 'INCIDENT_APPROVE' : 'INCIDENT_REJECT',
+      entityType: 'incidencia',
+      entityId: id,
+      payload: {
+        type: inc.type,
+        employee_id: inc.user_id,
+        access_log_id: inc.access_log_id ?? null,
+        ...(status === 'approved' && inc.type === 'correccion'
+          ? { correction: { from: previousTimestamp, to: inc.requested_timestamp } }
+          : {}),
+        ...(status === 'approved' && inc.type === 'olvido'
+          ? { inserted: { timestamp: inc.requested_timestamp, direction: inc.requested_direction } }
+          : {}),
+      },
+    });
 
     // Notify the employee in real time
     sseBroadcaster.emit(inc.user_id as string, {

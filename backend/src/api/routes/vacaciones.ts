@@ -7,6 +7,7 @@ import type { AppVariables } from '../../types/api.types.js';
 import { requireRole } from '../middleware/role.js';
 import { sseBroadcaster } from '../../services/sse-broadcaster.js';
 import { triggerWorkflow } from '../../lib/n8n.js';
+import { audited } from '../../lib/audit.js';
 
 type HookResult<T> =
   | { success: true; data: T; target: string }
@@ -313,6 +314,7 @@ export const adminVacaciones = new Hono<{ Variables: AppVariables }>();
 adminVacaciones.get(
   '/',
   requireRole(['admin', 'manager']),
+  audited('DATA_VIEW', 'vacation_requests'),
   async (c) => {
     const user = c.get('user');
     const supabaseAdmin = getSupabaseAdmin();
@@ -386,6 +388,7 @@ const resolveSchema = z.object({
 adminVacaciones.patch(
   '/:id',
   requireRole(['admin', 'manager']),
+  audited((b) => (b['status'] === 'approved' ? 'INCIDENT_APPROVE' : 'INCIDENT_REJECT'), 'vacation_request', { bodyFields: ['status'] }),
   zValidator('json', resolveSchema, zodErrorHook),
   async (c) => {
     const manager = c.get('user');

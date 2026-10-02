@@ -5,10 +5,12 @@ import { requireRole } from '../middleware/role.js';
 import { createAcClient } from '../../lib/ac-client.js';
 import type { AppVariables } from '../../types/api.types.js';
 import type { ClockingModes } from '../../types/supabase.types.js';
+import { audited } from '../../lib/audit.js';
 
 const superadmin = new Hono<{ Variables: AppVariables }>();
 
 superadmin.use('*', requireRole(['superadmin']));
+superadmin.use('*', audited('SUPERADMIN_ACTION', 'company', { entityIsCompany: true, bodyKeys: true }));
 
 // ── Zod schemas ───────────────────────────────────────────────────────────────
 

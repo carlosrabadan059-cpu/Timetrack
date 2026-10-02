@@ -11,12 +11,13 @@ import { ilikeAnyFilter } from '../../lib/postgrest.js';
 import type { AppVariables } from '../../types/api.types.js';
 import type { ClockingModes } from '../../types/supabase.types.js';
 import type { AcUser } from '../../types/ac.types.js';
+import { audited } from '../../lib/audit.js';
 
 const admin = new Hono<{ Variables: AppVariables }>();
 
 // ── GET /api/admin/dashboard ──────────────────────────────────────────────────
 
-admin.get('/dashboard', requireRole(['admin', 'manager']), async (c) => {
+admin.get('/dashboard', requireRole(['admin', 'manager']), audited('DATA_VIEW', 'attendance_dashboard'), async (c) => {
   const user = c.get('user');
   const sb = getSupabaseAdmin();
 
@@ -106,7 +107,7 @@ admin.get('/dashboard', requireRole(['admin', 'manager']), async (c) => {
 
 // ── GET /api/admin/access-logs ────────────────────────────────────────────────
 
-admin.get('/access-logs', requireRole(['admin', 'manager']), async (c) => {
+admin.get('/access-logs', requireRole(['admin', 'manager']), audited('DATA_VIEW', 'access_logs'), async (c) => {
   const user = c.get('user');
   const sb = getSupabaseAdmin();
 
@@ -285,7 +286,7 @@ admin.get('/settings', requireRole(['admin', 'manager']), async (c) => {
 
 // ── PATCH /api/admin/settings ─────────────────────────────────────────────────
 
-admin.patch('/settings', requireRole(['admin', 'manager']), async (c) => {
+admin.patch('/settings', requireRole(['admin', 'manager']), audited('CONFIG_CHANGE', 'company_settings', { bodyKeys: true }), async (c) => {
   const user = c.get('user');
   const sb = getSupabaseAdmin();
 
@@ -466,7 +467,7 @@ admin.post('/settings/test-ac', requireRole(['admin', 'manager']), async (c) => 
 //   - Creates a new auth user + profile for AC users not yet in the system
 //   - Skips users already linked (ac_external_id already set)
 
-admin.post('/settings/import-from-ac', requireRole(['admin']), async (c) => {
+admin.post('/settings/import-from-ac', requireRole(['admin']), audited('SYNC_RUN', 'ac_import'), async (c) => {
   const user = c.get('user');
   const sb = getSupabaseAdmin();
 
@@ -679,7 +680,7 @@ admin.post('/settings/import-from-ac', requireRole(['admin']), async (c) => {
 // Queues user-create for all profiles without ac_external_id in this company.
 // Safe to run multiple times — skips already-synced users.
 
-admin.post('/sync-users', requireRole(['admin']), async (c) => {
+admin.post('/sync-users', requireRole(['admin']), audited('SYNC_RUN', 'ac_sync'), async (c) => {
   const user = c.get('user');
   const sb = getSupabaseAdmin();
 
@@ -728,7 +729,7 @@ admin.post('/sync-users', requireRole(['admin']), async (c) => {
 });
 
 // ── POST /api/admin/api-keys ──────────────────────────────────────────────────
-admin.post('/api-keys', requireRole(['admin', 'manager']), async (c) => {
+admin.post('/api-keys', requireRole(['admin', 'manager']), audited('API_KEY_CHANGE', 'api_key', { bodyFields: ['name', 'expires_at'] }), async (c) => {
   const user = c.get('user');
   const sb = getSupabaseAdmin();
 
@@ -804,8 +805,47 @@ admin.get('/api-keys', requireRole(['admin', 'manager']), async (c) => {
   return c.json({ data: data ?? [] });
 });
 
+// ── GET /api/admin/audit ──────────────────────────────────────────────────────
+// Audit trail of the company (incl. superadmin actions on it). Admin only, read-only.
+admin.get('/audit', requireRole(['admin']), async (c) => {
+  const user = c.get('user');
+  const sb = getSupabaseAdmin();
+
+  if (!user.company_id) {
+    return c.json({ error: { code: 'no_company', message: 'Sin empresa asociada' } }, 422);
+  }
+
+  const page = Math.max(1, Number(c.req.query('page') ?? 1) || 1);
+  const limit = Math.min(100, Math.max(1, Number(c.req.query('limit') ?? 50) || 50));
+  const action = c.req.query('action');
+
+  let q = sb
+    .from('audit_events')
+    .select('id, actor_user_id, action, entity_type, entity_id, payload, created_at', { count: 'exact' })
+    .eq('company_id', user.company_id)
+    .order('created_at', { ascending: false })
+    .range((page - 1) * limit, page * limit - 1);
+  if (action && /^[A-Z_]+$/.test(action)) q = q.eq('action', action);
+
+  const { data, error, count } = await q;
+  if (error) {
+    return c.json({ error: { code: 'internal_error', message: 'Error al obtener la auditoría' } }, 500);
+  }
+
+  const actorIds = [...new Set((data ?? []).map((e) => e.actor_user_id as string | null).filter((v): v is string => !!v))];
+  const { data: actors } = actorIds.length
+    ? await sb.from('profiles').select('id, full_name, email, role').in('id', actorIds)
+    : { data: [] as { id: string; full_name: string | null; email: string | null; role: string }[] };
+  const byId = new Map((actors ?? []).map((a) => [a.id as string, a]));
+
+  return c.json({
+    data: (data ?? []).map((e) => ({ ...e, actor: e.actor_user_id ? byId.get(e.actor_user_id as string) ?? null : null })),
+    meta: { page, total: count ?? 0, has_more: page * limit < (count ?? 0) },
+  });
+});
+
 // ── DELETE /api/admin/api-keys/:id ─────────────────────────────────────────────
-admin.delete('/api-keys/:id', requireRole(['admin', 'manager']), async (c) => {
+admin.delete('/api-keys/:id', requireRole(['admin', 'manager']), audited('API_KEY_CHANGE', 'api_key'), async (c) => {
   const user = c.get('user');
   const sb = getSupabaseAdmin();
   const id = c.req.param('id');
@@ -835,7 +875,7 @@ admin.delete('/api-keys/:id', requireRole(['admin', 'manager']), async (c) => {
 });
 
 // ── GET /api/admin/live (SSE) ─────────────────────────────────────────────────
-admin.get('/live', requireRole(['admin', 'manager']), (c) => {
+admin.get('/live', requireRole(['admin', 'manager']), audited('DATA_VIEW', 'live_attendance'), (c) => {
   const user = c.get('user');
   const companyId = user.company_id;
 
@@ -890,7 +930,7 @@ admin.get('/live', requireRole(['admin', 'manager']), (c) => {
 });
 
 // ── POST /api/admin/fichaje-overrides ────────────────────────────────────────
-admin.post('/fichaje-overrides', requireRole(['admin', 'manager']), async (c) => {
+admin.post('/fichaje-overrides', requireRole(['admin', 'manager']), audited('CORRECTION_APPLY', 'fichaje_override', { bodyFields: ['user_id', 'date', 'reason'] }), async (c) => {
   const user = c.get('user');
   const supabaseAdmin = getSupabaseAdmin();
 
@@ -944,7 +984,7 @@ admin.post('/fichaje-overrides', requireRole(['admin', 'manager']), async (c) =>
 });
 
 // ── GET /api/admin/fichaje-overrides ─────────────────────────────────────────
-admin.get('/fichaje-overrides', requireRole(['admin', 'manager']), async (c) => {
+admin.get('/fichaje-overrides', requireRole(['admin', 'manager']), audited('DATA_VIEW', 'fichaje_override'), async (c) => {
   const user = c.get('user');
   const supabaseAdmin = getSupabaseAdmin();
 

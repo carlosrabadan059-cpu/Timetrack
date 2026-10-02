@@ -5,11 +5,13 @@ import { getSupabaseAdmin } from '../../lib/supabase.js';
 import { apiKeyAuthMiddleware } from '../middleware/api-key-auth.js';
 import { humanizeSource } from '../../lib/date-utils.js';
 import type { AppVariables } from '../../types/api.types.js';
+import { audited } from '../../lib/audit.js';
 
 const external = new Hono<{ Variables: AppVariables }>();
 
 // Aplicar middleware de autenticación por API Key a todas las rutas externas
 external.use('*', apiKeyAuthMiddleware);
+external.use('*', audited('EXTERNAL_API_ACCESS', 'access_logs'));
 
 const fichajesQuerySchema = z.object({
   user_id: z.string().uuid().optional(),

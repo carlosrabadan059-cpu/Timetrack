@@ -7,6 +7,7 @@ import type { AppVariables } from '../../types/api.types.js';
 import type { Profile, AccessLog } from '../../types/supabase.types.js';
 import { buildRegistroXlsx } from './historial.js';
 import { ilikeAnyFilter } from '../../lib/postgrest.js';
+import { audited } from '../../lib/audit.js';
 
 const users = new Hono<{ Variables: AppVariables }>();
 
@@ -32,7 +33,7 @@ const createUserSchema = z.object({
   group_id: z.string().optional(),
 });
 
-users.post('/', requireRole(['admin', 'manager']), async (c) => {
+users.post('/', requireRole(['admin', 'manager']), audited('USER_CREATE', 'profile', { bodyFields: ['email', 'full_name', 'role'] }), async (c) => {
   const authUser = c.get('user');
   const company_id = authUser.company_id;
 
@@ -170,7 +171,7 @@ users.get('/', requireRole(['admin', 'manager']), async (c) => {
 
 // ── GET /api/users/:id ────────────────────────────────────────────────────────
 
-users.get('/:id', requireRole(['admin', 'manager']), async (c) => {
+users.get('/:id', requireRole(['admin', 'manager']), audited('DATA_VIEW', 'profile'), async (c) => {
   const authUser = c.get('user');
   const { id } = c.req.param();
   const sb = getSupabaseAdmin();
@@ -277,7 +278,11 @@ const patchUserSchema = z.object({
   manager_id: z.string().uuid().nullable().optional(),
 });
 
-users.patch('/:id', requireRole(['admin', 'manager']), async (c) => {
+users.patch('/:id', requireRole(['admin', 'manager']), audited(
+  (b) => ('access_valid_to' in b && b['access_valid_to'] === null ? 'USER_REACTIVATE' : 'USER_UPDATE'),
+  'profile',
+  { bodyKeys: true, bodyFields: ['role', 'access_valid_from', 'access_valid_to', 'manager_id'] }
+), async (c) => {
   const authUser = c.get('user');
   const { id } = c.req.param();
 
@@ -367,7 +372,7 @@ users.patch('/:id', requireRole(['admin', 'manager']), async (c) => {
 // ── GET /api/users/:id/registro/export ────────────────────────────────────────
 // Registro de jornada completo (últimos 4 años, art. 34.9 ET) para entregar al trabajador en su baja
 
-users.get('/:id/registro/export', requireRole(['admin']), async (c) => {
+users.get('/:id/registro/export', requireRole(['admin']), audited('DATA_EXPORT', 'access_logs'), async (c) => {
   const authUser = c.get('user');
   const { id } = c.req.param();
   const sb = getSupabaseAdmin();
@@ -413,7 +418,7 @@ users.get('/:id/registro/export', requireRole(['admin']), async (c) => {
 
 // ── DELETE /api/users/:id ─────────────────────────────────────────────────────
 
-users.delete('/:id', requireRole(['admin']), async (c) => {
+users.delete('/:id', requireRole(['admin']), audited('USER_DEACTIVATE', 'profile'), async (c) => {
   const authUser = c.get('user');
   const { id } = c.req.param();
   const sb = getSupabaseAdmin();
@@ -475,7 +480,7 @@ const assignCardSchema = z.object({
   card_number: z.string().min(1).max(50),
 });
 
-users.post('/:id/cards', requireRole(['admin', 'manager']), async (c) => {
+users.post('/:id/cards', requireRole(['admin', 'manager']), audited('CREDENTIAL_CHANGE', 'card'), async (c) => {
   const authUser = c.get('user');
   const { id } = c.req.param();
   const sb = getSupabaseAdmin();
@@ -522,7 +527,7 @@ users.post('/:id/cards', requireRole(['admin', 'manager']), async (c) => {
 
 // ── DELETE /api/users/:id/cards/:cardId ───────────────────────────────────────
 
-users.delete('/:id/cards/:cardId', requireRole(['admin', 'manager']), async (c) => {
+users.delete('/:id/cards/:cardId', requireRole(['admin', 'manager']), audited('CREDENTIAL_CHANGE', 'card'), async (c) => {
   const authUser = c.get('user');
   const { id, cardId } = c.req.param();
   const sb = getSupabaseAdmin();
@@ -563,7 +568,7 @@ const assignPinSchema = z.object({
   pin: z.string().regex(/^\d{4,8}$/, 'El PIN debe tener entre 4 y 8 dígitos'),
 });
 
-users.post('/:id/pin', requireRole(['admin', 'manager']), async (c) => {
+users.post('/:id/pin', requireRole(['admin', 'manager']), audited('CREDENTIAL_CHANGE', 'pin'), async (c) => {
   const authUser = c.get('user');
   const { id } = c.req.param();
   const sb = getSupabaseAdmin();
@@ -610,7 +615,7 @@ users.post('/:id/pin', requireRole(['admin', 'manager']), async (c) => {
 
 // ── DELETE /api/users/:id/pin ─────────────────────────────────────────────────
 
-users.delete('/:id/pin', requireRole(['admin', 'manager']), async (c) => {
+users.delete('/:id/pin', requireRole(['admin', 'manager']), audited('CREDENTIAL_CHANGE', 'pin'), async (c) => {
   const authUser = c.get('user');
   const { id } = c.req.param();
   const sb = getSupabaseAdmin();
