@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Clock, ArrowLeft } from 'lucide-react';
 import './PrivacyPage.css';
 
-const LAST_UPDATED = '1 de octubre de 2026';
+const LAST_UPDATED = '2 de octubre de 2026';
 
 const PrivacyPage = () => {
     const navigate = useNavigate();
@@ -142,6 +142,12 @@ const PrivacyPage = () => {
                     oposición y portabilidad</strong> ante tu empresa, como responsable del tratamiento.
                     Desde la aplicación ya puedes consultar y exportar tu historial de fichajes y pedir
                     correcciones mediante incidencias.
+                </p>
+                <p>
+                    Para cualquier otro derecho, entra en <strong>Mi perfil → Privacidad → Ejercer mis derechos</strong>.
+                    Tu empresa debe responderte en el plazo de <strong>un mes</strong> desde la solicitud,
+                    ampliable dos meses más en casos complejos avisándote antes (art. 12.3 RGPD). Si ya no
+                    tienes acceso a la aplicación, dirígete por escrito al departamento de personal de tu empresa.
                 </p>
                 <p>
                     Algunos datos, como el registro de jornada, no pueden borrarse antes de que termine el

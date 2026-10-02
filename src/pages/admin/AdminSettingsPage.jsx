@@ -23,6 +23,7 @@ import {
     Key,
     Copy,
     AlertTriangle,
+    Scale,
     Sun,
     Moon,
     Monitor,
@@ -55,6 +56,8 @@ function MapClickHandler({ onLocationChange }) {
     return null;
 }
 import './AdminSettingsPage.css';
+import AdminRightsRequests from './AdminRightsRequests';
+import { useAuth } from '../../contexts/AuthContext';
 
 const DEFAULT_CLOCKING_MODES = {
     web: true,
@@ -74,6 +77,8 @@ const DEFAULT_SETTINGS = {
 const AdminSettingsPage = () => {
     const [activeTab, setActiveTab] = useState('general');
     const { theme, setTheme } = useTheme();
+    const { profile } = useAuth();
+    const isAdmin = profile?.role === 'admin';
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [saveStatus, setSaveStatus] = useState(null); // 'ok' | 'error'
@@ -390,6 +395,14 @@ const AdminSettingsPage = () => {
                 >
                     <CheckCircle size={16} className="inline mr-2" /> Autorizaciones
                 </button>
+                {isAdmin && (
+                    <button
+                        className={`tab-button ${activeTab === 'privacy' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('privacy')}
+                    >
+                        <Scale size={16} className="inline mr-2" /> Privacidad
+                    </button>
+                )}
             </div>
 
             {/* Content */}
@@ -1137,6 +1150,13 @@ const AdminSettingsPage = () => {
                                 </div>
                             )}
                         </Card>
+                    </div>
+                )}
+
+                {/* PRIVACY TAB */}
+                {activeTab === 'privacy' && isAdmin && (
+                    <div className="settings-section">
+                        <AdminRightsRequests />
                     </div>
                 )}
 

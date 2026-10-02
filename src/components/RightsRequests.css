@@ -1,0 +1,107 @@
+.rr-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+}
+
+.rr-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: var(--font-size-sm);
+}
+
+.rr-select,
+.rr-textarea {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    background: var(--color-bg-card);
+    color: var(--color-text-primary);
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.rr-textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.rr-actions {
+    display: flex;
+    gap: var(--space-2);
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.rr-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+}
+
+.rr-item {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    min-width: 0;
+}
+
+.rr-item-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.rr-details,
+.rr-response {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    margin: 0;
+}
+
+.rr-response {
+    border-left: 3px solid var(--color-border);
+    padding-left: var(--space-2);
+    color: var(--color-text-secondary);
+}
+
+.rr-meta {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+}
+
+.rr-status {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.rr-status-pending { background: rgba(234, 179, 8, 0.15); color: #a16207; }
+.rr-status-resolved { background: rgba(34, 197, 94, 0.15); color: #15803d; }
+.rr-status-rejected { background: rgba(239, 68, 68, 0.15); color: #b91c1c; }
+.rr-overdue { color: var(--color-danger, #dc2626); font-weight: 600; }
+
+.rr-error {
+    color: var(--color-danger, #dc2626);
+    font-size: var(--font-size-xs);
+    margin: 0;
+}
+
+.rr-empty {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    margin: var(--space-2) 0 0;
+}

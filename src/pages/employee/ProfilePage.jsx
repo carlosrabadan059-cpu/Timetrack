@@ -6,6 +6,7 @@ import { api } from '../../lib/api';
 import { supabase } from '../../lib/supabase';
 import { Card, Button, Input } from '../../components/ui';
 import { User, Mail, Shield, Bell, Key, Sun, Moon, Monitor, FileText } from 'lucide-react';
+import MyRightsRequests from '../../components/MyRightsRequests';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
@@ -311,6 +312,7 @@ const ProfilePage = () => {
                             </div>
                             <Link to="/privacidad" className="btn btn-outline btn-sm">Ver</Link>
                         </div>
+                        <MyRightsRequests />
                     </Card>
 
                     <Card title="Preferencias" className="settings-card">

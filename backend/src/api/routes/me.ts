@@ -233,6 +233,45 @@ me.post('/2fa/sync', async (c) => {
   return c.json({ data: { two_factor_enabled: data.two_factor_enabled } });
 });
 
+// ── /api/me/rights-requests ───────────────────────────────────────────────────
+// Channel to exercise GDPR rights (arts. 15–22); the company must answer within 1 month (art. 12.3).
+const RIGHTS_TYPES = ['acceso', 'rectificacion', 'supresion', 'limitacion', 'oposicion', 'portabilidad'] as const;
+const rightsRequestSchema = z.object({
+  type: z.enum(RIGHTS_TYPES),
+  details: z.string().trim().min(10, 'Mínimo 10 caracteres').max(2000, 'Máximo 2000 caracteres'),
+});
+
+me.get('/rights-requests', async (c) => {
+  const user = c.get('user');
+  const { data, error } = await getSupabaseAdmin()
+    .from('data_rights_requests')
+    .select('id, type, details, status, due_at, response, resolved_at, created_at')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false });
+  if (error) {
+    return c.json({ error: { code: 'internal_error', message: 'Error al obtener las solicitudes' } }, 500);
+  }
+  return c.json({ data: data ?? [] });
+});
+
+me.post('/rights-requests', zValidator('json', rightsRequestSchema, zodErrorHook), async (c) => {
+  const user = c.get('user');
+  const body = c.req.valid('json');
+  if (!user.company_id) {
+    return c.json({ error: { code: 'bad_request', message: 'Usuario sin empresa asignada' } }, 400);
+  }
+  const { data, error } = await getSupabaseAdmin()
+    .from('data_rights_requests')
+    .insert({ company_id: user.company_id, user_id: user.id, type: body.type, details: body.details })
+    .select('id, type, details, status, due_at, response, resolved_at, created_at')
+    .single();
+  if (error || !data) {
+    return c.json({ error: { code: 'internal_error', message: 'Error al registrar la solicitud' } }, 500);
+  }
+  sseBroadcaster.emitToCompany(user.company_id, { type: 'rights_request_event', action: 'created', id: data.id as string });
+  return c.json({ data }, 201);
+});
+
 // ── POST /api/me/gps-notice ───────────────────────────────────────────────────
 // Records that the employee received the prior geolocation notice (art. 90 LOPDGDD).
 me.post('/gps-notice', async (c) => {

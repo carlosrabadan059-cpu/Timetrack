@@ -874,6 +874,79 @@ admin.get('/registro/export', requireRole(['admin']), audited('DATA_EXPORT', 're
   });
 });
 
+// ── /api/admin/rights-requests ────────────────────────────────────────────────
+// GDPR rights requests from employees (arts. 15–22). Deadline: 1 month (art. 12.3).
+admin.get('/rights-requests', requireRole(['admin']), audited('DATA_VIEW', 'data_rights_requests'), async (c) => {
+  const user = c.get('user');
+  const sb = getSupabaseAdmin();
+  if (!user.company_id) {
+    return c.json({ error: { code: 'no_company', message: 'Sin empresa asociada' } }, 422);
+  }
+
+  const { data, error } = await sb
+    .from('data_rights_requests')
+    .select('id, user_id, type, details, status, due_at, response, resolved_by, resolved_at, created_at')
+    .eq('company_id', user.company_id)
+    .order('status', { ascending: true }) // 'pending' first
+    .order('created_at', { ascending: false })
+    .limit(200);
+  if (error) {
+    return c.json({ error: { code: 'internal_error', message: 'Error al obtener las solicitudes' } }, 500);
+  }
+
+  const ids = [...new Set((data ?? []).flatMap((r) => [r.user_id, r.resolved_by]).filter((v): v is string => !!v))];
+  const { data: people } = ids.length
+    ? await sb.from('profiles').select('id, full_name, email, employee_code').in('id', ids)
+    : { data: [] as { id: string; full_name: string | null; email: string | null; employee_code: string | null }[] };
+  const byId = new Map((people ?? []).map((p) => [p.id as string, p]));
+
+  return c.json({
+    data: (data ?? []).map((r) => ({
+      ...r,
+      user: r.user_id ? byId.get(r.user_id as string) ?? null : null,
+      resolver: r.resolved_by ? byId.get(r.resolved_by as string) ?? null : null,
+    })),
+  });
+});
+
+admin.patch(
+  '/rights-requests/:id',
+  requireRole(['admin']),
+  audited((b) => (b['status'] === 'rejected' ? 'INCIDENT_REJECT' : 'INCIDENT_APPROVE'), 'data_rights_request', { bodyFields: ['status'] }),
+  async (c) => {
+    const user = c.get('user');
+    const id = c.req.param('id');
+    let body: { status?: unknown; response?: unknown } = {};
+    try { body = await c.req.json(); } catch { /* validated below */ }
+
+    const status = body.status;
+    const response = typeof body.response === 'string' ? body.response.trim() : '';
+    if ((status !== 'resolved' && status !== 'rejected') || response.length < 5 || response.length > 2000) {
+      return c.json({ error: { code: 'invalid_body', message: 'status (resolved|rejected) y una respuesta (5–2000 caracteres) son obligatorios' } }, 400);
+    }
+
+    const { data, error } = await getSupabaseAdmin()
+      .from('data_rights_requests')
+      .update({ status, response, resolved_by: user.id, resolved_at: new Date().toISOString() })
+      .eq('id', id)
+      .eq('company_id', user.company_id ?? '')
+      .eq('status', 'pending')
+      .select('id, user_id, status')
+      .maybeSingle();
+    if (error) {
+      return c.json({ error: { code: 'internal_error', message: 'Error al resolver la solicitud' } }, 500);
+    }
+    if (!data) {
+      return c.json({ error: { code: 'not_found', message: 'Solicitud no encontrada o ya resuelta' } }, 404);
+    }
+
+    if (data.user_id) {
+      sseBroadcaster.emit(data.user_id as string, { type: 'rights_request_event', action: 'resolved', id });
+    }
+    return c.json({ data });
+  }
+);
+
 // ── GET /api/admin/audit ──────────────────────────────────────────────────────
 // Audit trail of the company (incl. superadmin actions on it). Admin only, read-only.
 admin.get('/audit', requireRole(['admin']), async (c) => {
