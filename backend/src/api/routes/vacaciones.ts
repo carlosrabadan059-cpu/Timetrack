@@ -6,7 +6,7 @@ import { getSupabaseAdmin } from '../../lib/supabase.js';
 import type { AppVariables } from '../../types/api.types.js';
 import { requireRole } from '../middleware/role.js';
 import { sseBroadcaster } from '../../services/sse-broadcaster.js';
-import { triggerWorkflow } from '../../lib/n8n.js';
+import { notify } from '../../lib/notify.js';
 import { audited } from '../../lib/audit.js';
 
 type HookResult<T> =
@@ -230,7 +230,7 @@ vacaciones.post(
       let manager_email: string | null = null;
       const { data: mgr } = await supabaseAdmin
         .from('profiles')
-        .select('email')
+        .select('id, email')
         .eq('company_id', user.company_id!)
         .in('role', ['admin', 'manager'])
         .neq('id', user.id)
@@ -238,7 +238,7 @@ vacaciones.post(
         .single();
       manager_email = mgr?.email ?? null;
 
-      void triggerWorkflow('vacacion-nueva', {
+      await notify('vacacion-nueva', {
         vacacion_id: (vacacion as { id: string }).id,
         user_email: user.email,
         manager_email,
@@ -247,7 +247,7 @@ vacaciones.post(
         end_date: body.end_date,
         working_days: workingDays,
         reason: body.reason ?? null,
-      });
+      }, { companyId: user.company_id, recipientId: (mgr?.id as string | undefined) ?? null });
     })();
 
     sseBroadcaster.emitToCompany(user.company_id, {
@@ -466,7 +466,7 @@ adminVacaciones.patch(
         .eq('id', (vac as { user_id: string }).user_id)
         .single();
 
-      void triggerWorkflow('vacacion-resuelta', {
+      await notify('vacacion-resuelta', {
         vacacion_id: id,
         user_id: (vac as { user_id: string }).user_id,
         user_email: empProfile?.email ?? null,
@@ -477,7 +477,7 @@ adminVacaciones.patch(
         end_date: (vac as { end_date: string }).end_date,
         working_days: (vac as { working_days: number }).working_days,
         manager_note: manager_note ?? null,
-      });
+      }, { companyId: manager.company_id, recipientId: (vac as { user_id: string }).user_id });
     })();
 
     return c.json({ data: updated });

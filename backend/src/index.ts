@@ -21,6 +21,7 @@ import docsRoutes from './api/routes/docs.js';
 import helpRoutes from './api/routes/help.js';
 import type { AppVariables } from './types/api.types.js';
 import { startSignalRListener, getSignalRStatus } from './services/signalr-listener.js';
+import { startOutboxFlusher } from './lib/notify.js';
 
 const app = new Hono<{ Variables: AppVariables }>();
 
@@ -104,6 +105,7 @@ serve({ fetch: app.fetch, port }, () => {
   console.log(`[server] SUPABASE_URL present: ${!!process.env['SUPABASE_URL']}`);
   console.log(`[server] SUPABASE_SERVICE_ROLE_KEY present: ${!!process.env['SUPABASE_SERVICE_ROLE_KEY']}`);
   console.log(`[server] SUPABASE_ANON_KEY present: ${!!process.env['SUPABASE_ANON_KEY']}`);
+  startOutboxFlusher();
   startSignalRListener().catch((err: unknown) => {
     console.warn('[SignalR] No se pudo iniciar el listener:', err instanceof Error ? err.message : err);
   });

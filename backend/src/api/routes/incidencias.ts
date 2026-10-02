@@ -7,7 +7,7 @@ import type { AppVariables } from '../../types/api.types.js';
 import { requireRole } from '../middleware/role.js';
 import { inferDetailType } from '../../lib/date-utils.js';
 import { sseBroadcaster } from '../../services/sse-broadcaster.js';
-import { triggerWorkflow } from '../../lib/n8n.js';
+import { notify } from '../../lib/notify.js';
 import { audited, recordAudit } from '../../lib/audit.js';
 
 type HookResult<T> =
@@ -162,25 +162,27 @@ incidencias.post(
     // Find manager email for notification (fire-and-forget)
     void (async () => {
       let manager_email: string | null = null;
+      let manager_id: string | null = null;
       if (user.company_id) {
         const { data: mgr } = await supabaseAdmin
           .from('profiles')
-          .select('email')
+          .select('id, email')
           .eq('company_id', user.company_id)
           .in('role', ['admin', 'manager'])
           .neq('id', user.id)
           .limit(1)
           .single();
         manager_email = mgr?.email ?? null;
+        manager_id = (mgr?.id as string | undefined) ?? null;
       }
-      void triggerWorkflow('incidencia-nueva', {
+      await notify('incidencia-nueva', {
         incidencia_id: incidencia.id as string,
         user_email: user.email,
         manager_email,
         type: body.type,
         date: body.date,
         reason: body.reason,
-      });
+      }, { companyId: user.company_id, recipientId: manager_id });
     })();
 
     if (user.company_id) {
@@ -484,7 +486,7 @@ adminIncidencias.patch(
         .select('email, full_name')
         .eq('id', inc.user_id)
         .single();
-      void triggerWorkflow('incidencia-resuelta', {
+      await notify('incidencia-resuelta', {
         incidencia_id: id,
         user_id: inc.user_id as string,
         user_email: empProfile?.email ?? null,
@@ -493,7 +495,7 @@ adminIncidencias.patch(
         type: inc.type as string,
         date: inc.date as string,
         manager_note: manager_note ?? null,
-      });
+      }, { companyId: manager.company_id, recipientId: inc.user_id as string });
     })();
 
     return c.json({ data: updated });
