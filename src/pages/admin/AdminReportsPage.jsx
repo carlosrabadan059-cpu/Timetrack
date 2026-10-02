@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Calendar, Users, Clock, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, Users, Clock, FileText, ChevronLeft, ChevronRight, Download } from 'lucide-react';
 import { StatCard, Card, Button } from '../../components/ui';
 import { api } from '../../lib/api';
+import { useAuth } from '../../contexts/AuthContext';
 import './AdminReportsPage.css';
 
 const MONTHS_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -14,6 +15,10 @@ const AdminReportsPage = () => {
     const [employees, setEmployees] = useState([]);
     const [records, setRecords] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [exporting, setExporting] = useState(false);
+    const [exportError, setExportError] = useState('');
+    const { profile } = useAuth();
+    const isAdmin = profile?.role === 'admin';
 
     useEffect(() => {
         api.get('/api/users', { limit: 100 })
@@ -57,6 +62,31 @@ const AdminReportsPage = () => {
         else setMonth(m => m + 1);
     };
 
+    // Registro de jornada del período (art. 34.9 ET) para Inspección de Trabajo o representantes
+    const handleExportRegistro = async () => {
+        setExporting(true);
+        setExportError('');
+        try {
+            const lastDay = new Date(year, month, 0).getDate();
+            const mp = String(month).padStart(2, '0');
+            const params = { date_from: `${year}-${mp}-01`, date_to: `${year}-${mp}-${String(lastDay).padStart(2, '0')}` };
+            if (selectedUserId !== 'all') params.user_id = selectedUserId;
+            const blob = await api.download('/api/admin/registro/export', params);
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `registro-jornada-${params.date_from}_${params.date_to}.xlsx`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } catch {
+            setExportError('No se pudo generar el registro');
+        } finally {
+            setExporting(false);
+        }
+    };
+
     const totalFichajes = records.length;
     const uniqueDays = new Set(records.map(r => r.timestamp?.slice(0, 10))).size;
 
@@ -67,6 +97,15 @@ const AdminReportsPage = () => {
                     <h1>Informes y Analítica</h1>
                     <p className="text-muted">Análisis de asistencia por empleado y periodo</p>
                 </div>
+                {isAdmin && (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
+                        <Button variant="secondary" icon={Download} onClick={handleExportRegistro} disabled={exporting}>
+                            {exporting ? 'Generando...' : 'Registro de jornada (Excel)'}
+                        </Button>
+                        <span className="text-xs text-muted">Para Inspección de Trabajo o representantes · mes y empleado seleccionados</span>
+                        {exportError && <span className="text-xs" style={{ color: 'var(--color-danger)' }}>{exportError}</span>}
+                    </div>
+                )}
             </header>
 
             <Card className="filters-card-reports" padding="sm">

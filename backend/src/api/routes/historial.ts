@@ -274,4 +274,69 @@ export async function buildRegistroXlsx(logs: AccessLog[], title?: string): Prom
   return workbook.xlsx.writeBuffer();
 }
 
+export interface RegistroEmployee {
+  full_name: string | null;
+  employee_code: string | null;
+}
+
+/**
+ * Registro de jornada de varios empleados para un período (art. 34.9 ET): lo que se entrega
+ * a la Inspección de Trabajo o a los representantes de los trabajadores. Horas en Europe/Madrid.
+ */
+export async function buildCompanyRegistroXlsx(
+  logs: AccessLog[],
+  employees: Map<string, RegistroEmployee>,
+  title: string
+): Promise<ExcelJS.Buffer> {
+  const dateFmt = new Intl.DateTimeFormat('es-ES', { timeZone: 'Europe/Madrid', year: 'numeric', month: '2-digit', day: '2-digit' });
+  const dayFmt = new Intl.DateTimeFormat('es-ES', { timeZone: 'Europe/Madrid', weekday: 'long' });
+  const timeFmt = new Intl.DateTimeFormat('es-ES', { timeZone: 'Europe/Madrid', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+
+  const workbook = new ExcelJS.Workbook();
+  workbook.creator = 'Antigravity TimeTrack';
+  workbook.created = new Date();
+
+  const ws = workbook.addWorksheet('Registro de jornada');
+  ws.columns = [
+    { header: 'Empleado', key: 'empleado', width: 28 },
+    { header: 'Código', key: 'codigo', width: 11 },
+    { header: 'Fecha', key: 'fecha', width: 12 },
+    { header: 'Día', key: 'dia', width: 11 },
+    { header: 'Hora', key: 'hora', width: 8 },
+    { header: 'Tipo', key: 'tipo', width: 9 },
+    { header: 'Detalle', key: 'detalle', width: 9 },
+    { header: 'Origen', key: 'origen', width: 16 },
+    { header: 'Corregido', key: 'corregido', width: 10 },
+    { header: 'Hora original', key: 'original', width: 13 },
+  ];
+  const headerRow = ws.getRow(1);
+  headerRow.font = { bold: true };
+  headerRow.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE2E8F0' } };
+
+  for (const l of logs) {
+    const d = new Date(l.timestamp);
+    const emp = employees.get(l.user_id as string);
+    ws.addRow({
+      empleado: emp?.full_name ?? '-',
+      codigo: emp?.employee_code ?? '-',
+      fecha: dateFmt.format(d),
+      dia: dayFmt.format(d),
+      hora: timeFmt.format(d),
+      tipo: l.direction === 'in' ? 'Entrada' : 'Salida',
+      detalle: l.detail_type === 'comida' ? 'Comida' : 'Normal',
+      origen: humanizeSource(l.source),
+      corregido: l.corrected ? 'Sí' : 'No',
+      original: l.corrected && l.original_timestamp
+        ? `${dateFmt.format(new Date(l.original_timestamp))} ${timeFmt.format(new Date(l.original_timestamp))}`
+        : '',
+    });
+  }
+
+  ws.insertRow(1, [title]);
+  ws.getRow(1).font = { bold: true, size: 13 };
+  ws.views = [{ state: 'frozen', ySplit: 2 }];
+
+  return workbook.xlsx.writeBuffer();
+}
+
 export default historial;

@@ -48,7 +48,7 @@ function toMinutes(hhmm: string, fallback: number): number {
 }
 
 /** UTC instant for a Madrid wall-clock time on a given local date. */
-function localToUtc(date: string, minutes: number): Date {
+export function localToUtc(date: string, minutes: number): Date {
   const hh = String(Math.floor(minutes / 60)).padStart(2, '0');
   const mm = String(minutes % 60).padStart(2, '0');
   const guess = new Date(`${date}T${hh}:${mm}:00Z`);

@@ -12,6 +12,9 @@ import type { AppVariables } from '../../types/api.types.js';
 import type { ClockingModes } from '../../types/supabase.types.js';
 import type { AcUser } from '../../types/ac.types.js';
 import { audited } from '../../lib/audit.js';
+import { localToUtc } from '../../lib/notify.js';
+import { buildCompanyRegistroXlsx, type RegistroEmployee } from './historial.js';
+import type { AccessLog } from '../../types/supabase.types.js';
 
 const admin = new Hono<{ Variables: AppVariables }>();
 
@@ -803,6 +806,72 @@ admin.get('/api-keys', requireRole(['admin', 'manager']), async (c) => {
   }
 
   return c.json({ data: data ?? [] });
+});
+
+// ── GET /api/admin/registro/export ────────────────────────────────────────────
+// Registro de jornada de la empresa por período (art. 34.9 ET): para la Inspección de Trabajo
+// o los representantes de los trabajadores. Incluye ex-empleados con fichajes en el período.
+admin.get('/registro/export', requireRole(['admin']), audited('DATA_EXPORT', 'registro_jornada'), async (c) => {
+  const user = c.get('user');
+  const sb = getSupabaseAdmin();
+
+  if (!user.company_id) {
+    return c.json({ error: { code: 'no_company', message: 'Sin empresa asociada' } }, 422);
+  }
+
+  const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+  const from = c.req.query('date_from') ?? '';
+  const to = c.req.query('date_to') ?? '';
+  const userId = c.req.query('user_id');
+  if (!DATE_RE.test(from) || !DATE_RE.test(to) || from > to) {
+    return c.json({ error: { code: 'invalid_params', message: 'date_from y date_to (YYYY-MM-DD) obligatorios' } }, 400);
+  }
+
+  let profileQuery = sb.from('profiles').select('id, full_name, employee_code').eq('company_id', user.company_id);
+  if (userId) profileQuery = profileQuery.eq('id', userId);
+  const { data: profiles } = await profileQuery;
+  const employees = new Map((profiles ?? []).map((p) => [p.id as string, p as RegistroEmployee]));
+  const ids = [...employees.keys()];
+
+  const fromUtc = localToUtc(from, 0).toISOString();
+  const nextDay = new Date(`${to}T12:00:00Z`);
+  nextDay.setUTCDate(nextDay.getUTCDate() + 1);
+  const toUtc = localToUtc(nextDay.toISOString().slice(0, 10), 0).toISOString();
+
+  // PostgREST caps each response at 1000 rows: page through the period
+  const logs: AccessLog[] = [];
+  for (let offset = 0; ids.length > 0; offset += 1000) {
+    const { data, error } = await sb
+      .from('access_logs')
+      .select('user_id, timestamp, direction, detail_type, source, corrected, original_timestamp')
+      .in('user_id', ids)
+      .gte('timestamp', fromUtc)
+      .lt('timestamp', toUtc)
+      .order('user_id')
+      .order('timestamp')
+      .range(offset, offset + 999);
+    if (error) {
+      return c.json({ error: { code: 'internal_error', message: 'Error al generar el registro' } }, 500);
+    }
+    logs.push(...((data ?? []) as AccessLog[]));
+    if (!data || data.length < 1000) break;
+  }
+
+  logs.sort((a, b) =>
+    (employees.get(a.user_id as string)?.full_name ?? '').localeCompare(employees.get(b.user_id as string)?.full_name ?? '', 'es') ||
+    a.timestamp.localeCompare(b.timestamp)
+  );
+
+  const { data: company } = await sb.from('companies').select('name').eq('id', user.company_id).maybeSingle();
+  const title = `Registro de jornada — ${(company?.name as string | undefined) ?? ''} — del ${from} al ${to} — generado ${new Date().toLocaleDateString('es-ES')}`;
+  const buffer = await buildCompanyRegistroXlsx(logs, employees, title);
+
+  return new Response(buffer, {
+    headers: {
+      'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'Content-Disposition': `attachment; filename="registro-jornada-${from}_${to}.xlsx"`,
+    },
+  });
 });
 
 // ── GET /api/admin/audit ──────────────────────────────────────────────────────
