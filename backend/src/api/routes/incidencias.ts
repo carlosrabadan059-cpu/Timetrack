@@ -352,6 +352,10 @@ adminIncidencias.patch(
       );
     }
 
+    // Timestamp the log had right before this approval — stored on the incidencia so the
+    // chain of approved incidencias keeps every intermediate value (ET art. 34.9 traceability).
+    let previousTimestamp: string | null = null;
+
     // ── Apply side-effects when approving ────────────────────────────────────
     if (status === 'approved') {
       if (inc.type === 'olvido') {
@@ -380,7 +384,7 @@ adminIncidencias.patch(
         // Fetch the original log to preserve its current timestamp
         const { data: originalLog, error: logFetchError } = await supabaseAdmin
           .from('access_logs')
-          .select('timestamp, source')
+          .select('timestamp, original_timestamp, source')
           .eq('id', inc.access_log_id)
           .single();
 
@@ -391,11 +395,14 @@ adminIncidencias.patch(
           );
         }
 
+        previousTimestamp = originalLog.timestamp as string;
+
         const { error: updateLogError } = await supabaseAdmin
           .from('access_logs')
           .update({
             corrected: true,
-            original_timestamp: originalLog.timestamp,
+            // Only the first correction sets it — later ones must not overwrite the true original
+            original_timestamp: originalLog.original_timestamp ?? originalLog.timestamp,
             timestamp: inc.requested_timestamp,
             // source NOT changed — keep the original (signalr/web/mobile)
           })
@@ -419,6 +426,7 @@ adminIncidencias.patch(
         manager_note: manager_note ?? null,
         reviewed_by: manager.id,
         reviewed_at: new Date().toISOString(),
+        ...(previousTimestamp ? { original_timestamp: previousTimestamp } : {}),
       })
       .eq('id', id)
       .select('*')
