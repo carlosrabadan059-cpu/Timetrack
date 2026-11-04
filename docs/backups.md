@@ -26,17 +26,34 @@ En el Mac, salvo donde se indique.
    brew install rclone
    rclone config          # remoto nuevo "gdrive", tipo "drive", scope "drive.file"
    rclone mkdir gdrive:timetrack-backups
-   base64 -i ~/.config/rclone/rclone.conf | tr -d '\n'   # valor de RCLONE_CONFIG_B64
+   base64 -i ~/.config/rclone/rclone.conf | tr -d '\n' | pbcopy   # valor de RCLONE_CONFIG_B64
    ```
+   Pega el portapapeles en Portainer **sin copiar nada entre medias**; si se cuela otra cosa, el backup falla con "RCLONE_CONFIG_B64 no es un base64 valido".
 
-3. **URL de la base de datos.** En Supabase → Project Settings → Database → Connection string → *Session pooler* (puerto 5432). Ese valor es `SUPABASE_DB_URL`. No uses el transaction pooler (6543): `pg_dump` no funciona con él.
+   **Client_id propio (obligatorio).** El client_id compartido de rclone se retira durante 2026. En producción se usa uno propio, en el proyecto de Google Cloud `rclone-timetrack`:
+   - Google Drive API habilitada.
+   - Google Auth Platform: público *Externo* y estado **En producción**. En modo *Prueba*, el token caduca a los 7 días. Para poder publicar hay que rellenar *Desarrollo de la marca* sin logotipo.
+   - Cliente OAuth de tipo *Aplicación de escritorio*; el ID y el secreto están en Contraseñas.
+   - En el Mac: `rclone config update gdrive client_id ... client_secret ...`, que también reautoriza en el navegador.
+
+   Con `drive.file`, cada cliente OAuth solo ve los archivos que creó él. Si se cambia de client_id, la carpeta antigua deja de verse desde rclone y hay que volver a crearla: `rclone mkdir gdrive:timetrack-backups`. La carpeta del cliente compartido se renombró a `timetrack-backups-antiguo` en Drive.
+
+   Si el token se filtra: myaccount.google.com/connections → *rclone timetrack* → quitar acceso, después `rclone config reconnect gdrive:` (navegador `y`) y actualizar `RCLONE_CONFIG_B64`.
+
+3. **URL de la base de datos.** En Supabase → botón **Connect** → *Session pooler* (puerto 5432). Ese valor es `SUPABASE_DB_URL`:
+   `postgresql://postgres.bflflqxwndzewnrxmohd:<contraseña>@aws-1-eu-west-1.pooler.supabase.com:5432/postgres`
+   - No uses *Direct connection* (`db.<ref>.supabase.co`): solo va por IPv6 y la Raspberry no la alcanza.
+   - No uses el *transaction pooler* (6543): `pg_dump` no funciona con él.
+   - La contraseña es la **de la base de datos**, no la de la cuenta de Supabase. Si tiene caracteres especiales, codifícala con `python3 -c "import urllib.parse,getpass;print(urllib.parse.quote(getpass.getpass('pass: '), safe=''))"`.
 
 4. **Imagen (arm64, para la Raspberry)**, desde la raíz del repo:
    ```sh
    docker buildx build --platform linux/arm64 -t rabadanhouse/timetrack-backup:latest --push backup/
    ```
 
-5. **Portainer.** Añade este servicio al stack. Los valores van en las variables de entorno del stack, no en el compose:
+5. **Telegram.** Bot propio `@timetrack_backups_rabadan_bot` (token en Contraseñas). `TELEGRAM_CHAT_ID` = `5021464912`. Hay que haber pulsado *Iniciar* en el bot para que pueda escribir; el bot no contesta nunca a mensajes, y eso es lo normal.
+
+6. **Portainer.** El servicio `backup` está en el stack `n8n` (contenedor `n8n-backup-1`). Los valores van en las variables de entorno del stack, no en el compose:
    ```yaml
    backup:
      image: rabadanhouse/timetrack-backup:latest
@@ -60,7 +77,8 @@ En el Mac, salvo donde se indique.
 
 - **Estado:** el contenedor tiene healthcheck. Aparece *healthy* mientras el último backup correcto tenga menos de `BACKUP_MAX_AGE_H` horas (26 por defecto) y *unhealthy* si no. Tras arrancar cuenta como recién hecho, así que el primer aviso llega 26 h después si el cron falla.
 - **Logs:** Containers → `backup` → Logs. Cada ejecución deja `[backup] ... pg_dump...` y `[backup] OK ...` o `[backup] ERROR: ...`.
-- **Backup manual:** Containers → `backup` → Console → `/bin/sh` → `backup.sh`.
+- **Backup manual:** Containers → `n8n-backup-1` → Console → Command **`/bin/sh`** (la imagen es Alpine, no tiene bash) → `backup.sh`.
+- **Comprobar una variable sin mostrarla:** en la consola, `printf '%s' "$RCLONE_CONFIG_B64" | wc -c` (su longitud debe coincidir con la del Mac).
 - **Cambiar horario, rotación o destino:** edita las variables del stack (`BACKUP_CRON`, `KEEP_DAILY_DAYS`, `KEEP_MONTHLY_DAYS`, `RCLONE_REMOTE`...) y pulsa *Update the stack*.
 - **Nueva versión de la imagen:** igual que con el backend, *Update the stack* con re-pull no siempre recrea el contenedor. Usa Containers → `backup` → *Recreate* con "Re-pull image" y comprueba que cambia el Id del contenedor.
 
