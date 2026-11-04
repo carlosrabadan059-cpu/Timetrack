@@ -24,6 +24,28 @@ const ACTION_LABELS = {
     RETENTION_PURGE: 'Purga por conservación',
 };
 
+const ENTITY_LABELS = {
+    attendance_dashboard: 'Panel de asistencia',
+    live_attendance: 'Asistencia en vivo',
+    access_logs: 'Fichajes',
+    incidencia: 'Incidencia',
+    incidencias: 'Incidencias',
+    vacation_request: 'Solicitud de vacaciones',
+    vacation_requests: 'Vacaciones y ausencias',
+    fichaje_override: 'Autorización de fichaje',
+    profile: 'Perfil de empleado',
+    card: 'Tarjeta RFID',
+    pin: 'PIN',
+    company: 'Empresa',
+    company_settings: 'Configuración de la empresa',
+    api_key: 'API key',
+    ac_import: 'Importación desde 2N',
+    ac_sync: 'Sincronización con 2N',
+    registro_jornada: 'Registro de jornada',
+    data_rights_request: 'Solicitud de derechos RGPD',
+    data_rights_requests: 'Solicitudes de derechos RGPD',
+};
+
 const PAGE_SIZE = 50;
 
 const formatDateTime = (iso) =>
@@ -98,7 +120,7 @@ const AdminAuditLog = () => {
                             <div className="rr-item-head">
                                 <strong>
                                     {ACTION_LABELS[e.action] ?? e.action}
-                                    {e.entity_type ? ` · ${e.entity_type}` : ''}
+                                    {e.entity_type ? ` · ${ENTITY_LABELS[e.entity_type] ?? e.entity_type}` : ''}
                                 </strong>
                                 <span className="rr-meta">{formatDateTime(e.created_at)}</span>
                             </div>
