@@ -1,80 +1,96 @@
 # Handoff — Antigravity / TimeTrack
-**Date:** 2026-06-08  
-**Repo:** https://github.com/carlosrabadan059-cpu/Timetrack  
-**Branch:** `main` (commit `b90fef3`)
+**Fecha:** 2026-11-04
+**Repo:** https://github.com/carlosrabadan059-cpu/Timetrack (rama `main`)
+
+Estado del proyecto y trabajo pendiente. La arquitectura, el schema y los endpoints están en `CLAUDE.md`.
 
 ---
 
-## What happened this session
+## Estado actual
 
-### Graphify installed (commits `fa96904`, `e964cdc`)
-- `graphifyy` installed via `pipx install graphifyy`
-- `graphify claude install` añadió sección a `CLAUDE.md` y hooks `PreToolUse` en `.claude/settings.json`
-- Grafo construido con `graphify update .`: 3,536 nodos, 3,658 aristas, 381 comunidades (solo código, sin LLM key)
-- `graphify-out/cache/` excluido de git via `.gitignore`
-- Skills de agente añadidos en `.agents/skills/` y docs en `docs/agents/`
+Todas las fases (0–5) están en producción. Del lado del código, la auditoría RGPD (#30) está hecha salvo el punto 8 (aplazado). No hay trabajo a medias en el repo.
 
-### Auth bug fixed (commits `4004298`, `b90fef3`)
+### Despliegue
 
-**Root cause:** Race condition en `src/contexts/AuthContext.jsx`.  
-Al hacer login con otro usuario, `onAuthStateChange` seteaba el nuevo `user` pero `profile` seguía teniendo los datos del usuario anterior. `LoginPage` redirigía en cuanto `isAuthenticated = true` usando el perfil stale — siempre entraba en el dashboard del usuario equivocado (Carlos Rabadán en lugar de Admin).
+| Pieza | Dónde | Cómo se actualiza |
+|---|---|---|
+| Frontend | **Dokploy**, app `Timetrack` (`timetrack-4uibyn`), https://timetrack.rabadanhouse.space | Auto-deploy al hacer push a `main` |
+| Backend | Docker en Raspberry Pi (192.168.1.10), stack **`n8n`** de Portainer, contenedor `n8n-backend-1`, expuesto en https://api.rabadanhouse.space por Cloudflare Tunnel | `docker buildx build --platform linux/arm64 --push` → Portainer → Containers → *Recreate* con re-pull (ver `docs/signalr-resilience.md`) |
+| n8n | Mismo stack, https://n8n.rabadanhouse.space | — |
+| Copias de seguridad | Mismo stack, contenedor `n8n-backup-1` (imagen `rabadanhouse/timetrack-backup:latest`) | Igual que el backend. Detalle en `docs/backups.md` |
+| Base de datos | Supabase, proyecto *Control horario* (`bflflqxwndzewnrxmohd`, eu-west-1, Postgres 17) | Migraciones con el MCP de Supabase |
 
-**Fixes aplicados:**
-1. `src/contexts/AuthContext.jsx`: `setProfile(null)` antes de llamar a `loadProfile()` en `onAuthStateChange` — limpia el perfil anterior antes de cargar el nuevo.
-2. `src/pages/LoginPage.jsx`: la redirección ahora requiere `isAuthenticated && profile` — espera al perfil real antes de navegar.
-3. `src/contexts/AuthContext.jsx`: `loadProfile()` tiene fallback directo a Supabase `profiles` si `/api/me` no responde — el login funciona aunque el backend esté caído.
-4. `src/pages/LoginPage.jsx`: timeout de 8s muestra error y desbloquea el botón si el perfil nunca llega.
+**No hay despliegue en Vercel.** Quedan restos que hay que quitar (#33).
 
-### Incidente de infraestructura (resuelto)
-- El contenedor `cloudflared` perdió la red `n8n_net` de Docker tras un fallo de recreación en Portainer — causó errores 502/1033 en `api.rabadanhouse.space`.
-- Resuelto con redeploy completo del stack desde Portainer (Stacks → n8n → Update the stack).
-- Backend confirmado healthy: `GET /health` devuelve `{"status":"ok"}`.
+### Copias de seguridad (punto 17 de #30, cerrado el 2026-11-04)
+
+- Cada noche a las **03:30** se hace un `pg_dump` de los esquemas `public` y `auth` de Supabase, por el *Session pooler*.
+- Se cifra con **age** y se sube a **Google Drive** (`timetrack-backups/`).
+  - **Rotación:** 14 días de copias diarias y 400 días de mensuales.
+  - **Si falla:** aviso por Telegram (`@timetrack_backups_rabadan_bot`). El contenedor pasa a *unhealthy* si pasan 26 h sin un backup correcto.
+- **Restauración probada con una copia real:** las 47 tablas tienen los mismos recuentos y el mismo md5 que producción.
+- **Secretos, todos en la app Contraseñas del Mac:**
+  - clave privada age (*TimeTrack backup age*);
+  - token del bot de Telegram;
+  - ID y secreto del cliente OAuth de Google (proyecto `rclone-timetrack`, publicado *En producción*);
+  - contraseña de la base de datos de Supabase.
+- El 2026-11-04 se rotaron el token de Telegram y el de Drive, porque se habían expuesto en un chat.
+
+### Cambios de la sesión del 2026-11-04
+
+- `ac317e9`, `63f3a0a`: pantalla **Registro de auditoría** en *Ajustes → Privacidad*, que lee `GET /api/admin/audit` con filtro por acción y nombres legibles.
+- `d34a6cd`: los docs ya dicen Dokploy en lugar de Vercel.
+- `aefc6e0`, `ad559db`, `f8acb06`, `046e4f3`, `20ba36b`: contenedor de backup, healthcheck, avisos y documentación.
+- `n8n-skills/` añadido a `.gitignore` (es un repo externo clonado).
 
 ---
 
-## Current project state
+## Pendiente
 
-Todas las fases 0–5 completadas. Sin trabajo pendiente. App operativa.
+### Issues abiertas
 
-- Backend: `https://api.rabadanhouse.space` (Docker en Raspberry Pi 192.168.1.10 via Cloudflare Tunnel)
-- Frontend: Dokploy, https://timetrack.rabadanhouse.space (auto-deploy desde `main`)
-- Stack compose: Portainer → Stack `n8n` (postgres, n8n, backend, cloudflared en red `n8n_net`)
+| # | Qué | Quién | Estado |
+|---|---|---|---|
+| **#30** | Auditoría RGPD: documentación legal — 13 DPA y subencargados, 14 EIPD (GPS), 15 registro de tratamientos, 19 política de desconexión digital, 20 procedimiento de brechas; revisión de `/privacidad` por un asesor | Responsable / asesor legal (Claude puede redactar borradores) | Pendiente |
+| #30 | Punto 8: RLS real por `company_id` | Código | Aplazado hasta que haya una 2.ª empresa |
+| **#31** | Alta de usuarios en 2N: "Company must be specified" | Código | Aplazado: la licencia de desarrollo de 2N solo admite 5 usuarios |
+| **#28** | Cuentas de prueba (`admin@`/`empleado@timetrack.com`) con contraseña `123456` | Responsable | Se mantienen a propósito hasta el uso real |
+| **#32** | `npm run lint` falla: ESLint 9 sin `eslint.config.js` | Código | Listo para hacer, ~15 min |
+| **#33** | Quitar restos de Vercel: origen en `FRONTEND_URL` (CORS del backend) y `vercel.json` | Portainer + código | Listo para hacer, ~10 min |
+| **#34** | Copias: probar la recuperación en un proyecto nuevo de Supabase; las credenciales de n8n no tienen copia | Decisión + prueba | Pendiente |
 
-Ver `CLAUDE.md` para referencia completa de arquitectura, schema y endpoints.
+### Antes de usar la app con empleados reales
+
+1. **#28:** cambiar las contraseñas de las cuentas de prueba o borrar esas cuentas.
+2. **#31:** licencia de 2N de producción y probar el alta de usuarios.
+3. **#30:** tener firmados el DPA, la EIPD y la política de desconexión, y la página `/privacidad` revisada.
+4. **#33:** CORS solo con el dominio real.
+
+### Mantenimiento recurrente
+
+- **Cada trimestre:** prueba de restauración local de una copia real (procedimiento en `docs/backups.md`).
+- **Tras publicar una imagen nueva** del backend o del backup: comprobar con `docker inspect` que el contenedor usa el digest nuevo.
 
 ---
 
-## Cómo usar el grafo de conocimiento
+## Si algo falla
+
+- **Backend 502/530:** comprueba en Portainer que `n8n-backend-1` y `n8n-cloudflared-1` están *running* y en la red `n8n_net`. Si no: Stacks → `n8n` → *Update the stack*.
+- **Aviso de Telegram "TimeTrack backup FALLO":** mira los logs de `n8n-backup-1`. Causas habituales: la contraseña de Supabase ha cambiado (`SUPABASE_DB_URL`), el token de Drive se ha revocado o caducado (`rclone config reconnect gdrive:` y actualizar `RCLONE_CONFIG_B64`) o hay un valor mal pegado en Portainer. Diagnóstico en `docs/backups.md`.
+- **2N desconectado:** el aviso llega por Telegram desde el workflow de n8n *2N Connection Down Alert*. Ver `docs/signalr-resilience.md`.
+
+---
+
+## Grafo de conocimiento
 
 ```bash
-# Pregunta focalizada (preferido — mucho más pequeño que grep)
 graphify query "how does the fichar endpoint work"
-
-# Relación entre dos nodos
 graphify path "POST /api/me/fichar" "access_logs"
-
-# Explicar un concepto
-graphify explain "SignalR listener"
-
-# Actualizar tras cambios de código (no necesita API key)
-graphify update .
+graphify update .   # tras cambios de código, sin API key
 ```
 
-El grafo NO incluye docs/imágenes. Para añadir extracción semántica: `ANTHROPIC_API_KEY=<key> graphify .`
+## Skills recomendadas
 
----
-
-## Si el backend vuelve a dar 502/530
-
-1. Portainer → Container `backend` — comprobar que está running
-2. Portainer → Container `cloudflared` — comprobar que está en red `n8n_net`
-3. Si alguno no está en la red: Stacks → n8n → **Update the stack**
-
----
-
-## Suggested skills
-
-- **`antigravity-backend`** — cargar siempre antes de tocar rutas backend, schema Supabase, SignalR, n8n o lógica de fichaje
-- **`graphify`** — `graphify-out/` existe y está poblado; usar `graphify query` antes de explorar código fuente
-- **`verification-before-completion`** — ejecutar antes de dar cualquier fix o feature por terminado
-- **`systematic-debugging`** — usar si aparecen nuevos bugs; el flujo de auth está corregido pero pueden surgir edge cases en SSE/SignalR
+- **`antigravity-backend`:** antes de tocar rutas del backend, el schema de Supabase, SignalR, n8n o la lógica de fichaje.
+- **`verification-before-completion`:** antes de dar algo por terminado.
+- **`systematic-debugging`:** si aparecen bugs nuevos.
