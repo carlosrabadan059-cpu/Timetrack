@@ -90,6 +90,12 @@ El esquema `public` ya existe en cualquier Postgres, así que `pg_restore` avisa
 ```sh
 rclone copy gdrive:timetrack-backups/daily/<archivo>.dump.age .
 docker run -d --name restore-test -e POSTGRES_PASSWORD=test -p 55432:5432 postgres:17-alpine
+# Lo que Supabase trae de serie; sin esto no se crean las tablas con defaults de extensions.* ni las políticas RLS
+psql postgresql://postgres:test@localhost:55432/postgres -c "
+  create schema extensions;
+  create extension pgcrypto schema extensions; create extension \"uuid-ossp\" schema extensions;
+  create role anon nologin; create role authenticated nologin; create role service_role nologin bypassrls;
+  create role supabase_auth_admin nologin; create role authenticator nologin;"
 age -d -i timetrack-backup.key <archivo>.dump.age \
   | pg_restore -d postgresql://postgres:test@localhost:55432/postgres --no-owner --no-privileges
 psql postgresql://postgres:test@localhost:55432/postgres -c "select count(*) from public.access_logs"
@@ -104,4 +110,6 @@ Compara los recuentos con producción y borra el contenedor al terminar. El volc
    `age -d -i clave <archivo> | pg_restore -d "$NEW_DB_URL" --data-only --schema=auth`
 4. Cambia `SUPABASE_URL` y las claves en el backend, el frontend (Dokploy) y n8n, y vuelve a desplegar.
 
-Probado contra un Postgres 17 local (recuentos y checksums idénticos, 2026-11-04). La restauración en un proyecto real de Supabase (pasos 2–3) **todavía no se ha probado**.
+**Pruebas hechas:**
+- 2026-11-04: copia real de producción (`timetrack-20261104-232046`) restaurada en un Postgres 17 local preparado como arriba. Resultado: 47/47 tablas con los mismos recuentos que producción, md5 idéntico de `access_logs` y `auth.users`, y solo el error esperado de `schema "public"`. La clave privada se pasó del portapapeles al contenedor sin tocar disco.
+- La restauración en un proyecto nuevo de Supabase (pasos 2–3 de arriba) **todavía no se ha probado**.
