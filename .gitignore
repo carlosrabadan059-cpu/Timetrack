@@ -70,3 +70,6 @@ graphify-out/cache/
 
 # Repos externos clonados
 n8n-skills/
+
+# Enlace local del CLI de Vercel (ya no se usa Vercel)
+.vercel/
