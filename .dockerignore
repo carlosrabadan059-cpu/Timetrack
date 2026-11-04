@@ -1,0 +1,14 @@
+# Solo hace falta el frontend. No excluir .env: Dokploy lo genera con las VITE_* antes del build.
+.git
+node_modules
+dist
+backend
+backup
+mobile
+n8n-skills
+n8n-workflows
+graphify-out
+docs
+.vercel
+.env.local
+*.log
