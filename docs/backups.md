@@ -51,9 +51,18 @@ En el Mac, salvo donde se indique.
        TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
        TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
        HEARTBEAT_URL: ${HEARTBEAT_URL}
+       BACKUP_MAX_AGE_H: "26"
        # BACKUP_ON_START: "1"   # solo en el primer despliegue, para probarlo al momento
    ```
    Tras desplegar, comprueba en los logs que sale `[backup] OK timetrack-....dump.age` y que el archivo está en Drive. Después quita `BACKUP_ON_START`.
+
+## Gestión desde Portainer
+
+- **Estado:** el contenedor tiene healthcheck. Aparece *healthy* mientras el último backup correcto tenga menos de `BACKUP_MAX_AGE_H` horas (26 por defecto) y *unhealthy* si no. Tras arrancar cuenta como recién hecho, así que el primer aviso llega 26 h después si el cron falla.
+- **Logs:** Containers → `backup` → Logs. Cada ejecución deja `[backup] ... pg_dump...` y `[backup] OK ...` o `[backup] ERROR: ...`.
+- **Backup manual:** Containers → `backup` → Console → `/bin/sh` → `backup.sh`.
+- **Cambiar horario, rotación o destino:** edita las variables del stack (`BACKUP_CRON`, `KEEP_DAILY_DAYS`, `KEEP_MONTHLY_DAYS`, `RCLONE_REMOTE`...) y pulsa *Update the stack*.
+- **Nueva versión de la imagen:** igual que con el backend, *Update the stack* con re-pull no siempre recrea el contenedor. Usa Containers → `backup` → *Recreate* con "Re-pull image" y comprueba que cambia el Id del contenedor.
 
 ## Restauración
 

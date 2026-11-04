@@ -65,6 +65,7 @@ rclone mkdir "${RCLONE_REMOTE}/monthly" || true
 rclone delete "${RCLONE_REMOTE}/daily" --min-age "${KEEP_DAILY_DAYS}d" || true
 rclone delete "${RCLONE_REMOTE}/monthly" --min-age "${KEEP_MONTHLY_DAYS}d" || true
 
+date +%s > /tmp/backup_last_ok
 echo "[backup] OK ${FILE} (${SIZE} bytes)"
 if [ -n "${HEARTBEAT_URL:-}" ]; then
   curl -fsS -m 20 --retry 3 "$HEARTBEAT_URL" >/dev/null || echo "[backup] aviso: heartbeat fallido"
