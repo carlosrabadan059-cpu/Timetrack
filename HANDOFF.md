@@ -37,7 +37,7 @@ Al hacer login con otro usuario, `onAuthStateChange` seteaba el nuevo `user` per
 Todas las fases 0–5 completadas. Sin trabajo pendiente. App operativa.
 
 - Backend: `https://api.rabadanhouse.space` (Docker en Raspberry Pi 192.168.1.10 via Cloudflare Tunnel)
-- Frontend: Vercel (auto-deploy desde `main`)
+- Frontend: Dokploy, https://timetrack.rabadanhouse.space (auto-deploy desde `main`)
 - Stack compose: Portainer → Stack `n8n` (postgres, n8n, backend, cloudflared en red `n8n_net`)
 
 Ver `CLAUDE.md` para referencia completa de arquitectura, schema y endpoints.

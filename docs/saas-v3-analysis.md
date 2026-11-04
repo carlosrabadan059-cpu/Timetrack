@@ -101,7 +101,7 @@ de "¿qué modelo?" a "**¿cómo automatizo y escalo un túnel por cada cliente?
 
 ### 5. Infraestructura y escalado (hoy: 1 Raspberry Pi = SPOF)
 - Mover el backend Hono/Node a una plataforma cloud escalable (Fly.io / Railway / contenedor gestionado).
-  El frontend ya está en Vercel.
+  El frontend ya está en Dokploy (timetrack.rabadanhouse.space).
 - **Problema del SignalR listener:** hoy es un proceso único con un `Map` en memoria de todas las
   conexiones. No escala horizontalmente, un redeploy tira todas las conexiones, y dos réplicas
   generarían **eventos duplicados**. Hay que extraerlo a un **servicio "connector" dedicado y stateful**
