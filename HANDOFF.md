@@ -20,7 +20,7 @@ Todas las fases (0–5) están en producción. Del lado del código, la auditor�
 | Copias de seguridad | Mismo stack, contenedor `n8n-backup-1` (imagen `rabadanhouse/timetrack-backup:latest`) | Igual que el backend. Detalle en `docs/backups.md` |
 | Base de datos | Supabase, proyecto *Control horario* (`bflflqxwndzewnrxmohd`, eu-west-1, Postgres 17) | Migraciones con el MCP de Supabase |
 
-**No hay despliegue en Vercel.** Quedan restos que hay que quitar (#33).
+**No hay despliegue en Vercel.** Restos eliminados (#33). Las cabeceras de seguridad que definía `vercel.json` no se aplican en Dokploy: ver #35.
 
 ### Copias de seguridad (punto 17 de #30, cerrado el 2026-11-04)
 
@@ -56,7 +56,7 @@ Todas las fases (0–5) están en producción. Del lado del código, la auditor�
 | **#31** | Alta de usuarios en 2N: "Company must be specified" | Código | Aplazado: la licencia de desarrollo de 2N solo admite 5 usuarios |
 | **#28** | Cuentas de prueba (`admin@`/`empleado@timetrack.com`) con contraseña `123456` | Responsable | Se mantienen a propósito hasta el uso real |
 | **#32** | `npm run lint` falla: ESLint 9 sin `eslint.config.js` | Código | Listo para hacer, ~15 min |
-| **#33** | Quitar restos de Vercel: origen en `FRONTEND_URL` (CORS del backend) y `vercel.json` | Portainer + código | Listo para hacer, ~10 min |
+| **#35** | Cabeceras de seguridad (CSP, HSTS, X-Frame-Options…) no se envían desde que el frontend está en Dokploy (regresión de CN-002) | Dokploy/Traefik o Cloudflare | Pendiente |
 | **#34** | Copias: probar la recuperación en un proyecto nuevo de Supabase; las credenciales de n8n no tienen copia | Decisión + prueba | Pendiente |
 
 ### Antes de usar la app con empleados reales
@@ -64,7 +64,7 @@ Todas las fases (0–5) están en producción. Del lado del código, la auditor�
 1. **#28:** cambiar las contraseñas de las cuentas de prueba o borrar esas cuentas.
 2. **#31:** licencia de 2N de producción y probar el alta de usuarios.
 3. **#30:** tener firmados el DPA, la EIPD y la política de desconexión, y la página `/privacidad` revisada.
-4. **#33:** CORS solo con el dominio real.
+4. **#35:** cabeceras de seguridad activas en el frontend.
 
 ### Mantenimiento recurrente
 

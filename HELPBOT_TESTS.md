@@ -3,7 +3,7 @@
 Flujo completo: `HelpBot.jsx` → `POST /api/help/chat` → Backend (Hono) → n8n webhook → OpenAI → respuesta normalizada → renderMarkdown en frontend.
 
 **Cómo marcar:** cambia `[ ]` a `[x]` conforme vayas probando.  
-**Entorno:** app en producción — https://timetrack-bice.vercel.app  
+**Entorno:** app en producción — https://timetrack.rabadanhouse.space  
 **Prerrequisito:** n8n workflow `timetrack-help-bot` activo con credencial OpenAI asignada.
 
 ---
