@@ -1,16 +1,16 @@
-# Graph Report - Timetrack  (2026-10-02)
+# Graph Report - Timetrack  (2026-11-04)
 
 ## Corpus Check
-- 252 files · ~201,702 words
+- 182 files · ~121,262 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3721 nodes · 4093 edges · 402 communities (384 shown, 18 thin omitted)
-- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
+- 3430 nodes · 3732 edges · 370 communities (350 shown, 20 thin omitted)
+- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 3 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f0c13cb9`
+- Built from commit: `6455d8a5`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -69,20 +69,13 @@
 - [[_COMMUNITY_Community 52|Community 52]]
 - [[_COMMUNITY_Community 53|Community 53]]
 - [[_COMMUNITY_Community 54|Community 54]]
-- [[_COMMUNITY_Community 55|Community 55]]
 - [[_COMMUNITY_Community 56|Community 56]]
-- [[_COMMUNITY_Community 57|Community 57]]
-- [[_COMMUNITY_Community 58|Community 58]]
-- [[_COMMUNITY_Community 59|Community 59]]
-- [[_COMMUNITY_Community 60|Community 60]]
-- [[_COMMUNITY_Community 61|Community 61]]
 - [[_COMMUNITY_Community 62|Community 62]]
 - [[_COMMUNITY_Community 63|Community 63]]
 - [[_COMMUNITY_Community 64|Community 64]]
 - [[_COMMUNITY_Community 65|Community 65]]
 - [[_COMMUNITY_Community 66|Community 66]]
 - [[_COMMUNITY_Community 67|Community 67]]
-- [[_COMMUNITY_Community 68|Community 68]]
 - [[_COMMUNITY_Community 69|Community 69]]
 - [[_COMMUNITY_Community 70|Community 70]]
 - [[_COMMUNITY_Community 71|Community 71]]
@@ -93,7 +86,6 @@
 - [[_COMMUNITY_Community 76|Community 76]]
 - [[_COMMUNITY_Community 77|Community 77]]
 - [[_COMMUNITY_Community 78|Community 78]]
-- [[_COMMUNITY_Community 79|Community 79]]
 - [[_COMMUNITY_Community 80|Community 80]]
 - [[_COMMUNITY_Community 81|Community 81]]
 - [[_COMMUNITY_Community 82|Community 82]]
@@ -103,10 +95,6 @@
 - [[_COMMUNITY_Community 86|Community 86]]
 - [[_COMMUNITY_Community 87|Community 87]]
 - [[_COMMUNITY_Community 88|Community 88]]
-- [[_COMMUNITY_Community 89|Community 89]]
-- [[_COMMUNITY_Community 90|Community 90]]
-- [[_COMMUNITY_Community 91|Community 91]]
-- [[_COMMUNITY_Community 92|Community 92]]
 - [[_COMMUNITY_Community 93|Community 93]]
 - [[_COMMUNITY_Community 94|Community 94]]
 - [[_COMMUNITY_Community 95|Community 95]]
@@ -117,7 +105,6 @@
 - [[_COMMUNITY_Community 100|Community 100]]
 - [[_COMMUNITY_Community 101|Community 101]]
 - [[_COMMUNITY_Community 102|Community 102]]
-- [[_COMMUNITY_Community 103|Community 103]]
 - [[_COMMUNITY_Community 104|Community 104]]
 - [[_COMMUNITY_Community 105|Community 105]]
 - [[_COMMUNITY_Community 106|Community 106]]
@@ -132,11 +119,6 @@
 - [[_COMMUNITY_Community 115|Community 115]]
 - [[_COMMUNITY_Community 116|Community 116]]
 - [[_COMMUNITY_Community 117|Community 117]]
-- [[_COMMUNITY_Community 118|Community 118]]
-- [[_COMMUNITY_Community 119|Community 119]]
-- [[_COMMUNITY_Community 120|Community 120]]
-- [[_COMMUNITY_Community 121|Community 121]]
-- [[_COMMUNITY_Community 122|Community 122]]
 - [[_COMMUNITY_Community 123|Community 123]]
 - [[_COMMUNITY_Community 124|Community 124]]
 - [[_COMMUNITY_Community 125|Community 125]]
@@ -153,7 +135,6 @@
 - [[_COMMUNITY_Community 136|Community 136]]
 - [[_COMMUNITY_Community 137|Community 137]]
 - [[_COMMUNITY_Community 138|Community 138]]
-- [[_COMMUNITY_Community 139|Community 139]]
 - [[_COMMUNITY_Community 140|Community 140]]
 - [[_COMMUNITY_Community 141|Community 141]]
 - [[_COMMUNITY_Community 142|Community 142]]
@@ -176,7 +157,6 @@
 - [[_COMMUNITY_Community 159|Community 159]]
 - [[_COMMUNITY_Community 160|Community 160]]
 - [[_COMMUNITY_Community 161|Community 161]]
-- [[_COMMUNITY_Community 162|Community 162]]
 - [[_COMMUNITY_Community 163|Community 163]]
 - [[_COMMUNITY_Community 164|Community 164]]
 - [[_COMMUNITY_Community 165|Community 165]]
@@ -255,10 +235,6 @@
 - [[_COMMUNITY_Community 238|Community 238]]
 - [[_COMMUNITY_Community 239|Community 239]]
 - [[_COMMUNITY_Community 240|Community 240]]
-- [[_COMMUNITY_Community 241|Community 241]]
-- [[_COMMUNITY_Community 242|Community 242]]
-- [[_COMMUNITY_Community 243|Community 243]]
-- [[_COMMUNITY_Community 244|Community 244]]
 - [[_COMMUNITY_Community 245|Community 245]]
 - [[_COMMUNITY_Community 246|Community 246]]
 - [[_COMMUNITY_Community 247|Community 247]]
@@ -285,15 +261,6 @@
 - [[_COMMUNITY_Community 268|Community 268]]
 - [[_COMMUNITY_Community 269|Community 269]]
 - [[_COMMUNITY_Community 270|Community 270]]
-- [[_COMMUNITY_Community 271|Community 271]]
-- [[_COMMUNITY_Community 272|Community 272]]
-- [[_COMMUNITY_Community 273|Community 273]]
-- [[_COMMUNITY_Community 274|Community 274]]
-- [[_COMMUNITY_Community 275|Community 275]]
-- [[_COMMUNITY_Community 276|Community 276]]
-- [[_COMMUNITY_Community 277|Community 277]]
-- [[_COMMUNITY_Community 278|Community 278]]
-- [[_COMMUNITY_Community 279|Community 279]]
 - [[_COMMUNITY_Community 280|Community 280]]
 - [[_COMMUNITY_Community 281|Community 281]]
 - [[_COMMUNITY_Community 282|Community 282]]
@@ -374,7 +341,6 @@
 - [[_COMMUNITY_Community 358|Community 358]]
 - [[_COMMUNITY_Community 362|Community 362]]
 - [[_COMMUNITY_Community 364|Community 364]]
-- [[_COMMUNITY_Community 365|Community 365]]
 - [[_COMMUNITY_Community 366|Community 366]]
 - [[_COMMUNITY_Community 367|Community 367]]
 - [[_COMMUNITY_Community 368|Community 368]]
@@ -396,9 +362,11 @@
 - [[_COMMUNITY_Community 394|Community 394]]
 - [[_COMMUNITY_Community 395|Community 395]]
 - [[_COMMUNITY_Community 401|Community 401]]
+- [[_COMMUNITY_Community 402|Community 402]]
+- [[_COMMUNITY_Community 403|Community 403]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `getSupabaseAdmin()` - 35 edges
+1. `getSupabaseAdmin()` - 41 edges
 2. `skills` - 23 edges
 3. `n8n MCP Tools Expert` - 20 edges
 4. `AI Agent Workflow Pattern` - 20 edges
@@ -410,6 +378,8 @@
 10. `Workflow Management Tools Guide` - 18 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `periodSubtitle()` --calls--> `fmt`  [INFERRED]
+  src/pages/employee/HistoryPage.jsx → backend/src/lib/notify.ts
 - `main()` --calls--> `getSupabaseAdmin()`  [EXTRACTED]
   backend/scripts/check-carlos-profile.ts → backend/src/lib/supabase.ts
 - `main()` --calls--> `getSupabaseAdmin()`  [EXTRACTED]
@@ -418,13 +388,11 @@
   backend/scripts/generate-report-demo.ts → backend/src/lib/supabase.ts
 - `main()` --calls--> `getSupabaseAdmin()`  [EXTRACTED]
   backend/scripts/seed-carlos-logs.ts → backend/src/lib/supabase.ts
-- `main()` --calls--> `getSupabaseAdmin()`  [EXTRACTED]
-  backend/scripts/update-carlos-company.ts → backend/src/lib/supabase.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (402 total, 18 thin omitted)
+## Communities (370 total, 20 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.20
@@ -455,8 +423,8 @@ Cohesion: 0.04
 Nodes (44): 1. missing_required, 2. invalid_value, 3. type_mismatch, 4. invalid_expression, 5. invalid_reference, 6. best_practice, 7. deprecated, 8. performance (+36 more)
 
 ### Community 7 - "Community 7"
-Cohesion: 0.08
-Nodes (28): checkNonWorkingDay(), checkOutOfSchedule(), DAYS_ES, DAYS_FULL_ES, formatDateLabel(), getWeekStart(), MONTHS_ES, shortDayName() (+20 more)
+Cohesion: 0.07
+Nodes (39): checkNonWorkingDay(), checkOutOfSchedule(), DAYS_ES, DAYS_FULL_ES, formatDateLabel(), getWeekStart(), humanizeSource(), inferDetailType() (+31 more)
 
 ### Community 8 - "Community 8"
 Cohesion: 0.05
@@ -503,12 +471,12 @@ Cohesion: 0.06
 Nodes (32): 1. n8n Expression Syntax, 2. n8n MCP Tools Expert (HIGHEST PRIORITY), 3. n8n Workflow Patterns, 4. n8n Validation Expert, 5. n8n Node Configuration, 6. n8n Code JavaScript, 7. n8n Code Python, Credential Management (+24 more)
 
 ### Community 19 - "Community 19"
-Cohesion: 0.11
-Nodes (9): adminVacaciones, createVacacionSchema, HolidayEntry, HookResult, resolveSchema, vacaciones, EmitFn, SseBroadcaster (+1 more)
+Cohesion: 0.44
+Nodes (7): AdminRightsRequests(), MyRightsRequests(), daysLeft(), formatDate(), RIGHTS_LABELS, RIGHTS_STATUS, RIGHTS_TYPES
 
 ### Community 20 - "Community 20"
 Cohesion: 0.07
-Nodes (27): apiKeyAuthMiddleware, auth, requireRole(), docs, spec, external, FichajeItem, fichajesQuerySchema (+19 more)
+Nodes (20): AuditAction, audited(), AuditedOptions, AuditEvent, JsonBody, recordAudit(), adminIncidencias, createIncidenciaSchema (+12 more)
 
 ### Community 21 - "Community 21"
 Cohesion: 0.07
@@ -583,20 +551,20 @@ Cohesion: 0.10
 Nodes (19): 1. Expression Syntax (Skill #1), 2. MCP Tools Expert (Skill #2), 3. Workflow Patterns (Skill #3), 4. Validation Expert (Skill #4), 5. Node Configuration (Skill #5), Critical Findings for Skills, Database Statistics, Generated: 2025-10-20 (+11 more)
 
 ### Community 40 - "Community 40"
-Cohesion: 0.11
-Nodes (3): MONTHS_ES, supabase, AuthContext
+Cohesion: 0.10
+Nodes (8): STATUS_BADGE, TYPE_CONFIG, download(), getToken(), supabase, AuthContext, api, request()
 
 ### Community 41 - "Community 41"
 Cohesion: 0.10
-Nodes (17): AcClient, AcCompany, createAcClient(), ListResponse, ilikeAnyFilter(), admin, EmitFn, clockingModesSchema (+9 more)
+Nodes (20): AcClient, AcCompany, createAcClient(), ListResponse, requireRole(), admin, EmitFn, RegistroEmployee (+12 more)
 
 ### Community 42 - "Community 42"
 Cohesion: 0.10
 Nodes (18): 10. Incorrect Property Path, 11. Using = Prefix Outside JSON, 12. Expressions in Webhook Path, 13. Forgetting .json in $node Reference, 14. String Concatenation Confusion, 15. Empty Expression Brackets, 1. Missing Curly Braces, 2. Webhook Body Access (+10 more)
 
 ### Community 43 - "Community 43"
-Cohesion: 0.10
-Nodes (30): decryptSetting(), encryptSetting(), getKey(), inferDetailType(), dispatchN8nWebhook(), N8nWorkflow, stripQueueSecrets(), triggerWorkflow() (+22 more)
+Cohesion: 0.19
+Nodes (14): decryptSetting(), encryptSetting(), getKey(), attachHandlers(), buildConnection(), connections, ConnectionStatus, markDown() (+6 more)
 
 ### Community 44 - "Community 44"
 Cohesion: 0.13
@@ -616,7 +584,7 @@ Nodes (10): getEnv(), getSupabaseAdmin(), getSupabasePublic(), supabaseAdmin, su
 
 ### Community 48 - "Community 48"
 Cohesion: 0.11
-Nodes (4): ROLE_LABELS, MONTHS_ES, STATUS_BADGE, TYPE_LABELS
+Nodes (5): ROLE_LABELS, MONTHS_ES, defaultClockingModes, defaultForm, TABS
 
 ### Community 49 - "Community 49"
 Cohesion: 0.15
@@ -630,41 +598,9 @@ Nodes (14): Activates On, Common Patterns, Core Topics, Coverage, Dependencies, 
 Cohesion: 0.12
 Nodes (14): Activates On, Core Topics, Coverage, Dependencies, Evaluations, File Count, Files, Key Features (+6 more)
 
-### Community 53 - "Community 53"
-Cohesion: 0.18
-Nodes (13): baseline_without_skill, expected_quality, likely_response, expected_behavior, id, query, skills, with_skill_expected (+5 more)
-
-### Community 54 - "Community 54"
-Cohesion: 0.18
-Nodes (13): baseline_without_skill, expected_quality, likely_response, expected_behavior, id, query, skills, with_skill_expected (+5 more)
-
-### Community 55 - "Community 55"
-Cohesion: 0.18
-Nodes (13): baseline_without_skill, expected_quality, likely_response, expected_behavior, id, query, skills, with_skill_expected (+5 more)
-
 ### Community 56 - "Community 56"
 Cohesion: 0.13
 Nodes (13): Call-graph collapse, Candidate card, Cross-section (good for layered shallowness), Diagram patterns, Hand-built boxes-and-arrows (when Mermaid's layout fights you), Header, HTML Report Format, Mass diagram (good for "interface as wide as implementation") (+5 more)
-
-### Community 57 - "Community 57"
-Cohesion: 0.18
-Nodes (13): baseline_without_skill, expected_quality, likely_response, expected_behavior, id, query, skills, with_skill_expected (+5 more)
-
-### Community 58 - "Community 58"
-Cohesion: 0.18
-Nodes (13): baseline_without_skill, expected_quality, likely_response, expected_behavior, id, query, skills, with_skill_expected (+5 more)
-
-### Community 59 - "Community 59"
-Cohesion: 0.18
-Nodes (13): baseline_without_skill, expected_quality, likely_response, expected_behavior, id, query, skills, with_skill_expected (+5 more)
-
-### Community 60 - "Community 60"
-Cohesion: 0.18
-Nodes (13): baseline_without_skill, expected_quality, likely_response, expected_behavior, id, query, skills, with_skill_expected (+5 more)
-
-### Community 61 - "Community 61"
-Cohesion: 0.18
-Nodes (13): baseline_without_skill, expected_quality, likely_response, expected_behavior, id, query, skills, with_skill_expected (+5 more)
 
 ### Community 62 - "Community 62"
 Cohesion: 0.13
@@ -683,16 +619,12 @@ Cohesion: 0.13
 Nodes (13): 2N Access Commander — API Reference, Comandos SignalR, Data Query — Filtrado y paginación, Dispositivos físicos (HTTP API — diferente al REST de AC), Endpoints principales, Grupos y Zonas, Hub URL v3, REST API v3 (+5 more)
 
 ### Community 66 - "Community 66"
-Cohesion: 0.21
-Nodes (7): AdminSettingsPage(), DEFAULT_CLOCKING_MODES, DEFAULT_SETTINGS, ThemeContext, ThemeProvider(), useTheme(), ProfilePage()
+Cohesion: 0.14
+Nodes (8): ACTION_LABELS, AdminSettingsPage(), DEFAULT_CLOCKING_MODES, DEFAULT_SETTINGS, ThemeContext, ThemeProvider(), useTheme(), ProfilePage()
 
 ### Community 67 - "Community 67"
 Cohesion: 0.17
 Nodes (9): FormState, Incidencia, modal, NewIncidenciaModal(), STATUS_STYLE, styles, todayISO(), TYPE_LABEL (+1 more)
-
-### Community 68 - "Community 68"
-Cohesion: 0.20
-Nodes (12): baseline_without_skill, expected_quality, likely_response, expected_behavior, id, query, skills, with_skill_expected (+4 more)
 
 ### Community 69 - "Community 69"
 Cohesion: 0.17
@@ -703,8 +635,8 @@ Cohesion: 0.15
 Nodes (11): Diagnose, Iterate on the loop itself, Non-deterministic bugs, Phase 1 — Build a feedback loop, Phase 2 — Reproduce, Phase 3 — Hypothesise, Phase 4 — Instrument, Phase 5 — Fix + regression test (+3 more)
 
 ### Community 71 - "Community 71"
-Cohesion: 0.20
-Nodes (6): DETAIL_BADGE, fmtMinutes(), HistoryPage(), periodSubtitle(), RANGE_LABELS, SOURCE_LABELS
+Cohesion: 0.18
+Nodes (7): DETAIL_BADGE, fmtMinutes(), HistoryPage(), periodSubtitle(), RANGE_LABELS, SOURCE_LABELS, fmt
 
 ### Community 72 - "Community 72"
 Cohesion: 0.15
@@ -733,10 +665,6 @@ Nodes (11): 1. Gather context, 2. Explore the codebase (optional), 3. Draft vert
 ### Community 78 - "Community 78"
 Cohesion: 0.15
 Nodes (11): Bad agent brief, Behavioral, not procedural, Complete acceptance criteria, Durability over precision, Examples, Explicit scope boundaries, Good agent brief (bug), Good agent brief (enhancement) (+3 more)
-
-### Community 79 - "Community 79"
-Cohesion: 0.27
-Nodes (10): author, name, url, description, homepage, keywords, license, name (+2 more)
 
 ### Community 80 - "Community 80"
 Cohesion: 0.18
@@ -773,22 +701,6 @@ Nodes (10): __dirname, envLines, envPath, err(), hdr(), httpRequest(), main(), o
 ### Community 88 - "Community 88"
 Cohesion: 0.20
 Nodes (6): DayGroup, DETAIL_LABEL, Fichaje, HistorialResponse, SOURCE_LABEL, styles
-
-### Community 89 - "Community 89"
-Cohesion: 0.33
-Nodes (9): correct_code_pattern, description, expected_behavior, expected_output_includes, id, name, query, should_not_include (+1 more)
-
-### Community 90 - "Community 90"
-Cohesion: 0.33
-Nodes (9): correct_code_pattern, description, expected_behavior, expected_output_includes, id, name, query, should_emphasize (+1 more)
-
-### Community 91 - "Community 91"
-Cohesion: 0.33
-Nodes (9): correct_code_pattern, description, expected_behavior, expected_output_includes, id, name, query, should_not_include (+1 more)
-
-### Community 92 - "Community 92"
-Cohesion: 0.33
-Nodes (9): correct_modules, description, expected_behavior, expected_output_includes, id, name, query, should_not_include (+1 more)
 
 ### Community 93 - "Community 93"
 Cohesion: 0.18
@@ -829,10 +741,6 @@ Nodes (9): 1. Planning, 2. Tracer Bullet, 3. Incremental Loop, 4. Refactor, Anti
 ### Community 102 - "Community 102"
 Cohesion: 0.18
 Nodes (9): Invocation, Needs-info template, Quick state override, Reference docs, Resuming a previous session, Roles, Show what needs attention, Triage (+1 more)
-
-### Community 103 - "Community 103"
-Cohesion: 0.36
-Nodes (8): description, expected_behavior, expected_output_includes, id, name, query, should_not_include, skill
 
 ### Community 104 - "Community 104"
 Cohesion: 0.20
@@ -889,26 +797,6 @@ Nodes (8): Description Requirements, Process, Review Checklist, SKILL.md Templat
 ### Community 117 - "Community 117"
 Cohesion: 0.32
 Nodes (7): DashboardData, DashboardScreen(), fmtMinutes(), fmtTime(), STATUS_LABEL, styles, WeekBar
-
-### Community 118 - "Community 118"
-Cohesion: 0.39
-Nodes (7): expected_behavior, expected_content, id, notes, priority, query, skills
-
-### Community 119 - "Community 119"
-Cohesion: 0.39
-Nodes (7): expected_behavior, expected_content, id, notes, priority, query, skills
-
-### Community 120 - "Community 120"
-Cohesion: 0.39
-Nodes (7): expected_behavior, expected_content, id, notes, priority, query, skills
-
-### Community 121 - "Community 121"
-Cohesion: 0.39
-Nodes (7): expected_behavior, expected_content, id, notes, priority, query, skills
-
-### Community 122 - "Community 122"
-Cohesion: 0.39
-Nodes (7): expected_behavior, expected_content, id, notes, priority, query, skills
 
 ### Community 123 - "Community 123"
 Cohesion: 0.25
@@ -973,10 +861,6 @@ Nodes (6): 2N Access Commander, Backend (desde /backend), Frontend, n8n, Otros, 
 ### Community 138 - "Community 138"
 Cohesion: 0.29
 Nodes (3): ProfileData, ROLE_LABEL, styles
-
-### Community 139 - "Community 139"
-Cohesion: 0.36
-Nodes (6): description, name, owner, name, url, plugins
 
 ### Community 140 - "Community 140"
 Cohesion: 0.25
@@ -1065,10 +949,6 @@ Nodes (6): 4. Top 5 Error Patterns to Avoid, Error #1: Empty Code (23% of valida
 ### Community 161 - "Community 161"
 Cohesion: 0.33
 Nodes (6): 9. Additional Resources, Common Use Cases Quick Reference, n8n Community Resources, Official n8n Documentation, Related n8n Nodes, When to Use CODE Node vs Other Nodes
-
-### Community 162 - "Community 162"
-Cohesion: 0.60
-Nodes (4): download(), getToken(), api, request()
 
 ### Community 163 - "Community 163"
 Cohesion: 0.29
@@ -1234,10 +1114,6 @@ Nodes (6): Checklist for Webhook Workflows, Data Handling, Error Handling, Secur
 Cohesion: 0.29
 Nodes (5): Before exploring, read these, Domain Docs, File structure, Flag ADR conflicts, Use the glossary's vocabulary
 
-### Community 204 - "Community 204"
-Cohesion: 0.13
-Nodes (3): defaultClockingModes, defaultForm, TABS
-
 ### Community 205 - "Community 205"
 Cohesion: 0.48
 Nodes (5): buildCommand, framework, headers, outputDirectory, rewrites
@@ -1382,22 +1258,6 @@ Nodes (5): 1. Query Parameter Token, 2. Header-Based Auth, 3. Signature Verifica
 Cohesion: 0.40
 Nodes (5): 1. Use Manual Trigger, 2. Use curl, 3. Use Postman/Insomnia, 4. Webhook.site, Testing Webhooks
 
-### Community 241 - "Community 241"
-Cohesion: 0.53
-Nodes (4): expected_behavior, id, query, skills
-
-### Community 242 - "Community 242"
-Cohesion: 0.53
-Nodes (4): expected_behavior, id, query, skills
-
-### Community 243 - "Community 243"
-Cohesion: 0.53
-Nodes (4): expected_behavior, id, query, skills
-
-### Community 244 - "Community 244"
-Cohesion: 0.53
-Nodes (4): expected_behavior, id, query, skills
-
 ### Community 245 - "Community 245"
 Cohesion: 0.33
 Nodes (4): Pick a branch, Prototype, Rules that apply to both, When done
@@ -1497,42 +1357,6 @@ Nodes (5): write-a-skill, computedHash, skillPath, source, sourceType
 ### Community 270 - "Community 270"
 Cohesion: 0.40
 Nodes (5): zoom-out, computedHash, skillPath, source, sourceType
-
-### Community 271 - "Community 271"
-Cohesion: 0.53
-Nodes (4): expected_behavior, id, query, skills
-
-### Community 272 - "Community 272"
-Cohesion: 0.53
-Nodes (4): expected_behavior, id, query, skills
-
-### Community 273 - "Community 273"
-Cohesion: 0.53
-Nodes (4): expected_behavior, id, query, skills
-
-### Community 274 - "Community 274"
-Cohesion: 0.53
-Nodes (4): expected_behavior, id, query, skills
-
-### Community 275 - "Community 275"
-Cohesion: 0.53
-Nodes (4): expected_behavior, id, query, skills
-
-### Community 276 - "Community 276"
-Cohesion: 0.53
-Nodes (4): expected_behavior, id, query, skills
-
-### Community 277 - "Community 277"
-Cohesion: 0.53
-Nodes (4): expected_behavior, id, query, skills
-
-### Community 278 - "Community 278"
-Cohesion: 0.53
-Nodes (4): expected_behavior, id, query, skills
-
-### Community 279 - "Community 279"
-Cohesion: 0.53
-Nodes (4): expected_behavior, id, query, skills
 
 ### Community 280 - "Community 280"
 Cohesion: 0.67
@@ -1875,28 +1699,36 @@ Cohesion: 0.67
 Nodes (3): Best Practices, ✅ Do, ❌ Don't
 
 ### Community 401 - "Community 401"
-Cohesion: 0.11
-Nodes (19): humanizeSource(), monthYearLabel(), startOfDayISO(), buildDateRange(), buildRegistroXlsx(), historial, assignCardSchema, assignPinSchema (+11 more)
+Cohesion: 0.13
+Nodes (23): dispatchN8nWebhook(), N8nWorkflow, stripQueueSecrets(), triggerWorkflow(), WEBHOOK_PATHS, withQueueSecrets(), DOW, flushOutbox() (+15 more)
+
+### Community 402 - "Community 402"
+Cohesion: 0.09
+Nodes (21): startOutboxFlusher(), apiKeyAuthMiddleware, auth, docs, spec, external, FichajeItem, fichajesQuerySchema (+13 more)
+
+### Community 403 - "Community 403"
+Cohesion: 0.14
+Nodes (13): ilikeAnyFilter(), assignCardSchema, assignPinSchema, createUserSchema, patchUserSchema, users, AccessLog, Company (+5 more)
 
 ## Knowledge Gaps
-- **2250 isolated node(s):** `dev`, `build`, `start`, `@hono/node-server`, `@hono/zod-validator` (+2245 more)
+- **2194 isolated node(s):** `dev`, `build`, `start`, `@hono/node-server`, `@hono/zod-validator` (+2189 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **18 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **20 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `skills` connect `Community 356` to `Community 256`, `Community 257`, `Community 258`, `Community 259`, `Community 260`, `Community 261`, `Community 262`, `Community 263`, `Community 264`, `Community 265`, `Community 266`, `Community 267`, `Community 268`, `Community 269`, `Community 270`, `Community 250`, `Community 251`, `Community 252`, `Community 253`, `Community 254`, `Community 255`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
-- **Why does `supabase` connect `Community 40` to `Community 33`, `Community 66`, `Community 162`, `Community 71`, `Community 39`, `Community 49`, `Community 212`, `Community 52`?**
-  _High betweenness centrality (0.001) - this node is a cross-community bridge._
-- **Why does `getSupabaseAdmin()` connect `Community 47` to `Community 7`, `Community 41`, `Community 43`, `Community 401`, `Community 19`, `Community 20`, `Community 24`?**
-  _High betweenness centrality (0.001) - this node is a cross-community bridge._
+- **Why does `fmt` connect `Community 71` to `Community 401`?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+- **Why does `supabase` connect `Community 40` to `Community 33`, `Community 66`, `Community 71`, `Community 39`, `Community 204`, `Community 49`, `Community 212`?**
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **What connects `dev`, `build`, `start` to the rest of the system?**
-  _2250 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _2194 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
   _Cohesion score 0.0425531914893617 - nodes in this community are weakly interconnected._
 - **Should `Community 3` be split into smaller, more focused modules?**
+  _Cohesion score 0.0425531914893617 - nodes in this community are weakly interconnected._
+- **Should `Community 4` be split into smaller, more focused modules?**
   _Cohesion score 0.0425531914893617 - nodes in this community are weakly interconnected._

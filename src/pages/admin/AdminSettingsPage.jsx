@@ -57,6 +57,7 @@ function MapClickHandler({ onLocationChange }) {
 }
 import './AdminSettingsPage.css';
 import AdminRightsRequests from './AdminRightsRequests';
+import AdminAuditLog from './AdminAuditLog';
 import { useAuth } from '../../contexts/AuthContext';
 
 const DEFAULT_CLOCKING_MODES = {
@@ -1157,6 +1158,7 @@ const AdminSettingsPage = () => {
                 {activeTab === 'privacy' && isAdmin && (
                     <div className="settings-section">
                         <AdminRightsRequests />
+                        <div style={{ marginTop: "var(--space-6)" }}><AdminAuditLog /></div>
                     </div>
                 )}
 

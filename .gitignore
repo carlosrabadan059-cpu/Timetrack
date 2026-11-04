@@ -68,3 +68,6 @@ screenshots/
 
 # Graphify cache (generado, no commitear)
 graphify-out/cache/
+
+# Repos externos clonados
+n8n-skills/
