@@ -34,7 +34,9 @@ done
 
 if [ -n "${RCLONE_CONFIG_B64:-}" ]; then
   mkdir -p /root/.config/rclone
-  echo "$RCLONE_CONFIG_B64" | base64 -d > /root/.config/rclone/rclone.conf
+  # Se quitan espacios y saltos de linea que se cuelan al pegar en Portainer
+  printf '%s' "$RCLONE_CONFIG_B64" | tr -d ' \n\r\t' | base64 -d > /root/.config/rclone/rclone.conf 2>/dev/null \
+    || notify_fail "RCLONE_CONFIG_B64 no es un base64 valido (incompleto o mal copiado)"
 fi
 
 STAMP="$(date +%Y%m%d-%H%M%S)"
