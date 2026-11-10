@@ -610,8 +610,8 @@
     "semantic_hash": ""
   },
   "src/components/views/TrainingView.jsx": {
-    "mtime": 1779373818.1756878,
-    "ast_hash": "fb6e4806002b4305ac0d97b16d6a6cf3",
+    "mtime": 1794337857.2749517,
+    "ast_hash": "4bf0408e9a37f132cdc6e1e724d1a34a",
     "semantic_hash": ""
   },
   "src/contexts/AuthContext.jsx": {
@@ -620,8 +620,8 @@
     "semantic_hash": ""
   },
   "src/contexts/CorrectionsContext.jsx": {
-    "mtime": 1779373818.1761024,
-    "ast_hash": "2e398a1b5f47eac708d7230d51b0ce28",
+    "mtime": 1794337857.2770312,
+    "ast_hash": "be7a8f6a785a851666ffd459c2fa4085",
     "semantic_hash": ""
   },
   "src/contexts/ThemeContext.jsx": {
@@ -665,8 +665,8 @@
     "semantic_hash": ""
   },
   "src/pages/LoginPage.jsx": {
-    "mtime": 1790889557.8722997,
-    "ast_hash": "ffeb251bac6eac3658aa0553cc551679",
+    "mtime": 1794337861.4586768,
+    "ast_hash": "2aeb09018fed2d5f219e9c9147d6f700",
     "semantic_hash": ""
   },
   "src/pages/ResetPasswordPage.jsx": {
@@ -685,8 +685,8 @@
     "semantic_hash": ""
   },
   "src/pages/admin/AdminDashboardPage.jsx": {
-    "mtime": 1779877356.3441818,
-    "ast_hash": "ebbc58c695b067709b3ff140943ff7de",
+    "mtime": 1794337857.2753012,
+    "ast_hash": "64b2b14fac25735db000fc95bf6222a3",
     "semantic_hash": ""
   },
   "src/pages/admin/AdminEmployeeDetailPage.jsx": {
@@ -705,13 +705,13 @@
     "semantic_hash": ""
   },
   "src/pages/admin/AdminSettingsPage.jsx": {
-    "mtime": 1793818159.4638987,
-    "ast_hash": "4b094bbd117b6a07807f68cf3c326fcb",
+    "mtime": 1794337857.2761662,
+    "ast_hash": "dad2ae669d3395b2801897ffc3ca3f36",
     "semantic_hash": ""
   },
   "src/pages/admin/AdminVacacionesPage.jsx": {
-    "mtime": 1779910616.2284791,
-    "ast_hash": "b9d6241d09c7bdee328a9a2ad1058e9a",
+    "mtime": 1794337857.2764127,
+    "ast_hash": "92925b629e1d37ae6036224121f42e28",
     "semantic_hash": ""
   },
   "src/pages/employee/CorrectionPage.jsx": {
@@ -740,8 +740,8 @@
     "semantic_hash": ""
   },
   "src/pages/employee/VacationsPage.jsx": {
-    "mtime": 1781472554.1883574,
-    "ast_hash": "eb36746ca70deec62fe39435db1238cd",
+    "mtime": 1794337871.6374242,
+    "ast_hash": "f2977b44ea25142165cef73b88d2ee5e",
     "semantic_hash": ""
   },
   "src/pages/superadmin/SuperAdminCompaniesPage.jsx": {
@@ -752,11 +752,6 @@
   "tailwind.config.js": {
     "mtime": 1779373818.180799,
     "ast_hash": "3b8c372419e562a4590aeaed50566f0e",
-    "semantic_hash": ""
-  },
-  "vercel.json": {
-    "mtime": 1779876913.304873,
-    "ast_hash": "625ff809ef874e3c0d5d3a0b86a2e7b2",
     "semantic_hash": ""
   },
   "vite.config.js": {
@@ -970,13 +965,13 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1782936954.4365134,
-    "ast_hash": "5aa104746c6caffa980fd092242b769e",
+    "mtime": 1794337558.361794,
+    "ast_hash": "e7d6b4863f6cd637c7d00a71717b5ffe",
     "semantic_hash": ""
   },
   "HELPBOT_TESTS.md": {
-    "mtime": 1779491794.4390523,
-    "ast_hash": "6594dcd657ca04abd32181ddf27fe7b3",
+    "mtime": 1793833087.0991867,
+    "ast_hash": "bf6723233e70912de15a34a8faea2129",
     "semantic_hash": ""
   },
   "MANUAL.md": {
@@ -1010,8 +1005,8 @@
     "semantic_hash": ""
   },
   "docs/saas-v3-analysis.md": {
-    "mtime": 1780342564.2363327,
-    "ast_hash": "724fbaee2b5e6a27d3d0ea3abcd77343",
+    "mtime": 1793818282.0720553,
+    "ast_hash": "a92b4caf8e74c982c8d7a7b861d8c5b8",
     "semantic_hash": ""
   },
   "index.html": {
@@ -1245,8 +1240,8 @@
     "semantic_hash": ""
   },
   "security-audit.md": {
-    "mtime": 1779876913.3046558,
-    "ast_hash": "ee00884189d8a8cda7ba4684cf3d064f",
+    "mtime": 1794337558.3622875,
+    "ast_hash": "c19b25ef7bc9681f28e61ba6b3a0be7f",
     "semantic_hash": ""
   },
   "mobile/assets/adaptive-icon.png": {
@@ -1280,8 +1275,8 @@
     "semantic_hash": ""
   },
   "HANDOFF.md": {
-    "mtime": 1780945464.1194773,
-    "ast_hash": "13fd3146efca332c665c2b4b11cfa46d",
+    "mtime": 1794337558.361148,
+    "ast_hash": "241b36c3cceafb35cc49dc1595d703e7",
     "semantic_hash": ""
   },
   "docs/signalr-resilience.md": {
@@ -1325,18 +1320,28 @@
     "semantic_hash": ""
   },
   "backup/backup.sh": {
-    "mtime": 1790979362.2749293,
-    "ast_hash": "bbdc713ef45eff8401b206acffba8899",
+    "mtime": 1793824386.756533,
+    "ast_hash": "4b2828a46facb97d57cc5ade6a245d51",
     "semantic_hash": ""
   },
   "backup/entrypoint.sh": {
-    "mtime": 1790979358.0392423,
-    "ast_hash": "845da304d39a94a589cd1c74fb75b27b",
+    "mtime": 1793819386.182669,
+    "ast_hash": "f6644256f533a1c7381b5a253898cd40",
     "semantic_hash": ""
   },
   "src/pages/admin/AdminAuditLog.jsx": {
-    "mtime": 1793818150.1815605,
-    "ast_hash": "a9aa7e82ce1d77bfa521e644a7bdd048",
+    "mtime": 1793819016.5594225,
+    "ast_hash": "e4030b2765bdd0e1f132b064fb007e0e",
+    "semantic_hash": ""
+  },
+  "eslint.config.js": {
+    "mtime": 1794337837.2034984,
+    "ast_hash": "6e0152924c2461187165e0abf59a801b",
+    "semantic_hash": ""
+  },
+  "docs/backups.md": {
+    "mtime": 1793831248.903451,
+    "ast_hash": "f9e1a6128b1724b777f3d976e938d130",
     "semantic_hash": ""
   }
 }

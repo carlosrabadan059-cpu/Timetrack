@@ -73,7 +73,7 @@ const AdminDashboardPage = () => {
                 }
 
                 if (!ctrl.signal.aborted) setTimeout(connect, 1000);
-            } catch (err) {
+            } catch {
                 if (!ctrl.signal.aborted) setTimeout(connect, 5000);
             }
         }

@@ -14,7 +14,7 @@ export const CorrectionsProvider = ({ children }) => {
             .catch(() => {});
     };
 
-    useEffect(() => { refresh(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(() => { refresh(); }, []);
 
     return (
         <CorrectionsContext.Provider value={{ stats, refresh }}>

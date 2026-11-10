@@ -6,7 +6,7 @@ import Badge from '../ui/Badge';
 import Input from '../ui/Input';
 
 const TrainingView = ({ routine, dayId, onFinish, onCancel }) => {
-    const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
+    const [currentExerciseIndex] = useState(0);
     const [sessionData, setSessionData] = useState({});
     const [timerSeconds, setTimerSeconds] = useState(0);
     const [isTimerRunning, setIsTimerRunning] = useState(false);

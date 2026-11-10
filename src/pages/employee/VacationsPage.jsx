@@ -62,11 +62,10 @@ const HOLIDAY_TYPE_LABELS = {
 };
 
 // ── MonthGrid component ───────────────────────────────────────────────────────
-function MonthGrid({ year, month, holidays, workDays, requests, onDayClick, minDate }) {
+function MonthGrid({ year, month, holidays, requests, onDayClick, minDate }) {
     const holidayMap = {};
     holidays.forEach(h => { holidayMap[h.date] = { name: h.name, type: h.type ?? 'nacional' }; });
 
-    const workDaySet = new Set(workDays);
 
     // Get days in month
     const firstDay = new Date(year, month, 1);
@@ -173,7 +172,7 @@ function MonthGrid({ year, month, holidays, workDays, requests, onDayClick, minD
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function VacationsPage() {
     const currentYear = new Date().getFullYear();
-    const [year, setYear] = useState(currentYear);
+    const [year] = useState(currentYear);
     const [requests, setRequests] = useState([]);
     const [balance, setBalance] = useState({ total: 22, used: 0, remaining: 22 });
     const [settings, setSettings] = useState({ work_schedule_days: [1,2,3,4,5], holidays: [] });

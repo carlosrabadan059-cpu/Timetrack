@@ -37,7 +37,6 @@ const AdminVacacionesPage = () => {
     const [counts, setCounts] = useState({ pending: 0, total: 0 });
     const [filterStatus, setFilterStatus] = useState('pending');
     const [loading, setLoading] = useState(true);
-    const [actionLoading, setActionLoading] = useState({});
 
     // Resolve modal
     const [resolveModal, setResolveModal] = useState(null); // { id, action: 'approved'|'rejected' }
