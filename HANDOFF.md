@@ -55,7 +55,6 @@ Todas las fases (0–5) están en producción. Del lado del código, la auditor�
 | #30 | Punto 8: RLS real por `company_id` | Código | Aplazado hasta que haya una 2.ª empresa |
 | **#31** | Alta de usuarios en 2N: "Company must be specified" | Código | Aplazado: la licencia de desarrollo de 2N solo admite 5 usuarios |
 | **#28** | Cuentas de prueba (`admin@`/`empleado@timetrack.com`) con contraseña `123456` | Responsable | Se mantienen a propósito hasta el uso real |
-| **#32** | `npm run lint` falla: ESLint 9 sin `eslint.config.js` | Código | Listo para hacer, ~15 min |
 | **#34** | Copias: probar la recuperación en un proyecto nuevo de Supabase; las credenciales de n8n no tienen copia | Decisión + prueba | Pendiente |
 
 ### Antes de usar la app con empleados reales
