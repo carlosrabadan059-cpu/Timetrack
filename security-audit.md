@@ -69,7 +69,7 @@
 
 #### [CN-002] Missing Security Headers on Vercel Frontend Deployment
 
-> **Note (2026-11-04):** the frontend moved to Dokploy and `vercel.json` was removed. The headers are not applied there; tracked in #35.
+> **Note (2026-11-10):** the frontend moved to Dokploy and `vercel.json` was removed. The headers are now served by nginx (`nginx/security-headers.conf`), see #35.
 - **Severity:** High (CVSS ~7.5)
 - **CWE:** CWE-693 (Protection Mechanism Failure)
 - **OWASP:** A02:2025 (Security Misconfiguration)
