@@ -8,6 +8,7 @@ import { requireRole } from '../middleware/role.js';
 import { sseBroadcaster } from '../../services/sse-broadcaster.js';
 import { notify } from '../../lib/notify.js';
 import { audited } from '../../lib/audit.js';
+import { userBranchId, loadCompanyScheduleRow, effectiveSchedule, effectiveHolidays } from '../../lib/schedule.js';
 
 type HookResult<T> =
   | { success: true; data: T; target: string }
@@ -158,8 +159,12 @@ vacaciones.post(
       .eq('company_id', user.company_id)
       .maybeSingle();
 
-    const workDays: number[] = (settings as { work_schedule_days?: number[] } | null)?.work_schedule_days ?? [1, 2, 3, 4, 5];
-    const holidays: HolidayEntry[] = ((settings as { holidays?: HolidayEntry[] } | null)?.holidays ?? []) as HolidayEntry[];
+    // Días laborables y festivos de la sucursal del empleado (o de la empresa)
+    const branchId = await userBranchId(user.id);
+    const scheduleRow = await loadCompanyScheduleRow(user.company_id);
+    const workDays: number[] = scheduleRow ? effectiveSchedule(scheduleRow, branchId).workDays : [1, 2, 3, 4, 5];
+    const holidays: HolidayEntry[] = (scheduleRow ? effectiveHolidays(scheduleRow, branchId) : [])
+      .filter((h): h is HolidayEntry => typeof h.date === 'string');
     const vacationDaysTotal = (settings as { vacation_days_per_year?: number } | null)?.vacation_days_per_year ?? 22;
 
     const workingDays = calcWorkingDays(body.start_date, body.end_date, workDays, holidays);

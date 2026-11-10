@@ -37,7 +37,7 @@ const AdminEmployeesPage = () => {
     const [menuPos, setMenuPos] = useState(null); // estilo fixed del menú de acciones
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingEmployee, setEditingEmployee] = useState(null);
-    const [formData, setFormData] = useState({ full_name: '', email: '', role: 'employee', manager_id: '' });
+    const [formData, setFormData] = useState({ full_name: '', email: '', role: 'employee', manager_id: '', branch_id: '' });
     const [formError, setFormError] = useState('');
     const [formLoading, setFormLoading] = useState(false);
     const [managers, setManagers] = useState([]);
@@ -58,6 +58,15 @@ const AdminEmployeesPage = () => {
     }, [profile?.role]);
 
     const managersMap = Object.fromEntries(managers.map(m => [m.id, m.full_name]));
+
+    // Sucursales: cada una puede tener su propio horario (Ajustes → Sucursales)
+    const [branches, setBranches] = useState([]);
+    useEffect(() => {
+        if (!isAdmin) return;
+        api.get('/api/admin/settings')
+            .then(res => setBranches(res.data?.branches ?? []))
+            .catch(() => {});
+    }, [isAdmin]);
 
     useEffect(() => {
         if (!openActionId) return;
@@ -95,14 +104,14 @@ const AdminEmployeesPage = () => {
 
     const openCreate = () => {
         setEditingEmployee(null);
-        setFormData({ full_name: '', email: '', role: 'employee', manager_id: '' });
+        setFormData({ full_name: '', email: '', role: 'employee', manager_id: '', branch_id: '' });
         setFormError('');
         setIsModalOpen(true);
     };
 
     const openEdit = (emp) => {
         setEditingEmployee(emp);
-        setFormData({ full_name: emp.full_name, email: emp.email, role: emp.role, manager_id: emp.manager_id ?? '' });
+        setFormData({ full_name: emp.full_name, email: emp.email, role: emp.role, manager_id: emp.manager_id ?? '', branch_id: emp.branch_id ?? '' });
         setFormError('');
         setIsModalOpen(true);
         setOpenActionId(null);
@@ -130,6 +139,7 @@ const AdminEmployeesPage = () => {
                 };
                 if (isAdmin) {
                     payload.manager_id = formData.manager_id || null;
+                    payload.branch_id = formData.branch_id || null;
                 }
                 await api.patch(`/api/users/${editingEmployee.id}`, payload);
             } else {
@@ -141,6 +151,7 @@ const AdminEmployeesPage = () => {
                     role: formData.role,
                     company_id: profile.company_id,
                 };
+                if (isAdmin && formData.branch_id) payload.branch_id = formData.branch_id;
                 await api.post('/api/users', payload);
             }
             closeModal();
@@ -464,6 +475,23 @@ const AdminEmployeesPage = () => {
                                 <option value="">Sin supervisor (gestiona el admin)</option>
                                 {managers.map(m => (
                                     <option key={m.id} value={m.id}>{m.full_name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
+                    {isAdmin && branches.length > 0 && (
+                        <div className="form-group full">
+                            <label>Sucursal</label>
+                            <select
+                                className="input-field"
+                                value={formData.branch_id}
+                                onChange={e => setFormData(prev => ({ ...prev, branch_id: e.target.value }))}
+                            >
+                                <option value="">Sin sucursal (horario de la empresa)</option>
+                                {branches.map(b => (
+                                    <option key={b.id} value={String(b.id)}>
+                                        {b.name}{b.schedule ? ` · ${b.schedule.start}–${b.schedule.end}` : ''}
+                                    </option>
                                 ))}
                             </select>
                         </div>

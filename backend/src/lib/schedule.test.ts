@@ -1,6 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { evaluateFichaje, expectedExit, type ScheduleSettings } from './schedule.js';
+import {
+  evaluateFichaje, expectedExit, effectiveSchedule, effectiveHolidays, nonWorkingKind,
+  type ScheduleSettings, type CompanyScheduleRow,
+} from './schedule.js';
 import { localParts } from './madrid-time.js';
 
 const base: ScheduleSettings = {
@@ -81,4 +84,66 @@ test('horario de verano (CEST): las horas se comparan en hora de Madrid', () => 
   assert.equal(evaluateFichaje({ ts: jul(9, 30), direction: 'in', detailType: 'normal', firstInToday: null, settings: base }), 'late_entry');
   assert.equal(evaluateFichaje({ ts: jul(8, 30), direction: 'in', detailType: 'normal', firstInToday: null, settings: base }), null);
   assert.equal(hhmm(expectedExit(jul(8, 30), base)), '17:30');
+});
+
+// ── Horario por sucursal ──────────────────────────────────────────────────────
+const row: CompanyScheduleRow = {
+  work_schedule_start: '08:00',
+  work_schedule_end: '17:00',
+  work_schedule_days: [1, 2, 3, 4, 5],
+  flexible_schedule_enabled: true,
+  flexible_schedule_minutes: 60,
+  courtesy_minutes: 15,
+  holidays: [
+    { date: '2026-12-08', scope: 'global' },
+    { date: '2026-11-10', scope: '111' }, // festivo local de la tienda
+    { date: '2026-11-11', scope: '222' },
+  ],
+  branches: [
+    { id: 111, schedule: { start: '10:00', end: '20:00', days: [1, 2, 3, 4, 5, 6], flexEnabled: false } },
+    { id: 222 }, // sin horario propio
+  ],
+};
+
+test('sin sucursal: horario y festivos globales de la empresa', () => {
+  const s = effectiveSchedule(row, null);
+  assert.equal(s.start, '08:00');
+  assert.deepEqual(s.workDays, [1, 2, 3, 4, 5]);
+  assert.deepEqual(s.holidays, ['2026-12-08']);
+});
+
+test('sucursal con horario propio: sobrescribe y hereda lo no indicado', () => {
+  const s = effectiveSchedule(row, '111');
+  assert.equal(s.start, '10:00');
+  assert.equal(s.end, '20:00');
+  assert.deepEqual(s.workDays, [1, 2, 3, 4, 5, 6]);
+  assert.equal(s.flexEnabled, false);
+  assert.equal(s.exitToleranceMinutes, 15); // heredado
+  assert.deepEqual(s.holidays.sort(), ['2026-11-10', '2026-12-08']);
+});
+
+test('sucursal sin horario propio: horario de empresa + sus festivos locales', () => {
+  const s = effectiveSchedule(row, '222');
+  assert.equal(s.start, '08:00');
+  assert.deepEqual(s.holidays.sort(), ['2026-11-11', '2026-12-08']);
+});
+
+test('sucursal borrada: se trata como sin sucursal', () => {
+  const s = effectiveSchedule(row, '999');
+  assert.equal(s.start, '08:00');
+  assert.deepEqual(effectiveHolidays(row, '999').map((h) => h.date), ['2026-12-08']);
+});
+
+test('reglas aplicadas al horario de la sucursal', () => {
+  const s = effectiveSchedule(row, '111');
+  // sábado 14/11/2026 11:00 Madrid: laborable en la tienda, no en la empresa
+  const sat = new Date(Date.UTC(2026, 10, 14, 10, 0));
+  assert.equal(nonWorkingKind(sat, s), null);
+  assert.equal(nonWorkingKind(sat, effectiveSchedule(row, null)), 'weekend');
+  // martes 10/11: festivo local de la tienda
+  assert.equal(nonWorkingKind(tue('11:00'), s), 'holiday');
+  assert.equal(nonWorkingKind(tue('11:00'), effectiveSchedule(row, '222')), null);
+  // entrada 10:05 sin flexibilidad → tardía; salida prevista 20:05
+  assert.equal(evaluateFichaje({ ts: new Date(Date.UTC(2026, 10, 12, 9, 5)), direction: 'in', detailType: 'normal', firstInToday: null, settings: s }), 'late_entry');
+  assert.equal(hhmm(expectedExit(new Date(Date.UTC(2026, 10, 12, 9, 5)), s)), '20:05');
 });

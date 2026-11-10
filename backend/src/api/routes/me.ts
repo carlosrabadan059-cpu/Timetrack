@@ -4,8 +4,8 @@ import { z } from 'zod';
 import { zValidator } from '@hono/zod-validator';
 import { getSupabaseAdmin } from '../../lib/supabase.js';
 import type { AppVariables } from '../../types/api.types.js';
-import { inferDetailType, checkNonWorkingDay, startOfDayISO, toDateString, getWeekStart } from '../../lib/date-utils.js';
-import { scheduleFlagFor, loadScheduleSettings, firstInOfDay, expectedExit } from '../../lib/schedule.js';
+import { inferDetailType, startOfDayISO, toDateString, getWeekStart } from '../../lib/date-utils.js';
+import { scheduleFlagFor, loadUserSchedule, userBranchId, loadCompanyScheduleRow, effectiveSchedule, effectiveHolidays, nonWorkingKind, firstInOfDay, expectedExit } from '../../lib/schedule.js';
 import { sseBroadcaster } from '../../services/sse-broadcaster.js';
 import { fichajeRateLimit, recordFichaje } from '../middleware/rate-limit.js';
 import {
@@ -453,31 +453,30 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
   if (user.company_id) {
     const { data: settings } = await supabaseAdmin
       .from('company_settings')
-      .select('headquarter_lat, headquarter_lon, geo_fence_radius, work_schedule_days, holidays')
+      .select('headquarter_lat, headquarter_lon, geo_fence_radius')
       .eq('company_id', user.company_id)
       .maybeSingle();
 
     if (settings) {
-      // ── Non-working-day check ─────────────────────────────────────────────
-      const workDays = (settings.work_schedule_days as number[] | null) ?? [1, 2, 3, 4, 5];
-      const holidays = (settings.holidays as { date: string }[] | null) ?? [];
-      const nonWorkingKind = checkNonWorkingDay(now, workDays, holidays);
-      if (nonWorkingKind && !body.override_token) {
+      // ── Non-working-day check (employee's branch schedule, Madrid time) ──
+      const schedule = await loadUserSchedule(user.id, user.company_id);
+      const nonWorking = schedule ? nonWorkingKind(now, schedule) : null;
+      if (nonWorking && !body.override_token) {
         return c.json(
           {
             error: {
               code: 'non_working_day',
               message:
-                nonWorkingKind === 'holiday'
+                nonWorking === 'holiday'
                   ? 'No puedes fichar en un día festivo sin autorización de tu supervisor'
-                  : 'No puedes fichar en fin de semana sin autorización de tu supervisor',
-              detail: nonWorkingKind,
+                  : 'No puedes fichar en un día no laborable sin autorización de tu supervisor',
+              detail: nonWorking,
             },
           },
           422
         );
       }
-      if (nonWorkingKind && body.override_token) {
+      if (nonWorking && body.override_token) {
         const todayDate = now.toISOString().split('T')[0] ?? '';
         const { data: ovr } = await supabaseAdmin
           .from('fichaje_overrides')
@@ -651,7 +650,7 @@ me.get('/dashboard', async (c) => {
   let expected_exit: string | null = null;
   let schedule: { start: string; end: string; flex_minutes: number } | null = null;
   if (user.company_id) {
-    const s = await loadScheduleSettings(user.company_id);
+    const s = await loadUserSchedule(user.id, user.company_id);
     if (s) {
       schedule = { start: s.start, end: s.end, flex_minutes: s.flexEnabled ? s.flexMinutes : 0 };
       if (jornada_status !== 'out') {
@@ -758,10 +757,14 @@ me.get('/company-settings', async (c) => {
     return c.json({ error: { code: 'internal_error', message: error.message } }, 500);
   }
 
+  // Días laborables y festivos de la sucursal del empleado (o de la empresa si no tiene)
+  const branchId = await userBranchId(user.id);
+  const row = await loadCompanyScheduleRow(user.company_id);
+  const eff = row ? effectiveSchedule(row, branchId) : null;
   return c.json({
     data: {
-      holidays: (data as { holidays?: unknown[] } | null)?.holidays ?? [],
-      work_schedule_days: (data as { work_schedule_days?: number[] } | null)?.work_schedule_days ?? [1, 2, 3, 4, 5],
+      holidays: row ? effectiveHolidays(row, branchId) : [],
+      work_schedule_days: eff?.workDays ?? [1, 2, 3, 4, 5],
       vacation_days_per_year: (data as { vacation_days_per_year?: number } | null)?.vacation_days_per_year ?? 22,
     },
   });

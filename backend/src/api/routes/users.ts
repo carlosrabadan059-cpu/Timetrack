@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
+import { loadCompanyScheduleRow } from '../../lib/schedule.js';
 import { getSupabaseAdmin } from '../../lib/supabase.js';
 import { requireRole } from '../middleware/role.js';
 import { triggerWorkflow } from '../../lib/n8n.js';
@@ -31,7 +32,15 @@ const createUserSchema = z.object({
   email: z.string().email(),
   role: z.enum(['admin', 'manager', 'employee']).optional().default('employee'),
   group_id: z.string().optional(),
+  branch_id: z.string().max(64).nullable().optional(),
 });
+
+/** True if `branchId` is one of the company's branches (null = no branch, always valid). */
+async function isValidBranch(companyId: string, branchId: string | null | undefined): Promise<boolean> {
+  if (branchId === null || branchId === undefined) return true;
+  const row = await loadCompanyScheduleRow(companyId);
+  return (row?.branches ?? []).some((b) => String(b.id) === branchId);
+}
 
 users.post('/', requireRole(['admin', 'manager']), audited('USER_CREATE', 'profile', { bodyFields: ['email', 'full_name', 'role'] }), async (c) => {
   const authUser = c.get('user');
@@ -55,7 +64,10 @@ users.post('/', requireRole(['admin', 'manager']), audited('USER_CREATE', 'profi
       400
     );
   }
-  const { full_name, email, role, group_id } = parsed.data;
+  const { full_name, email, role, group_id, branch_id } = parsed.data;
+  if (!(await isValidBranch(company_id, branch_id))) {
+    return c.json({ error: { code: 'invalid_branch', message: 'La sucursal no existe' } }, 422);
+  }
 
   const sb = getSupabaseAdmin();
 
@@ -79,8 +91,8 @@ users.post('/', requireRole(['admin', 'manager']), audited('USER_CREATE', 'profi
   const supabase_user_id = authData.user.id;
 
   // Update role if not the default — the DB trigger creates the profile with role='employee'
-  if (role !== 'employee') {
-    await sb.from('profiles').update({ role }).eq('id', supabase_user_id);
+  if (role !== 'employee' || branch_id) {
+    await sb.from('profiles').update({ role, branch_id: branch_id ?? null }).eq('id', supabase_user_id);
   }
 
   const { data: profile } = await sb
@@ -276,12 +288,13 @@ const patchUserSchema = z.object({
   access_valid_to: z.string().datetime().nullable().optional(),
   notifications_email: z.boolean().optional(),
   manager_id: z.string().uuid().nullable().optional(),
+  branch_id: z.string().max(64).nullable().optional(),
 });
 
 users.patch('/:id', requireRole(['admin', 'manager']), audited(
   (b) => ('access_valid_to' in b && b['access_valid_to'] === null ? 'USER_REACTIVATE' : 'USER_UPDATE'),
   'profile',
-  { bodyKeys: true, bodyFields: ['role', 'access_valid_from', 'access_valid_to', 'manager_id'] }
+  { bodyKeys: true, bodyFields: ['role', 'access_valid_from', 'access_valid_to', 'manager_id', 'branch_id'] }
 ), async (c) => {
   const authUser = c.get('user');
   const { id } = c.req.param();
@@ -334,6 +347,12 @@ users.patch('/:id', requireRole(['admin', 'manager']), audited(
       changes['access_valid_to'] = d.access_valid_to;
     }
     if (d.manager_id !== undefined) changes['manager_id'] = d.manager_id;
+    if (d.branch_id !== undefined) {
+      if (!(await isValidBranch(existing.company_id as string, d.branch_id))) {
+        return c.json({ error: { code: 'invalid_branch', message: 'La sucursal no existe' } }, 422);
+      }
+      changes['branch_id'] = d.branch_id;
+    }
   }
 
   if (Object.keys(changes).length === 0) {

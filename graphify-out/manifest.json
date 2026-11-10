@@ -95,8 +95,8 @@
     "semantic_hash": ""
   },
   "backend/src/api/routes/me.ts": {
-    "mtime": 1794339172.4852228,
-    "ast_hash": "0ce7cc049810ad9b13e5abcdaccdaff4",
+    "mtime": 1794339911.7782912,
+    "ast_hash": "86154fea4857e374d471ea5a83837b98",
     "semantic_hash": ""
   },
   "backend/src/api/routes/reportes.ts": {
@@ -110,13 +110,13 @@
     "semantic_hash": ""
   },
   "backend/src/api/routes/users.ts": {
-    "mtime": 1790924529.712116,
-    "ast_hash": "84510defd790b9c4f1c347215419a37a",
+    "mtime": 1794339923.5640895,
+    "ast_hash": "5a3746709e1cdce0f5ad1cb494ef7e76",
     "semantic_hash": ""
   },
   "backend/src/api/routes/vacaciones.ts": {
-    "mtime": 1790927172.2308571,
-    "ast_hash": "f3cd40fcb38b84e4f6c1bce70add68cf",
+    "mtime": 1794339911.778486,
+    "ast_hash": "647b7f5e09586a12f808ed5c11514802",
     "semantic_hash": ""
   },
   "backend/src/api/routes/webhooks.ts": {
@@ -140,8 +140,8 @@
     "semantic_hash": ""
   },
   "backend/src/lib/date-utils.ts": {
-    "mtime": 1794339186.7184596,
-    "ast_hash": "212b3f687f6964b2846e02e6f88f499c",
+    "mtime": 1794339911.7786202,
+    "ast_hash": "e9fdf83876f992b2abfc7d1ca96d1421",
     "semantic_hash": ""
   },
   "backend/src/lib/device-client.ts": {
@@ -695,8 +695,8 @@
     "semantic_hash": ""
   },
   "src/pages/admin/AdminEmployeesPage.jsx": {
-    "mtime": 1790891256.0276108,
-    "ast_hash": "c429e2976c1c343e6812793dd1d66186",
+    "mtime": 1794340003.4937158,
+    "ast_hash": "6d51a9235a57c0735c4a0083b6f05d18",
     "semantic_hash": ""
   },
   "src/pages/admin/AdminReportsPage.jsx": {
@@ -705,8 +705,8 @@
     "semantic_hash": ""
   },
   "src/pages/admin/AdminSettingsPage.jsx": {
-    "mtime": 1794339246.8552566,
-    "ast_hash": "6c72e821eea68ba121cd254fb70515ea",
+    "mtime": 1794339983.2246737,
+    "ast_hash": "f1f9bb11249ec63be979801797c8b6e1",
     "semantic_hash": ""
   },
   "src/pages/admin/AdminVacacionesPage.jsx": {
@@ -965,8 +965,8 @@
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1794339276.7106805,
-    "ast_hash": "084c48a66e1ce2c418f9246d9b9b7d24",
+    "mtime": 1794340046.625694,
+    "ast_hash": "7217667ab33cf016387bd0031954f8cf",
     "semantic_hash": ""
   },
   "HELPBOT_TESTS.md": {
@@ -1350,13 +1350,13 @@
     "semantic_hash": ""
   },
   "backend/src/lib/schedule.test.ts": {
-    "mtime": 1794339137.2041156,
-    "ast_hash": "2c2229445cfc7909860265c27f9e9a07",
+    "mtime": 1794339946.733752,
+    "ast_hash": "f0119ff8c8d3ea494f502aff7c17e675",
     "semantic_hash": ""
   },
   "backend/src/lib/schedule.ts": {
-    "mtime": 1794339136.429667,
-    "ast_hash": "9a3045dc57acaceb26028a349ec69d75",
+    "mtime": 1794339911.7780304,
+    "ast_hash": "d860205b78796c17197de14c723b7b3b",
     "semantic_hash": ""
   }
 }

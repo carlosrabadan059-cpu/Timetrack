@@ -23,22 +23,6 @@ export function inferDetailType(timestamp: string): 'normal' | 'comida' {
 }
 
 /**
- * Returns 'weekend' if the date falls outside workDays, 'holiday' if it matches
- * a configured festivo, or null if it is a normal working day.
- */
-export function checkNonWorkingDay(
-  date: Date,
-  workDays: number[],
-  holidays: { date: string }[],
-): 'weekend' | 'holiday' | null {
-  const dow = date.getDay();
-  if (!workDays.includes(dow)) return 'weekend';
-  const ds = date.toISOString().split('T')[0] ?? '';
-  if (holidays.some((h) => h.date === ds)) return 'holiday';
-  return null;
-}
-
-/**
  * Human-readable source label for exports and display.
  */
 export function humanizeSource(source: string): string {

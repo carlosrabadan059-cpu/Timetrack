@@ -250,6 +250,7 @@ Aplica igual para los tres modos (2N, web, móvil)
 Horario flexible (backend/src/lib/schedule.ts, tests en schedule.test.ts — `npm test` en /backend):
 
 Configuración en Ajustes → Control Horario → "Horario de trabajo": entrada oficial S, salida oficial E, margen de entrada F (flexible_schedule_minutes, máx. 180, solo si flexible_schedule_enabled) y tolerancia de salida T (courtesy_minutes).
+Por sucursal: profiles.branch_id (id de company_settings.branches[]) asigna el empleado a una sucursal (Empleados → Editar). Una sucursal puede tener branches[].schedule = { start, end, days, flexEnabled, flexMinutes, courtesyMinutes } (Ajustes → Sucursales → Configurar horario); si no lo tiene, o el empleado no tiene sucursal, se usa el de la empresa. Festivos que aplican = scope 'global' + scope de su sucursal. effectiveSchedule() en schedule.ts resuelve todo y lo usan fichar (día no laborable y marcas), dashboard, /api/me/company-settings (calendario) y el cálculo de días de vacaciones.
 Primera entrada del día (hora de Madrid) después de S+F → schedule_flag = 'late_entry'
 Salida prevista = max(primera entrada, S) + (E − S) — la pausa de comida va dentro de E − S
 Salida normal (no pausa) antes de salida prevista − T → schedule_flag = 'early_exit'

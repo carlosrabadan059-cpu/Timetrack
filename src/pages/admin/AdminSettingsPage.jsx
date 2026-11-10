@@ -85,6 +85,12 @@ const fmtMin = (min) => {
     return `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`;
 };
 
+const WEEK_DAYS = [
+    { v: 1, l: 'L' }, { v: 2, l: 'M' }, { v: 3, l: 'X' }, { v: 4, l: 'J' },
+    { v: 5, l: 'V' }, { v: 6, l: 'S' }, { v: 0, l: 'D' },
+];
+const DAY_NAMES = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+
 function ScheduleSettings({ schedule, rules, onScheduleChange, onRuleChange }) {
     const start = toMin(schedule?.start);
     const end = toMin(schedule?.end);
@@ -107,9 +113,38 @@ function ScheduleSettings({ schedule, rules, onScheduleChange, onRuleChange }) {
                     <Input type="time" value={schedule?.end ?? ''} onChange={(e) => onScheduleChange({ end: e.target.value })} />
                 </div>
             </div>
+            <div className="mt-3">
+                <label className="settings-label">Días laborables</label>
+                <div className="flex gap-1 flex-wrap">
+                    {WEEK_DAYS.map(({ v, l }) => {
+                        const days = schedule?.days ?? [1, 2, 3, 4, 5];
+                        const on = days.includes(v);
+                        return (
+                            <button
+                                key={v}
+                                type="button"
+                                title={DAY_NAMES[v]}
+                                aria-pressed={on}
+                                onClick={() => {
+                                    const next = on ? days.filter((d) => d !== v) : [...days, v].sort();
+                                    if (next.length) onScheduleChange({ days: next });
+                                }}
+                                style={{
+                                    width: 34, height: 34, borderRadius: 'var(--radius-md)', fontWeight: 600, fontSize: 'var(--font-size-sm)',
+                                    border: '1px solid var(--color-border)',
+                                    background: on ? 'var(--color-primary)' : 'transparent',
+                                    color: on ? 'var(--color-text-inverse, #0a0a0a)' : 'var(--color-text-secondary)',
+                                }}
+                            >
+                                {l}
+                            </button>
+                        );
+                    })}
+                </div>
+            </div>
             <p className="settings-help mt-2">
                 {duration !== null && duration > 0
-                    ? <>Jornada: <strong>{Math.floor(duration / 60)} h {String(duration % 60).padStart(2, '0')} min</strong> (incluye la pausa de comida). Se aplica a todos los empleados.</>
+                    ? <>Jornada: <strong>{Math.floor(duration / 60)} h {String(duration % 60).padStart(2, '0')} min</strong> (incluye la pausa de comida).</>
                     : <span style={{ color: 'var(--color-danger, #ef4444)' }}>La salida oficial debe ser posterior a la entrada.</span>}
             </p>
 
@@ -160,6 +195,67 @@ function ScheduleSettings({ schedule, rules, onScheduleChange, onRuleChange }) {
                     Si entra antes de las {fmtMin(start)}, cuenta desde las {fmtMin(start)}.
                     Los fichajes nunca se bloquean: solo se marcan.
                 </p>
+            )}
+        </div>
+    );
+}
+
+// Resumen corto de un horario: "08:00–17:00 · lun–vie"
+const scheduleSummary = (start, end, days) => {
+    const d = [...(days ?? [1, 2, 3, 4, 5])].sort((a, b) => ((a || 7) - (b || 7)));
+    const contiguous = d.every((v, i) => i === 0 || (v || 7) === (d[i - 1] || 7) + 1);
+    const label = d.length > 2 && contiguous ? `${DAY_NAMES[d[0]]}–${DAY_NAMES[d[d.length - 1]]}` : d.map((x) => DAY_NAMES[x]).join(', ');
+    return `${start}–${end} · ${label}`;
+};
+
+// Horario propio de una sucursal: si no tiene, usa el de la empresa
+function BranchSchedule({ branch, company, companyRules, onChange }) {
+    const [open, setOpen] = useState(false);
+    const own = branch.schedule ?? null;
+    const enable = () => onChange({
+        start: company.start, end: company.end, days: company.days ?? [1, 2, 3, 4, 5],
+        flexEnabled: companyRules.flexibleScheduleEnabled ?? false,
+        flexMinutes: companyRules.flexibleScheduleMinutes ?? 15,
+        courtesyMinutes: companyRules.courtesyMinutes ?? 0,
+    });
+    const ruleKey = { flexibleScheduleEnabled: 'flexEnabled', flexibleScheduleMinutes: 'flexMinutes', courtesyMinutes: 'courtesyMinutes' };
+
+    return (
+        <div className="mt-2" style={{ width: '100%' }}>
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+                <span className="text-xs text-muted">
+                    <Clock size={12} className="inline mr-1" />
+                    {own
+                        ? <>Horario propio: {scheduleSummary(own.start, own.end, own.days)}</>
+                        : <>Horario de la empresa ({scheduleSummary(company.start, company.end, company.days)})</>}
+                </span>
+                <Button size="sm" variant="ghost" onClick={() => setOpen((v) => !v)}>
+                    {open ? 'Cerrar' : 'Configurar horario'}
+                </Button>
+            </div>
+            {open && (
+                <div className="mt-3" style={{ borderTop: '1px solid var(--color-border)', paddingTop: 'var(--space-3)' }}>
+                    <div className="settings-item" style={{ border: 'none', padding: 0 }}>
+                        <div className="settings-info">
+                            <h4>Horario propio de la sucursal</h4>
+                            <p>Si está desactivado, sus empleados usan el horario de la empresa</p>
+                        </div>
+                        <label className="settings-toggle">
+                            <input type="checkbox" checked={!!own} onChange={(e) => (e.target.checked ? enable() : onChange(null))} />
+                            <span className="settings-toggle-slider" />
+                        </label>
+                    </div>
+                    {own && (
+                        <div className="mt-3">
+                            <ScheduleSettings
+                                schedule={{ start: own.start, end: own.end, days: own.days }}
+                                rules={{ flexibleScheduleEnabled: own.flexEnabled, flexibleScheduleMinutes: own.flexMinutes, courtesyMinutes: own.courtesyMinutes }}
+                                onScheduleChange={(patch) => onChange({ ...own, ...patch })}
+                                onRuleChange={(key, value) => onChange({ ...own, [ruleKey[key]]: value })}
+                            />
+                        </div>
+                    )}
+                </div>
             )}
         </div>
     );
@@ -574,7 +670,7 @@ const AdminSettingsPage = () => {
                     <div className="settings-section">
                         <div className="section-header">
                             <h2 className="section-title">Gestión de Sucursales</h2>
-                            <p className="section-description">Define las sedes de la empresa para asignar empleados y festivos locales.</p>
+                            <p className="section-description">Define las sedes de la empresa. Cada sucursal puede tener su propio horario, días laborables y festivos locales.</p>
                         </div>
                         <Card className="max-w-2xl">
                             <div className="add-holiday-form">
@@ -597,7 +693,7 @@ const AdminSettingsPage = () => {
 
                             <div className="holiday-list mt-4">
                                 {settings.branches.map(branch => (
-                                    <div key={branch.id} className="holiday-item">
+                                    <div key={branch.id} className="holiday-item" style={{ flexWrap: 'wrap' }}>
                                         <div className="flex flex-col">
                                             <span className="font-medium">{branch.name}</span>
                                             <span className="text-xs text-muted">{branch.address}</span>
@@ -609,8 +705,20 @@ const AdminSettingsPage = () => {
                                         >
                                             <Trash size={16} />
                                         </button>
+                                        <BranchSchedule
+                                            branch={branch}
+                                            company={settings.work_schedule}
+                                            companyRules={settings.rules}
+                                            onChange={(schedule) => setSettings(prev => ({
+                                                ...prev,
+                                                branches: prev.branches.map(b => (b.id === branch.id ? { ...b, schedule } : b)),
+                                            }))}
+                                        />
                                     </div>
                                 ))}
+                                {settings.branches.length > 0 && (
+                                    <p className="settings-help mt-2">Asigna cada empleado a su sucursal desde <em>Empleados → Editar</em>. Pulsa <em>Guardar Cambios</em> para aplicar los horarios.</p>
+                                )}
                             </div>
                         </Card>
                     </div>
@@ -695,7 +803,10 @@ const AdminSettingsPage = () => {
                                 </div>
                             </Card>
 
-                            <Card title="Horario de trabajo">
+                            <Card title="Horario de trabajo de la empresa">
+                                <p className="settings-help" style={{ marginTop: 0 }}>
+                                    Se aplica a los empleados sin sucursal y a las sucursales sin horario propio (<em>Sucursales → Configurar horario</em>).
+                                </p>
                                 <ScheduleSettings
                                     schedule={settings.work_schedule}
                                     rules={settings.rules}

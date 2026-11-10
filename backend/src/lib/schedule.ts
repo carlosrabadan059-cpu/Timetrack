@@ -77,42 +77,102 @@ export function evaluateFichaje({ ts, direction, detailType, firstInToday, setti
   return ts.getTime() < limit ? 'early_exit' : null;
 }
 
+// ── Company and branch schedule ───────────────────────────────────────────────
+
+export interface HolidayEntry {
+  id?: string | number;
+  date?: string;
+  name?: string;
+  type?: string;
+  scope?: string; // 'global' or a branch id
+}
+
+/** Branch override stored in company_settings.branches[].schedule. Absent = use the company's. */
+export interface BranchSchedule {
+  start?: string;
+  end?: string;
+  days?: number[];
+  flexEnabled?: boolean;
+  flexMinutes?: number;
+  courtesyMinutes?: number;
+}
+
+export interface CompanyScheduleRow {
+  work_schedule_start?: string | null;
+  work_schedule_end?: string | null;
+  work_schedule_days?: number[] | null;
+  holidays?: HolidayEntry[] | null;
+  flexible_schedule_enabled?: boolean | null;
+  flexible_schedule_minutes?: number | null;
+  courtesy_minutes?: number | null;
+  branches?: { id?: string | number; schedule?: BranchSchedule | null }[] | null;
+}
+
+/** Holidays that apply to an employee: the global ones plus those of their branch. */
+export function holidaysFor(holidays: HolidayEntry[] | null | undefined, branchId: string | null): HolidayEntry[] {
+  return (holidays ?? []).filter(
+    (h) => !h.scope || h.scope === 'global' || (branchId !== null && String(h.scope) === branchId),
+  );
+}
+
+/** Holiday entries for an employee of `branchId` (ignores a branch id that no longer exists). */
+export function effectiveHolidays(row: CompanyScheduleRow, branchId: string | null): HolidayEntry[] {
+  const exists = branchId !== null && (row.branches ?? []).some((b) => String(b.id) === branchId);
+  return holidaysFor(row.holidays, exists ? branchId : null);
+}
+
+/** Effective schedule for an employee: the branch's own schedule if it has one, else the company's. */
+export function effectiveSchedule(row: CompanyScheduleRow, branchId: string | null): ScheduleSettings {
+  const company: ScheduleSettings = {
+    start: row.work_schedule_start ?? '09:00',
+    end: row.work_schedule_end ?? '18:00',
+    flexEnabled: row.flexible_schedule_enabled ?? false,
+    flexMinutes: row.flexible_schedule_minutes ?? 15,
+    exitToleranceMinutes: row.courtesy_minutes ?? 0,
+    workDays: row.work_schedule_days ?? [1, 2, 3, 4, 5],
+    holidays: [],
+  };
+  const branch = branchId !== null ? (row.branches ?? []).find((b) => String(b.id) === branchId) : undefined;
+  const o = branch?.schedule;
+  const merged: ScheduleSettings = o
+    ? {
+        start: o.start || company.start,
+        end: o.end || company.end,
+        flexEnabled: o.flexEnabled ?? company.flexEnabled,
+        flexMinutes: o.flexMinutes ?? company.flexMinutes,
+        exitToleranceMinutes: o.courtesyMinutes ?? company.exitToleranceMinutes,
+        workDays: o.days?.length ? o.days : company.workDays,
+        holidays: [],
+      }
+    : company;
+  merged.holidays = effectiveHolidays(row, branchId)
+    .map((h) => h.date ?? '')
+    .filter(Boolean);
+  return merged;
+}
+
+/** 'weekend' (not a working day of the schedule), 'holiday', or null — in Madrid time. */
+export function nonWorkingKind(ts: Date, s: ScheduleSettings): 'weekend' | 'holiday' | null {
+  const p = localParts(ts);
+  if (!s.workDays.includes(p.dow)) return 'weekend';
+  if (s.holidays.includes(p.date)) return 'holiday';
+  return null;
+}
+
 // ── Loading (cached per company) ──────────────────────────────────────────────
 
 const CACHE_TTL_MS = 60_000;
-const cache = new Map<string, { at: number; value: ScheduleSettings | null }>();
+const cache = new Map<string, { at: number; value: CompanyScheduleRow | null }>();
 
-export async function loadScheduleSettings(companyId: string): Promise<ScheduleSettings | null> {
+export async function loadCompanyScheduleRow(companyId: string): Promise<CompanyScheduleRow | null> {
   const hit = cache.get(companyId);
   if (hit && Date.now() - hit.at < CACHE_TTL_MS) return hit.value;
-
   const { data } = await getSupabaseAdmin()
     .from('company_settings')
-    .select('work_schedule_start, work_schedule_end, work_schedule_days, holidays, flexible_schedule_enabled, flexible_schedule_minutes, courtesy_minutes')
+    .select('work_schedule_start, work_schedule_end, work_schedule_days, holidays, flexible_schedule_enabled, flexible_schedule_minutes, courtesy_minutes, branches')
     .eq('company_id', companyId)
     .maybeSingle();
-
-  const row = data as {
-    work_schedule_start?: string | null;
-    work_schedule_end?: string | null;
-    work_schedule_days?: number[] | null;
-    holidays?: { date?: string }[] | null;
-    flexible_schedule_enabled?: boolean | null;
-    flexible_schedule_minutes?: number | null;
-    courtesy_minutes?: number | null;
-  } | null;
-
-  const value: ScheduleSettings | null = row
-    ? {
-        start: row.work_schedule_start ?? '09:00',
-        end: row.work_schedule_end ?? '18:00',
-        flexEnabled: row.flexible_schedule_enabled ?? false,
-        flexMinutes: row.flexible_schedule_minutes ?? 15,
-        exitToleranceMinutes: row.courtesy_minutes ?? 0,
-        workDays: row.work_schedule_days ?? [1, 2, 3, 4, 5],
-        holidays: (row.holidays ?? []).map((h) => h.date ?? '').filter(Boolean),
-      }
-    : null;
+  const value = (data as CompanyScheduleRow | null) ?? null;
   cache.set(companyId, { at: Date.now(), value });
   return value;
 }
@@ -120,6 +180,22 @@ export async function loadScheduleSettings(companyId: string): Promise<ScheduleS
 /** Drop the cached settings after the admin saves them. */
 export function invalidateScheduleSettings(companyId: string): void {
   cache.delete(companyId);
+}
+
+export async function userBranchId(userId: string): Promise<string | null> {
+  const { data } = await getSupabaseAdmin().from('profiles').select('branch_id').eq('id', userId).maybeSingle();
+  const v = (data as { branch_id?: string | null } | null)?.branch_id;
+  return v ? String(v) : null;
+}
+
+/** Effective schedule of an employee (their branch's, or the company's). */
+export async function loadScheduleSettings(companyId: string, branchId: string | null = null): Promise<ScheduleSettings | null> {
+  const row = await loadCompanyScheduleRow(companyId);
+  return row ? effectiveSchedule(row, branchId) : null;
+}
+
+export async function loadUserSchedule(userId: string, companyId: string): Promise<ScheduleSettings | null> {
+  return loadScheduleSettings(companyId, await userBranchId(userId));
 }
 
 /** First granted 'in' of the user's Madrid day containing `ts`, strictly before `ts`. */
@@ -148,7 +224,7 @@ export async function scheduleFlagFor(
 ): Promise<ScheduleFlag | null> {
   if (!companyId) return null;
   try {
-    const settings = await loadScheduleSettings(companyId);
+    const settings = await loadUserSchedule(userId, companyId);
     if (!settings) return null;
     const firstInToday = await firstInOfDay(userId, ts);
     return evaluateFichaje({ ts, direction, detailType, firstInToday, settings });
