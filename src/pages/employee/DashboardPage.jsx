@@ -4,7 +4,7 @@ import { api, BASE_URL } from '../../lib/api';
 import { supabase } from '../../lib/supabase';
 import {
     Clock, Activity, Timer, Play, Square,
-    MapPin, Search, Calendar, Utensils, Stethoscope, MoreHorizontal, Coffee, Info
+    MapPin, Search, Calendar, Utensils, Stethoscope, MoreHorizontal, Coffee, Info, LogOut
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { StatCard, Card, Button, Modal } from '../../components/ui';
@@ -404,6 +404,13 @@ const DashboardPage = () => {
                         {ficharError && (
                             <p style={{ color: 'var(--color-danger, #ef4444)', fontSize: 'var(--font-size-sm)', textAlign: 'center', margin: '0 0 var(--space-3)' }}>
                                 {ficharError}
+                            </p>
+                        )}
+
+                        {(isWorking || isPaused) && dashData?.expected_exit && (
+                            <p className="expected-exit" title="Calculada desde tu primera entrada de hoy y la duración de la jornada">
+                                <LogOut size={14} />
+                                Salida prevista <strong>{new Date(dashData.expected_exit).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</strong>
                             </p>
                         )}
 

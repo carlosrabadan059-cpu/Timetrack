@@ -4,8 +4,8 @@
 
 import { getSupabaseAdmin } from './supabase.js';
 import { triggerWorkflow, type N8nWorkflow } from './n8n.js';
+import { localParts, localToUtc, toMinutes, type LocalParts } from './madrid-time.js';
 
-const TZ = 'Europe/Madrid';
 const FLUSH_INTERVAL_MS = 5 * 60 * 1000;
 
 interface WorkSchedule {
@@ -15,48 +15,7 @@ interface WorkSchedule {
   holidays: string[]; // 'YYYY-MM-DD'
 }
 
-interface LocalParts {
-  date: string;
-  dow: number;
-  minutes: number;
-}
-
-const fmt = new Intl.DateTimeFormat('en-CA', {
-  timeZone: TZ,
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-  weekday: 'short',
-  hourCycle: 'h23',
-});
-const DOW: Record<string, number> = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
-
-function localParts(d: Date): LocalParts {
-  const p = Object.fromEntries(fmt.formatToParts(d).map((x) => [x.type, x.value]));
-  return {
-    date: `${p['year']}-${p['month']}-${p['day']}`,
-    dow: DOW[p['weekday'] ?? 'Mon'] ?? 1,
-    minutes: Number(p['hour']) * 60 + Number(p['minute']),
-  };
-}
-
-function toMinutes(hhmm: string, fallback: number): number {
-  const [h, m] = hhmm.split(':').map(Number);
-  return Number.isFinite(h) ? (h ?? 0) * 60 + (m ?? 0) : fallback;
-}
-
-/** UTC instant for a Madrid wall-clock time on a given local date. */
-export function localToUtc(date: string, minutes: number): Date {
-  const hh = String(Math.floor(minutes / 60)).padStart(2, '0');
-  const mm = String(minutes % 60).padStart(2, '0');
-  const guess = new Date(`${date}T${hh}:${mm}:00Z`);
-  const p = localParts(guess);
-  const [y, mo, d] = p.date.split('-').map(Number);
-  const asLocal = Date.UTC(y ?? 1970, (mo ?? 1) - 1, d ?? 1, Math.floor(p.minutes / 60), p.minutes % 60);
-  return new Date(guess.getTime() - (asLocal - guess.getTime()));
-}
+export { localToUtc };
 
 /**
  * Returns null if `now` is inside working hours (send immediately),

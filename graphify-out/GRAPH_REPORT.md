@@ -1,16 +1,16 @@
 # Graph Report - Timetrack  (2026-11-10)
 
 ## Corpus Check
-- 183 files · ~123,161 words
+- 186 files · ~125,002 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3441 nodes · 3738 edges · 371 communities (351 shown, 20 thin omitted)
-- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 3 edges (avg confidence: 0.8)
+- 3472 nodes · 3817 edges · 373 communities (351 shown, 22 thin omitted)
+- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7fc0644d`
+- Built from commit: `6e042b66`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -71,6 +71,10 @@
 - [[_COMMUNITY_Community 54|Community 54]]
 - [[_COMMUNITY_Community 55|Community 55]]
 - [[_COMMUNITY_Community 56|Community 56]]
+- [[_COMMUNITY_Community 58|Community 58]]
+- [[_COMMUNITY_Community 59|Community 59]]
+- [[_COMMUNITY_Community 60|Community 60]]
+- [[_COMMUNITY_Community 61|Community 61]]
 - [[_COMMUNITY_Community 62|Community 62]]
 - [[_COMMUNITY_Community 63|Community 63]]
 - [[_COMMUNITY_Community 64|Community 64]]
@@ -360,13 +364,11 @@
 - [[_COMMUNITY_Community 392|Community 392]]
 - [[_COMMUNITY_Community 393|Community 393]]
 - [[_COMMUNITY_Community 394|Community 394]]
-- [[_COMMUNITY_Community 395|Community 395]]
 - [[_COMMUNITY_Community 401|Community 401]]
 - [[_COMMUNITY_Community 402|Community 402]]
-- [[_COMMUNITY_Community 403|Community 403]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `getSupabaseAdmin()` - 41 edges
+1. `getSupabaseAdmin()` - 44 edges
 2. `skills` - 23 edges
 3. `n8n MCP Tools Expert` - 20 edges
 4. `AI Agent Workflow Pattern` - 20 edges
@@ -379,6 +381,8 @@
 
 ## Surprising Connections (you probably didn't know these)
 - `periodSubtitle()` --calls--> `fmt`  [INFERRED]
+  src/pages/employee/HistoryPage.jsx → backend/src/lib/madrid-time.ts
+- `periodSubtitle()` --calls--> `fmt`  [INFERRED]
   src/pages/employee/HistoryPage.jsx → backend/src/lib/notify.ts
 - `main()` --calls--> `getSupabaseAdmin()`  [EXTRACTED]
   backend/scripts/check-carlos-profile.ts → backend/src/lib/supabase.ts
@@ -386,13 +390,11 @@
   backend/scripts/create-test-api-key.ts → backend/src/lib/supabase.ts
 - `main()` --calls--> `getSupabaseAdmin()`  [EXTRACTED]
   backend/scripts/generate-report-demo.ts → backend/src/lib/supabase.ts
-- `main()` --calls--> `getSupabaseAdmin()`  [EXTRACTED]
-  backend/scripts/seed-carlos-logs.ts → backend/src/lib/supabase.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (371 total, 20 thin omitted)
+## Communities (373 total, 22 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.20
@@ -424,7 +426,7 @@ Nodes (44): 1. missing_required, 2. invalid_value, 3. type_mismatch, 4. invalid_
 
 ### Community 7 - "Community 7"
 Cohesion: 0.07
-Nodes (39): checkNonWorkingDay(), checkOutOfSchedule(), DAYS_ES, DAYS_FULL_ES, formatDateLabel(), getWeekStart(), humanizeSource(), inferDetailType() (+31 more)
+Nodes (38): checkNonWorkingDay(), checkOutOfSchedule(), DAYS_ES, DAYS_FULL_ES, formatDateLabel(), getWeekStart(), humanizeSource(), MONTHS_ES (+30 more)
 
 ### Community 8 - "Community 8"
 Cohesion: 0.05
@@ -475,8 +477,8 @@ Cohesion: 0.44
 Nodes (7): AdminRightsRequests(), MyRightsRequests(), daysLeft(), formatDate(), RIGHTS_LABELS, RIGHTS_STATUS, RIGHTS_TYPES
 
 ### Community 20 - "Community 20"
-Cohesion: 0.07
-Nodes (20): AuditAction, audited(), AuditedOptions, AuditEvent, JsonBody, recordAudit(), adminIncidencias, createIncidenciaSchema (+12 more)
+Cohesion: 0.06
+Nodes (41): AuditAction, audited(), AuditedOptions, AuditEvent, JsonBody, recordAudit(), startOutboxFlusher(), auth (+33 more)
 
 ### Community 21 - "Community 21"
 Cohesion: 0.07
@@ -491,8 +493,8 @@ Cohesion: 0.07
 Nodes (26): 1. n8n-mcp MCP Server, 2. Claude Access, Advanced Configuration, Custom Skill Location, Installation Guide, Installation Methods, MCP Tools Not Available, Method 1: Claude Code (Recommended) (+18 more)
 
 ### Community 24 - "Community 24"
-Cohesion: 0.12
-Nodes (20): DAYS_FULL, MONTHS_SHORT, reportes, buildDayMap(), Cell, DAYS_FULL, fmtDate(), fmtTime() (+12 more)
+Cohesion: 0.09
+Nodes (28): DAYS_FULL, MONTHS_SHORT, reportes, buildDayMap(), Cell, DAYS_FULL, fmtDate(), fmtTime() (+20 more)
 
 ### Community 25 - "Community 25"
 Cohesion: 0.07
@@ -508,7 +510,7 @@ Nodes (25): Additional Parameters, Check Version Compatibility, Common Workflow:
 
 ### Community 28 - "Community 28"
 Cohesion: 0.10
-Nodes (23): dependencies, dotenv, exceljs, hono, @hono/node-server, @hono/zod-validator, @microsoft/signalr, pdfkit (+15 more)
+Nodes (24): dependencies, dotenv, exceljs, hono, @hono/node-server, @hono/zod-validator, @microsoft/signalr, pdfkit (+16 more)
 
 ### Community 29 - "Community 29"
 Cohesion: 0.08
@@ -551,20 +553,20 @@ Cohesion: 0.10
 Nodes (19): 1. Expression Syntax (Skill #1), 2. MCP Tools Expert (Skill #2), 3. Workflow Patterns (Skill #3), 4. Validation Expert (Skill #4), 5. Node Configuration (Skill #5), Critical Findings for Skills, Database Statistics, Generated: 2025-10-20 (+11 more)
 
 ### Community 40 - "Community 40"
-Cohesion: 0.10
-Nodes (9): STATUS_BADGE, TYPE_CONFIG, MONTHS_ES, download(), getToken(), supabase, AuthContext, api (+1 more)
+Cohesion: 0.11
+Nodes (7): MONTHS_ES, download(), getToken(), supabase, AuthContext, api, request()
 
 ### Community 41 - "Community 41"
-Cohesion: 0.10
-Nodes (20): AcClient, AcCompany, createAcClient(), ListResponse, requireRole(), admin, EmitFn, RegistroEmployee (+12 more)
+Cohesion: 0.13
+Nodes (13): AcClient, AcCompany, createAcClient(), ListResponse, ilikeAnyFilter(), admin, EmitFn, AcAccessGroup (+5 more)
 
 ### Community 42 - "Community 42"
 Cohesion: 0.10
 Nodes (18): 10. Incorrect Property Path, 11. Using = Prefix Outside JSON, 12. Expressions in Webhook Path, 13. Forgetting .json in $node Reference, 14. String Concatenation Confusion, 15. Empty Expression Brackets, 1. Missing Curly Braces, 2. Webhook Body Access (+10 more)
 
 ### Community 43 - "Community 43"
-Cohesion: 0.19
-Nodes (14): decryptSetting(), encryptSetting(), getKey(), attachHandlers(), buildConnection(), connections, ConnectionStatus, markDown() (+6 more)
+Cohesion: 0.10
+Nodes (30): decryptSetting(), encryptSetting(), getKey(), inferDetailType(), dispatchN8nWebhook(), N8nWorkflow, stripQueueSecrets(), triggerWorkflow() (+22 more)
 
 ### Community 44 - "Community 44"
 Cohesion: 0.13
@@ -579,8 +581,8 @@ Cohesion: 0.15
 Nodes (12): AdminEmployeeDetailPage(), fmtDate(), fmtDateTime(), getInitials(), ROLE_LABELS, SOURCE_LABELS, STATUS_CLS, STATUS_LABELS (+4 more)
 
 ### Community 47 - "Community 47"
-Cohesion: 0.18
-Nodes (10): getEnv(), getSupabaseAdmin(), getSupabasePublic(), supabaseAdmin, supabasePublic, main(), main(), main() (+2 more)
+Cohesion: 0.17
+Nodes (11): flushOutbox(), getEnv(), getSupabaseAdmin(), getSupabasePublic(), supabaseAdmin, supabasePublic, main(), main() (+3 more)
 
 ### Community 49 - "Community 49"
 Cohesion: 0.15
@@ -594,6 +596,10 @@ Nodes (14): Activates On, Common Patterns, Core Topics, Coverage, Dependencies, 
 Cohesion: 0.12
 Nodes (14): Activates On, Core Topics, Coverage, Dependencies, Evaluations, File Count, Files, Key Features (+6 more)
 
+### Community 52 - "Community 52"
+Cohesion: 0.20
+Nodes (3): EmitFn, SseBroadcaster, SseEvent
+
 ### Community 55 - "Community 55"
 Cohesion: 0.40
 Nodes (4): Copias de seguridad de Supabase (#30, punto 17), Gestión desde Portainer, Puesta en marcha (una vez), Restauración
@@ -602,9 +608,13 @@ Nodes (4): Copias de seguridad de Supabase (#30, punto 17), Gestión desde Porta
 Cohesion: 0.13
 Nodes (13): Call-graph collapse, Candidate card, Cross-section (good for layered shallowness), Diagram patterns, Hand-built boxes-and-arrows (when Mermaid's layout fights you), Header, HTML Report Format, Mass diagram (good for "interface as wide as implementation") (+5 more)
 
+### Community 59 - "Community 59"
+Cohesion: 0.33
+Nodes (3): defaultClockingModes, defaultForm, TABS
+
 ### Community 62 - "Community 62"
 Cohesion: 0.13
-Nodes (13): Credential Management, Data Table Management, Most Used Tools (by success rate), n8n_generate_workflow, n8n_manage_credentials, n8n_manage_datatable, n8n MCP Tools Expert, Performance Characteristics (+5 more)
+Nodes (13): Credential Management, Data Table Management, n8n_audit_instance, n8n_generate_workflow, n8n_manage_credentials, n8n_manage_datatable, n8n MCP Tools Expert, Performance Characteristics (+5 more)
 
 ### Community 63 - "Community 63"
 Cohesion: 0.16
@@ -619,8 +629,8 @@ Cohesion: 0.13
 Nodes (13): 2N Access Commander — API Reference, Comandos SignalR, Data Query — Filtrado y paginación, Dispositivos físicos (HTTP API — diferente al REST de AC), Endpoints principales, Grupos y Zonas, Hub URL v3, REST API v3 (+5 more)
 
 ### Community 66 - "Community 66"
-Cohesion: 0.13
-Nodes (9): ACTION_LABELS, ENTITY_LABELS, AdminSettingsPage(), DEFAULT_CLOCKING_MODES, DEFAULT_SETTINGS, ThemeContext, ThemeProvider(), useTheme() (+1 more)
+Cohesion: 0.12
+Nodes (12): ACTION_LABELS, ENTITY_LABELS, AdminSettingsPage(), DEFAULT_CLOCKING_MODES, DEFAULT_SETTINGS, fmtMin(), ScheduleSettings(), toMin() (+4 more)
 
 ### Community 67 - "Community 67"
 Cohesion: 0.17
@@ -635,8 +645,8 @@ Cohesion: 0.15
 Nodes (11): Diagnose, Iterate on the loop itself, Non-deterministic bugs, Phase 1 — Build a feedback loop, Phase 2 — Reproduce, Phase 3 — Hypothesise, Phase 4 — Instrument, Phase 5 — Fix + regression test (+3 more)
 
 ### Community 71 - "Community 71"
-Cohesion: 0.18
-Nodes (7): DETAIL_BADGE, fmtMinutes(), HistoryPage(), periodSubtitle(), RANGE_LABELS, SOURCE_LABELS, fmt
+Cohesion: 0.16
+Nodes (8): DETAIL_BADGE, fmtMinutes(), HistoryPage(), periodSubtitle(), RANGE_LABELS, SOURCE_LABELS, fmt, fmt
 
 ### Community 72 - "Community 72"
 Cohesion: 0.15
@@ -1113,10 +1123,6 @@ Nodes (6): Checklist for Webhook Workflows, Data Handling, Error Handling, Secur
 ### Community 203 - "Community 203"
 Cohesion: 0.29
 Nodes (5): Before exploring, read these, Domain Docs, File structure, Flag ADR conflicts, Use the glossary's vocabulary
-
-### Community 204 - "Community 204"
-Cohesion: 0.10
-Nodes (3): defaultClockingModes, defaultForm, TABS
 
 ### Community 206 - "Community 206"
 Cohesion: 0.33
@@ -1699,31 +1705,27 @@ Cohesion: 0.67
 Nodes (3): Best Practices, ✅ Do, ❌ Don't
 
 ### Community 401 - "Community 401"
-Cohesion: 0.13
-Nodes (23): dispatchN8nWebhook(), N8nWorkflow, stripQueueSecrets(), triggerWorkflow(), WEBHOOK_PATHS, withQueueSecrets(), DOW, flushOutbox() (+15 more)
+Cohesion: 0.12
+Nodes (31): DOW, localParts, localToUtc(), startOfLocalDay(), toMinutes(), DOW, loadSchedule(), LocalParts (+23 more)
 
 ### Community 402 - "Community 402"
-Cohesion: 0.09
-Nodes (21): startOutboxFlusher(), apiKeyAuthMiddleware, auth, docs, spec, external, FichajeItem, fichajesQuerySchema (+13 more)
-
-### Community 403 - "Community 403"
-Cohesion: 0.14
-Nodes (13): ilikeAnyFilter(), assignCardSchema, assignPinSchema, createUserSchema, patchUserSchema, users, AccessLog, Company (+5 more)
+Cohesion: 0.22
+Nodes (6): apiKeyAuthMiddleware, external, FichajeItem, fichajesQuerySchema, fmtTs(), pad2()
 
 ## Knowledge Gaps
-- **2207 isolated node(s):** `dev`, `build`, `start`, `@hono/node-server`, `@hono/zod-validator` (+2202 more)
+- **2214 isolated node(s):** `dev`, `build`, `start`, `test`, `@hono/node-server` (+2209 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **20 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **22 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `fmt` connect `Community 71` to `Community 401`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
-- **Why does `supabase` connect `Community 40` to `Community 33`, `Community 66`, `Community 71`, `Community 39`, `Community 204`, `Community 48`, `Community 49`, `Community 212`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+- **Why does `getSupabaseAdmin()` connect `Community 47` to `Community 7`, `Community 41`, `Community 43`, `Community 401`, `Community 402`, `Community 20`, `Community 24`?**
+  _High betweenness centrality (0.003) - this node is a cross-community bridge._
 - **What connects `dev`, `build`, `start` to the rest of the system?**
-  _2207 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _2214 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**

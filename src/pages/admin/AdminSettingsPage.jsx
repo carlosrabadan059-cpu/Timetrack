@@ -75,6 +75,96 @@ const DEFAULT_SETTINGS = {
     clocking_modes: DEFAULT_CLOCKING_MODES,
 };
 
+// ── Horario de trabajo con entrada flexible ──────────────────────────────────
+const toMin = (hhmm) => {
+    const [h, m] = String(hhmm || '').split(':').map(Number);
+    return Number.isFinite(h) ? h * 60 + (Number.isFinite(m) ? m : 0) : null;
+};
+const fmtMin = (min) => {
+    const t = ((min % 1440) + 1440) % 1440;
+    return `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`;
+};
+
+function ScheduleSettings({ schedule, rules, onScheduleChange, onRuleChange }) {
+    const start = toMin(schedule?.start);
+    const end = toMin(schedule?.end);
+    const duration = start !== null && end !== null ? end - start : null;
+    const flexOn = rules.flexibleScheduleEnabled ?? false;
+    const flex = flexOn ? (rules.flexibleScheduleMinutes ?? 15) : 0;
+    const tolerance = rules.courtesyMinutes ?? 0;
+    // Ejemplo: una entrada a mitad del margen (o 40 min si no hay margen)
+    const sampleEntry = start !== null ? start + (flex > 0 ? Math.round(flex * 2 / 3) : 40) : null;
+
+    return (
+        <div className="settings-group">
+            <div className="grid grid-cols-2 gap-3">
+                <div>
+                    <label className="settings-label">Entrada oficial</label>
+                    <Input type="time" value={schedule?.start ?? ''} onChange={(e) => onScheduleChange({ start: e.target.value })} />
+                </div>
+                <div>
+                    <label className="settings-label">Salida oficial</label>
+                    <Input type="time" value={schedule?.end ?? ''} onChange={(e) => onScheduleChange({ end: e.target.value })} />
+                </div>
+            </div>
+            <p className="settings-help mt-2">
+                {duration !== null && duration > 0
+                    ? <>Jornada: <strong>{Math.floor(duration / 60)} h {String(duration % 60).padStart(2, '0')} min</strong> (incluye la pausa de comida). Se aplica a todos los empleados.</>
+                    : <span style={{ color: 'var(--color-danger, #ef4444)' }}>La salida oficial debe ser posterior a la entrada.</span>}
+            </p>
+
+            <div className="settings-item mt-4" style={{ border: 'none', padding: 0 }}>
+                <div className="settings-icon"><Clock size={20} /></div>
+                <div className="settings-info">
+                    <h4>Entrada flexible</h4>
+                    <p>Permite empezar más tarde; la salida se calcula desde la hora real de entrada</p>
+                </div>
+                <label className="settings-toggle">
+                    <input type="checkbox" checked={flexOn} onChange={(e) => onRuleChange('flexibleScheduleEnabled', e.target.checked)} />
+                    <span className="settings-toggle-slider" />
+                </label>
+            </div>
+
+            {flexOn && (
+                <div className="mt-3">
+                    <label className="settings-label">Margen de entrada (minutos, máx. 180)</label>
+                    <Input
+                        type="number" min={0} max={180}
+                        value={rules.flexibleScheduleMinutes ?? 15}
+                        onChange={(e) => onRuleChange('flexibleScheduleMinutes', Math.min(180, Math.max(0, parseInt(e.target.value) || 0)))}
+                    />
+                    {start !== null && (
+                        <p className="settings-help">
+                            Se puede entrar entre las <strong>{fmtMin(start)}</strong> y las <strong>{fmtMin(start + flex)}</strong>.
+                            Más tarde se registra como <em>entrada tardía</em>.
+                        </p>
+                    )}
+                </div>
+            )}
+
+            <div className="mt-3">
+                <label className="settings-label">Tolerancia de salida anticipada (minutos, máx. 60)</label>
+                <Input
+                    type="number" min={0} max={60}
+                    value={tolerance}
+                    onChange={(e) => onRuleChange('courtesyMinutes', Math.min(60, Math.max(0, parseInt(e.target.value) || 0)))}
+                />
+                <p className="settings-help">
+                    Una salida hasta {tolerance} min antes de la hora calculada no se marca como <em>salida anticipada</em>.
+                </p>
+            </div>
+
+            {sampleEntry !== null && duration > 0 && (
+                <p className="settings-help mt-3" style={{ background: 'var(--color-bg-secondary, rgba(127,127,127,0.08))', padding: 'var(--space-2) var(--space-3)', borderRadius: 'var(--radius-md)' }}>
+                    Ejemplo: si un empleado entra a las <strong>{fmtMin(sampleEntry)}</strong>, su salida prevista será a las <strong>{fmtMin(sampleEntry + duration)}</strong>.
+                    Si entra antes de las {fmtMin(start)}, cuenta desde las {fmtMin(start)}.
+                    Los fichajes nunca se bloquean: solo se marcan.
+                </p>
+            )}
+        </div>
+    );
+}
+
 const AdminSettingsPage = () => {
     const [activeTab, setActiveTab] = useState('general');
     const { theme, setTheme } = useTheme();
@@ -605,46 +695,16 @@ const AdminSettingsPage = () => {
                                 </div>
                             </Card>
 
-                            <Card title="Tolerancia y Pausas">
-                                <div className="settings-group">
-                                    <div className="settings-item" style={{ border: 'none', padding: 0 }}>
-                                        <div className="settings-icon"><Clock size={20} /></div>
-                                        <div className="settings-info">
-                                            <h4>Horario Flexible (minutos)</h4>
-                                            <p>Permite a los empleados fichar dentro de una ventana de tiempo</p>
-                                        </div>
-                                        <label className="settings-toggle">
-                                            <input
-                                                type="checkbox"
-                                                checked={settings.rules.flexibleScheduleEnabled ?? false}
-                                                onChange={(e) => handleRuleChange('flexibleScheduleEnabled', e.target.checked)}
-                                            />
-                                            <span className="settings-toggle-slider" />
-                                        </label>
-                                    </div>
-
-                                    {settings.rules.flexibleScheduleEnabled && (
-                                        <div className="mt-3">
-                                            <label className="settings-label">Minutos de flexibilidad (máx. 60)</label>
-                                            <div className="flex items-center gap-2">
-                                                <Clock size={16} className="text-muted" />
-                                                <Input
-                                                    type="number"
-                                                    min={0}
-                                                    max={60}
-                                                    value={settings.rules.flexibleScheduleMinutes ?? 15}
-                                                    onChange={(e) => {
-                                                        const v = Math.min(60, Math.max(0, parseInt(e.target.value) || 0));
-                                                        handleRuleChange('flexibleScheduleMinutes', v);
-                                                    }}
-                                                />
-                                            </div>
-                                            <p className="settings-help">
-                                                Los empleados podrán fichar hasta {settings.rules.flexibleScheduleMinutes ?? 15} minutos fuera del horario establecido sin incidencia.
-                                            </p>
-                                        </div>
-                                    )}
-                                </div>
+                            <Card title="Horario de trabajo">
+                                <ScheduleSettings
+                                    schedule={settings.work_schedule}
+                                    rules={settings.rules}
+                                    onScheduleChange={(patch) => setSettings({
+                                        ...settings,
+                                        work_schedule: { ...settings.work_schedule, ...patch },
+                                    })}
+                                    onRuleChange={handleRuleChange}
+                                />
                             </Card>
 
                             <Card title="Vacaciones">
@@ -666,33 +726,6 @@ const AdminSettingsPage = () => {
                                 </div>
                             </Card>
 
-                            <Card title="Horario Laboral General">
-                                <div className="settings-group">
-                                    <label className="settings-label">Hora de Inicio</label>
-                                    <Input
-                                        type="time"
-                                        value={settings.work_schedule?.start}
-                                        onChange={(e) => setSettings({
-                                            ...settings,
-                                            work_schedule: { ...settings.work_schedule, start: e.target.value }
-                                        })}
-                                    />
-                                </div>
-                                <div className="settings-group mt-2">
-                                    <label className="settings-label">Hora de Fin</label>
-                                    <Input
-                                        type="time"
-                                        value={settings.work_schedule?.end}
-                                        onChange={(e) => setSettings({
-                                            ...settings,
-                                            work_schedule: { ...settings.work_schedule, end: e.target.value }
-                                        })}
-                                    />
-                                </div>
-                                <p className="settings-help mt-2">
-                                    Este horario se aplicará a todos los empleados que no tengan un horario personalizado.
-                                </p>
-                            </Card>
                         </div>
                     </div>
                 )}

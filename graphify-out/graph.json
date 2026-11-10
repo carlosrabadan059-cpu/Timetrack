@@ -69,7 +69,7 @@
       "file_type": "code",
       "source_file": "backend/package.json",
       "source_location": "L1",
-      "id": "users_carlosrabadan_antigravity_timetrack_backend_package_json",
+      "id": "backend_package",
       "community": 28,
       "norm_label": "package.json"
     },
@@ -146,10 +146,19 @@
       "norm_label": "start"
     },
     {
+      "label": "test",
+      "file_type": "code",
+      "source_file": "backend/package.json",
+      "source_location": "L10",
+      "id": "backend_package_scripts_test",
+      "community": 28,
+      "norm_label": "test"
+    },
+    {
       "label": "dependencies",
       "file_type": "code",
       "source_file": "backend/package.json",
-      "source_location": "L11",
+      "source_location": "L12",
       "id": "backend_package_dependencies",
       "community": 28,
       "norm_label": "dependencies"
@@ -158,7 +167,7 @@
       "label": "@hono/node-server",
       "file_type": "code",
       "source_file": "backend/package.json",
-      "source_location": "L12",
+      "source_location": "L13",
       "id": "backend_package_dependencies_hono_node_server",
       "community": 28,
       "norm_label": "@hono/node-server"
@@ -167,7 +176,7 @@
       "label": "@hono/zod-validator",
       "file_type": "code",
       "source_file": "backend/package.json",
-      "source_location": "L13",
+      "source_location": "L14",
       "id": "backend_package_dependencies_hono_zod_validator",
       "community": 28,
       "norm_label": "@hono/zod-validator"
@@ -176,7 +185,7 @@
       "label": "@microsoft/signalr",
       "file_type": "code",
       "source_file": "backend/package.json",
-      "source_location": "L14",
+      "source_location": "L15",
       "id": "backend_package_dependencies_microsoft_signalr",
       "community": 28,
       "norm_label": "@microsoft/signalr"
@@ -185,7 +194,7 @@
       "label": "@supabase/supabase-js",
       "file_type": "code",
       "source_file": "backend/package.json",
-      "source_location": "L15",
+      "source_location": "L16",
       "id": "backend_package_dependencies_supabase_supabase_js",
       "community": 28,
       "norm_label": "@supabase/supabase-js"
@@ -194,7 +203,7 @@
       "label": "dotenv",
       "file_type": "code",
       "source_file": "backend/package.json",
-      "source_location": "L16",
+      "source_location": "L17",
       "id": "backend_package_dependencies_dotenv",
       "community": 28,
       "norm_label": "dotenv"
@@ -203,7 +212,7 @@
       "label": "exceljs",
       "file_type": "code",
       "source_file": "backend/package.json",
-      "source_location": "L17",
+      "source_location": "L18",
       "id": "backend_package_dependencies_exceljs",
       "community": 28,
       "norm_label": "exceljs"
@@ -212,7 +221,7 @@
       "label": "hono",
       "file_type": "code",
       "source_file": "backend/package.json",
-      "source_location": "L18",
+      "source_location": "L19",
       "id": "backend_package_dependencies_hono",
       "community": 28,
       "norm_label": "hono"
@@ -221,7 +230,7 @@
       "label": "pdfkit",
       "file_type": "code",
       "source_file": "backend/package.json",
-      "source_location": "L19",
+      "source_location": "L20",
       "id": "backend_package_dependencies_pdfkit",
       "community": 28,
       "norm_label": "pdfkit"
@@ -230,7 +239,7 @@
       "label": "zod",
       "file_type": "code",
       "source_file": "backend/package.json",
-      "source_location": "L20",
+      "source_location": "L21",
       "id": "backend_package_dependencies_zod",
       "community": 28,
       "norm_label": "zod"
@@ -239,7 +248,7 @@
       "label": "devDependencies",
       "file_type": "code",
       "source_file": "backend/package.json",
-      "source_location": "L22",
+      "source_location": "L23",
       "id": "backend_package_devdependencies",
       "community": 28,
       "norm_label": "devdependencies"
@@ -248,7 +257,7 @@
       "label": "@types/node",
       "file_type": "code",
       "source_file": "backend/package.json",
-      "source_location": "L23",
+      "source_location": "L24",
       "id": "backend_package_devdependencies_types_node",
       "community": 28,
       "norm_label": "@types/node"
@@ -257,7 +266,7 @@
       "label": "@types/pdfkit",
       "file_type": "code",
       "source_file": "backend/package.json",
-      "source_location": "L24",
+      "source_location": "L25",
       "id": "backend_package_devdependencies_types_pdfkit",
       "community": 28,
       "norm_label": "@types/pdfkit"
@@ -266,7 +275,7 @@
       "label": "tsx",
       "file_type": "code",
       "source_file": "backend/package.json",
-      "source_location": "L25",
+      "source_location": "L26",
       "id": "backend_package_devdependencies_tsx",
       "community": 28,
       "norm_label": "tsx"
@@ -275,7 +284,7 @@
       "label": "typescript",
       "file_type": "code",
       "source_file": "backend/package.json",
-      "source_location": "L26",
+      "source_location": "L27",
       "id": "backend_package_devdependencies_typescript",
       "community": 28,
       "norm_label": "typescript"
@@ -493,7 +502,7 @@
       "source_file": "backend/src/api/middleware/auth.ts",
       "source_location": "L1",
       "id": "middleware_auth",
-      "community": 402,
+      "community": 20,
       "norm_label": "auth.ts"
     },
     {
@@ -502,7 +511,7 @@
       "source_file": "backend/src/api/middleware/auth.ts",
       "source_location": "L5",
       "id": "middleware_auth_readaal",
-      "community": 402,
+      "community": 20,
       "norm_label": "readaal()"
     },
     {
@@ -511,7 +520,7 @@
       "source_file": "backend/src/api/middleware/auth.ts",
       "source_location": "L14",
       "id": "middleware_auth_auth",
-      "community": 402,
+      "community": 20,
       "norm_label": "auth"
     },
     {
@@ -556,7 +565,7 @@
       "source_file": "backend/src/api/middleware/role.ts",
       "source_location": "L1",
       "id": "middleware_role",
-      "community": 41,
+      "community": 20,
       "norm_label": "role.ts"
     },
     {
@@ -565,7 +574,7 @@
       "source_file": "backend/src/api/middleware/role.ts",
       "source_location": "L4",
       "id": "middleware_role_requirerole",
-      "community": 41,
+      "community": 20,
       "norm_label": "requirerole()"
     },
     {
@@ -581,7 +590,7 @@
       "label": "admin",
       "file_type": "code",
       "source_file": "backend/src/api/routes/admin.ts",
-      "source_location": "L19",
+      "source_location": "L20",
       "id": "routes_admin_admin",
       "community": 41,
       "norm_label": "admin"
@@ -590,7 +599,7 @@
       "label": "EmitFn",
       "file_type": "code",
       "source_file": "backend/src/api/routes/admin.ts",
-      "source_location": "L1029",
+      "source_location": "L1033",
       "id": "routes_admin_emitfn",
       "community": 41,
       "norm_label": "emitfn"
@@ -599,7 +608,7 @@
       "label": "start()",
       "file_type": "code",
       "source_file": "backend/src/api/routes/admin.ts",
-      "source_location": "L1034",
+      "source_location": "L1038",
       "id": "routes_admin_start",
       "community": 41,
       "norm_label": "start()"
@@ -608,7 +617,7 @@
       "label": "cancel()",
       "file_type": "code",
       "source_file": "backend/src/api/routes/admin.ts",
-      "source_location": "L1059",
+      "source_location": "L1063",
       "id": "routes_admin_cancel",
       "community": 41,
       "norm_label": "cancel()"
@@ -619,7 +628,7 @@
       "source_file": "backend/src/api/routes/docs.ts",
       "source_location": "L1",
       "id": "routes_docs",
-      "community": 402,
+      "community": 60,
       "norm_label": "docs.ts"
     },
     {
@@ -628,7 +637,7 @@
       "source_file": "backend/src/api/routes/docs.ts",
       "source_location": "L4",
       "id": "routes_docs_docs",
-      "community": 402,
+      "community": 60,
       "norm_label": "docs"
     },
     {
@@ -637,7 +646,7 @@
       "source_file": "backend/src/api/routes/docs.ts",
       "source_location": "L6",
       "id": "routes_docs_spec",
-      "community": 402,
+      "community": 60,
       "norm_label": "spec"
     },
     {
@@ -727,7 +736,7 @@
       "source_file": "backend/src/api/routes/help.ts",
       "source_location": "L1",
       "id": "routes_help",
-      "community": 402,
+      "community": 20,
       "norm_label": "help.ts"
     },
     {
@@ -736,7 +745,7 @@
       "source_file": "backend/src/api/routes/help.ts",
       "source_location": "L5",
       "id": "routes_help_help",
-      "community": 402,
+      "community": 20,
       "norm_label": "help"
     },
     {
@@ -745,7 +754,7 @@
       "source_file": "backend/src/api/routes/help.ts",
       "source_location": "L97",
       "id": "routes_help_chatschema",
-      "community": 402,
+      "community": 20,
       "norm_label": "chatschema"
     },
     {
@@ -790,7 +799,7 @@
       "source_file": "backend/src/api/routes/historial.ts",
       "source_location": "L277",
       "id": "routes_historial_registroemployee",
-      "community": 41,
+      "community": 7,
       "norm_label": "registroemployee"
     },
     {
@@ -878,7 +887,7 @@
       "label": "HookResult",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
-      "source_location": "L19",
+      "source_location": "L20",
       "id": "routes_me_hookresult",
       "community": 7,
       "norm_label": "hookresult"
@@ -887,7 +896,7 @@
       "label": "zodErrorHook()",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
-      "source_location": "L23",
+      "source_location": "L24",
       "id": "routes_me_zoderrorhook",
       "community": 7,
       "norm_label": "zoderrorhook()"
@@ -896,7 +905,7 @@
       "label": "me",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
-      "source_location": "L38",
+      "source_location": "L39",
       "id": "routes_me_me",
       "community": 7,
       "norm_label": "me"
@@ -905,7 +914,7 @@
       "label": "patchMeSchema",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
-      "source_location": "L80",
+      "source_location": "L81",
       "id": "routes_me_patchmeschema",
       "community": 7,
       "norm_label": "patchmeschema"
@@ -914,7 +923,7 @@
       "label": "changePasswordSchema",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
-      "source_location": "L137",
+      "source_location": "L138",
       "id": "routes_me_changepasswordschema",
       "community": 7,
       "norm_label": "changepasswordschema"
@@ -923,7 +932,7 @@
       "label": "notificationsSchema",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
-      "source_location": "L175",
+      "source_location": "L176",
       "id": "routes_me_notificationsschema",
       "community": 7,
       "norm_label": "notificationsschema"
@@ -932,7 +941,7 @@
       "label": "RIGHTS_TYPES",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
-      "source_location": "L238",
+      "source_location": "L239",
       "id": "routes_me_rights_types",
       "community": 7,
       "norm_label": "rights_types"
@@ -941,7 +950,7 @@
       "label": "rightsRequestSchema",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
-      "source_location": "L239",
+      "source_location": "L240",
       "id": "routes_me_rightsrequestschema",
       "community": 7,
       "norm_label": "rightsrequestschema"
@@ -950,7 +959,7 @@
       "label": "ficharSchema",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
-      "source_location": "L339",
+      "source_location": "L340",
       "id": "routes_me_ficharschema",
       "community": 7,
       "norm_label": "ficharschema"
@@ -959,7 +968,7 @@
       "label": "EmitFn",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
-      "source_location": "L676",
+      "source_location": "L687",
       "id": "routes_me_emitfn",
       "community": 7,
       "norm_label": "emitfn"
@@ -968,7 +977,7 @@
       "label": "start()",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
-      "source_location": "L681",
+      "source_location": "L692",
       "id": "routes_me_start",
       "community": 7,
       "norm_label": "start()"
@@ -977,7 +986,7 @@
       "label": "cancel()",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
-      "source_location": "L708",
+      "source_location": "L719",
       "id": "routes_me_cancel",
       "community": 7,
       "norm_label": "cancel()"
@@ -1042,7 +1051,7 @@
       "source_file": "backend/src/api/routes/superadmin.ts",
       "source_location": "L1",
       "id": "routes_superadmin",
-      "community": 41,
+      "community": 20,
       "norm_label": "superadmin.ts"
     },
     {
@@ -1051,7 +1060,7 @@
       "source_file": "backend/src/api/routes/superadmin.ts",
       "source_location": "L10",
       "id": "routes_superadmin_superadmin",
-      "community": 41,
+      "community": 20,
       "norm_label": "superadmin"
     },
     {
@@ -1060,7 +1069,7 @@
       "source_file": "backend/src/api/routes/superadmin.ts",
       "source_location": "L17",
       "id": "routes_superadmin_clockingmodesschema",
-      "community": 41,
+      "community": 20,
       "norm_label": "clockingmodesschema"
     },
     {
@@ -1069,7 +1078,7 @@
       "source_file": "backend/src/api/routes/superadmin.ts",
       "source_location": "L29",
       "id": "routes_superadmin_createcompanyschema",
-      "community": 41,
+      "community": 20,
       "norm_label": "createcompanyschema"
     },
     {
@@ -1078,7 +1087,7 @@
       "source_file": "backend/src/api/routes/superadmin.ts",
       "source_location": "L42",
       "id": "routes_superadmin_updatecompanyschema",
-      "community": 41,
+      "community": 20,
       "norm_label": "updatecompanyschema"
     },
     {
@@ -1087,7 +1096,7 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L1",
       "id": "routes_users",
-      "community": 403,
+      "community": 20,
       "norm_label": "users.ts"
     },
     {
@@ -1096,7 +1105,7 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L12",
       "id": "routes_users_users",
-      "community": 403,
+      "community": 20,
       "norm_label": "users"
     },
     {
@@ -1105,7 +1114,7 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L15",
       "id": "routes_users_syncauthban",
-      "community": 403,
+      "community": 20,
       "norm_label": "syncauthban()"
     },
     {
@@ -1114,7 +1123,7 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L29",
       "id": "routes_users_createuserschema",
-      "community": 403,
+      "community": 20,
       "norm_label": "createuserschema"
     },
     {
@@ -1123,7 +1132,7 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L272",
       "id": "routes_users_patchuserschema",
-      "community": 403,
+      "community": 20,
       "norm_label": "patchuserschema"
     },
     {
@@ -1132,7 +1141,7 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L479",
       "id": "routes_users_assigncardschema",
-      "community": 403,
+      "community": 20,
       "norm_label": "assigncardschema"
     },
     {
@@ -1141,7 +1150,7 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L567",
       "id": "routes_users_assignpinschema",
-      "community": 403,
+      "community": 20,
       "norm_label": "assignpinschema"
     },
     {
@@ -1231,7 +1240,7 @@
       "source_file": "backend/src/api/routes/webhooks.ts",
       "source_location": "L1",
       "id": "routes_webhooks",
-      "community": 401,
+      "community": 43,
       "norm_label": "webhooks.ts"
     },
     {
@@ -1240,7 +1249,7 @@
       "source_file": "backend/src/api/routes/webhooks.ts",
       "source_location": "L10",
       "id": "routes_webhooks_webhooks",
-      "community": 401,
+      "community": 43,
       "norm_label": "webhooks"
     },
     {
@@ -1249,7 +1258,7 @@
       "source_file": "backend/src/api/routes/webhooks.ts",
       "source_location": "L12",
       "id": "routes_webhooks_safecompare",
-      "community": 401,
+      "community": 43,
       "norm_label": "safecompare()"
     },
     {
@@ -1258,7 +1267,7 @@
       "source_file": "backend/src/api/routes/webhooks.ts",
       "source_location": "L19",
       "id": "routes_webhooks_verifyn8nsecret",
-      "community": 401,
+      "community": 43,
       "norm_label": "verifyn8nsecret()"
     },
     {
@@ -1267,7 +1276,7 @@
       "source_file": "backend/src/api/routes/webhooks.ts",
       "source_location": "L25",
       "id": "routes_webhooks_callbackschema",
-      "community": 401,
+      "community": 43,
       "norm_label": "callbackschema"
     },
     {
@@ -1276,7 +1285,7 @@
       "source_file": "backend/src/api/routes/webhooks.ts",
       "source_location": "L139",
       "id": "routes_webhooks_action_to_workflow",
-      "community": 401,
+      "community": 43,
       "norm_label": "action_to_workflow"
     },
     {
@@ -1285,7 +1294,7 @@
       "source_file": "backend/src/api/routes/webhooks.ts",
       "source_location": "L349",
       "id": "routes_webhooks_noderedeventschema",
-      "community": 401,
+      "community": 43,
       "norm_label": "noderedeventschema"
     },
     {
@@ -1294,7 +1303,7 @@
       "source_file": "backend/src/index.ts",
       "source_location": "L1",
       "id": "src_index",
-      "community": 402,
+      "community": 20,
       "norm_label": "index.ts"
     },
     {
@@ -1303,7 +1312,7 @@
       "source_file": "backend/src/index.ts",
       "source_location": "L26",
       "id": "src_index_app",
-      "community": 402,
+      "community": 20,
       "norm_label": "app"
     },
     {
@@ -1312,7 +1321,7 @@
       "source_file": "backend/src/index.ts",
       "source_location": "L29",
       "id": "src_index_allowedorigins",
-      "community": 402,
+      "community": 20,
       "norm_label": "allowedorigins"
     },
     {
@@ -1321,7 +1330,7 @@
       "source_file": "backend/src/index.ts",
       "source_location": "L100",
       "id": "src_index_port",
-      "community": 402,
+      "community": 20,
       "norm_label": "port"
     },
     {
@@ -1528,23 +1537,14 @@
       "source_file": "backend/src/lib/date-utils.ts",
       "source_location": "L20",
       "id": "lib_date_utils_inferdetailtype",
-      "community": 7,
+      "community": 43,
       "norm_label": "inferdetailtype()"
-    },
-    {
-      "label": "checkOutOfSchedule()",
-      "file_type": "code",
-      "source_file": "backend/src/lib/date-utils.ts",
-      "source_location": "L31",
-      "id": "lib_date_utils_checkoutofschedule",
-      "community": 7,
-      "norm_label": "checkoutofschedule()"
     },
     {
       "label": "checkNonWorkingDay()",
       "file_type": "code",
       "source_file": "backend/src/lib/date-utils.ts",
-      "source_location": "L57",
+      "source_location": "L29",
       "id": "lib_date_utils_checknonworkingday",
       "community": 7,
       "norm_label": "checknonworkingday()"
@@ -1553,7 +1553,7 @@
       "label": "humanizeSource()",
       "file_type": "code",
       "source_file": "backend/src/lib/date-utils.ts",
-      "source_location": "L72",
+      "source_location": "L44",
       "id": "lib_date_utils_humanizesource",
       "community": 7,
       "norm_label": "humanizesource()"
@@ -1562,7 +1562,7 @@
       "label": "startOfDayISO()",
       "file_type": "code",
       "source_file": "backend/src/lib/date-utils.ts",
-      "source_location": "L85",
+      "source_location": "L57",
       "id": "lib_date_utils_startofdayiso",
       "community": 7,
       "norm_label": "startofdayiso()"
@@ -1571,7 +1571,7 @@
       "label": "toDateString()",
       "file_type": "code",
       "source_file": "backend/src/lib/date-utils.ts",
-      "source_location": "L94",
+      "source_location": "L66",
       "id": "lib_date_utils_todatestring",
       "community": 7,
       "norm_label": "todatestring()"
@@ -1580,7 +1580,7 @@
       "label": "getWeekStart()",
       "file_type": "code",
       "source_file": "backend/src/lib/date-utils.ts",
-      "source_location": "L101",
+      "source_location": "L73",
       "id": "lib_date_utils_getweekstart",
       "community": 7,
       "norm_label": "getweekstart()"
@@ -1589,7 +1589,7 @@
       "label": "formatDateLabel()",
       "file_type": "code",
       "source_file": "backend/src/lib/date-utils.ts",
-      "source_location": "L114",
+      "source_location": "L86",
       "id": "lib_date_utils_formatdatelabel",
       "community": 7,
       "norm_label": "formatdatelabel()"
@@ -1598,7 +1598,7 @@
       "label": "shortDayName()",
       "file_type": "code",
       "source_file": "backend/src/lib/date-utils.ts",
-      "source_location": "L130",
+      "source_location": "L102",
       "id": "lib_date_utils_shortdayname",
       "community": 7,
       "norm_label": "shortdayname()"
@@ -1607,7 +1607,7 @@
       "label": "monthYearLabel()",
       "file_type": "code",
       "source_file": "backend/src/lib/date-utils.ts",
-      "source_location": "L137",
+      "source_location": "L109",
       "id": "lib_date_utils_monthyearlabel",
       "community": 7,
       "norm_label": "monthyearlabel()"
@@ -1640,12 +1640,75 @@
       "norm_label": "senddevicecommand()"
     },
     {
+      "label": "madrid-time.ts",
+      "file_type": "code",
+      "source_file": "backend/src/lib/madrid-time.ts",
+      "source_location": "L1",
+      "id": "lib_madrid_time",
+      "community": 401,
+      "norm_label": "madrid-time.ts"
+    },
+    {
+      "label": "localParts",
+      "file_type": "code",
+      "source_file": "backend/src/lib/madrid-time.ts",
+      "source_location": "L24",
+      "id": "lib_madrid_time_localparts",
+      "community": 401,
+      "norm_label": "localparts"
+    },
+    {
+      "label": "fmt",
+      "file_type": "code",
+      "source_file": "backend/src/lib/madrid-time.ts",
+      "source_location": "L12",
+      "id": "lib_madrid_time_fmt",
+      "community": 71,
+      "norm_label": "fmt"
+    },
+    {
+      "label": "DOW",
+      "file_type": "code",
+      "source_file": "backend/src/lib/madrid-time.ts",
+      "source_location": "L22",
+      "id": "lib_madrid_time_dow",
+      "community": 401,
+      "norm_label": "dow"
+    },
+    {
+      "label": "toMinutes()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/madrid-time.ts",
+      "source_location": "L34",
+      "id": "lib_madrid_time_tominutes",
+      "community": 401,
+      "norm_label": "tominutes()"
+    },
+    {
+      "label": "localToUtc()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/madrid-time.ts",
+      "source_location": "L41",
+      "id": "lib_madrid_time_localtoutc",
+      "community": 401,
+      "norm_label": "localtoutc()"
+    },
+    {
+      "label": "startOfLocalDay()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/madrid-time.ts",
+      "source_location": "L52",
+      "id": "lib_madrid_time_startoflocalday",
+      "community": 401,
+      "norm_label": "startoflocalday()"
+    },
+    {
       "label": "n8n.ts",
       "file_type": "code",
       "source_file": "backend/src/lib/n8n.ts",
       "source_location": "L1",
       "id": "lib_n8n",
-      "community": 401,
+      "community": 43,
       "norm_label": "n8n.ts"
     },
     {
@@ -1654,7 +1717,7 @@
       "source_file": "backend/src/lib/n8n.ts",
       "source_location": "L11",
       "id": "lib_n8n_withqueuesecrets",
-      "community": 401,
+      "community": 43,
       "norm_label": "withqueuesecrets()"
     },
     {
@@ -1663,7 +1726,7 @@
       "source_file": "backend/src/lib/n8n.ts",
       "source_location": "L18",
       "id": "lib_n8n_stripqueuesecrets",
-      "community": 401,
+      "community": 43,
       "norm_label": "stripqueuesecrets()"
     },
     {
@@ -1672,7 +1735,7 @@
       "source_file": "backend/src/lib/n8n.ts",
       "source_location": "L32",
       "id": "lib_n8n_webhook_paths",
-      "community": 401,
+      "community": 43,
       "norm_label": "webhook_paths"
     },
     {
@@ -1681,7 +1744,7 @@
       "source_file": "backend/src/lib/n8n.ts",
       "source_location": "L45",
       "id": "lib_n8n_n8nworkflow",
-      "community": 401,
+      "community": 43,
       "norm_label": "n8nworkflow"
     },
     {
@@ -1690,7 +1753,7 @@
       "source_file": "backend/src/lib/n8n.ts",
       "source_location": "L47",
       "id": "lib_n8n_dispatchn8nwebhook",
-      "community": 401,
+      "community": 43,
       "norm_label": "dispatchn8nwebhook()"
     },
     {
@@ -1699,7 +1762,7 @@
       "source_file": "backend/src/lib/n8n.ts",
       "source_location": "L78",
       "id": "lib_n8n_triggerworkflow",
-      "community": 401,
+      "community": 43,
       "norm_label": "triggerworkflow()"
     },
     {
@@ -1721,55 +1784,10 @@
       "norm_label": "workschedule"
     },
     {
-      "label": "LocalParts",
-      "file_type": "code",
-      "source_file": "backend/src/lib/notify.ts",
-      "source_location": "L18",
-      "id": "lib_notify_localparts",
-      "community": 401,
-      "norm_label": "localparts"
-    },
-    {
-      "label": "fmt",
-      "file_type": "code",
-      "source_file": "backend/src/lib/notify.ts",
-      "source_location": "L24",
-      "id": "lib_notify_fmt",
-      "community": 71,
-      "norm_label": "fmt"
-    },
-    {
-      "label": "DOW",
-      "file_type": "code",
-      "source_file": "backend/src/lib/notify.ts",
-      "source_location": "L34",
-      "id": "lib_notify_dow",
-      "community": 401,
-      "norm_label": "dow"
-    },
-    {
-      "label": "toMinutes()",
-      "file_type": "code",
-      "source_file": "backend/src/lib/notify.ts",
-      "source_location": "L45",
-      "id": "lib_notify_tominutes",
-      "community": 401,
-      "norm_label": "tominutes()"
-    },
-    {
-      "label": "localToUtc()",
-      "file_type": "code",
-      "source_file": "backend/src/lib/notify.ts",
-      "source_location": "L51",
-      "id": "lib_notify_localtoutc",
-      "community": 401,
-      "norm_label": "localtoutc()"
-    },
-    {
       "label": "nextWorkingStart()",
       "file_type": "code",
       "source_file": "backend/src/lib/notify.ts",
-      "source_location": "L65",
+      "source_location": "L24",
       "id": "lib_notify_nextworkingstart",
       "community": 401,
       "norm_label": "nextworkingstart()"
@@ -1778,7 +1796,7 @@
       "label": "loadSchedule()",
       "file_type": "code",
       "source_file": "backend/src/lib/notify.ts",
-      "source_location": "L81",
+      "source_location": "L40",
       "id": "lib_notify_loadschedule",
       "community": 401,
       "norm_label": "loadschedule()"
@@ -1787,7 +1805,7 @@
       "label": "notify()",
       "file_type": "code",
       "source_file": "backend/src/lib/notify.ts",
-      "source_location": "L105",
+      "source_location": "L64",
       "id": "lib_notify_notify",
       "community": 401,
       "norm_label": "notify()"
@@ -1796,18 +1814,18 @@
       "label": "flushOutbox()",
       "file_type": "code",
       "source_file": "backend/src/lib/notify.ts",
-      "source_location": "L140",
+      "source_location": "L99",
       "id": "lib_notify_flushoutbox",
-      "community": 401,
+      "community": 47,
       "norm_label": "flushoutbox()"
     },
     {
       "label": "startOutboxFlusher()",
       "file_type": "code",
       "source_file": "backend/src/lib/notify.ts",
-      "source_location": "L161",
+      "source_location": "L120",
       "id": "lib_notify_startoutboxflusher",
-      "community": 402,
+      "community": 20,
       "norm_label": "startoutboxflusher()"
     },
     {
@@ -1816,7 +1834,7 @@
       "source_file": "backend/src/lib/postgrest.ts",
       "source_location": "L1",
       "id": "lib_postgrest",
-      "community": 403,
+      "community": 41,
       "norm_label": "postgrest.ts"
     },
     {
@@ -1825,8 +1843,188 @@
       "source_file": "backend/src/lib/postgrest.ts",
       "source_location": "L6",
       "id": "lib_postgrest_ilikeanyfilter",
-      "community": 403,
+      "community": 41,
       "norm_label": "ilikeanyfilter()"
+    },
+    {
+      "label": "schedule.test.ts",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L1",
+      "id": "lib_schedule_test",
+      "community": 401,
+      "norm_label": "schedule.test.ts"
+    },
+    {
+      "label": "base",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L6",
+      "id": "lib_schedule_test_base",
+      "community": 401,
+      "norm_label": "base"
+    },
+    {
+      "label": "tue()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L17",
+      "id": "lib_schedule_test_tue",
+      "community": 401,
+      "norm_label": "tue()"
+    },
+    {
+      "label": "hhmm()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L21",
+      "id": "lib_schedule_test_hhmm",
+      "community": 401,
+      "norm_label": "hhmm()"
+    },
+    {
+      "label": "evalAt()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L26",
+      "id": "lib_schedule_test_evalat",
+      "community": 401,
+      "norm_label": "evalat()"
+    },
+    {
+      "label": "schedule.ts",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L1",
+      "id": "lib_schedule",
+      "community": 401,
+      "norm_label": "schedule.ts"
+    },
+    {
+      "label": "ScheduleFlag",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L12",
+      "id": "lib_schedule_scheduleflag",
+      "community": 401,
+      "norm_label": "scheduleflag"
+    },
+    {
+      "label": "ScheduleSettings",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L14",
+      "id": "lib_schedule_schedulesettings",
+      "community": 401,
+      "norm_label": "schedulesettings"
+    },
+    {
+      "label": "PAUSE_TYPES",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L25",
+      "id": "lib_schedule_pause_types",
+      "community": 401,
+      "norm_label": "pause_types"
+    },
+    {
+      "label": "isWorkingDay()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L27",
+      "id": "lib_schedule_isworkingday",
+      "community": 401,
+      "norm_label": "isworkingday()"
+    },
+    {
+      "label": "dayDurationMinutes()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L33",
+      "id": "lib_schedule_daydurationminutes",
+      "community": 401,
+      "norm_label": "daydurationminutes()"
+    },
+    {
+      "label": "latestOnTimeEntry()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L38",
+      "id": "lib_schedule_latestontimeentry",
+      "community": 401,
+      "norm_label": "latestontimeentry()"
+    },
+    {
+      "label": "expectedExit()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L46",
+      "id": "lib_schedule_expectedexit",
+      "community": 401,
+      "norm_label": "expectedexit()"
+    },
+    {
+      "label": "EvaluateInput",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L55",
+      "id": "lib_schedule_evaluateinput",
+      "community": 401,
+      "norm_label": "evaluateinput"
+    },
+    {
+      "label": "evaluateFichaje()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L64",
+      "id": "lib_schedule_evaluatefichaje",
+      "community": 401,
+      "norm_label": "evaluatefichaje()"
+    },
+    {
+      "label": "cache",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L83",
+      "id": "lib_schedule_cache",
+      "community": 401,
+      "norm_label": "cache"
+    },
+    {
+      "label": "loadScheduleSettings()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L85",
+      "id": "lib_schedule_loadschedulesettings",
+      "community": 401,
+      "norm_label": "loadschedulesettings()"
+    },
+    {
+      "label": "invalidateScheduleSettings()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L121",
+      "id": "lib_schedule_invalidateschedulesettings",
+      "community": 401,
+      "norm_label": "invalidateschedulesettings()"
+    },
+    {
+      "label": "firstInOfDay()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L126",
+      "id": "lib_schedule_firstinofday",
+      "community": 401,
+      "norm_label": "firstinofday()"
+    },
+    {
+      "label": "scheduleFlagFor()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L142",
+      "id": "lib_schedule_scheduleflagfor",
+      "community": 401,
+      "norm_label": "scheduleflagfor()"
     },
     {
       "label": "supabase.ts",
@@ -2174,7 +2372,7 @@
       "label": "RETRY_DELAYS_MS",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L10",
+      "source_location": "L11",
       "id": "services_signalr_listener_retry_delays_ms",
       "community": 43,
       "norm_label": "retry_delays_ms"
@@ -2183,7 +2381,7 @@
       "label": "ConnectionStatus",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L12",
+      "source_location": "L13",
       "id": "services_signalr_listener_connectionstatus",
       "community": 43,
       "norm_label": "connectionstatus"
@@ -2192,16 +2390,16 @@
       "label": "getSignalRStatus()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L22",
+      "source_location": "L23",
       "id": "services_signalr_listener_getsignalrstatus",
-      "community": 402,
+      "community": 20,
       "norm_label": "getsignalrstatus()"
     },
     {
       "label": "markDown()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L26",
+      "source_location": "L27",
       "id": "services_signalr_listener_markdown",
       "community": 43,
       "norm_label": "markdown()"
@@ -2210,7 +2408,7 @@
       "label": "markUp()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L37",
+      "source_location": "L38",
       "id": "services_signalr_listener_markup",
       "community": 43,
       "norm_label": "markup()"
@@ -2219,25 +2417,25 @@
       "label": "checkAndAlertDownConnections()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L47",
+      "source_location": "L48",
       "id": "services_signalr_listener_checkandalertdownconnections",
-      "community": 401,
+      "community": 43,
       "norm_label": "checkandalertdownconnections()"
     },
     {
       "label": "handleAccessEvent()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L78",
+      "source_location": "L79",
       "id": "services_signalr_listener_handleaccessevent",
-      "community": 7,
+      "community": 43,
       "norm_label": "handleaccessevent()"
     },
     {
       "label": "connections",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L256",
+      "source_location": "L265",
       "id": "services_signalr_listener_connections",
       "community": 43,
       "norm_label": "connections"
@@ -2246,7 +2444,7 @@
       "label": "buildConnection()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L258",
+      "source_location": "L267",
       "id": "services_signalr_listener_buildconnection",
       "community": 43,
       "norm_label": "buildconnection()"
@@ -2255,7 +2453,7 @@
       "label": "attachHandlers()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L270",
+      "source_location": "L279",
       "id": "services_signalr_listener_attachhandlers",
       "community": 43,
       "norm_label": "attachhandlers()"
@@ -2264,7 +2462,7 @@
       "label": "retryConnectionLoop()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L319",
+      "source_location": "L328",
       "id": "services_signalr_listener_retryconnectionloop",
       "community": 43,
       "norm_label": "retryconnectionloop()"
@@ -2273,7 +2471,7 @@
       "label": "startCompanyConnection()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L336",
+      "source_location": "L345",
       "id": "services_signalr_listener_startcompanyconnection",
       "community": 43,
       "norm_label": "startcompanyconnection()"
@@ -2282,7 +2480,7 @@
       "label": "startSignalRListener()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L371",
+      "source_location": "L380",
       "id": "services_signalr_listener_startsignalrlistener",
       "community": 43,
       "norm_label": "startsignalrlistener()"
@@ -2291,7 +2489,7 @@
       "label": "restartCompanyConnection()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L412",
+      "source_location": "L421",
       "id": "services_signalr_listener_restartcompanyconnection",
       "community": 43,
       "norm_label": "restartcompanyconnection()"
@@ -2300,7 +2498,7 @@
       "label": "stopSignalRListener()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L449",
+      "source_location": "L458",
       "id": "services_signalr_listener_stopsignalrlistener",
       "community": 43,
       "norm_label": "stopsignalrlistener()"
@@ -2311,7 +2509,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L1",
       "id": "services_sse_broadcaster",
-      "community": 20,
+      "community": 52,
       "norm_label": "sse-broadcaster.ts"
     },
     {
@@ -2320,7 +2518,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L4",
       "id": "services_sse_broadcaster_sseevent",
-      "community": 20,
+      "community": 52,
       "norm_label": "sseevent"
     },
     {
@@ -2329,7 +2527,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L5",
       "id": "services_sse_broadcaster_emitfn",
-      "community": 20,
+      "community": 52,
       "norm_label": "emitfn"
     },
     {
@@ -2338,7 +2536,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L7",
       "id": "services_sse_broadcaster_ssebroadcaster",
-      "community": 20,
+      "community": 52,
       "norm_label": "ssebroadcaster"
     },
     {
@@ -2347,7 +2545,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L11",
       "id": "services_sse_broadcaster_ssebroadcaster_addconnection",
-      "community": 20,
+      "community": 52,
       "norm_label": ".addconnection()"
     },
     {
@@ -2356,7 +2554,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L20",
       "id": "services_sse_broadcaster_ssebroadcaster_removeconnection",
-      "community": 20,
+      "community": 52,
       "norm_label": ".removeconnection()"
     },
     {
@@ -2365,7 +2563,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L24",
       "id": "services_sse_broadcaster_ssebroadcaster_emit",
-      "community": 20,
+      "community": 52,
       "norm_label": ".emit()"
     },
     {
@@ -2374,7 +2572,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L36",
       "id": "services_sse_broadcaster_ssebroadcaster_addcompanyconnection",
-      "community": 20,
+      "community": 52,
       "norm_label": ".addcompanyconnection()"
     },
     {
@@ -2383,7 +2581,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L45",
       "id": "services_sse_broadcaster_ssebroadcaster_removecompanyconnection",
-      "community": 20,
+      "community": 52,
       "norm_label": ".removecompanyconnection()"
     },
     {
@@ -2392,7 +2590,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L49",
       "id": "services_sse_broadcaster_ssebroadcaster_emittocompany",
-      "community": 20,
+      "community": 52,
       "norm_label": ".emittocompany()"
     },
     {
@@ -2401,7 +2599,7 @@
       "source_file": "backend/src/services/sync-queue.ts",
       "source_location": "L1",
       "id": "services_sync_queue",
-      "community": 401,
+      "community": 43,
       "norm_label": "sync-queue.ts"
     },
     {
@@ -2473,7 +2671,7 @@
       "source_file": "backend/src/types/api.types.ts",
       "source_location": "L1",
       "id": "types_api_types",
-      "community": 402,
+      "community": 20,
       "norm_label": "api.types.ts"
     },
     {
@@ -2482,7 +2680,7 @@
       "source_file": "backend/src/types/api.types.ts",
       "source_location": "L3",
       "id": "types_api_types_apisuccess",
-      "community": 402,
+      "community": 20,
       "norm_label": "apisuccess"
     },
     {
@@ -2491,7 +2689,7 @@
       "source_file": "backend/src/types/api.types.ts",
       "source_location": "L12",
       "id": "types_api_types_apierror",
-      "community": 402,
+      "community": 20,
       "norm_label": "apierror"
     },
     {
@@ -2500,7 +2698,7 @@
       "source_file": "backend/src/types/api.types.ts",
       "source_location": "L20",
       "id": "types_api_types_apiresponse",
-      "community": 402,
+      "community": 20,
       "norm_label": "apiresponse"
     },
     {
@@ -2509,7 +2707,7 @@
       "source_file": "backend/src/types/api.types.ts",
       "source_location": "L22",
       "id": "types_api_types_userrole",
-      "community": 41,
+      "community": 20,
       "norm_label": "userrole"
     },
     {
@@ -2518,7 +2716,7 @@
       "source_file": "backend/src/types/api.types.ts",
       "source_location": "L25",
       "id": "types_api_types_authuser",
-      "community": 402,
+      "community": 20,
       "norm_label": "authuser"
     },
     {
@@ -2527,7 +2725,7 @@
       "source_file": "backend/src/types/api.types.ts",
       "source_location": "L36",
       "id": "types_api_types_appvariables",
-      "community": 402,
+      "community": 20,
       "norm_label": "appvariables"
     },
     {
@@ -2536,7 +2734,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L1",
       "id": "types_supabase_types",
-      "community": 403,
+      "community": 24,
       "norm_label": "supabase.types.ts"
     },
     {
@@ -2545,7 +2743,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L4",
       "id": "types_supabase_types_company",
-      "community": 403,
+      "community": 24,
       "norm_label": "company"
     },
     {
@@ -2554,7 +2752,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L14",
       "id": "types_supabase_types_clockingmodes",
-      "community": 41,
+      "community": 43,
       "norm_label": "clockingmodes"
     },
     {
@@ -2563,7 +2761,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L26",
       "id": "types_supabase_types_companysettings",
-      "community": 403,
+      "community": 24,
       "norm_label": "companysettings"
     },
     {
@@ -2572,7 +2770,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L47",
       "id": "types_supabase_types_profile",
-      "community": 403,
+      "community": 24,
       "norm_label": "profile"
     },
     {
@@ -2581,7 +2779,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L64",
       "id": "types_supabase_types_accesslog",
-      "community": 403,
+      "community": 24,
       "norm_label": "accesslog"
     },
     {
@@ -2590,7 +2788,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L86",
       "id": "types_supabase_types_incidencia",
-      "community": 403,
+      "community": 24,
       "norm_label": "incidencia"
     },
     {
@@ -2599,7 +2797,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L104",
       "id": "types_supabase_types_vacationrequest",
-      "community": 403,
+      "community": 24,
       "norm_label": "vacationrequest"
     },
     {
@@ -2608,7 +2806,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L120",
       "id": "types_supabase_types_fichajeoverride",
-      "community": 403,
+      "community": 24,
       "norm_label": "fichajeoverride"
     },
     {
@@ -2617,7 +2815,7 @@
       "source_file": "backend/src/types/supabase.types.ts",
       "source_location": "L134",
       "id": "types_supabase_types_syncqueueentry",
-      "community": 401,
+      "community": 24,
       "norm_label": "syncqueueentry"
     },
     {
@@ -2661,7 +2859,7 @@
       "file_type": "code",
       "source_file": "backend/tsconfig.json",
       "source_location": "L1",
-      "id": "users_carlosrabadan_antigravity_timetrack_backend_tsconfig_json",
+      "id": "backend_tsconfig",
       "community": 36,
       "norm_label": "tsconfig.json"
     },
@@ -7083,7 +7281,7 @@
       "source_file": "src/pages/admin/AdminAttendancePage.jsx",
       "source_location": "L1",
       "id": "admin_adminattendancepage",
-      "community": 204,
+      "community": 40,
       "norm_label": "adminattendancepage.jsx"
     },
     {
@@ -7092,7 +7290,7 @@
       "source_file": "src/pages/admin/AdminAttendancePage.jsx",
       "source_location": "L8",
       "id": "admin_adminattendancepage_fmtdatetime",
-      "community": 204,
+      "community": 40,
       "norm_label": "fmtdatetime()"
     },
     {
@@ -7101,7 +7299,7 @@
       "source_file": "src/pages/admin/AdminAttendancePage.jsx",
       "source_location": "L16",
       "id": "admin_adminattendancepage_sourceicon",
-      "community": 204,
+      "community": 40,
       "norm_label": "sourceicon()"
     },
     {
@@ -7110,7 +7308,7 @@
       "source_file": "src/pages/admin/AdminAttendancePage.jsx",
       "source_location": "L23",
       "id": "admin_adminattendancepage_sourcelabel",
-      "community": 204,
+      "community": 40,
       "norm_label": "sourcelabel()"
     },
     {
@@ -7119,7 +7317,7 @@
       "source_file": "src/pages/admin/AdminAttendancePage.jsx",
       "source_location": "L32",
       "id": "admin_adminattendancepage_adminattendancepage",
-      "community": 204,
+      "community": 40,
       "norm_label": "adminattendancepage()"
     },
     {
@@ -7537,10 +7735,37 @@
       "norm_label": "default_settings"
     },
     {
+      "label": "toMin()",
+      "file_type": "code",
+      "source_file": "src/pages/admin/AdminSettingsPage.jsx",
+      "source_location": "L79",
+      "id": "admin_adminsettingspage_tomin",
+      "community": 66,
+      "norm_label": "tomin()"
+    },
+    {
+      "label": "fmtMin()",
+      "file_type": "code",
+      "source_file": "src/pages/admin/AdminSettingsPage.jsx",
+      "source_location": "L83",
+      "id": "admin_adminsettingspage_fmtmin",
+      "community": 66,
+      "norm_label": "fmtmin()"
+    },
+    {
+      "label": "ScheduleSettings()",
+      "file_type": "code",
+      "source_file": "src/pages/admin/AdminSettingsPage.jsx",
+      "source_location": "L88",
+      "id": "admin_adminsettingspage_schedulesettings",
+      "community": 66,
+      "norm_label": "schedulesettings()"
+    },
+    {
       "label": "AdminSettingsPage()",
       "file_type": "code",
       "source_file": "src/pages/admin/AdminSettingsPage.jsx",
-      "source_location": "L78",
+      "source_location": "L168",
       "id": "admin_adminsettingspage_adminsettingspage",
       "community": 66,
       "norm_label": "adminsettingspage()"
@@ -7551,7 +7776,7 @@
       "source_file": "src/pages/admin/AdminVacacionesPage.jsx",
       "source_location": "L1",
       "id": "admin_adminvacacionespage",
-      "community": 40,
+      "community": 58,
       "norm_label": "adminvacacionespage.jsx"
     },
     {
@@ -7560,7 +7785,7 @@
       "source_file": "src/pages/admin/AdminVacacionesPage.jsx",
       "source_location": "L8",
       "id": "admin_adminvacacionespage_type_config",
-      "community": 40,
+      "community": 58,
       "norm_label": "type_config"
     },
     {
@@ -7569,7 +7794,7 @@
       "source_file": "src/pages/admin/AdminVacacionesPage.jsx",
       "source_location": "L14",
       "id": "admin_adminvacacionespage_status_badge",
-      "community": 40,
+      "community": 58,
       "norm_label": "status_badge"
     },
     {
@@ -7578,7 +7803,7 @@
       "source_file": "src/pages/admin/AdminVacacionesPage.jsx",
       "source_location": "L20",
       "id": "admin_adminvacacionespage_fmtdate",
-      "community": 40,
+      "community": 58,
       "norm_label": "fmtdate()"
     },
     {
@@ -7587,7 +7812,7 @@
       "source_file": "src/pages/admin/AdminVacacionesPage.jsx",
       "source_location": "L27",
       "id": "admin_adminvacacionespage_fmtcreatedat",
-      "community": 40,
+      "community": 58,
       "norm_label": "fmtcreatedat()"
     },
     {
@@ -7596,7 +7821,7 @@
       "source_file": "src/pages/admin/AdminVacacionesPage.jsx",
       "source_location": "L35",
       "id": "admin_adminvacacionespage_adminvacacionespage",
-      "community": 40,
+      "community": 58,
       "norm_label": "adminvacacionespage()"
     },
     {
@@ -7605,7 +7830,7 @@
       "source_file": "src/pages/employee/CorrectionPage.jsx",
       "source_location": "L1",
       "id": "employee_correctionpage",
-      "community": 52,
+      "community": 204,
       "norm_label": "correctionpage.jsx"
     },
     {
@@ -7614,7 +7839,7 @@
       "source_file": "src/pages/employee/CorrectionPage.jsx",
       "source_location": "L7",
       "id": "employee_correctionpage_type_labels",
-      "community": 52,
+      "community": 204,
       "norm_label": "type_labels"
     },
     {
@@ -7623,7 +7848,7 @@
       "source_file": "src/pages/employee/CorrectionPage.jsx",
       "source_location": "L14",
       "id": "employee_correctionpage_status_badge",
-      "community": 52,
+      "community": 204,
       "norm_label": "status_badge"
     },
     {
@@ -7632,7 +7857,7 @@
       "source_file": "src/pages/employee/CorrectionPage.jsx",
       "source_location": "L20",
       "id": "employee_correctionpage_fmtdatetime",
-      "community": 52,
+      "community": 204,
       "norm_label": "fmtdatetime()"
     },
     {
@@ -7641,7 +7866,7 @@
       "source_file": "src/pages/employee/CorrectionPage.jsx",
       "source_location": "L25",
       "id": "employee_correctionpage_fmtdate",
-      "community": 52,
+      "community": 204,
       "norm_label": "fmtdate()"
     },
     {
@@ -7650,7 +7875,7 @@
       "source_file": "src/pages/employee/CorrectionPage.jsx",
       "source_location": "L30",
       "id": "employee_correctionpage_correctionpage",
-      "community": 52,
+      "community": 204,
       "norm_label": "correctionpage()"
     },
     {
@@ -7965,7 +8190,7 @@
       "source_file": "src/pages/superadmin/SuperAdminCompaniesPage.jsx",
       "source_location": "L1",
       "id": "superadmin_superadmincompaniespage",
-      "community": 204,
+      "community": 59,
       "norm_label": "superadmincompaniespage.jsx"
     },
     {
@@ -7974,7 +8199,7 @@
       "source_file": "src/pages/superadmin/SuperAdminCompaniesPage.jsx",
       "source_location": "L7",
       "id": "superadmin_superadmincompaniespage_tabs",
-      "community": 204,
+      "community": 59,
       "norm_label": "tabs"
     },
     {
@@ -7983,7 +8208,7 @@
       "source_file": "src/pages/superadmin/SuperAdminCompaniesPage.jsx",
       "source_location": "L9",
       "id": "superadmin_superadmincompaniespage_defaultclockingmodes",
-      "community": 204,
+      "community": 59,
       "norm_label": "defaultclockingmodes"
     },
     {
@@ -7992,7 +8217,7 @@
       "source_file": "src/pages/superadmin/SuperAdminCompaniesPage.jsx",
       "source_location": "L15",
       "id": "superadmin_superadmincompaniespage_defaultform",
-      "community": 204,
+      "community": 59,
       "norm_label": "defaultform"
     },
     {
@@ -8001,7 +8226,7 @@
       "source_file": "src/pages/superadmin/SuperAdminCompaniesPage.jsx",
       "source_location": "L24",
       "id": "superadmin_superadmincompaniespage_clockingmodebadges",
-      "community": 204,
+      "community": 59,
       "norm_label": "clockingmodebadges()"
     },
     {
@@ -8010,7 +8235,7 @@
       "source_file": "src/pages/superadmin/SuperAdminCompaniesPage.jsx",
       "source_location": "L47",
       "id": "superadmin_superadmincompaniespage_superadmincompaniespage",
-      "community": 204,
+      "community": 59,
       "norm_label": "superadmincompaniespage()"
     },
     {
@@ -10807,7 +11032,7 @@
       "label": "Agent skills",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L578",
+      "source_location": "L588",
       "id": "claude_agent_skills",
       "community": 69,
       "norm_label": "agent skills"
@@ -10816,7 +11041,7 @@
       "label": "Issue tracker",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L580",
+      "source_location": "L590",
       "id": "claude_issue_tracker",
       "community": 69,
       "norm_label": "issue tracker"
@@ -10825,7 +11050,7 @@
       "label": "Triage labels",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L584",
+      "source_location": "L594",
       "id": "claude_triage_labels",
       "community": 69,
       "norm_label": "triage labels"
@@ -10834,7 +11059,7 @@
       "label": "Domain docs",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L588",
+      "source_location": "L598",
       "id": "claude_domain_docs",
       "community": 69,
       "norm_label": "domain docs"
@@ -10843,7 +11068,7 @@
       "label": "graphify",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L592",
+      "source_location": "L602",
       "id": "claude_graphify",
       "community": 69,
       "norm_label": "graphify"
@@ -12647,6 +12872,78 @@
       "id": "security_audit_scan_metadata",
       "community": 4,
       "norm_label": "scan metadata"
+    },
+    {
+      "label": "package.json",
+      "file_type": "code",
+      "source_file": "backend/package.json",
+      "source_location": "L1",
+      "community": 28,
+      "norm_label": "package.json",
+      "id": "users_carlosrabadan_antigravity_timetrack_backend_package_json"
+    },
+    {
+      "label": "checkOutOfSchedule()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/date-utils.ts",
+      "source_location": "L31",
+      "community": 7,
+      "norm_label": "checkoutofschedule()",
+      "id": "lib_date_utils_checkoutofschedule"
+    },
+    {
+      "label": "LocalParts",
+      "file_type": "code",
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L18",
+      "community": 401,
+      "norm_label": "localparts",
+      "id": "lib_notify_localparts"
+    },
+    {
+      "label": "fmt",
+      "file_type": "code",
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L24",
+      "community": 71,
+      "norm_label": "fmt",
+      "id": "lib_notify_fmt"
+    },
+    {
+      "label": "DOW",
+      "file_type": "code",
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L34",
+      "community": 401,
+      "norm_label": "dow",
+      "id": "lib_notify_dow"
+    },
+    {
+      "label": "toMinutes()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L45",
+      "community": 401,
+      "norm_label": "tominutes()",
+      "id": "lib_notify_tominutes"
+    },
+    {
+      "label": "localToUtc()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L51",
+      "community": 401,
+      "norm_label": "localtoutc()",
+      "id": "lib_notify_localtoutc"
+    },
+    {
+      "label": "tsconfig.json",
+      "file_type": "code",
+      "source_file": "backend/tsconfig.json",
+      "source_location": "L1",
+      "community": 36,
+      "norm_label": "tsconfig.json",
+      "id": "users_carlosrabadan_antigravity_timetrack_backend_tsconfig_json"
     },
     {
       "label": "HANDOFF.md",
@@ -21797,7 +22094,7 @@
       "file_type": "document",
       "source_file": "n8n-skills/skills/n8n-mcp-tools-expert/SKILL.md",
       "source_location": "L28",
-      "community": 62,
+      "community": 61,
       "norm_label": "quick reference",
       "id": "n8n_mcp_tools_expert_skill_quick_reference"
     },
@@ -21806,7 +22103,7 @@
       "file_type": "document",
       "source_file": "n8n-skills/skills/n8n-mcp-tools-expert/SKILL.md",
       "source_location": "L30",
-      "community": 62,
+      "community": 61,
       "norm_label": "most used tools (by success rate)",
       "id": "n8n_mcp_tools_expert_skill_most_used_tools_by_success_rate"
     },
@@ -22130,7 +22427,7 @@
       "file_type": "document",
       "source_file": "n8n-skills/skills/n8n-mcp-tools-expert/SKILL.md",
       "source_location": "L715",
-      "community": 395,
+      "community": 62,
       "norm_label": "security & audit",
       "id": "n8n_mcp_tools_expert_skill_security_audit"
     },
@@ -22139,7 +22436,7 @@
       "file_type": "document",
       "source_file": "n8n-skills/skills/n8n-mcp-tools-expert/SKILL.md",
       "source_location": "L717",
-      "community": 395,
+      "community": 62,
       "norm_label": "n8n_audit_instance",
       "id": "n8n_mcp_tools_expert_skill_n8n_audit_instance"
     },
@@ -30086,15 +30383,6 @@
       "id": "backend_node_red_flow"
     },
     {
-      "label": "package.json",
-      "file_type": "code",
-      "source_file": "backend/package.json",
-      "source_location": "L1",
-      "community": 28,
-      "norm_label": "package.json",
-      "id": "backend_package"
-    },
-    {
       "label": "twoFaSchema",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
@@ -30102,15 +30390,6 @@
       "community": 7,
       "norm_label": "twofaschema",
       "id": "routes_me_twofaschema"
-    },
-    {
-      "label": "tsconfig.json",
-      "file_type": "code",
-      "source_file": "backend/tsconfig.json",
-      "source_location": "L1",
-      "community": 36,
-      "norm_label": "tsconfig.json",
-      "id": "backend_tsconfig"
     },
     {
       "label": "devices.json",
@@ -31103,7 +31382,7 @@
       "source_location": "L11",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_backend_package_json",
+      "source": "backend_package",
       "target": "backend_package_dependencies"
     },
     {
@@ -31113,7 +31392,7 @@
       "source_location": "L22",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_backend_package_json",
+      "source": "backend_package",
       "target": "backend_package_devdependencies"
     },
     {
@@ -31123,7 +31402,7 @@
       "source_location": "L2",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_backend_package_json",
+      "source": "backend_package",
       "target": "backend_package_name"
     },
     {
@@ -31133,7 +31412,7 @@
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_backend_package_json",
+      "source": "backend_package",
       "target": "backend_package_private"
     },
     {
@@ -31143,7 +31422,7 @@
       "source_location": "L6",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_backend_package_json",
+      "source": "backend_package",
       "target": "backend_package_scripts"
     },
     {
@@ -31153,7 +31432,7 @@
       "source_location": "L5",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_backend_package_json",
+      "source": "backend_package",
       "target": "backend_package_type"
     },
     {
@@ -31163,7 +31442,7 @@
       "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_backend_package_json",
+      "source": "backend_package",
       "target": "backend_package_version"
     },
     {
@@ -31173,7 +31452,7 @@
       "source_location": "L2",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "backend_package",
+      "source": "users_carlosrabadan_antigravity_timetrack_backend_package_json",
       "target": "backend_package_name"
     },
     {
@@ -31183,7 +31462,7 @@
       "source_location": "L3",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "backend_package",
+      "source": "users_carlosrabadan_antigravity_timetrack_backend_package_json",
       "target": "backend_package_version"
     },
     {
@@ -31193,7 +31472,7 @@
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "backend_package",
+      "source": "users_carlosrabadan_antigravity_timetrack_backend_package_json",
       "target": "backend_package_private"
     },
     {
@@ -31203,18 +31482,8 @@
       "source_location": "L5",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "backend_package",
+      "source": "users_carlosrabadan_antigravity_timetrack_backend_package_json",
       "target": "backend_package_type"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "backend/package.json",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "backend_package",
-      "target": "backend_package_scripts"
     },
     {
       "relation": "contains",
@@ -31250,11 +31519,21 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/package.json",
-      "source_location": "L11",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "backend_package_scripts",
+      "target": "backend_package_scripts_test",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/package.json",
+      "source_location": "L6",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "backend_package",
-      "target": "backend_package_dependencies"
+      "source": "users_carlosrabadan_antigravity_timetrack_backend_package_json",
+      "target": "backend_package_scripts"
     },
     {
       "relation": "contains",
@@ -31350,11 +31629,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/package.json",
-      "source_location": "L22",
+      "source_location": "L11",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "backend_package",
-      "target": "backend_package_devdependencies"
+      "source": "users_carlosrabadan_antigravity_timetrack_backend_package_json",
+      "target": "backend_package_dependencies"
     },
     {
       "relation": "contains",
@@ -31395,6 +31674,16 @@
       "confidence_score": 1.0,
       "source": "backend_package_devdependencies",
       "target": "backend_package_devdependencies_typescript"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/package.json",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "users_carlosrabadan_antigravity_timetrack_backend_package_json",
+      "target": "backend_package_devdependencies"
     },
     {
       "relation": "imports",
@@ -32222,6 +32511,17 @@
       "target": "lib_crypto_settings_encryptsetting"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/admin.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "routes_admin",
+      "target": "lib_madrid_time_localtoutc",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -32286,6 +32586,28 @@
       "confidence_score": 1.0,
       "source": "routes_admin",
       "target": "lib_postgrest_ilikeanyfilter"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/admin.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "routes_admin",
+      "target": "lib_schedule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/admin.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "routes_admin",
+      "target": "lib_schedule_invalidateschedulesettings",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -33348,6 +33670,61 @@
       "confidence_score": 1.0,
       "source": "routes_me",
       "target": "lib_date_utils_todatestring"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/me.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "routes_me",
+      "target": "lib_schedule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/me.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "routes_me",
+      "target": "lib_schedule_expectedexit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/me.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "routes_me",
+      "target": "lib_schedule_firstinofday",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/me.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "routes_me",
+      "target": "lib_schedule_loadschedulesettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/me.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "routes_me",
+      "target": "lib_schedule_scheduleflagfor",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -35378,6 +35755,308 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/madrid-time.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "lib_madrid_time",
+      "target": "lib_madrid_time_dow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/madrid-time.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "lib_madrid_time",
+      "target": "lib_madrid_time_fmt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/madrid-time.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "lib_madrid_time",
+      "target": "lib_madrid_time_localparts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/madrid-time.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "lib_madrid_time",
+      "target": "lib_madrid_time_localtoutc",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/madrid-time.ts",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "lib_madrid_time",
+      "target": "lib_madrid_time_startoflocalday",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/madrid-time.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "lib_madrid_time",
+      "target": "lib_madrid_time_tominutes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "lib_notify",
+      "target": "lib_madrid_time",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_madrid_time",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "lib_schedule_test",
+      "target": "lib_madrid_time",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "lib_notify",
+      "target": "lib_madrid_time_localparts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_madrid_time_localparts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "lib_schedule_isworkingday",
+      "target": "lib_madrid_time_localparts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "lib_schedule_test",
+      "target": "lib_madrid_time_localparts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "lib_schedule_test_hhmm",
+      "target": "lib_madrid_time_localparts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src/pages/employee/HistoryPage.jsx",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "employee_historypage_periodsubtitle",
+      "target": "lib_madrid_time_fmt"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "lib_notify",
+      "target": "lib_madrid_time_tominutes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "lib_notify_nextworkingstart",
+      "target": "lib_madrid_time_tominutes"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_madrid_time_tominutes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "lib_schedule_daydurationminutes",
+      "target": "lib_madrid_time_tominutes"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "lib_schedule_expectedexit",
+      "target": "lib_madrid_time_tominutes"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "lib_schedule_latestontimeentry",
+      "target": "lib_madrid_time_tominutes"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/madrid-time.ts",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "lib_madrid_time_startoflocalday",
+      "target": "lib_madrid_time_localtoutc",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "lib_notify",
+      "target": "lib_madrid_time_localtoutc",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "lib_notify_nextworkingstart",
+      "target": "lib_madrid_time_localtoutc"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_madrid_time_localtoutc",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "lib_schedule_expectedexit",
+      "target": "lib_madrid_time_localtoutc"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_madrid_time_startoflocalday",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L133",
+      "weight": 1.0,
+      "source": "lib_schedule_firstinofday",
+      "target": "lib_madrid_time_startoflocalday"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "backend/src/lib/n8n.ts",
       "source_location": "L24",
       "weight": 1.0,
@@ -35749,43 +36428,10 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "backend/src/lib/notify.ts",
-      "source_location": "L55",
-      "weight": 1.0,
-      "source": "lib_notify_localtoutc",
-      "target": "lib_notify_localparts"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "backend/src/lib/notify.ts",
       "source_location": "L70",
       "weight": 1.0,
       "source": "lib_notify_nextworkingstart",
       "target": "lib_notify_localparts"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "src/pages/employee/HistoryPage.jsx",
-      "source_location": "L47",
-      "weight": 1.0,
-      "source": "employee_historypage_periodsubtitle",
-      "target": "lib_notify_fmt"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "backend/src/lib/notify.ts",
-      "source_location": "L66",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "lib_notify_nextworkingstart",
-      "target": "lib_notify_tominutes"
     },
     {
       "relation": "calls",
@@ -35797,6 +36443,17 @@
       "confidence_score": 1.0,
       "source": "lib_notify_nextworkingstart",
       "target": "lib_notify_localtoutc"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L66",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_notify_nextworkingstart",
+      "target": "lib_notify_tominutes"
     },
     {
       "relation": "calls",
@@ -35862,6 +36519,395 @@
       "confidence_score": 1.0,
       "source": "lib_postgrest",
       "target": "lib_postgrest_ilikeanyfilter"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "lib_schedule_test",
+      "target": "lib_schedule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "lib_schedule_test",
+      "target": "lib_schedule_evaluatefichaje",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "lib_schedule_test",
+      "target": "lib_schedule_expectedexit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "lib_schedule_test",
+      "target": "lib_schedule_schedulesettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "lib_schedule_test",
+      "target": "lib_schedule_test_base",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "lib_schedule_test",
+      "target": "lib_schedule_test_evalat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "lib_schedule_test",
+      "target": "lib_schedule_test_hhmm",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "lib_schedule_test",
+      "target": "lib_schedule_test_tue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "lib_schedule_test_evalat",
+      "target": "lib_schedule_test_tue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "lib_schedule_test_evalat",
+      "target": "lib_schedule_evaluatefichaje",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L83",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_cache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_daydurationminutes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_evaluatefichaje",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_evaluateinput",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_expectedexit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L126",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_firstinofday",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L121",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_invalidateschedulesettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_isworkingday",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_latestontimeentry",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L85",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_loadschedulesettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_pause_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_scheduleflag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L142",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_scheduleflagfor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_schedulesettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_supabase_getsupabaseadmin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/services/signalr-listener.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "services_signalr_listener",
+      "target": "lib_schedule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "lib_schedule_evaluatefichaje",
+      "target": "lib_schedule_isworkingday",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "lib_schedule_expectedexit",
+      "target": "lib_schedule_daydurationminutes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "lib_schedule_evaluatefichaje",
+      "target": "lib_schedule_latestontimeentry",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L74",
+      "weight": 1.0,
+      "source": "lib_schedule_evaluatefichaje",
+      "target": "lib_schedule_expectedexit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L154",
+      "weight": 1.0,
+      "source": "lib_schedule_scheduleflagfor",
+      "target": "lib_schedule_evaluatefichaje",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "lib_schedule_loadschedulesettings",
+      "target": "lib_supabase_getsupabaseadmin"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L151",
+      "weight": 1.0,
+      "source": "lib_schedule_scheduleflagfor",
+      "target": "lib_schedule_loadschedulesettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L127",
+      "weight": 1.0,
+      "source": "lib_schedule_firstinofday",
+      "target": "lib_supabase_getsupabaseadmin"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L153",
+      "weight": 1.0,
+      "source": "lib_schedule_scheduleflagfor",
+      "target": "lib_schedule_firstinofday",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/services/signalr-listener.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "services_signalr_listener",
+      "target": "lib_schedule_scheduleflagfor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/services/signalr-listener.ts",
+      "source_location": "L219",
+      "weight": 1.0,
+      "source": "services_signalr_listener_handleaccessevent",
+      "target": "lib_schedule_scheduleflagfor"
     },
     {
       "relation": "contains",
@@ -37163,7 +38209,7 @@
       "source_location": "L2",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_backend_tsconfig_json",
+      "source": "backend_tsconfig",
       "target": "backend_tsconfig_compileroptions"
     },
     {
@@ -37173,7 +38219,7 @@
       "source_location": "L22",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_backend_tsconfig_json",
+      "source": "backend_tsconfig",
       "target": "backend_tsconfig_exclude"
     },
     {
@@ -37183,18 +38229,8 @@
       "source_location": "L21",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_backend_tsconfig_json",
-      "target": "backend_tsconfig_include"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "backend/tsconfig.json",
-      "source_location": "L2",
-      "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "backend_tsconfig",
-      "target": "backend_tsconfig_compileroptions"
+      "target": "backend_tsconfig_include"
     },
     {
       "relation": "contains",
@@ -37370,10 +38406,20 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/tsconfig.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "users_carlosrabadan_antigravity_timetrack_backend_tsconfig_json",
+      "target": "backend_tsconfig_compileroptions"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/tsconfig.json",
       "source_location": "L21",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "backend_tsconfig",
+      "source": "users_carlosrabadan_antigravity_timetrack_backend_tsconfig_json",
       "target": "backend_tsconfig_include"
     },
     {
@@ -37383,7 +38429,7 @@
       "source_location": "L22",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "backend_tsconfig",
+      "source": "users_carlosrabadan_antigravity_timetrack_backend_tsconfig_json",
       "target": "backend_tsconfig_exclude"
     },
     {
@@ -43704,6 +44750,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/pages/admin/AdminSettingsPage.jsx",
+      "source_location": "L83",
+      "weight": 1.0,
+      "source": "admin_adminsettingspage",
+      "target": "admin_adminsettingspage_fmtmin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/admin/AdminSettingsPage.jsx",
       "source_location": "L45",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -43719,6 +44775,48 @@
       "confidence_score": 1.0,
       "source": "admin_adminsettingspage",
       "target": "admin_adminsettingspage_mapclickhandler"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/admin/AdminSettingsPage.jsx",
+      "source_location": "L88",
+      "weight": 1.0,
+      "source": "admin_adminsettingspage",
+      "target": "admin_adminsettingspage_schedulesettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/admin/AdminSettingsPage.jsx",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "admin_adminsettingspage",
+      "target": "admin_adminsettingspage_tomin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/admin/AdminSettingsPage.jsx",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "admin_adminsettingspage_schedulesettings",
+      "target": "admin_adminsettingspage_tomin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/admin/AdminSettingsPage.jsx",
+      "source_location": "L138",
+      "weight": 1.0,
+      "source": "admin_adminsettingspage_schedulesettings",
+      "target": "admin_adminsettingspage_fmtmin",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -44002,6 +45100,17 @@
       "confidence_score": 1.0,
       "source": "employee_historypage_historypage",
       "target": "employee_historypage_periodsubtitle"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "src/pages/employee/HistoryPage.jsx",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "employee_historypage_periodsubtitle",
+      "target": "lib_notify_fmt"
     },
     {
       "relation": "contains",
@@ -49605,6 +50714,17 @@
       "confidence_score": 1.0,
       "source": "security_audit_dependency_vulnerabilities",
       "target": "security_audit_frontend_package_json_npm_audit_summary"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "lib_notify_localtoutc",
+      "target": "lib_notify_localparts"
     },
     {
       "relation": "contains",
@@ -68858,5 +69978,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "7fc0644d1cdf010d8cca2a1928c36973d469b6ac"
+  "built_at_commit": "6e042b660bda14c95d052d9974af08b043445711"
 }

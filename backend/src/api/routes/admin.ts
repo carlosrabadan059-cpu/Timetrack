@@ -12,6 +12,7 @@ import type { AppVariables } from '../../types/api.types.js';
 import type { ClockingModes } from '../../types/supabase.types.js';
 import type { AcUser } from '../../types/ac.types.js';
 import { audited } from '../../lib/audit.js';
+import { invalidateScheduleSettings } from '../../lib/schedule.js';
 import { localToUtc } from '../../lib/notify.js';
 import { buildCompanyRegistroXlsx, type RegistroEmployee } from './historial.js';
 import type { AccessLog } from '../../types/supabase.types.js';
@@ -151,7 +152,7 @@ admin.get('/access-logs', requireRole(['admin', 'manager']), audited('DATA_VIEW'
 
   let logsQuery = sb
     .from('access_logs')
-    .select('id, user_id, direction, detail_type, timestamp, source, corrected, latitude, longitude, within_geofence, out_of_schedule', { count: 'exact' })
+    .select('id, user_id, direction, detail_type, timestamp, source, corrected, latitude, longitude, within_geofence, out_of_schedule, schedule_flag', { count: 'exact' })
     .in('user_id', matchingIds)
     .order('timestamp', { ascending: false })
     .range(offset, offset + limit - 1);
@@ -202,6 +203,7 @@ admin.get('/access-logs', requireRole(['admin', 'manager']), audited('DATA_VIEW'
       has_gps: !!(l.latitude && l.longitude),
       within_geofence: l.within_geofence ?? null,
       out_of_schedule: l.out_of_schedule ?? false,
+      schedule_flag: l.schedule_flag ?? null,
     };
   });
 
@@ -319,11 +321,11 @@ admin.patch('/settings', requireRole(['admin', 'manager']), audited('CONFIG_CHAN
   if (body.holidays !== undefined) patch['holidays'] = body.holidays;
   if (body.rules) {
     if (body.rules.geoFenceRadius !== undefined) patch['geo_fence_radius'] = Number(body.rules.geoFenceRadius);
-    if (body.rules.courtesyMinutes !== undefined) patch['courtesy_minutes'] = Number(body.rules.courtesyMinutes);
+    if (body.rules.courtesyMinutes !== undefined) patch['courtesy_minutes'] = Math.min(60, Math.max(0, Math.round(Number(body.rules.courtesyMinutes)) || 0));
     if (body.rules.latitude !== undefined) patch['headquarter_lat'] = Number(body.rules.latitude);
     if (body.rules.longitude !== undefined) patch['headquarter_lon'] = Number(body.rules.longitude);
     if (body.rules.flexibleScheduleEnabled !== undefined) patch['flexible_schedule_enabled'] = Boolean(body.rules.flexibleScheduleEnabled);
-    if (body.rules.flexibleScheduleMinutes !== undefined) patch['flexible_schedule_minutes'] = Math.min(60, Math.max(0, Number(body.rules.flexibleScheduleMinutes)));
+    if (body.rules.flexibleScheduleMinutes !== undefined) patch['flexible_schedule_minutes'] = Math.min(180, Math.max(0, Math.round(Number(body.rules.flexibleScheduleMinutes)) || 0));
     if (body.rules.vacationDaysPerYear !== undefined) patch['vacation_days_per_year'] = Math.min(365, Math.max(1, Number(body.rules.vacationDaysPerYear)));
     // Plazo de conservación de datos personales: solo el admin (responsable del tratamiento)
     if (body.rules.gpsRetentionDays !== undefined && user.role === 'admin') {
@@ -388,6 +390,8 @@ admin.patch('/settings', requireRole(['admin', 'manager']), audited('CONFIG_CHAN
   if (error) {
     return c.json({ error: { code: 'internal_error', message: error.message } }, 500);
   }
+
+  invalidateScheduleSettings(user.company_id);
 
   // Restart SignalR connection for this company if 2N settings changed
   if (twoNSettingsChanged) {

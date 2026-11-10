@@ -247,6 +247,16 @@ Hora del fichaje entre 13:00–16:00 → detail_type = 'comida'
 Resto de horas → detail_type = 'normal'
 Aplica igual para los tres modos (2N, web, móvil)
 
+Horario flexible (backend/src/lib/schedule.ts, tests en schedule.test.ts — `npm test` en /backend):
+
+Configuración en Ajustes → Control Horario → "Horario de trabajo": entrada oficial S, salida oficial E, margen de entrada F (flexible_schedule_minutes, máx. 180, solo si flexible_schedule_enabled) y tolerancia de salida T (courtesy_minutes).
+Primera entrada del día (hora de Madrid) después de S+F → schedule_flag = 'late_entry'
+Salida prevista = max(primera entrada, S) + (E − S) — la pausa de comida va dentro de E − S
+Salida normal (no pausa) antes de salida prevista − T → schedule_flag = 'early_exit'
+Solo informativo: nunca bloquea el fichaje. Se aplica igual a 2N, web y móvil. out_of_schedule = schedule_flag is not null (compatibilidad)
+GET /api/me/dashboard devuelve expected_exit (ISO) y el empleado lo ve como "Salida prevista"
+Las horas se comparan siempre en Europe/Madrid (lib/madrid-time.ts): el servidor corre en UTC, nunca usar Date#getHours()
+
 Validaciones:
 
 Dos in consecutivos o dos out consecutivos → 422 { error: { code: 'duplicate_direction', message: 'Ya tienes una entrada sin salida registrada' } }

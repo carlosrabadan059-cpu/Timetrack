@@ -202,9 +202,11 @@ const AdminAttendancePage = () => {
                                                         Corrección
                                                     </span>
                                                 )}
-                                                {record.out_of_schedule && (
+                                                {(record.schedule_flag || record.out_of_schedule) && (
                                                     <span className="badge badge-warning" style={{ marginLeft: '0.25rem', fontSize: '0.65rem' }}>
-                                                        Fuera de horario
+                                                        {record.schedule_flag === 'late_entry' ? 'Entrada tardía'
+                                                            : record.schedule_flag === 'early_exit' ? 'Salida anticipada'
+                                                            : 'Fuera de horario'}
                                                     </span>
                                                 )}
                                             </td>

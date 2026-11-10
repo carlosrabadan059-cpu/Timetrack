@@ -4,6 +4,7 @@ import { inferDetailType, startOfDayISO } from '../lib/date-utils.js';
 import { sseBroadcaster } from './sse-broadcaster.js';
 import { decryptSetting } from '../lib/crypto-settings.js';
 import { dispatchN8nWebhook } from '../lib/n8n.js';
+import { scheduleFlagFor } from '../lib/schedule.js';
 import type { ClockingModes } from '../types/supabase.types.js';
 
 const DOWN_ALERT_THRESHOLD_MS = 10 * 60 * 1000; // 10 minutos caído antes de alertar
@@ -142,25 +143,26 @@ export async function handleAccessEvent(
 
   // Build lookup: try UUID first, then ac_user_number as fallback
   let profileId: string | null = null;
+  let profileCompanyId: string | null = null;
 
   if (acUserId) {
     let q = supabaseAdmin
       .from('profiles')
-      .select('id')
+      .select('id, company_id')
       .or(`id.eq.${acUserId},ac_external_id.eq.${acUserId}`);
     if (companyId) q = q.eq('company_id', companyId) as typeof q;
     const { data: p } = await q.maybeSingle();
-    if (p) profileId = p.id as string;
+    if (p) { profileId = p.id as string; profileCompanyId = (p.company_id as string | null) ?? null; }
   }
 
   if (!profileId && acUserNumber !== null) {
     let q = supabaseAdmin
       .from('profiles')
-      .select('id')
+      .select('id, company_id')
       .eq('ac_user_number', acUserNumber);
     if (companyId) q = q.eq('company_id', companyId) as typeof q;
     const { data: p } = await q.maybeSingle();
-    if (p) profileId = p.id as string;
+    if (p) { profileId = p.id as string; profileCompanyId = (p.company_id as string | null) ?? null; }
   }
 
   if (!profileId) {
@@ -212,10 +214,17 @@ export async function handleAccessEvent(
     return;
   }
 
+  // Horario flexible: mismas reglas que el fichaje web/móvil (solo informativo)
+  const scheduleFlag = eventType === 'granted'
+    ? await scheduleFlagFor(profileId, companyId ?? profileCompanyId, new Date(timestamp), direction, detailType)
+    : null;
+
   const { data: log, error } = await supabaseAdmin
     .from('access_logs')
     .insert({
       user_id: profileId,
+      schedule_flag: scheduleFlag,
+      out_of_schedule: scheduleFlag !== null,
       device_id: deviceId,
       device_name: deviceName,
       zone_name: zoneName,

@@ -4,7 +4,8 @@ import { z } from 'zod';
 import { zValidator } from '@hono/zod-validator';
 import { getSupabaseAdmin } from '../../lib/supabase.js';
 import type { AppVariables } from '../../types/api.types.js';
-import { inferDetailType, checkOutOfSchedule, checkNonWorkingDay, startOfDayISO, toDateString, getWeekStart } from '../../lib/date-utils.js';
+import { inferDetailType, checkNonWorkingDay, startOfDayISO, toDateString, getWeekStart } from '../../lib/date-utils.js';
+import { scheduleFlagFor, loadScheduleSettings, firstInOfDay, expectedExit } from '../../lib/schedule.js';
 import { sseBroadcaster } from '../../services/sse-broadcaster.js';
 import { fichajeRateLimit, recordFichaje } from '../middleware/rate-limit.js';
 import {
@@ -446,13 +447,13 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
 
   // Geofence + schedule + non-working-day check
   let within_geofence: boolean | null = null;
-  let out_of_schedule = false;
+  let schedule_flag: 'late_entry' | 'early_exit' | null = null;
   let overrideId: string | null = null;
 
   if (user.company_id) {
     const { data: settings } = await supabaseAdmin
       .from('company_settings')
-      .select('headquarter_lat, headquarter_lon, geo_fence_radius, flexible_schedule_enabled, flexible_schedule_minutes, work_schedule_start, work_schedule_end, work_schedule_days, holidays')
+      .select('headquarter_lat, headquarter_lon, geo_fence_radius, work_schedule_days, holidays')
       .eq('company_id', user.company_id)
       .maybeSingle();
 
@@ -509,20 +510,12 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
         within_geofence = distance <= Number(settings.geo_fence_radius);
       }
 
-      // Out-of-schedule check: only for day-start entry and day-end exit, never for breaks
-      const isBreak = ['comida', 'descanso', 'medico', 'otro'].includes(detail_type);
-      if (!isBreak && settings.flexible_schedule_enabled && settings.work_schedule_start && settings.work_schedule_end) {
-        out_of_schedule = checkOutOfSchedule(
-          now,
-          direction,
-          settings.work_schedule_start as string,
-          settings.work_schedule_end as string,
-          (settings.flexible_schedule_minutes as number | null) ?? 15,
-          (settings.work_schedule_days as number[] | null) ?? [1, 2, 3, 4, 5],
-        );
-      }
     }
   }
+
+  // Flexible schedule: late entry / early exit relative to the computed exit (informative only)
+  schedule_flag = await scheduleFlagFor(user.id, user.company_id, now, direction, detail_type);
+  const out_of_schedule = schedule_flag !== null;
 
   // Build insert payload
   const insertPayload: Record<string, unknown> = {
@@ -534,6 +527,7 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
     source,
     device_info: body.device_info,
     out_of_schedule,
+    schedule_flag,
   };
   if (gps) {
     insertPayload['latitude'] = gps.latitude;
@@ -597,6 +591,7 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
       is_inside: direction === 'in',
       within_geofence,
       out_of_schedule,
+      schedule_flag,
     },
   });
 });
@@ -652,6 +647,20 @@ me.get('/dashboard', async (c) => {
   // Inicio de la sesión actual: último fichaje 'in' del día (no el primero del día)
   const lastInLog = sortedLogs.filter((l) => l.direction === 'in').at(-1);
 
+  // Horario flexible: salida prevista calculada desde la primera entrada del día (hora de Madrid)
+  let expected_exit: string | null = null;
+  let schedule: { start: string; end: string; flex_minutes: number } | null = null;
+  if (user.company_id) {
+    const s = await loadScheduleSettings(user.company_id);
+    if (s) {
+      schedule = { start: s.start, end: s.end, flex_minutes: s.flexEnabled ? s.flexMinutes : 0 };
+      if (jornada_status !== 'out') {
+        const firstIn = await firstInOfDay(user.id, now);
+        expected_exit = firstIn ? (expectedExit(firstIn, s)?.toISOString() ?? null) : null;
+      }
+    }
+  }
+
   return c.json({
     data: {
       week_total_minutes,
@@ -661,6 +670,8 @@ me.get('/dashboard', async (c) => {
       jornada_status,
       current_pause_type,
       jornada_started_at: lastInLog?.timestamp ?? null,
+      expected_exit,
+      schedule,
       current_time: now.toISOString(),
       weekly_bars: weeklyBars,
       today_distribution: todayDistribution,
