@@ -7954,7 +7954,7 @@
       "label": "VacationsPage()",
       "file_type": "code",
       "source_file": "src/pages/employee/VacationsPage.jsx",
-      "source_location": "L173",
+      "source_location": "L175",
       "id": "employee_vacationspage_vacationspage",
       "community": 81,
       "norm_label": "vacationspage()"
@@ -10924,7 +10924,7 @@
       "label": "Antes de usar la app con empleados reales",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L61",
+      "source_location": "L60",
       "id": "handoff_antes_de_usar_la_app_con_empleados_reales",
       "community": 381,
       "norm_label": "antes de usar la app con empleados reales"
@@ -10933,7 +10933,7 @@
       "label": "Mantenimiento recurrente",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L67",
+      "source_location": "L66",
       "id": "handoff_mantenimiento_recurrente",
       "community": 381,
       "norm_label": "mantenimiento recurrente"
@@ -10942,7 +10942,7 @@
       "label": "Si algo falla",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L74",
+      "source_location": "L73",
       "id": "handoff_si_algo_falla",
       "community": 381,
       "norm_label": "si algo falla"
@@ -10951,7 +10951,7 @@
       "label": "Grafo de conocimiento",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L82",
+      "source_location": "L81",
       "id": "handoff_grafo_de_conocimiento",
       "community": 381,
       "norm_label": "grafo de conocimiento"
@@ -10960,7 +10960,7 @@
       "label": "Skills recomendadas",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L90",
+      "source_location": "L89",
       "id": "handoff_skills_recomendadas",
       "community": 381,
       "norm_label": "skills recomendadas"
@@ -43311,9 +43311,9 @@
       "source_file": "src/pages/admin/AdminAuditLog.jsx",
       "source_location": "L27",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_adminauditlog",
-      "target": "admin_adminauditlog_entity_labels",
-      "confidence_score": 1.0
+      "target": "admin_adminauditlog_entity_labels"
     },
     {
       "relation": "contains",
@@ -47492,9 +47492,9 @@
       "source_file": "HANDOFF.md",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_handoff_antigravity_timetrack",
-      "target": "handoff_estado_actual",
-      "confidence_score": 1.0
+      "target": "handoff_estado_actual"
     },
     {
       "relation": "contains",
@@ -47502,9 +47502,9 @@
       "source_file": "HANDOFF.md",
       "source_location": "L82",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_handoff_antigravity_timetrack",
-      "target": "handoff_grafo_de_conocimiento",
-      "confidence_score": 1.0
+      "target": "handoff_grafo_de_conocimiento"
     },
     {
       "relation": "contains",
@@ -47512,9 +47512,9 @@
       "source_file": "HANDOFF.md",
       "source_location": "L48",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_handoff_antigravity_timetrack",
-      "target": "handoff_pendiente",
-      "confidence_score": 1.0
+      "target": "handoff_pendiente"
     },
     {
       "relation": "contains",
@@ -47522,9 +47522,9 @@
       "source_file": "HANDOFF.md",
       "source_location": "L74",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_handoff_antigravity_timetrack",
-      "target": "handoff_si_algo_falla",
-      "confidence_score": 1.0
+      "target": "handoff_si_algo_falla"
     },
     {
       "relation": "contains",
@@ -47542,9 +47542,9 @@
       "source_file": "HANDOFF.md",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_handoff_antigravity_timetrack",
-      "target": "handoff_skills_recomendadas",
-      "confidence_score": 1.0
+      "target": "handoff_skills_recomendadas"
     },
     {
       "relation": "contains",
@@ -47582,9 +47582,9 @@
       "source_file": "HANDOFF.md",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_estado_actual",
-      "target": "handoff_cambios_de_la_sesi\u00f3n_del_2026_11_04",
-      "confidence_score": 1.0
+      "target": "handoff_cambios_de_la_sesi\u00f3n_del_2026_11_04"
     },
     {
       "relation": "contains",
@@ -47592,9 +47592,9 @@
       "source_file": "HANDOFF.md",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_estado_actual",
-      "target": "handoff_copias_de_seguridad_punto_17_de_30_cerrado_el_2026_11_04",
-      "confidence_score": 1.0
+      "target": "handoff_copias_de_seguridad_punto_17_de_30_cerrado_el_2026_11_04"
     },
     {
       "relation": "contains",
@@ -47602,9 +47602,9 @@
       "source_file": "HANDOFF.md",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_estado_actual",
-      "target": "handoff_despliegue",
-      "confidence_score": 1.0
+      "target": "handoff_despliegue"
     },
     {
       "relation": "contains",
@@ -47612,9 +47612,9 @@
       "source_file": "HANDOFF.md",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_pendiente",
-      "target": "handoff_antes_de_usar_la_app_con_empleados_reales",
-      "confidence_score": 1.0
+      "target": "handoff_antes_de_usar_la_app_con_empleados_reales"
     },
     {
       "relation": "contains",
@@ -47622,9 +47622,9 @@
       "source_file": "HANDOFF.md",
       "source_location": "L50",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_pendiente",
-      "target": "handoff_issues_abiertas",
-      "confidence_score": 1.0
+      "target": "handoff_issues_abiertas"
     },
     {
       "relation": "contains",
@@ -47632,9 +47632,9 @@
       "source_file": "HANDOFF.md",
       "source_location": "L67",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "handoff_pendiente",
-      "target": "handoff_mantenimiento_recurrente",
-      "confidence_score": 1.0
+      "target": "handoff_mantenimiento_recurrente"
     },
     {
       "relation": "contains",
@@ -48672,9 +48672,9 @@
       "source_file": "docs/backups.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_backups",
-      "target": "docs_backups_copias_de_seguridad_de_supabase_30_punto_17",
-      "confidence_score": 1.0
+      "target": "docs_backups_copias_de_seguridad_de_supabase_30_punto_17"
     },
     {
       "relation": "contains",
@@ -48682,9 +48682,9 @@
       "source_file": "docs/backups.md",
       "source_location": "L76",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_backups_copias_de_seguridad_de_supabase_30_punto_17",
-      "target": "docs_backups_gesti\u00f3n_desde_portainer",
-      "confidence_score": 1.0
+      "target": "docs_backups_gesti\u00f3n_desde_portainer"
     },
     {
       "relation": "contains",
@@ -48692,9 +48692,9 @@
       "source_file": "docs/backups.md",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_backups_copias_de_seguridad_de_supabase_30_punto_17",
-      "target": "docs_backups_puesta_en_marcha_una_vez",
-      "confidence_score": 1.0
+      "target": "docs_backups_puesta_en_marcha_una_vez"
     },
     {
       "relation": "contains",
@@ -48702,9 +48702,9 @@
       "source_file": "docs/backups.md",
       "source_location": "L85",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_backups_copias_de_seguridad_de_supabase_30_punto_17",
-      "target": "docs_backups_restauraci\u00f3n",
-      "confidence_score": 1.0
+      "target": "docs_backups_restauraci\u00f3n"
     },
     {
       "relation": "contains",
@@ -68858,5 +68858,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "b655a73cfb346e0062d1169e97c14254170b2a39"
+  "built_at_commit": "7fc0644d1cdf010d8cca2a1928c36973d469b6ac"
 }

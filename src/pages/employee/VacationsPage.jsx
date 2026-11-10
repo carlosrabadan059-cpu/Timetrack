@@ -62,7 +62,9 @@ const HOLIDAY_TYPE_LABELS = {
 };
 
 // ── MonthGrid component ───────────────────────────────────────────────────────
-function MonthGrid({ year, month, holidays, requests, onDayClick, minDate }) {
+function MonthGrid({ year, month, holidays, workDays, requests, onDayClick, minDate }) {
+    // Días laborables de la empresa (0=domingo … 6=sábado); los demás se pintan como no laborables
+    const workDaySet = new Set(workDays?.length ? workDays : [1, 2, 3, 4, 5]);
     const holidayMap = {};
     holidays.forEach(h => { holidayMap[h.date] = { name: h.name, type: h.type ?? 'nacional' }; });
 
@@ -102,7 +104,7 @@ function MonthGrid({ year, month, holidays, requests, onDayClick, minDate }) {
         const date = new Date(year, month, d);
         const ds = toDateStr(date);
         const dow = date.getDay(); // 0=Sun, 6=Sat
-        const isWeekend = dow === 0 || dow === 6;
+        const isWeekend = !workDaySet.has(dow); // día no laborable según la configuración
         const holidayInfo = holidayMap[ds];
         const isHoliday = !!holidayInfo;
         const isPast = minDate ? ds < minDate : false;
@@ -114,7 +116,7 @@ function MonthGrid({ year, month, holidays, requests, onDayClick, minDate }) {
         let cellStyle = {};
         let title = isHoliday
             ? `${holidayInfo.name} · ${HOLIDAY_TYPE_LABELS[holidayInfo.type] ?? holidayInfo.type}`
-            : undefined;
+            : isWeekend ? 'No laborable' : undefined;
 
         if (isWeekend) cellClass += ' weekend';
         else if (isHoliday) cellClass += ` holiday holiday-${holidayInfo.type ?? 'nacional'}`;
@@ -347,7 +349,7 @@ export default function VacationsPage() {
             <div className="vcal-legend">
                 <div className="legend-item">
                     <div className="legend-swatch weekend-swatch" />
-                    <span>Fin de semana</span>
+                    <span>No laborable</span>
                 </div>
                 <div className="legend-item">
                     <div className="legend-swatch holiday-swatch holiday-nacional" />
