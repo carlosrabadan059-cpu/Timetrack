@@ -44,6 +44,22 @@ function markDown(companyId: string, label: string, errorMessage: string): void 
 }
 
 function markUp(companyId: string, label: string): void {
+  const previous = connectionStatus.get(companyId);
+  // Solo avisamos de la recuperación si antes se avisó de la caída (sin avisos por microcortes).
+  if (previous && !previous.connected && previous.alertSent) {
+    dispatchN8nWebhook('2n-connection-restored', {
+      event: 'restored',
+      company_id: companyId,
+      company_label: label,
+      disconnected_since: previous.disconnectedSince,
+      restored_at: new Date().toISOString(),
+    }).catch((err: unknown) => {
+      console.error(
+        `[SignalR][${label}] No se pudo enviar aviso de recuperación a n8n:`,
+        err instanceof Error ? err.message : err
+      );
+    });
+  }
   connectionStatus.set(companyId, {
     label,
     connected: true,

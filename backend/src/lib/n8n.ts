@@ -40,6 +40,8 @@ const WEBHOOK_PATHS = {
   'vacacion-nueva': '/webhook/vacacion-nueva',
   'vacacion-resuelta': '/webhook/vacacion-resuelta',
   '2n-connection-down': '/webhook/2n-connection-down',
+  // Mismo webhook que la caída: el workflow distingue por body.event === 'restored'.
+  '2n-connection-restored': '/webhook/2n-connection-down',
 } as const;
 
 export type N8nWorkflow = keyof typeof WEBHOOK_PATHS;
