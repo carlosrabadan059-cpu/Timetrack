@@ -15,7 +15,7 @@ Todas las fases (0–5) están en producción. Del lado del código, la auditor�
 | Pieza | Dónde | Cómo se actualiza |
 |---|---|---|
 | Frontend | **Dokploy**, app `Timetrack` (`timetrack-4uibyn`), https://timetrack.rabadanhouse.space. Build type **Dockerfile** (Vite + nginx con cabeceras de seguridad en `nginx/`) | Auto-deploy al hacer push a `main`. Si se añade un origen externo (API, CDN, mapas), hay que añadirlo a la CSP en `nginx/security-headers.conf` |
-| Backend | Docker en Raspberry Pi (192.168.1.10), stack **`n8n`** de Portainer, contenedor `n8n-backend-1`, expuesto en https://api.rabadanhouse.space por Cloudflare Tunnel | `docker buildx build --platform linux/arm64 --push` → Portainer → Containers → *Recreate* con re-pull (ver `docs/signalr-resilience.md`) |
+| Backend | Docker en Raspberry Pi (192.168.1.10), stack **`n8n`** de Portainer, contenedor `n8n-backend-1`, expuesto en https://api.rabadanhouse.space por Cloudflare Tunnel | `docker buildx build --platform linux/arm64 --push` → Portainer → Stacks → `n8n` → *Update the stack* con **Re-pull image and redeploy**. Un *Recreate* suelto no siempre usa la imagen nueva: comprueba que la fila *Image* del contenedor coincide con el ID de `latest` (ver `docs/signalr-resilience.md`) |
 | n8n | Mismo stack, https://n8n.rabadanhouse.space | — |
 | Copias de seguridad | Mismo stack, contenedor `n8n-backup-1` (imagen `rabadanhouse/timetrack-backup:latest`) | Igual que el backend. Detalle en `docs/backups.md` |
 | Base de datos | Supabase, proyecto *Control horario* (`bflflqxwndzewnrxmohd`, eu-west-1, Postgres 17) | Migraciones con el MCP de Supabase |
@@ -42,6 +42,13 @@ Todas las fases (0–5) están en producción. Del lado del código, la auditor�
 - `d34a6cd`: los docs ya dicen Dokploy en lugar de Vercel.
 - `aefc6e0`, `ad559db`, `f8acb06`, `046e4f3`, `20ba36b`: contenedor de backup, healthcheck, avisos y documentación.
 - `n8n-skills/` añadido a `.gitignore` (es un repo externo clonado).
+
+### Cambios de la sesión del 2026-11-11
+
+- `7a90b45`, `468f7d2`, `6e042b6`: **horario flexible** (ventana de entrada y salida prevista = entrada + duración oficial) y **horario por sucursal** (`profiles.branch_id`, `branches[].schedule`, festivos locales). Reglas en `CLAUDE.md`; lógica y tests en `backend/src/lib/schedule.ts` (`npm test`). Se configura en *Ajustes → Control Horario* y *Sucursales → Configurar horario*; la sucursal del empleado, en *Empleados → Editar*. Las marcas "Entrada tardía" / "Salida anticipada" salen en *Asistencia*.
+- `e25828e`, `9472417`, `673ce27`: la alerta de **2N caído** nunca llegaba a Telegram (el HTML del 502 de Cloudflare superaba los 4096 caracteres). Ahora el error se resume y, al recuperar la conexión, llega también "✅ 2N Access Commander reconectado". El workflow de n8n usa la credencial *Telegram TimeTrack 2n*.
+- `N8N_WEBHOOK_SECRET` **rotado** (estaba expuesto en una consulta); el valor nuevo está en la app Contraseñas del Mac y en el stack `n8n` de Portainer, mismo valor en los servicios `n8n` y `backend`.
+- Con el servidor 2N parado, `/health` muestra `signalr connected:false`: es lo esperado.
 
 ---
 
