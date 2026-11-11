@@ -34,6 +34,14 @@ recuperarlo era un `docker restart` manual del contenedor del backend.
    Alert` (activo, ID `PemuhSSqVfOIOEWE`) valida el header `X-N8N-Secret` y
    reenvía el mensaje a Telegram.
 
+5. **Aviso de recuperación** (2026-11-11) — si ya se había enviado el aviso de
+   caída, al reconectar `markUp()` llama al mismo webhook con `event: 'restored'`
+   y el workflow envía "✅ 2N Access Commander reconectado" (con "Caído desde" y
+   "Recuperado", en hora de Madrid). Los microcortes de menos de 10 min no
+   generan avisos. Además, `lastError` se resume (`summarizeError`): los 502 de
+   Cloudflare llegaban como ~7 KB de HTML y Telegram rechazaba el mensaje
+   (`message is too long`), por lo que el aviso de caída nunca se entregaba.
+
 ## Qué NO cambia el fix
 
 - No evita el fallo inicial de negociación en sí (si 2N/túnel está caído, la
