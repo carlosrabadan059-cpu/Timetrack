@@ -24,12 +24,20 @@ export function getSignalRStatus(): ConnectionStatus[] {
   return Array.from(connectionStatus.values());
 }
 
+/** Short, plain-text version of an error: Cloudflare error pages come as ~7 KB of HTML. */
+function summarizeError(msg: string): string {
+  const title = /<title>([^<]*)<\/title>/i.exec(msg)?.[1]?.trim();
+  const prefix = msg.split('<')[0]?.trim() ?? '';
+  const text = title ? `${prefix} ${title}`.trim() : msg.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  return text.length > 300 ? `${text.slice(0, 300)}…` : text;
+}
+
 function markDown(companyId: string, label: string, errorMessage: string): void {
   const existing = connectionStatus.get(companyId);
   connectionStatus.set(companyId, {
     label,
     connected: false,
-    lastError: errorMessage,
+    lastError: summarizeError(errorMessage),
     disconnectedSince: existing?.disconnectedSince ?? new Date().toISOString(),
     alertSent: existing?.alertSent ?? false,
   });
