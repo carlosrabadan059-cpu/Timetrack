@@ -62,7 +62,7 @@ Todas las fases (0–5) están en producción. Del lado del código, la auditor�
 | #30 | Punto 8: RLS real por `company_id` | Código | Aplazado hasta que haya una 2.ª empresa |
 | **#31** | Alta de usuarios en 2N: "Company must be specified" | Código | Aplazado: la licencia de desarrollo de 2N solo admite 5 usuarios |
 | **#28** | Cuentas de prueba (`admin@`/`empleado@timetrack.com`) con contraseña `123456` | Responsable | Se mantienen a propósito hasta el uso real |
-| **#34** | Copias: probar la recuperación en un proyecto nuevo de Supabase; las credenciales de n8n no tienen copia | Decisión + prueba | Pendiente |
+| **#34** | Copias: probar la recuperación en un proyecto nuevo de Supabase; las credenciales de n8n no tienen copia | Prueba + código | Aplazado (2026-11-12). Decidido: ampliar el contenedor `backup` con el Postgres de n8n y su `encryptionKey`, y probar la restauración en un proyecto temporal de Supabase. Plan en el último comentario de la issue |
 
 ### Antes de usar la app con empleados reales
 
