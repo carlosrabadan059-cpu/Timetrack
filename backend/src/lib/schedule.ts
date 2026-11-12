@@ -105,7 +105,7 @@ export interface CompanyScheduleRow {
   flexible_schedule_enabled?: boolean | null;
   flexible_schedule_minutes?: number | null;
   courtesy_minutes?: number | null;
-  branches?: { id?: string | number; schedule?: BranchSchedule | null }[] | null;
+  branches?: { id?: string | number; name?: string; schedule?: BranchSchedule | null }[] | null;
 }
 
 /** Holidays that apply to an employee: the global ones plus those of their branch. */

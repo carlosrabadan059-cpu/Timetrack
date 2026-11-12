@@ -5,7 +5,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { api } from '../../lib/api';
 import { supabase } from '../../lib/supabase';
 import { Card, Button, Input } from '../../components/ui';
-import { User, Mail, Shield, Bell, Key, Sun, Moon, Monitor, FileText } from 'lucide-react';
+import { User, Mail, Shield, Bell, Key, Sun, Moon, Monitor, FileText, Building2, Clock } from 'lucide-react';
 import MyRightsRequests from '../../components/MyRightsRequests';
 import './ProfilePage.css';
 
@@ -61,6 +61,23 @@ const ProfilePage = () => {
     useEffect(() => {
         supabase.auth.mfa.listFactors().then(({ data }) => setTotpFactor(data?.totp?.[0] ?? null));
     }, []);
+
+    const [work, setWork] = useState(null); // sucursal y horario efectivo (solo lectura)
+    useEffect(() => {
+        api.get('/api/me/schedule').then((res) => setWork(res?.data ?? null)).catch(() => {});
+    }, []);
+
+    const DAY_LETTERS = ['D', 'L', 'M', 'X', 'J', 'V', 'S'];
+    const addMinutes = (hhmm, extra) => {
+        const [h, m] = hhmm.split(':').map(Number);
+        const t = h * 60 + m + extra;
+        return `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`;
+    };
+    const scheduleText = work
+        ? `${work.start}–${work.end}`
+          + (work.flex_enabled && work.flex_minutes > 0 ? ` (entrada flexible hasta las ${addMinutes(work.start, work.flex_minutes)})` : '')
+          + ` · ${[1, 2, 3, 4, 5, 6, 0].filter((d) => work.days.includes(d)).map((d) => DAY_LETTERS[d]).join(' ')}`
+        : '';
 
     const handleStartEnroll = async () => {
         setMfaError('');
@@ -197,6 +214,22 @@ const ProfilePage = () => {
                             icon={Shield}
                             readOnly
                         />
+                        {work && (
+                            <>
+                                <Input
+                                    label="Sucursal"
+                                    value={work.branch_name || 'Sin sucursal asignada'}
+                                    icon={Building2}
+                                    readOnly
+                                />
+                                <Input
+                                    label="Horario"
+                                    value={scheduleText}
+                                    icon={Clock}
+                                    readOnly
+                                />
+                            </>
+                        )}
 
                         {saveError && <p className="form-error">{saveError}</p>}
                         {saveSuccess && <p className="form-success">Guardado correctamente</p>}

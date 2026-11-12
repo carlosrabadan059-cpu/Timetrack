@@ -770,4 +770,25 @@ me.get('/company-settings', async (c) => {
   });
 });
 
+// Sucursal y horario efectivo del empleado (solo lectura, para Mi Perfil)
+me.get('/schedule', async (c) => {
+  const user = c.get('user');
+  if (!user.company_id) return c.json({ data: null });
+  const branchId = await userBranchId(user.id);
+  const row = await loadCompanyScheduleRow(user.company_id);
+  if (!row) return c.json({ data: null });
+  const s = effectiveSchedule(row, branchId);
+  const branch = branchId !== null ? (row.branches ?? []).find((b) => String(b.id) === branchId) : undefined;
+  return c.json({
+    data: {
+      branch_name: branch?.name ?? null,
+      start: s.start,
+      end: s.end,
+      days: s.workDays,
+      flex_enabled: s.flexEnabled,
+      flex_minutes: s.flexMinutes,
+    },
+  });
+});
+
 export default me;
