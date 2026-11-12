@@ -19,7 +19,7 @@ La Pi conserva n8n, su Postgres, cloudflared (para `n8n.rabadanhouse.space`) y e
 - **Sin dependencia de la red local de la Pi.**
   - La URL del 2N guardada en Supabase (`company_settings.clocking_modes.twoN.ac_base_url`) es `https://access.rabadanhouse.space/`, pública.
   - n8n se alcanza por `N8N_WEBHOOK_BASE_URL`, también pública.
-- **Los workflows de n8n llaman al backend por su URL pública** (`https://api.rabadanhouse.space/webhooks/n8n/...`), no por `backend:3000`. Comprobado en *Sync Retry* y *Crear Usuario*. En el paso 0.3 se revisan los demás.
+- **Los workflows de n8n llaman al backend por su URL pública** (`https://api.rabadanhouse.space/webhooks/n8n/...`), no por `backend:3000`. Revisados los 10 workflows TimeTrack (paso 0.3, 2026-11-12).
 - **`backend/Dockerfile` vale para x86_64**: la imagen base `node:26-alpine` (fijada por digest) es multiarquitectura e incluye `amd64`.
 - **El backend ya está preparado para el corte** (commit `5404132`):
   - cierre limpio en `SIGTERM`;
@@ -56,7 +56,7 @@ Cada backend abre su propia conexión SignalR con el 2N al arrancar. Con dos bac
 - **Según uso:** `AC_BASE_URL` y `AC_API_TOKEN` (las usa la reconciliación nocturna), `N8N_HELP_WEBHOOK_URL` (bot de ayuda) y `NODE_RED_SECRET`.
 - **Sobrante:** `PORT`. Tiene 3000 por defecto.
 
-0.3. **Revisar el resto de workflows TimeTrack de n8n** en busca de URLs internas (`backend`, `localhost`, `192.168.`). Son: Actualizar Usuario, Eliminar Usuario, Credencial Tarjeta, Credencial PIN, Reconciliación y retención, e Incidencia Nueva y Resuelta. Lo puede hacer Claude con el MCP de n8n.
+0.3. ✅ **Hecho (2026-11-12).** Revisados los 10 workflows TimeTrack de n8n. Todos llaman al backend por `https://api.rabadanhouse.space` y al 2N por `https://access.rabadanhouse.space`. El Help Bot usa una IP de Tailscale (`100.115.151.21`) desde n8n, que sigue en la Pi: no le afecta la migración.
 
 0.4. **Recursos del Debian:** que tenga RAM y disco suficientes junto a Supabase self-hosted. El backend usa unos 150–250 MB.
 
@@ -64,7 +64,7 @@ Cada backend abre su propia conexión SignalR con el 2N al arrancar. Con dos bac
 
 ## Fase 1 — Preparar la app en Dokploy (sin tráfico)
 
-1.1. **Código.** Añadir la variable `SIGNALR_DISABLED`: si vale `true`, `startSignalRListener()` no conecta con el 2N. Es un cambio pequeño en `backend/src/services/signalr-listener.ts` y `.env.example`. Permite arrancar el backend nuevo sin competir con el de la Pi.
+1.1. ✅ **Hecho (2026-11-12).** `SIGNALR_DISABLED=true` hace que el backend no conecte con el 2N, ni al arrancar ni cuando el admin guarda los ajustes (`restartCompanyConnection`). Probado en local. No hace falta redesplegar la Pi: allí la variable no existe y SignalR sigue activo.
 
 1.2. **Crear la app** en Dokploy, en el mismo proyecto que el frontend: *Create Service → Application*, nombre `timetrack-backend`.
 - **Source:** GitHub, repo `carlosrabadan059-cpu/Timetrack`, rama `main`.

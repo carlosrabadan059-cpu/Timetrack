@@ -423,6 +423,12 @@ async function startCompanyConnection(
 // ── Public API ─────────────────────────────────────────────────────────────────
 
 export async function startSignalRListener(): Promise<void> {
+  // Permite arrancar una segunda instancia (p. ej. la nueva en Dokploy antes del corte)
+  // sin que compita con la de producción por los eventos del 2N.
+  if (process.env['SIGNALR_DISABLED'] === 'true') {
+    console.log('[SignalR] Deshabilitado (SIGNALR_DISABLED=true): no se conecta al 2N');
+    return;
+  }
   const sb = getSupabaseAdmin();
 
   // Load all companies with 2N AC enabled
@@ -464,6 +470,7 @@ export async function startSignalRListener(): Promise<void> {
 
 /** Call after updating clocking_modes for a company to restart its SignalR connection */
 export async function restartCompanyConnection(companyId: string): Promise<void> {
+  if (process.env['SIGNALR_DISABLED'] === 'true') return; // ver startSignalRListener
   const sb = getSupabaseAdmin();
   const { data: row } = await sb
     .from('company_settings')
