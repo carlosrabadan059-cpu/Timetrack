@@ -20,8 +20,8 @@ import externalRoutes from './api/routes/external.js';
 import docsRoutes from './api/routes/docs.js';
 import helpRoutes from './api/routes/help.js';
 import type { AppVariables } from './types/api.types.js';
-import { startSignalRListener, getSignalRStatus } from './services/signalr-listener.js';
-import { startOutboxFlusher } from './lib/notify.js';
+import { startSignalRListener, stopSignalRListener, getSignalRStatus } from './services/signalr-listener.js';
+import { startOutboxFlusher, stopOutboxFlusher } from './lib/notify.js';
 
 const app = new Hono<{ Variables: AppVariables }>();
 
@@ -46,11 +46,15 @@ if (process.env['NODE_ENV'] !== 'production') {
 }
 
 // ── Public endpoints ───────────────────────────────────────────────────────────
+// Always HTTP 200 while the process serves requests (the Docker healthcheck relies on it);
+// `status: 'degraded'` means some 2N connection is down. `version` is the deployed commit.
 app.get('/health', (c) => {
+  const signalr = getSignalRStatus();
   return c.json({
-    status: 'ok',
+    status: signalr.some((s) => !s.connected) ? 'degraded' : 'ok',
+    version: process.env['APP_VERSION'] ?? 'unknown',
     timestamp: new Date().toISOString(),
-    signalr: getSignalRStatus(),
+    signalr,
   });
 });
 
@@ -99,16 +103,35 @@ app.notFound((c) => {
 // ── Start server ───────────────────────────────────────────────────────────────
 const port = Number(process.env['PORT'] ?? 3000);
 
-serve({ fetch: app.fetch, port }, () => {
+const server = serve({ fetch: app.fetch, port }, () => {
   console.log(`[server] Running on http://localhost:${port}`);
   console.log(`[server] NODE_ENV=${process.env['NODE_ENV'] ?? 'development'}`);
   console.log(`[server] SUPABASE_URL present: ${!!process.env['SUPABASE_URL']}`);
   console.log(`[server] SUPABASE_SERVICE_ROLE_KEY present: ${!!process.env['SUPABASE_SERVICE_ROLE_KEY']}`);
   console.log(`[server] SUPABASE_ANON_KEY present: ${!!process.env['SUPABASE_ANON_KEY']}`);
+  console.log(`[server] version=${process.env['APP_VERSION'] ?? 'unknown'}`);
   startOutboxFlusher();
   startSignalRListener().catch((err: unknown) => {
     console.warn('[SignalR] No se pudo iniciar el listener:', err instanceof Error ? err.message : err);
   });
 });
+
+// ── Graceful shutdown ─────────────────────────────────────────────────────────
+// Close the 2N connections before exiting so a redeploy never leaves two listeners
+// subscribed at once. Hard exit after 8 s (Docker sends SIGKILL at 10 s).
+let shuttingDown = false;
+const shutdown = (signal: string) => {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  console.log(`[server] ${signal} recibido, cerrando…`);
+  setTimeout(() => process.exit(0), 8_000).unref();
+  server.close();
+  stopOutboxFlusher();
+  stopSignalRListener()
+    .catch((err: unknown) => console.warn('[SignalR] Error al cerrar:', err instanceof Error ? err.message : err))
+    .finally(() => process.exit(0));
+};
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
 
 export default app;

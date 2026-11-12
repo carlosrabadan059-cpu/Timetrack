@@ -3,7 +3,7 @@
 // sent at the start of the next working period.
 
 import { getSupabaseAdmin } from './supabase.js';
-import { triggerWorkflow, type N8nWorkflow } from './n8n.js';
+import { triggerWorkflow, dispatchN8nWebhook, type N8nWorkflow } from './n8n.js';
 import { localParts, localToUtc, toMinutes, type LocalParts } from './madrid-time.js';
 
 const FLUSH_INTERVAL_MS = 5 * 60 * 1000;
@@ -111,14 +111,36 @@ export async function flushOutbox(): Promise<void> {
     return;
   }
   for (const row of (data ?? []) as { id: string; workflow: N8nWorkflow; payload: Record<string, unknown>; attempts: number }[]) {
-    // Mark first so a slow webhook can't cause a double send on the next tick
-    await sb.from('notification_outbox').update({ sent_at: new Date().toISOString(), attempts: row.attempts + 1 }).eq('id', row.id);
-    await triggerWorkflow(row.workflow, row.payload);
+    // Atomic claim: only the caller whose UPDATE still sees sent_at IS NULL owns the row,
+    // so a slow webhook or a second instance can't send it twice.
+    const { data: claimed } = await sb
+      .from('notification_outbox')
+      .update({ sent_at: new Date().toISOString(), attempts: row.attempts + 1 })
+      .eq('id', row.id)
+      .is('sent_at', null)
+      .select('id');
+    if (!claimed?.length) continue;
+    try {
+      await dispatchN8nWebhook(row.workflow, row.payload);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.includes('→ 404')) continue; // workflow not configured in n8n: nothing to retry
+      console.error(`[notify] ${row.workflow} failed (attempt ${row.attempts + 1}/5):`, msg);
+      // Back to the queue; `attempts` stops retries after 5 tries.
+      await sb.from('notification_outbox').update({ sent_at: null }).eq('id', row.id);
+    }
   }
 }
+
+let flushTimer: ReturnType<typeof setInterval> | null = null;
 
 export function startOutboxFlusher(): void {
   const tick = () => { flushOutbox().catch((err: unknown) => console.error('[notify] flush failed:', err)); };
   tick();
-  setInterval(tick, FLUSH_INTERVAL_MS);
+  flushTimer = setInterval(tick, FLUSH_INTERVAL_MS);
+}
+
+export function stopOutboxFlusher(): void {
+  if (flushTimer) clearInterval(flushTimer);
+  flushTimer = null;
 }

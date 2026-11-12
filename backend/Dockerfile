@@ -10,6 +10,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev
 COPY --from=builder /app/dist ./dist
+# Commit desplegado, visible en GET /health (docker build --build-arg GIT_SHA=$(git rev-parse --short HEAD))
+ARG GIT_SHA=unknown
+ENV APP_VERSION=$GIT_SHA
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 USER appuser
 EXPOSE 3000

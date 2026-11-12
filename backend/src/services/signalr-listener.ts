@@ -92,7 +92,7 @@ async function checkAndAlertDownConnections(): Promise<void> {
   }
 }
 
-setInterval(() => {
+const alertTimer = setInterval(() => {
   void checkAndAlertDownConnections();
 }, 60_000);
 
@@ -266,6 +266,11 @@ export async function handleAccessEvent(
     .single();
 
   if (error) {
+    // 23505: índice único access_logs_signalr_dedup — otro proceso/conexión ya insertó este evento
+    if (error.code === '23505') {
+      console.log(`[2N] Duplicate event skipped (unique) — user=${profileId} timestamp=${timestamp}`);
+      return;
+    }
     console.error('[2N] Error inserting access_log:', error.message);
     return;
   }
@@ -287,6 +292,17 @@ export async function handleAccessEvent(
 // ── Per-company SignalR connections ────────────────────────────────────────────
 
 const connections = new Map<string, signalR.HubConnection>();
+let stopping = false;
+
+/** Closes every 2N connection and stops the retry loops (called on SIGTERM). */
+export async function stopSignalRListener(): Promise<void> {
+  stopping = true;
+  clearInterval(alertTimer);
+  connectionStatus.clear(); // retryConnectionLoop exits when the status entry is gone
+  const open = Array.from(connections.values());
+  connections.clear();
+  await Promise.all(open.map((c) => c.stop().catch(() => null)));
+}
 
 function buildConnection(acBaseUrl: string, acApiToken: string): signalR.HubConnection {
   return new signalR.HubConnectionBuilder()
@@ -340,6 +356,7 @@ function attachHandlers(
   });
 
   conn.onclose((err) => {
+    if (stopping) return; // cierre ordenado del proceso: no reintentar
     // withAutomaticReconnect agotó sus reintentos y se rindió — reintentar desde cero.
     const msg = err instanceof Error ? err.message : 'conexión cerrada';
     console.warn(`[SignalR][${label}] Conexión cerrada definitivamente:`, msg);
@@ -385,6 +402,10 @@ async function startCompanyConnection(
 
   try {
     await conn.start();
+    if (stopping) {
+      await conn.stop().catch(() => null);
+      return;
+    }
     await conn.invoke('Subscribe', 'accesslog', null);
     console.log(`[SignalR][${label}] Conectado`);
     connections.set(companyId, conn);
@@ -476,12 +497,5 @@ export async function restartCompanyConnection(companyId: string): Promise<void>
   } else {
     // 2N deshabilitado para esta empresa — no reportar como conexión caída
     connectionStatus.delete(companyId);
-  }
-}
-
-export async function stopSignalRListener(): Promise<void> {
-  for (const [id, conn] of connections) {
-    await conn.stop().catch(() => null);
-    connections.delete(id);
   }
 }
