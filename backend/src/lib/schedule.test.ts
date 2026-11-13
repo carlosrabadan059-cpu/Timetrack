@@ -1,10 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  evaluateFichaje, expectedExit, effectiveSchedule, effectiveHolidays, nonWorkingKind,
+  evaluateFichaje, expectedExit, effectiveSchedule, effectiveHolidays, nonWorkingKind, tooEarlyEntry,
   type ScheduleSettings, type CompanyScheduleRow,
 } from './schedule.js';
 import { localParts } from './madrid-time.js';
+import { calculateDaySummary } from '../services/attendance.js';
+import type { AccessLog } from '../types/supabase.types.js';
 
 const base: ScheduleSettings = {
   start: '08:00',
@@ -55,6 +57,17 @@ test('sin flexibilidad, la entrada debe ser a la hora oficial', () => {
   assert.equal(evalAt('08:01', 'in', null, 'normal', s), 'late_entry');
 });
 
+test('entrada anticipada: como mucho 1 h antes de la oficial, y cuenta como la oficial', () => {
+  const s = { ...base, start: '09:00', end: '18:00' };
+  assert.equal(tooEarlyEntry(tue('07:59'), null, s), '08:00');
+  assert.equal(tooEarlyEntry(tue('08:00'), null, s), null);
+  assert.equal(tooEarlyEntry(tue('08:30'), null, s), null);
+  assert.equal(hhmm(expectedExit(tue('08:00'), s)), '18:00');
+  // volver de una pausa o un fin de semana no se bloquean
+  assert.equal(tooEarlyEntry(tue('07:00'), tue('06:00'), s), null);
+  assert.equal(tooEarlyEntry(new Date(Date.UTC(2026, 10, 14, 5, 0)), null, s), null);
+});
+
 test('volver de una pausa no es entrada tardía', () => {
   assert.equal(evalAt('15:00', 'in', '08:40'), null);
 });
@@ -64,6 +77,26 @@ test('salida anticipada respecto a la salida calculada, con tolerancia', () => {
   assert.equal(evalAt('17:25', 'out', '08:40'), null);
   assert.equal(evalAt('17:30', 'out', '08:40'), null);
   assert.equal(evalAt('18:30', 'out', '08:40'), null);
+});
+
+test('salida tardía: más de 1 h después de la salida prevista', () => {
+  assert.equal(evalAt('18:40', 'out', '08:40'), null); // prevista 17:40, límite 18:40
+  assert.equal(evalAt('18:41', 'out', '08:40'), 'late_exit');
+  assert.equal(evalAt('19:30', 'out', '07:45'), 'late_exit'); // prevista 17:00
+});
+
+test('horas trabajadas: solo cuentan entre la entrada oficial y la salida prevista', () => {
+  const s = { ...base, start: '09:00', end: '18:00' };
+  const log = (time: string, direction: 'in' | 'out', detail_type = 'normal') =>
+    ({ timestamp: tue(time).toISOString(), direction, detail_type, event_type: 'granted' }) as unknown as AccessLog;
+  // entra 8:15, sale 18:40 → 9:00–18:00 = 540 min
+  assert.equal(calculateDaySummary([log('08:15', 'in'), log('18:40', 'out')], s).total_minutes, 540);
+  // entra 9:30 (tardía), sale 18:45 → 9:30–18:30 = 540 min
+  assert.equal(calculateDaySummary([log('09:30', 'in'), log('18:45', 'out')], s).total_minutes, 540);
+  // sale antes: cuenta lo trabajado, 9:00–17:00 = 480 min
+  assert.equal(calculateDaySummary([log('08:30', 'in'), log('17:00', 'out')], s).total_minutes, 480);
+  // sin horario: cuenta todo lo fichado
+  assert.equal(calculateDaySummary([log('08:15', 'in'), log('18:40', 'out')]).total_minutes, 625);
 });
 
 test('las salidas de pausa nunca se marcan', () => {

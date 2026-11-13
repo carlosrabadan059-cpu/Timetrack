@@ -53,7 +53,7 @@ async function handleAccessLog(data: any) {
 ## Modo Web y Móvil — POST /api/me/fichar
 
 ```typescript
-// Rate limit: 1 cada 5 minutos por usuario → 429
+// Rate limit: 1 cada 5 segundos por usuario → 429
 // Todos los campos del body son opcionales
 
 const ficharSchema = z.object({
@@ -182,7 +182,7 @@ function calculateDaySummary(fichajes: Fichaje[]): DaySummary {
 | GPS disponible | No | No | Opcional | No |
 | Va a 2N AC | Viene de 2N | ✗ Nunca | ✗ Nunca | ✗ Nunca |
 | Inferencia dirección | Del payload 2N | Automática (solo granted) | Automática (solo granted) | Del manager |
-| Rate limit 5 min | No | Sí | Sí | No |
+| Rate limit 5 s | No | Sí | Sí | No |
 | Cuenta para horas | ✅ | ✅ | ✅ | ✅ |
 | Visible en Historial | ✅ | ✅ | ✅ | ✅ marcado |
 | En PDF/Excel | ✅ | ✅ | ✅ | ✅ asterisco |

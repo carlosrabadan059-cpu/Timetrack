@@ -216,7 +216,7 @@ GET   /api/me/sync-status        Estado sync con 2N AC
 
 POST  /api/me/fichar             Fichar desde web o móvil
   Body: { direction?, latitude?, longitude?, device_info? }
-  Rate limit: 1 fichaje cada 5 min → 429
+  Rate limit: 1 fichaje cada 5 s → 429
   Error duplicado: 422 { code: 'duplicate_direction' }
   Source determinado por device_info, NO por GPS
 

@@ -3,6 +3,7 @@
 
 import type { AccessLog } from '../types/supabase.types.js';
 import { shortDayName, toDateString } from '../lib/date-utils.js';
+import { workWindow, type ScheduleSettings } from '../lib/schedule.js';
 
 export type DaySummary = {
   total_minutes: number;
@@ -16,8 +17,10 @@ export type DaySummary = {
  * Calculates worked/break minutes for a single day.
  * Pairs in→out sequentially, source-agnostic.
  * Ignores denied events.
+ * With `schedule`, worked time on a working day only counts between the official
+ * start and the expected exit (see workWindow in lib/schedule.ts).
  */
-export function calculateDaySummary(fichajes: AccessLog[]): DaySummary {
+export function calculateDaySummary(fichajes: AccessLog[], schedule?: ScheduleSettings | null): DaySummary {
   const granted = fichajes
     .filter((f) => f.event_type !== 'denied')
     .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
@@ -28,6 +31,9 @@ export function calculateDaySummary(fichajes: AccessLog[]): DaySummary {
   let last_exit: string | null = null;
   let pendingIn: AccessLog | null = null;
 
+  const firstIn = granted.find((f) => f.direction === 'in');
+  const win = schedule && firstIn ? workWindow(new Date(firstIn.timestamp), schedule) : null;
+
   for (const log of granted) {
     if (log.direction === 'in') {
       pendingIn = log;
@@ -35,11 +41,12 @@ export function calculateDaySummary(fichajes: AccessLog[]): DaySummary {
     } else if (log.direction === 'out' && pendingIn !== null) {
       const inTime = new Date(pendingIn.timestamp).getTime();
       const outTime = new Date(log.timestamp).getTime();
-      const minutes = (outTime - inTime) / 60_000;
       if (pendingIn.detail_type === 'comida') {
-        descanso_minutes += minutes;
+        descanso_minutes += (outTime - inTime) / 60_000;
       } else {
-        total_minutes += minutes;
+        const from = win ? Math.max(inTime, win.start.getTime()) : inTime;
+        const to = win ? Math.min(outTime, win.end.getTime()) : outTime;
+        total_minutes += Math.max(0, to - from) / 60_000;
       }
       last_exit = log.timestamp;
       pendingIn = null;
@@ -61,11 +68,12 @@ export function calculateDaySummary(fichajes: AccessLog[]): DaySummary {
  */
 export function buildWeekBars(
   weekLogs: AccessLog[],
-  weekDates: string[]
+  weekDates: string[],
+  schedule?: ScheduleSettings | null
 ): Array<{ day: string; date: string; minutes: number }> {
   return weekDates.map((date) => {
     const dayLogs = weekLogs.filter((l) => l.timestamp.startsWith(date));
-    const { total_minutes } = calculateDaySummary(dayLogs);
+    const { total_minutes } = calculateDaySummary(dayLogs, schedule);
     const d = new Date(date + 'T12:00:00');
     return {
       day: shortDayName(d),
@@ -78,12 +86,12 @@ export function buildWeekBars(
 /**
  * Breaks today's worked time into trabajo/descanso/otros buckets.
  */
-export function buildTodayDistribution(todayLogs: AccessLog[]): {
+export function buildTodayDistribution(todayLogs: AccessLog[], schedule?: ScheduleSettings | null): {
   trabajo_minutes: number;
   descanso_minutes: number;
   otros_minutes: number;
 } {
-  const { total_minutes, descanso_minutes } = calculateDaySummary(todayLogs);
+  const { total_minutes, descanso_minutes } = calculateDaySummary(todayLogs, schedule);
   return {
     trabajo_minutes: total_minutes,
     descanso_minutes,

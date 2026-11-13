@@ -4,6 +4,7 @@ import type { AppVariables } from '../../types/api.types.js';
 import type { AccessLog } from '../../types/supabase.types.js';
 import { humanizeSource, toDateString } from '../../lib/date-utils.js';
 import { calculateDaySummary } from '../../services/attendance.js';
+import { loadUserSchedule } from '../../lib/schedule.js';
 import {
   generateMonthlyPDF,
   generateMonthlyExcel,
@@ -69,7 +70,8 @@ reportes.get('/summary', async (c) => {
     dayMap.set(k, arr);
   }
 
-  const sums = [...dayMap.values()].map(d => calculateDaySummary(d));
+  const schedule = user.company_id ? await loadUserSchedule(user.id, user.company_id) : null;
+  const sums = [...dayMap.values()].map(d => calculateDaySummary(d, schedule));
   const totalMin = sums.reduce((s, d) => s + d.total_minutes, 0);
   const daysWorked = sums.filter(d => d.total_minutes > 0).length;
   const total_hours = Math.round(totalMin * 10 / 60) / 10;

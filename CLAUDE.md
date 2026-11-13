@@ -218,7 +218,7 @@ POST /api/me/fichar
 
 Auth: JWT del empleado obligatorio
 
-Rate limit: máx 1 fichaje cada 5 minutos por usuario → 429
+Rate limit: máx 1 fichaje cada 5 segundos por usuario → 429 (evita dobles clics; en memoria)
 
 Body (todos los campos opcionales):
 
@@ -252,8 +252,11 @@ Horario flexible (backend/src/lib/schedule.ts, tests en schedule.test.ts — `np
 Configuración en Ajustes → Control Horario → "Horario de trabajo": entrada oficial S, salida oficial E, margen de entrada F (flexible_schedule_minutes, máx. 180, solo si flexible_schedule_enabled) y tolerancia de salida T (courtesy_minutes).
 Por sucursal: profiles.branch_id (id de company_settings.branches[]) asigna el empleado a una sucursal (Empleados → Editar). Una sucursal puede tener branches[].schedule = { start, end, days, flexEnabled, flexMinutes, courtesyMinutes } (Ajustes → Sucursales → Configurar horario); si no lo tiene, o el empleado no tiene sucursal, se usa el de la empresa. Festivos que aplican = scope 'global' + scope de su sucursal. effectiveSchedule() en schedule.ts resuelve todo y lo usan fichar (día no laborable y marcas), dashboard, /api/me/company-settings (calendario) y el cálculo de días de vacaciones.
 Primera entrada del día (hora de Madrid) después de S+F → schedule_flag = 'late_entry'
+Entrada anticipada: web/móvil no pueden fichar la primera entrada de un día laborable antes de S − 60 min (EARLY_ENTRY_MAX_MINUTES) → 422 { code: 'too_early' }. Si se ficha antes de S, la salida prevista se sigue calculando desde S. El lector 2N nunca se bloquea.
 Salida prevista = max(primera entrada, S) + (E − S) — la pausa de comida va dentro de E − S
 Salida normal (no pausa) antes de salida prevista − T → schedule_flag = 'early_exit'
+Salida normal (no pausa) más de 60 min después de la salida prevista (LATE_EXIT_MAX_MINUTES) → schedule_flag = 'late_exit'. Se registra igual, nunca se bloquea.
+Horas trabajadas (dashboard, historial, reportes, PDF/Excel): en día laborable solo cuentan entre S y la salida prevista (workWindow() en schedule.ts, usado por calculateDaySummary). Lo fichado antes de S o después de la salida prevista no suma.
 Solo informativo: nunca bloquea el fichaje. Se aplica igual a 2N, web y móvil. out_of_schedule = schedule_flag is not null (compatibilidad)
 GET /api/me/dashboard devuelve expected_exit (ISO) y el empleado lo ve como "Salida prevista"
 Las horas se comparan siempre en Europe/Madrid (lib/madrid-time.ts): el servidor corre en UTC, nunca usar Date#getHours()
@@ -546,7 +549,7 @@ HTTP Status codes
 403 Rol insuficiente
 404 No encontrado
 422 Error de lógica de negocio (ej: fichaje duplicado)
-429 Rate limit (ej: fichar más de 1 vez en 5 minutos)
+429 Rate limit (ej: fichar más de 1 vez en 5 segundos)
 500 Error interno
 Reglas TypeScript
 strict: true — sin any

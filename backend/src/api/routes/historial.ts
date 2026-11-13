@@ -11,6 +11,7 @@ import {
   monthYearLabel,
 } from '../../lib/date-utils.js';
 import { calculateDaySummary } from '../../services/attendance.js';
+import { loadUserSchedule } from '../../lib/schedule.js';
 
 const historial = new Hono<{ Variables: AppVariables }>();
 
@@ -91,6 +92,7 @@ historial.get('/', async (c) => {
   }
 
   const logs: AccessLog[] = (allLogs ?? []) as AccessLog[];
+  const schedule = user.company_id ? await loadUserSchedule(user.id, user.company_id) : null;
 
   // Group by day (descending)
   const dayMap = new Map<string, AccessLog[]>();
@@ -112,7 +114,7 @@ historial.get('/', async (c) => {
 
   const days = pageDays.map((date) => {
     const dayLogs = dayMap.get(date) ?? [];
-    const { total_minutes } = calculateDaySummary(dayLogs);
+    const { total_minutes } = calculateDaySummary(dayLogs, schedule);
     return {
       date,
       label: formatDateLabel(date, todayStr),
@@ -135,7 +137,7 @@ historial.get('/', async (c) => {
   // Summary over ALL matching logs (not just current page)
   const granted = logs.filter((l) => l.event_type !== 'denied');
   const allDaySummaries = [...dayMap.entries()].map(([, dayLogs]) =>
-    calculateDaySummary(dayLogs)
+    calculateDaySummary(dayLogs, schedule)
   );
   const total_worked_minutes = allDaySummaries.reduce((s, d) => s + d.total_minutes, 0);
   const days_worked = allDaySummaries.filter((d) => d.total_minutes > 0).length;

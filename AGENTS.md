@@ -218,7 +218,7 @@ POST /api/me/fichar
 
 Auth: JWT del empleado obligatorio
 
-Rate limit: máx 1 fichaje cada 5 minutos por usuario → 429
+Rate limit: máx 1 fichaje cada 5 segundos por usuario → 429 (evita dobles clics; en memoria)
 
 Body (todos los campos opcionales):
 
@@ -535,7 +535,7 @@ HTTP Status codes
 403 Rol insuficiente
 404 No encontrado
 422 Error de lógica de negocio (ej: fichaje duplicado)
-429 Rate limit (ej: fichar más de 1 vez en 5 minutos)
+429 Rate limit (ej: fichar más de 1 vez en 5 segundos)
 500 Error interno
 Reglas TypeScript
 strict: true — sin any

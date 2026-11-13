@@ -43,7 +43,7 @@ Criterio de éxito:
 - Fichar → source correcto en access_logs
 - Par in/out de distintos sources → cálculo de horas correcto
 - Dos 'in' seguidos → 422 duplicate_direction
-- Más de 1 fichaje en 5 min → 429
+- Más de 1 fichaje en 5 s → 429
 
 ---
 

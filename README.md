@@ -45,7 +45,7 @@ Plataforma de gestión de control de accesos y fichajes para empresas. Integra d
 ### Sistema
 - **3 modos de fichaje**: lector físico 2N (SignalR), web y móvil (GPS)
 - **SSE** para actualizaciones en tiempo real al frontend
-- **Rate limiting** — máx. 1 fichaje cada 5 minutos por usuario
+- **Rate limiting** — máx. 1 fichaje cada 5 segundos por usuario (evita dobles clics)
 - **Inferencia de dirección** (in/out) automática
 - **Cola de sincronización** con reintentos vía n8n
 

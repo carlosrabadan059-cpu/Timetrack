@@ -3,6 +3,7 @@ import ExcelJS from 'exceljs';
 import { getSupabaseAdmin } from '../lib/supabase.js';
 import { humanizeSource, toDateString } from '../lib/date-utils.js';
 import { calculateDaySummary } from './attendance.js';
+import { loadUserSchedule } from '../lib/schedule.js';
 import type { AccessLog, Incidencia, Profile } from '../types/supabase.types.js';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -151,7 +152,7 @@ export async function generateMonthlyPDF(userId: string, month: number, year: nu
   const period = `01 ${monthShort} - ${lastDay} ${monthShort} ${year}`;
 
   const [pRes, lRes] = await Promise.all([
-    sb.from('profiles').select('full_name, employee_code').eq('id', userId).single(),
+    sb.from('profiles').select('full_name, employee_code, company_id').eq('id', userId).single(),
     sb.from('access_logs').select('*').eq('user_id', userId)
       .gte('timestamp', from).lte('timestamp', to).order('timestamp', { ascending: true }),
   ]);
@@ -159,14 +160,15 @@ export async function generateMonthlyPDF(userId: string, month: number, year: nu
   if (pRes.error) throw new Error('profile: ' + pRes.error.message);
   if (lRes.error) throw new Error('logs: ' + lRes.error.message);
 
-  const profile = pRes.data as Pick<Profile, 'full_name' | 'employee_code'>;
+  const profile = pRes.data as Pick<Profile, 'full_name' | 'employee_code' | 'company_id'>;
   const logs = (lRes.data ?? []) as AccessLog[];
   const empName = profile.full_name ?? profile.employee_code ?? userId;
 
   // KPIs
   const dayMap = buildDayMap(logs);
   const sortedDays = [...dayMap.keys()].sort();
-  const summaries = sortedDays.map(d => ({ date: d, ...calculateDaySummary(dayMap.get(d) ?? []) }));
+  const schedule = profile.company_id ? await loadUserSchedule(userId, profile.company_id) : null;
+  const summaries = sortedDays.map(d => ({ date: d, ...calculateDaySummary(dayMap.get(d) ?? [], schedule) }));
   const totalMin = summaries.reduce((s, d) => s + d.total_minutes, 0);
   const daysWorked = summaries.filter(d => d.total_minutes > 0).length;
   const totalH = (Math.round(totalMin * 10 / 60) / 10).toFixed(1);
@@ -268,7 +270,7 @@ export async function generateMonthlyExcel(userId: string, month: number, year: 
   const { from, to } = getRange(month, year);
 
   const [pRes, lRes] = await Promise.all([
-    sb.from('profiles').select('full_name, employee_code').eq('id', userId).single(),
+    sb.from('profiles').select('full_name, employee_code, company_id').eq('id', userId).single(),
     sb.from('access_logs').select('*').eq('user_id', userId)
       .gte('timestamp', from).lte('timestamp', to).order('timestamp', { ascending: true }),
   ]);
@@ -279,7 +281,9 @@ export async function generateMonthlyExcel(userId: string, month: number, year: 
   const logs = (lRes.data ?? []) as AccessLog[];
   const dayMap = buildDayMap(logs);
   const sortedDays = [...dayMap.keys()].sort();
-  const summaries = sortedDays.map(d => ({ date: d, ...calculateDaySummary(dayMap.get(d) ?? []) }));
+  const companyId = (pRes.data as { company_id?: string | null }).company_id;
+  const schedule = companyId ? await loadUserSchedule(userId, companyId) : null;
+  const summaries = sortedDays.map(d => ({ date: d, ...calculateDaySummary(dayMap.get(d) ?? [], schedule) }));
   const totalMin = summaries.reduce((s, d) => s + d.total_minutes, 0);
   const daysWorked = summaries.filter(d => d.total_minutes > 0).length;
   const totalH = Math.round(totalMin * 10 / 60) / 10;
@@ -389,7 +393,7 @@ export async function generateIncidenciasPDF(userId: string, month: number, year
   const period = `01 ${monthShort} - ${lastDay} ${monthShort} ${year}`;
 
   const [pRes, iRes] = await Promise.all([
-    sb.from('profiles').select('full_name, employee_code').eq('id', userId).single(),
+    sb.from('profiles').select('full_name, employee_code, company_id').eq('id', userId).single(),
     sb.from('incidencias').select('*').eq('user_id', userId)
       .gte('date', `${year}-${mp}-01`).lte('date', `${year}-${mp}-${ldp}`)
       .order('date', { ascending: true }),
@@ -398,7 +402,7 @@ export async function generateIncidenciasPDF(userId: string, month: number, year
   if (pRes.error) throw new Error('profile: ' + pRes.error.message);
   if (iRes.error) throw new Error('incidencias: ' + iRes.error.message);
 
-  const profile = pRes.data as Pick<Profile, 'full_name' | 'employee_code'>;
+  const profile = pRes.data as Pick<Profile, 'full_name' | 'employee_code' | 'company_id'>;
   const incs = (iRes.data ?? []) as Incidencia[];
   const empName = profile.full_name ?? profile.employee_code ?? userId;
 

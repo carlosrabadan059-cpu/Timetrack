@@ -484,7 +484,7 @@
       "source_file": "backend/src/api/middleware/api-key-auth.ts",
       "source_location": "L1",
       "id": "middleware_api_key_auth",
-      "community": 402,
+      "community": 20,
       "norm_label": "api-key-auth.ts"
     },
     {
@@ -493,7 +493,7 @@
       "source_file": "backend/src/api/middleware/api-key-auth.ts",
       "source_location": "L6",
       "id": "middleware_api_key_auth_apikeyauthmiddleware",
-      "community": 402,
+      "community": 20,
       "norm_label": "apikeyauthmiddleware"
     },
     {
@@ -583,7 +583,7 @@
       "source_file": "backend/src/api/routes/admin.ts",
       "source_location": "L1",
       "id": "routes_admin",
-      "community": 20,
+      "community": 41,
       "norm_label": "admin.ts"
     },
     {
@@ -592,7 +592,7 @@
       "source_file": "backend/src/api/routes/admin.ts",
       "source_location": "L20",
       "id": "routes_admin_admin",
-      "community": 20,
+      "community": 41,
       "norm_label": "admin"
     },
     {
@@ -601,7 +601,7 @@
       "source_file": "backend/src/api/routes/admin.ts",
       "source_location": "L1033",
       "id": "routes_admin_emitfn",
-      "community": 20,
+      "community": 41,
       "norm_label": "emitfn"
     },
     {
@@ -610,7 +610,7 @@
       "source_file": "backend/src/api/routes/admin.ts",
       "source_location": "L1038",
       "id": "routes_admin_start",
-      "community": 20,
+      "community": 41,
       "norm_label": "start()"
     },
     {
@@ -619,7 +619,7 @@
       "source_file": "backend/src/api/routes/admin.ts",
       "source_location": "L1063",
       "id": "routes_admin_cancel",
-      "community": 20,
+      "community": 41,
       "norm_label": "cancel()"
     },
     {
@@ -655,7 +655,7 @@
       "source_file": "backend/src/api/routes/external.ts",
       "source_location": "L1",
       "id": "routes_external",
-      "community": 402,
+      "community": 20,
       "norm_label": "external.ts"
     },
     {
@@ -664,7 +664,7 @@
       "source_file": "backend/src/api/routes/external.ts",
       "source_location": "L10",
       "id": "routes_external_external",
-      "community": 402,
+      "community": 20,
       "norm_label": "external"
     },
     {
@@ -673,7 +673,7 @@
       "source_file": "backend/src/api/routes/external.ts",
       "source_location": "L16",
       "id": "routes_external_fichajesqueryschema",
-      "community": 402,
+      "community": 20,
       "norm_label": "fichajesqueryschema"
     },
     {
@@ -682,7 +682,7 @@
       "source_file": "backend/src/api/routes/external.ts",
       "source_location": "L33",
       "id": "routes_external_pad2",
-      "community": 402,
+      "community": 20,
       "norm_label": "pad2()"
     },
     {
@@ -691,7 +691,7 @@
       "source_file": "backend/src/api/routes/external.ts",
       "source_location": "L34",
       "id": "routes_external_fmtts",
-      "community": 402,
+      "community": 20,
       "norm_label": "fmtts()"
     },
     {
@@ -700,7 +700,7 @@
       "source_file": "backend/src/api/routes/external.ts",
       "source_location": "L39",
       "id": "routes_external_fichajeitem",
-      "community": 402,
+      "community": 20,
       "norm_label": "fichajeitem"
     },
     {
@@ -709,7 +709,7 @@
       "source_file": "backend/src/api/routes/external.ts",
       "source_location": "L53",
       "id": "routes_external_buildfichajespdf",
-      "community": 402,
+      "community": 20,
       "norm_label": "buildfichajespdf()"
     },
     {
@@ -718,7 +718,7 @@
       "source_file": "backend/src/api/routes/external.ts",
       "source_location": "L119",
       "id": "routes_external_sanitizecsvcell",
-      "community": 402,
+      "community": 20,
       "norm_label": "sanitizecsvcell()"
     },
     {
@@ -727,7 +727,7 @@
       "source_file": "backend/src/api/routes/external.ts",
       "source_location": "L124",
       "id": "routes_external_buildfichajescsv",
-      "community": 402,
+      "community": 20,
       "norm_label": "buildfichajescsv()"
     },
     {
@@ -770,7 +770,7 @@
       "label": "historial",
       "file_type": "code",
       "source_file": "backend/src/api/routes/historial.ts",
-      "source_location": "L15",
+      "source_location": "L16",
       "id": "routes_historial_historial",
       "community": 7,
       "norm_label": "historial"
@@ -779,7 +779,7 @@
       "label": "buildDateRange()",
       "file_type": "code",
       "source_file": "backend/src/api/routes/historial.ts",
-      "source_location": "L19",
+      "source_location": "L20",
       "id": "routes_historial_builddaterange",
       "community": 7,
       "norm_label": "builddaterange()"
@@ -788,7 +788,7 @@
       "label": "buildRegistroXlsx()",
       "file_type": "code",
       "source_file": "backend/src/api/routes/historial.ts",
-      "source_location": "L228",
+      "source_location": "L230",
       "id": "routes_historial_buildregistroxlsx",
       "community": 7,
       "norm_label": "buildregistroxlsx()"
@@ -797,7 +797,7 @@
       "label": "RegistroEmployee",
       "file_type": "code",
       "source_file": "backend/src/api/routes/historial.ts",
-      "source_location": "L277",
+      "source_location": "L279",
       "id": "routes_historial_registroemployee",
       "community": 7,
       "norm_label": "registroemployee"
@@ -806,7 +806,7 @@
       "label": "buildCompanyRegistroXlsx()",
       "file_type": "code",
       "source_file": "backend/src/api/routes/historial.ts",
-      "source_location": "L286",
+      "source_location": "L288",
       "id": "routes_historial_buildcompanyregistroxlsx",
       "community": 7,
       "norm_label": "buildcompanyregistroxlsx()"
@@ -968,7 +968,7 @@
       "label": "EmitFn",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
-      "source_location": "L686",
+      "source_location": "L704",
       "id": "routes_me_emitfn",
       "community": 7,
       "norm_label": "emitfn"
@@ -977,7 +977,7 @@
       "label": "start()",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
-      "source_location": "L691",
+      "source_location": "L709",
       "id": "routes_me_start",
       "community": 7,
       "norm_label": "start()"
@@ -986,7 +986,7 @@
       "label": "cancel()",
       "file_type": "code",
       "source_file": "backend/src/api/routes/me.ts",
-      "source_location": "L718",
+      "source_location": "L736",
       "id": "routes_me_cancel",
       "community": 7,
       "norm_label": "cancel()"
@@ -1004,7 +1004,7 @@
       "label": "reportes",
       "file_type": "code",
       "source_file": "backend/src/api/routes/reportes.ts",
-      "source_location": "L13",
+      "source_location": "L14",
       "id": "routes_reportes_reportes",
       "community": 24,
       "norm_label": "reportes"
@@ -1013,7 +1013,7 @@
       "label": "MONTHS_SHORT",
       "file_type": "code",
       "source_file": "backend/src/api/routes/reportes.ts",
-      "source_location": "L17",
+      "source_location": "L18",
       "id": "routes_reportes_months_short",
       "community": 24,
       "norm_label": "months_short"
@@ -1022,7 +1022,7 @@
       "label": "DAYS_FULL",
       "file_type": "code",
       "source_file": "backend/src/api/routes/reportes.ts",
-      "source_location": "L18",
+      "source_location": "L19",
       "id": "routes_reportes_days_full",
       "community": 24,
       "norm_label": "days_full"
@@ -1031,7 +1031,7 @@
       "label": "parseParams()",
       "file_type": "code",
       "source_file": "backend/src/api/routes/reportes.ts",
-      "source_location": "L20",
+      "source_location": "L21",
       "id": "routes_reportes_parseparams",
       "community": 24,
       "norm_label": "parseparams()"
@@ -1040,7 +1040,7 @@
       "label": "getRange()",
       "file_type": "code",
       "source_file": "backend/src/api/routes/reportes.ts",
-      "source_location": "L27",
+      "source_location": "L28",
       "id": "routes_reportes_getrange",
       "community": 24,
       "norm_label": "getrange()"
@@ -1168,7 +1168,7 @@
       "source_file": "backend/src/api/routes/vacaciones.ts",
       "source_location": "L1",
       "id": "routes_vacaciones",
-      "community": 20,
+      "community": 59,
       "norm_label": "vacaciones.ts"
     },
     {
@@ -1177,7 +1177,7 @@
       "source_file": "backend/src/api/routes/vacaciones.ts",
       "source_location": "L13",
       "id": "routes_vacaciones_hookresult",
-      "community": 20,
+      "community": 59,
       "norm_label": "hookresult"
     },
     {
@@ -1186,7 +1186,7 @@
       "source_file": "backend/src/api/routes/vacaciones.ts",
       "source_location": "L17",
       "id": "routes_vacaciones_zoderrorhook",
-      "community": 20,
+      "community": 59,
       "norm_label": "zoderrorhook()"
     },
     {
@@ -1195,7 +1195,7 @@
       "source_file": "backend/src/api/routes/vacaciones.ts",
       "source_location": "L34",
       "id": "routes_vacaciones_holidayentry",
-      "community": 20,
+      "community": 59,
       "norm_label": "holidayentry"
     },
     {
@@ -1204,7 +1204,7 @@
       "source_file": "backend/src/api/routes/vacaciones.ts",
       "source_location": "L36",
       "id": "routes_vacaciones_calcworkingdays",
-      "community": 20,
+      "community": 59,
       "norm_label": "calcworkingdays()"
     },
     {
@@ -1213,7 +1213,7 @@
       "source_file": "backend/src/api/routes/vacaciones.ts",
       "source_location": "L60",
       "id": "routes_vacaciones_vacaciones",
-      "community": 20,
+      "community": 59,
       "norm_label": "vacaciones"
     },
     {
@@ -1222,7 +1222,7 @@
       "source_file": "backend/src/api/routes/vacaciones.ts",
       "source_location": "L132",
       "id": "routes_vacaciones_createvacacionschema",
-      "community": 20,
+      "community": 59,
       "norm_label": "createvacacionschema"
     },
     {
@@ -1240,7 +1240,7 @@
       "source_file": "backend/src/api/routes/vacaciones.ts",
       "source_location": "L388",
       "id": "routes_vacaciones_resolveschema",
-      "community": 20,
+      "community": 59,
       "norm_label": "resolveschema"
     },
     {
@@ -1337,10 +1337,28 @@
       "label": "port",
       "file_type": "code",
       "source_file": "backend/src/index.ts",
-      "source_location": "L100",
+      "source_location": "L104",
       "id": "src_index_port",
       "community": 20,
       "norm_label": "port"
+    },
+    {
+      "label": "server",
+      "file_type": "code",
+      "source_file": "backend/src/index.ts",
+      "source_location": "L106",
+      "id": "src_index_server",
+      "community": 20,
+      "norm_label": "server"
+    },
+    {
+      "label": "shutdown()",
+      "file_type": "code",
+      "source_file": "backend/src/index.ts",
+      "source_location": "L123",
+      "id": "src_index_shutdown",
+      "community": 20,
+      "norm_label": "shutdown()"
     },
     {
       "label": "ac-client.ts",
@@ -1375,7 +1393,7 @@
       "source_file": "backend/src/lib/ac-client.ts",
       "source_location": "L14",
       "id": "lib_ac_client_acclient",
-      "community": 43,
+      "community": 41,
       "norm_label": "acclient"
     },
     {
@@ -1393,7 +1411,7 @@
       "source_file": "backend/src/lib/ac-client.ts",
       "source_location": "L18",
       "id": "lib_ac_client_createacclient",
-      "community": 20,
+      "community": 41,
       "norm_label": "createacclient()"
     },
     {
@@ -1742,7 +1760,7 @@
       "label": "N8nWorkflow",
       "file_type": "code",
       "source_file": "backend/src/lib/n8n.ts",
-      "source_location": "L45",
+      "source_location": "L47",
       "id": "lib_n8n_n8nworkflow",
       "community": 43,
       "norm_label": "n8nworkflow"
@@ -1751,7 +1769,7 @@
       "label": "dispatchN8nWebhook()",
       "file_type": "code",
       "source_file": "backend/src/lib/n8n.ts",
-      "source_location": "L47",
+      "source_location": "L49",
       "id": "lib_n8n_dispatchn8nwebhook",
       "community": 43,
       "norm_label": "dispatchn8nwebhook()"
@@ -1760,7 +1778,7 @@
       "label": "triggerWorkflow()",
       "file_type": "code",
       "source_file": "backend/src/lib/n8n.ts",
-      "source_location": "L78",
+      "source_location": "L80",
       "id": "lib_n8n_triggerworkflow",
       "community": 43,
       "norm_label": "triggerworkflow()"
@@ -1816,17 +1834,26 @@
       "source_file": "backend/src/lib/notify.ts",
       "source_location": "L99",
       "id": "lib_notify_flushoutbox",
-      "community": 47,
+      "community": 43,
       "norm_label": "flushoutbox()"
     },
     {
       "label": "startOutboxFlusher()",
       "file_type": "code",
       "source_file": "backend/src/lib/notify.ts",
-      "source_location": "L120",
+      "source_location": "L137",
       "id": "lib_notify_startoutboxflusher",
       "community": 20,
       "norm_label": "startoutboxflusher()"
+    },
+    {
+      "label": "stopOutboxFlusher()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L143",
+      "id": "lib_notify_stopoutboxflusher",
+      "community": 20,
+      "norm_label": "stopoutboxflusher()"
     },
     {
       "label": "postgrest.ts",
@@ -1859,7 +1886,7 @@
       "label": "base",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.test.ts",
-      "source_location": "L9",
+      "source_location": "L11",
       "id": "lib_schedule_test_base",
       "community": 401,
       "norm_label": "base"
@@ -1868,7 +1895,7 @@
       "label": "tue()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.test.ts",
-      "source_location": "L20",
+      "source_location": "L22",
       "id": "lib_schedule_test_tue",
       "community": 401,
       "norm_label": "tue()"
@@ -1877,7 +1904,7 @@
       "label": "hhmm()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.test.ts",
-      "source_location": "L24",
+      "source_location": "L26",
       "id": "lib_schedule_test_hhmm",
       "community": 401,
       "norm_label": "hhmm()"
@@ -1886,7 +1913,7 @@
       "label": "evalAt()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.test.ts",
-      "source_location": "L29",
+      "source_location": "L31",
       "id": "lib_schedule_test_evalat",
       "community": 401,
       "norm_label": "evalat()"
@@ -1895,7 +1922,7 @@
       "label": "row",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.test.ts",
-      "source_location": "L90",
+      "source_location": "L123",
       "id": "lib_schedule_test_row",
       "community": 401,
       "norm_label": "row"
@@ -1913,7 +1940,7 @@
       "label": "ScheduleFlag",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L12",
+      "source_location": "L21",
       "id": "lib_schedule_scheduleflag",
       "community": 401,
       "norm_label": "scheduleflag"
@@ -1922,16 +1949,16 @@
       "label": "ScheduleSettings",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L14",
+      "source_location": "L23",
       "id": "lib_schedule_schedulesettings",
-      "community": 401,
+      "community": 7,
       "norm_label": "schedulesettings"
     },
     {
       "label": "PAUSE_TYPES",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L25",
+      "source_location": "L34",
       "id": "lib_schedule_pause_types",
       "community": 401,
       "norm_label": "pause_types"
@@ -1940,7 +1967,7 @@
       "label": "isWorkingDay()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L27",
+      "source_location": "L36",
       "id": "lib_schedule_isworkingday",
       "community": 401,
       "norm_label": "isworkingday()"
@@ -1949,7 +1976,7 @@
       "label": "dayDurationMinutes()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L33",
+      "source_location": "L42",
       "id": "lib_schedule_daydurationminutes",
       "community": 401,
       "norm_label": "daydurationminutes()"
@@ -1958,25 +1985,43 @@
       "label": "latestOnTimeEntry()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L38",
+      "source_location": "L47",
       "id": "lib_schedule_latestontimeentry",
       "community": 401,
       "norm_label": "latestontimeentry()"
     },
     {
+      "label": "tooEarlyEntry()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L60",
+      "id": "lib_schedule_tooearlyentry",
+      "community": 401,
+      "norm_label": "tooearlyentry()"
+    },
+    {
       "label": "expectedExit()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L46",
+      "source_location": "L72",
       "id": "lib_schedule_expectedexit",
       "community": 401,
       "norm_label": "expectedexit()"
     },
     {
+      "label": "workWindow()",
+      "file_type": "code",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L85",
+      "id": "lib_schedule_workwindow",
+      "community": 401,
+      "norm_label": "workwindow()"
+    },
+    {
       "label": "EvaluateInput",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L55",
+      "source_location": "L92",
       "id": "lib_schedule_evaluateinput",
       "community": 401,
       "norm_label": "evaluateinput"
@@ -1985,7 +2030,7 @@
       "label": "evaluateFichaje()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L64",
+      "source_location": "L101",
       "id": "lib_schedule_evaluatefichaje",
       "community": 401,
       "norm_label": "evaluatefichaje()"
@@ -1994,7 +2039,7 @@
       "label": "HolidayEntry",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L82",
+      "source_location": "L120",
       "id": "lib_schedule_holidayentry",
       "community": 401,
       "norm_label": "holidayentry"
@@ -2003,7 +2048,7 @@
       "label": "BranchSchedule",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L91",
+      "source_location": "L129",
       "id": "lib_schedule_branchschedule",
       "community": 401,
       "norm_label": "branchschedule"
@@ -2012,7 +2057,7 @@
       "label": "CompanyScheduleRow",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L100",
+      "source_location": "L138",
       "id": "lib_schedule_companyschedulerow",
       "community": 401,
       "norm_label": "companyschedulerow"
@@ -2021,34 +2066,34 @@
       "label": "holidaysFor()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L112",
+      "source_location": "L150",
       "id": "lib_schedule_holidaysfor",
-      "community": 401,
+      "community": 59,
       "norm_label": "holidaysfor()"
     },
     {
       "label": "effectiveHolidays()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L119",
+      "source_location": "L157",
       "id": "lib_schedule_effectiveholidays",
-      "community": 401,
+      "community": 59,
       "norm_label": "effectiveholidays()"
     },
     {
       "label": "effectiveSchedule()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L125",
+      "source_location": "L163",
       "id": "lib_schedule_effectiveschedule",
-      "community": 401,
+      "community": 59,
       "norm_label": "effectiveschedule()"
     },
     {
       "label": "nonWorkingKind()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L155",
+      "source_location": "L193",
       "id": "lib_schedule_nonworkingkind",
       "community": 401,
       "norm_label": "nonworkingkind()"
@@ -2057,7 +2102,7 @@
       "label": "cache",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L165",
+      "source_location": "L203",
       "id": "lib_schedule_cache",
       "community": 401,
       "norm_label": "cache"
@@ -2066,7 +2111,7 @@
       "label": "loadCompanyScheduleRow()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L167",
+      "source_location": "L205",
       "id": "lib_schedule_loadcompanyschedulerow",
       "community": 52,
       "norm_label": "loadcompanyschedulerow()"
@@ -2075,7 +2120,7 @@
       "label": "invalidateScheduleSettings()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L181",
+      "source_location": "L219",
       "id": "lib_schedule_invalidateschedulesettings",
       "community": 401,
       "norm_label": "invalidateschedulesettings()"
@@ -2084,45 +2129,45 @@
       "label": "userBranchId()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L185",
+      "source_location": "L223",
       "id": "lib_schedule_userbranchid",
-      "community": 401,
+      "community": 7,
       "norm_label": "userbranchid()"
     },
     {
       "label": "loadScheduleSettings()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L192",
+      "source_location": "L230",
       "id": "lib_schedule_loadschedulesettings",
-      "community": 401,
+      "community": 7,
       "norm_label": "loadschedulesettings()"
     },
     {
       "label": "loadUserSchedule()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L197",
+      "source_location": "L235",
       "id": "lib_schedule_loaduserschedule",
-      "community": 401,
+      "community": 7,
       "norm_label": "loaduserschedule()"
     },
     {
       "label": "firstInOfDay()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L202",
+      "source_location": "L240",
       "id": "lib_schedule_firstinofday",
-      "community": 401,
+      "community": 7,
       "norm_label": "firstinofday()"
     },
     {
       "label": "scheduleFlagFor()",
       "file_type": "code",
       "source_file": "backend/src/lib/schedule.ts",
-      "source_location": "L218",
+      "source_location": "L256",
       "id": "lib_schedule_scheduleflagfor",
-      "community": 401,
+      "community": 7,
       "norm_label": "scheduleflagfor()"
     },
     {
@@ -2131,7 +2176,7 @@
       "source_file": "backend/src/lib/supabase.ts",
       "source_location": "L1",
       "id": "backend_src_lib_supabase_ts_lib_supabase",
-      "community": 47,
+      "community": 91,
       "norm_label": "supabase.ts"
     },
     {
@@ -2140,7 +2185,7 @@
       "source_file": "backend/src/lib/supabase.ts",
       "source_location": "L3",
       "id": "lib_supabase_getenv",
-      "community": 47,
+      "community": 91,
       "norm_label": "getenv()"
     },
     {
@@ -2149,7 +2194,7 @@
       "source_file": "backend/src/lib/supabase.ts",
       "source_location": "L15",
       "id": "lib_supabase_getsupabasepublic",
-      "community": 47,
+      "community": 91,
       "norm_label": "getsupabasepublic()"
     },
     {
@@ -2167,7 +2212,7 @@
       "source_file": "backend/src/lib/supabase.ts",
       "source_location": "L36",
       "id": "lib_supabase_supabasepublic",
-      "community": 47,
+      "community": 91,
       "norm_label": "supabasepublic"
     },
     {
@@ -2176,7 +2221,7 @@
       "source_file": "backend/src/lib/supabase.ts",
       "source_location": "L40",
       "id": "lib_supabase_supabaseadmin",
-      "community": 47,
+      "community": 91,
       "norm_label": "supabaseadmin"
     },
     {
@@ -2192,7 +2237,7 @@
       "label": "DaySummary",
       "file_type": "code",
       "source_file": "backend/src/services/attendance.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "id": "services_attendance_daysummary",
       "community": 7,
       "norm_label": "daysummary"
@@ -2201,7 +2246,7 @@
       "label": "calculateDaySummary()",
       "file_type": "code",
       "source_file": "backend/src/services/attendance.ts",
-      "source_location": "L20",
+      "source_location": "L23",
       "id": "services_attendance_calculatedaysummary",
       "community": 7,
       "norm_label": "calculatedaysummary()"
@@ -2210,7 +2255,7 @@
       "label": "buildWeekBars()",
       "file_type": "code",
       "source_file": "backend/src/services/attendance.ts",
-      "source_location": "L62",
+      "source_location": "L69",
       "id": "services_attendance_buildweekbars",
       "community": 7,
       "norm_label": "buildweekbars()"
@@ -2219,7 +2264,7 @@
       "label": "buildTodayDistribution()",
       "file_type": "code",
       "source_file": "backend/src/services/attendance.ts",
-      "source_location": "L81",
+      "source_location": "L89",
       "id": "services_attendance_buildtodaydistribution",
       "community": 7,
       "norm_label": "buildtodaydistribution()"
@@ -2228,7 +2273,7 @@
       "label": "PAUSE_TYPES",
       "file_type": "code",
       "source_file": "backend/src/services/attendance.ts",
-      "source_location": "L100",
+      "source_location": "L108",
       "id": "services_attendance_pause_types",
       "community": 7,
       "norm_label": "pause_types"
@@ -2237,7 +2282,7 @@
       "label": "getJornadaStatus()",
       "file_type": "code",
       "source_file": "backend/src/services/attendance.ts",
-      "source_location": "L102",
+      "source_location": "L110",
       "id": "services_attendance_getjornadastatus",
       "community": 7,
       "norm_label": "getjornadastatus()"
@@ -2246,7 +2291,7 @@
       "label": "InferredDirection",
       "file_type": "code",
       "source_file": "backend/src/services/attendance.ts",
-      "source_location": "L120",
+      "source_location": "L128",
       "id": "services_attendance_inferreddirection",
       "community": 7,
       "norm_label": "inferreddirection"
@@ -2255,7 +2300,7 @@
       "label": "DetailType",
       "file_type": "code",
       "source_file": "backend/src/services/attendance.ts",
-      "source_location": "L121",
+      "source_location": "L129",
       "id": "services_attendance_detailtype",
       "community": 7,
       "norm_label": "detailtype"
@@ -2264,7 +2309,7 @@
       "label": "inferDirection()",
       "file_type": "code",
       "source_file": "backend/src/services/attendance.ts",
-      "source_location": "L123",
+      "source_location": "L131",
       "id": "services_attendance_inferdirection",
       "community": 7,
       "norm_label": "inferdirection()"
@@ -2273,7 +2318,7 @@
       "label": "isDuplicateDirection()",
       "file_type": "code",
       "source_file": "backend/src/services/attendance.ts",
-      "source_location": "L129",
+      "source_location": "L137",
       "id": "services_attendance_isduplicatedirection",
       "community": 7,
       "norm_label": "isduplicatedirection()"
@@ -2291,7 +2336,7 @@
       "label": "PdfDoc",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L10",
+      "source_location": "L11",
       "id": "services_report_generator_pdfdoc",
       "community": 24,
       "norm_label": "pdfdoc"
@@ -2300,7 +2345,7 @@
       "label": "Cell",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "id": "services_report_generator_cell",
       "community": 24,
       "norm_label": "cell"
@@ -2309,7 +2354,7 @@
       "label": "MONTHS_ES",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L15",
+      "source_location": "L16",
       "id": "services_report_generator_months_es",
       "community": 24,
       "norm_label": "months_es"
@@ -2318,7 +2363,7 @@
       "label": "MONTHS_SHORT",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L19",
+      "source_location": "L20",
       "id": "services_report_generator_months_short",
       "community": 24,
       "norm_label": "months_short"
@@ -2327,7 +2372,7 @@
       "label": "DAYS_FULL",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L23",
+      "source_location": "L24",
       "id": "services_report_generator_days_full",
       "community": 24,
       "norm_label": "days_full"
@@ -2336,7 +2381,7 @@
       "label": "INC_TYPE",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L25",
+      "source_location": "L26",
       "id": "services_report_generator_inc_type",
       "community": 24,
       "norm_label": "inc_type"
@@ -2345,7 +2390,7 @@
       "label": "INC_STATUS",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L31",
+      "source_location": "L32",
       "id": "services_report_generator_inc_status",
       "community": 24,
       "norm_label": "inc_status"
@@ -2354,7 +2399,7 @@
       "label": "pad2()",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L46",
+      "source_location": "L47",
       "id": "services_report_generator_pad2",
       "community": 24,
       "norm_label": "pad2()"
@@ -2363,7 +2408,7 @@
       "label": "fmtDate()",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L47",
+      "source_location": "L48",
       "id": "services_report_generator_fmtdate",
       "community": 24,
       "norm_label": "fmtdate()"
@@ -2372,7 +2417,7 @@
       "label": "fmtTime()",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L48",
+      "source_location": "L49",
       "id": "services_report_generator_fmttime",
       "community": 24,
       "norm_label": "fmttime()"
@@ -2381,7 +2426,7 @@
       "label": "minToH()",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L50",
+      "source_location": "L51",
       "id": "services_report_generator_mintoh",
       "community": 24,
       "norm_label": "mintoh()"
@@ -2390,7 +2435,7 @@
       "label": "getRange()",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L54",
+      "source_location": "L55",
       "id": "services_report_generator_getrange",
       "community": 24,
       "norm_label": "getrange()"
@@ -2399,7 +2444,7 @@
       "label": "buildDayMap()",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L63",
+      "source_location": "L64",
       "id": "services_report_generator_builddaymap",
       "community": 24,
       "norm_label": "builddaymap()"
@@ -2408,7 +2453,7 @@
       "label": "truncate()",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L74",
+      "source_location": "L75",
       "id": "services_report_generator_truncate",
       "community": 24,
       "norm_label": "truncate()"
@@ -2417,7 +2462,7 @@
       "label": "drawTable()",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L80",
+      "source_location": "L81",
       "id": "services_report_generator_drawtable",
       "community": 24,
       "norm_label": "drawtable()"
@@ -2426,7 +2471,7 @@
       "label": "pdfHead()",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L122",
+      "source_location": "L123",
       "id": "services_report_generator_pdfhead",
       "community": 24,
       "norm_label": "pdfhead()"
@@ -2435,7 +2480,7 @@
       "label": "generateMonthlyPDF()",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L146",
+      "source_location": "L147",
       "id": "services_report_generator_generatemonthlypdf",
       "community": 24,
       "norm_label": "generatemonthlypdf()"
@@ -2444,7 +2489,7 @@
       "label": "generateMonthlyExcel()",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L266",
+      "source_location": "L268",
       "id": "services_report_generator_generatemonthlyexcel",
       "community": 24,
       "norm_label": "generatemonthlyexcel()"
@@ -2453,7 +2498,7 @@
       "label": "generateIncidenciasPDF()",
       "file_type": "code",
       "source_file": "backend/src/services/report-generator.ts",
-      "source_location": "L382",
+      "source_location": "L386",
       "id": "services_report_generator_generateincidenciaspdf",
       "community": 24,
       "norm_label": "generateincidenciaspdf()"
@@ -2495,10 +2540,19 @@
       "norm_label": "getsignalrstatus()"
     },
     {
+      "label": "summarizeError()",
+      "file_type": "code",
+      "source_file": "backend/src/services/signalr-listener.ts",
+      "source_location": "L28",
+      "id": "services_signalr_listener_summarizeerror",
+      "community": 43,
+      "norm_label": "summarizeerror()"
+    },
+    {
       "label": "markDown()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L27",
+      "source_location": "L35",
       "id": "services_signalr_listener_markdown",
       "community": 43,
       "norm_label": "markdown()"
@@ -2507,7 +2561,7 @@
       "label": "markUp()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L38",
+      "source_location": "L46",
       "id": "services_signalr_listener_markup",
       "community": 43,
       "norm_label": "markup()"
@@ -2516,16 +2570,25 @@
       "label": "checkAndAlertDownConnections()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L48",
+      "source_location": "L72",
       "id": "services_signalr_listener_checkandalertdownconnections",
       "community": 43,
       "norm_label": "checkandalertdownconnections()"
     },
     {
+      "label": "alertTimer",
+      "file_type": "code",
+      "source_file": "backend/src/services/signalr-listener.ts",
+      "source_location": "L95",
+      "id": "services_signalr_listener_alerttimer",
+      "community": 43,
+      "norm_label": "alerttimer"
+    },
+    {
       "label": "handleAccessEvent()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L79",
+      "source_location": "L103",
       "id": "services_signalr_listener_handleaccessevent",
       "community": 43,
       "norm_label": "handleaccessevent()"
@@ -2534,16 +2597,25 @@
       "label": "connections",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L265",
+      "source_location": "L294",
       "id": "services_signalr_listener_connections",
       "community": 43,
       "norm_label": "connections"
     },
     {
+      "label": "stopSignalRListener()",
+      "file_type": "code",
+      "source_file": "backend/src/services/signalr-listener.ts",
+      "source_location": "L298",
+      "id": "services_signalr_listener_stopsignalrlistener",
+      "community": 20,
+      "norm_label": "stopsignalrlistener()"
+    },
+    {
       "label": "buildConnection()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L267",
+      "source_location": "L307",
       "id": "services_signalr_listener_buildconnection",
       "community": 43,
       "norm_label": "buildconnection()"
@@ -2552,7 +2624,7 @@
       "label": "attachHandlers()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L279",
+      "source_location": "L319",
       "id": "services_signalr_listener_attachhandlers",
       "community": 43,
       "norm_label": "attachhandlers()"
@@ -2561,7 +2633,7 @@
       "label": "retryConnectionLoop()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L328",
+      "source_location": "L369",
       "id": "services_signalr_listener_retryconnectionloop",
       "community": 43,
       "norm_label": "retryconnectionloop()"
@@ -2570,7 +2642,7 @@
       "label": "startCompanyConnection()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L345",
+      "source_location": "L386",
       "id": "services_signalr_listener_startcompanyconnection",
       "community": 43,
       "norm_label": "startcompanyconnection()"
@@ -2579,7 +2651,7 @@
       "label": "startSignalRListener()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L380",
+      "source_location": "L425",
       "id": "services_signalr_listener_startsignalrlistener",
       "community": 43,
       "norm_label": "startsignalrlistener()"
@@ -2588,19 +2660,10 @@
       "label": "restartCompanyConnection()",
       "file_type": "code",
       "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L421",
+      "source_location": "L472",
       "id": "services_signalr_listener_restartcompanyconnection",
       "community": 43,
       "norm_label": "restartcompanyconnection()"
-    },
-    {
-      "label": "stopSignalRListener()",
-      "file_type": "code",
-      "source_file": "backend/src/services/signalr-listener.ts",
-      "source_location": "L458",
-      "id": "services_signalr_listener_stopsignalrlistener",
-      "community": 43,
-      "norm_label": "stopsignalrlistener()"
     },
     {
       "label": "sse-broadcaster.ts",
@@ -2608,7 +2671,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L1",
       "id": "services_sse_broadcaster",
-      "community": 20,
+      "community": 59,
       "norm_label": "sse-broadcaster.ts"
     },
     {
@@ -2617,7 +2680,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L4",
       "id": "services_sse_broadcaster_sseevent",
-      "community": 20,
+      "community": 59,
       "norm_label": "sseevent"
     },
     {
@@ -2626,7 +2689,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L5",
       "id": "services_sse_broadcaster_emitfn",
-      "community": 20,
+      "community": 59,
       "norm_label": "emitfn"
     },
     {
@@ -2635,7 +2698,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L7",
       "id": "services_sse_broadcaster_ssebroadcaster",
-      "community": 20,
+      "community": 59,
       "norm_label": "ssebroadcaster"
     },
     {
@@ -2644,7 +2707,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L11",
       "id": "services_sse_broadcaster_ssebroadcaster_addconnection",
-      "community": 20,
+      "community": 59,
       "norm_label": ".addconnection()"
     },
     {
@@ -2653,7 +2716,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L20",
       "id": "services_sse_broadcaster_ssebroadcaster_removeconnection",
-      "community": 20,
+      "community": 59,
       "norm_label": ".removeconnection()"
     },
     {
@@ -2662,7 +2725,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L24",
       "id": "services_sse_broadcaster_ssebroadcaster_emit",
-      "community": 20,
+      "community": 59,
       "norm_label": ".emit()"
     },
     {
@@ -2671,7 +2734,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L36",
       "id": "services_sse_broadcaster_ssebroadcaster_addcompanyconnection",
-      "community": 20,
+      "community": 59,
       "norm_label": ".addcompanyconnection()"
     },
     {
@@ -2680,7 +2743,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L45",
       "id": "services_sse_broadcaster_ssebroadcaster_removecompanyconnection",
-      "community": 20,
+      "community": 59,
       "norm_label": ".removecompanyconnection()"
     },
     {
@@ -2689,7 +2752,7 @@
       "source_file": "backend/src/services/sse-broadcaster.ts",
       "source_location": "L49",
       "id": "services_sse_broadcaster_ssebroadcaster_emittocompany",
-      "community": 20,
+      "community": 59,
       "norm_label": ".emittocompany()"
     },
     {
@@ -6687,7 +6750,7 @@
       "source_file": "src/App.jsx",
       "source_location": "L1",
       "id": "src_app",
-      "community": 204,
+      "community": 48,
       "norm_label": "app.jsx"
     },
     {
@@ -6696,7 +6759,7 @@
       "source_file": "src/App.jsx",
       "source_location": "L36",
       "id": "src_app_app",
-      "community": 204,
+      "community": 48,
       "norm_label": "app()"
     },
     {
@@ -6705,7 +6768,7 @@
       "source_file": "src/App.jsx",
       "source_location": "L132",
       "id": "src_app_placeholderpage",
-      "community": 204,
+      "community": 48,
       "norm_label": "placeholderpage()"
     },
     {
@@ -6768,7 +6831,7 @@
       "source_file": "src/components/ProtectedRoute.jsx",
       "source_location": "L1",
       "id": "components_protectedroute",
-      "community": 204,
+      "community": 48,
       "norm_label": "protectedroute.jsx"
     },
     {
@@ -6777,7 +6840,7 @@
       "source_file": "src/components/ProtectedRoute.jsx",
       "source_location": "L9",
       "id": "components_protectedroute_protectedroute",
-      "community": 204,
+      "community": 48,
       "norm_label": "protectedroute()"
     },
     {
@@ -6894,7 +6957,7 @@
       "source_file": "src/components/ui/Modal.jsx",
       "source_location": "L1",
       "id": "ui_modal",
-      "community": 48,
+      "community": 204,
       "norm_label": "modal.jsx"
     },
     {
@@ -6903,7 +6966,7 @@
       "source_file": "src/components/ui/Modal.jsx",
       "source_location": "L9",
       "id": "ui_modal_modal",
-      "community": 48,
+      "community": 204,
       "norm_label": "modal()"
     },
     {
@@ -6930,7 +6993,7 @@
       "source_file": "src/components/ui/StatCard.jsx",
       "source_location": "L1",
       "id": "ui_statcard",
-      "community": 48,
+      "community": 204,
       "norm_label": "statcard.jsx"
     },
     {
@@ -6939,7 +7002,7 @@
       "source_file": "src/components/ui/StatCard.jsx",
       "source_location": "L8",
       "id": "ui_statcard_statcard",
-      "community": 48,
+      "community": 204,
       "norm_label": "statcard()"
     },
     {
@@ -6948,7 +7011,7 @@
       "source_file": "src/components/ui/index.js",
       "source_location": "L1",
       "id": "ui_index",
-      "community": 48,
+      "community": 204,
       "norm_label": "index.js"
     },
     {
@@ -7164,7 +7227,7 @@
       "source_file": "src/layouts/SuperAdminLayout.jsx",
       "source_location": "L1",
       "id": "layouts_superadminlayout",
-      "community": 204,
+      "community": 48,
       "norm_label": "superadminlayout.jsx"
     },
     {
@@ -7173,7 +7236,7 @@
       "source_file": "src/layouts/SuperAdminLayout.jsx",
       "source_location": "L5",
       "id": "layouts_superadminlayout_superadminlayout",
-      "community": 204,
+      "community": 48,
       "norm_label": "superadminlayout()"
     },
     {
@@ -7182,7 +7245,7 @@
       "source_file": "src/lib/api.js",
       "source_location": "L1",
       "id": "src_lib_api_js_lib_api",
-      "community": 40,
+      "community": 92,
       "norm_label": "api.js"
     },
     {
@@ -7191,7 +7254,7 @@
       "source_file": "src/lib/api.js",
       "source_location": "L7",
       "id": "lib_api_gettoken",
-      "community": 40,
+      "community": 92,
       "norm_label": "gettoken()"
     },
     {
@@ -7200,7 +7263,7 @@
       "source_file": "src/lib/api.js",
       "source_location": "L12",
       "id": "src_lib_api_js_lib_api_request",
-      "community": 40,
+      "community": 92,
       "norm_label": "request()"
     },
     {
@@ -7209,7 +7272,7 @@
       "source_file": "src/lib/api.js",
       "source_location": "L43",
       "id": "lib_api_download",
-      "community": 40,
+      "community": 92,
       "norm_label": "download()"
     },
     {
@@ -7218,7 +7281,7 @@
       "source_file": "src/lib/api.js",
       "source_location": "L60",
       "id": "src_lib_api_js_lib_api_api",
-      "community": 40,
+      "community": 92,
       "norm_label": "api"
     },
     {
@@ -7344,7 +7407,7 @@
       "source_file": "src/pages/PrivacyPage.jsx",
       "source_location": "L1",
       "id": "pages_privacypage",
-      "community": 204,
+      "community": 48,
       "norm_label": "privacypage.jsx"
     },
     {
@@ -7353,7 +7416,7 @@
       "source_file": "src/pages/PrivacyPage.jsx",
       "source_location": "L7",
       "id": "pages_privacypage_privacypage",
-      "community": 204,
+      "community": 48,
       "norm_label": "privacypage()"
     },
     {
@@ -7911,7 +7974,7 @@
       "source_file": "src/pages/admin/AdminVacacionesPage.jsx",
       "source_location": "L1",
       "id": "admin_adminvacacionespage",
-      "community": 58,
+      "community": 204,
       "norm_label": "adminvacacionespage.jsx"
     },
     {
@@ -7920,7 +7983,7 @@
       "source_file": "src/pages/admin/AdminVacacionesPage.jsx",
       "source_location": "L8",
       "id": "admin_adminvacacionespage_type_config",
-      "community": 58,
+      "community": 204,
       "norm_label": "type_config"
     },
     {
@@ -7929,7 +7992,7 @@
       "source_file": "src/pages/admin/AdminVacacionesPage.jsx",
       "source_location": "L14",
       "id": "admin_adminvacacionespage_status_badge",
-      "community": 58,
+      "community": 204,
       "norm_label": "status_badge"
     },
     {
@@ -7938,7 +8001,7 @@
       "source_file": "src/pages/admin/AdminVacacionesPage.jsx",
       "source_location": "L20",
       "id": "admin_adminvacacionespage_fmtdate",
-      "community": 58,
+      "community": 204,
       "norm_label": "fmtdate()"
     },
     {
@@ -7947,7 +8010,7 @@
       "source_file": "src/pages/admin/AdminVacacionesPage.jsx",
       "source_location": "L27",
       "id": "admin_adminvacacionespage_fmtcreatedat",
-      "community": 58,
+      "community": 204,
       "norm_label": "fmtcreatedat()"
     },
     {
@@ -7956,7 +8019,7 @@
       "source_file": "src/pages/admin/AdminVacacionesPage.jsx",
       "source_location": "L35",
       "id": "admin_adminvacacionespage_adminvacacionespage",
-      "community": 58,
+      "community": 204,
       "norm_label": "adminvacacionespage()"
     },
     {
@@ -7965,7 +8028,7 @@
       "source_file": "src/pages/employee/CorrectionPage.jsx",
       "source_location": "L1",
       "id": "employee_correctionpage",
-      "community": 60,
+      "community": 48,
       "norm_label": "correctionpage.jsx"
     },
     {
@@ -7974,7 +8037,7 @@
       "source_file": "src/pages/employee/CorrectionPage.jsx",
       "source_location": "L7",
       "id": "employee_correctionpage_type_labels",
-      "community": 60,
+      "community": 48,
       "norm_label": "type_labels"
     },
     {
@@ -7983,7 +8046,7 @@
       "source_file": "src/pages/employee/CorrectionPage.jsx",
       "source_location": "L14",
       "id": "employee_correctionpage_status_badge",
-      "community": 60,
+      "community": 48,
       "norm_label": "status_badge"
     },
     {
@@ -7992,7 +8055,7 @@
       "source_file": "src/pages/employee/CorrectionPage.jsx",
       "source_location": "L20",
       "id": "employee_correctionpage_fmtdatetime",
-      "community": 60,
+      "community": 48,
       "norm_label": "fmtdatetime()"
     },
     {
@@ -8001,7 +8064,7 @@
       "source_file": "src/pages/employee/CorrectionPage.jsx",
       "source_location": "L25",
       "id": "employee_correctionpage_fmtdate",
-      "community": 60,
+      "community": 48,
       "norm_label": "fmtdate()"
     },
     {
@@ -8010,7 +8073,7 @@
       "source_file": "src/pages/employee/CorrectionPage.jsx",
       "source_location": "L30",
       "id": "employee_correctionpage_correctionpage",
-      "community": 60,
+      "community": 48,
       "norm_label": "correctionpage()"
     },
     {
@@ -8019,7 +8082,7 @@
       "source_file": "src/pages/employee/DashboardPage.jsx",
       "source_location": "L1",
       "id": "employee_dashboardpage",
-      "community": 48,
+      "community": 90,
       "norm_label": "dashboardpage.jsx"
     },
     {
@@ -8028,7 +8091,7 @@
       "source_file": "src/pages/employee/DashboardPage.jsx",
       "source_location": "L14",
       "id": "employee_dashboardpage_getdeviceinfo",
-      "community": 48,
+      "community": 90,
       "norm_label": "getdeviceinfo()"
     },
     {
@@ -8037,7 +8100,7 @@
       "source_file": "src/pages/employee/DashboardPage.jsx",
       "source_location": "L21",
       "id": "employee_dashboardpage_fmtminutes",
-      "community": 48,
+      "community": 90,
       "norm_label": "fmtminutes()"
     },
     {
@@ -8046,7 +8109,7 @@
       "source_file": "src/pages/employee/DashboardPage.jsx",
       "source_location": "L28",
       "id": "employee_dashboardpage_pauseoptions",
-      "community": 48,
+      "community": 90,
       "norm_label": "pauseoptions"
     },
     {
@@ -8055,7 +8118,7 @@
       "source_file": "src/pages/employee/DashboardPage.jsx",
       "source_location": "L35",
       "id": "employee_dashboardpage_dashboardpage",
-      "community": 48,
+      "community": 90,
       "norm_label": "dashboardpage()"
     },
     {
@@ -8190,7 +8253,7 @@
       "source_file": "src/pages/employee/ReportsPage.jsx",
       "source_location": "L1",
       "id": "employee_reportspage",
-      "community": 204,
+      "community": 40,
       "norm_label": "reportspage.jsx"
     },
     {
@@ -8199,7 +8262,7 @@
       "source_file": "src/pages/employee/ReportsPage.jsx",
       "source_location": "L8",
       "id": "employee_reportspage_months_es",
-      "community": 204,
+      "community": 40,
       "norm_label": "months_es"
     },
     {
@@ -8208,7 +8271,7 @@
       "source_file": "src/pages/employee/ReportsPage.jsx",
       "source_location": "L10",
       "id": "employee_reportspage_triggerdownload",
-      "community": 204,
+      "community": 40,
       "norm_label": "triggerdownload()"
     },
     {
@@ -8217,7 +8280,7 @@
       "source_file": "src/pages/employee/ReportsPage.jsx",
       "source_location": "L21",
       "id": "employee_reportspage_reportspage",
-      "community": 204,
+      "community": 40,
       "norm_label": "reportspage()"
     },
     {
@@ -8325,7 +8388,7 @@
       "source_file": "src/pages/superadmin/SuperAdminCompaniesPage.jsx",
       "source_location": "L1",
       "id": "superadmin_superadmincompaniespage",
-      "community": 59,
+      "community": 68,
       "norm_label": "superadmincompaniespage.jsx"
     },
     {
@@ -8334,7 +8397,7 @@
       "source_file": "src/pages/superadmin/SuperAdminCompaniesPage.jsx",
       "source_location": "L7",
       "id": "superadmin_superadmincompaniespage_tabs",
-      "community": 59,
+      "community": 68,
       "norm_label": "tabs"
     },
     {
@@ -8343,7 +8406,7 @@
       "source_file": "src/pages/superadmin/SuperAdminCompaniesPage.jsx",
       "source_location": "L9",
       "id": "superadmin_superadmincompaniespage_defaultclockingmodes",
-      "community": 59,
+      "community": 68,
       "norm_label": "defaultclockingmodes"
     },
     {
@@ -8352,7 +8415,7 @@
       "source_file": "src/pages/superadmin/SuperAdminCompaniesPage.jsx",
       "source_location": "L15",
       "id": "superadmin_superadmincompaniespage_defaultform",
-      "community": 59,
+      "community": 68,
       "norm_label": "defaultform"
     },
     {
@@ -8361,7 +8424,7 @@
       "source_file": "src/pages/superadmin/SuperAdminCompaniesPage.jsx",
       "source_location": "L24",
       "id": "superadmin_superadmincompaniespage_clockingmodebadges",
-      "community": 59,
+      "community": 68,
       "norm_label": "clockingmodebadges()"
     },
     {
@@ -8370,7 +8433,7 @@
       "source_file": "src/pages/superadmin/SuperAdminCompaniesPage.jsx",
       "source_location": "L47",
       "id": "superadmin_superadmincompaniespage_superadmincompaniespage",
-      "community": 59,
+      "community": 68,
       "norm_label": "superadmincompaniespage()"
     },
     {
@@ -8729,7 +8792,7 @@
       "file_type": "document",
       "source_file": ".agents/skills/antigravity-backend/references/fases.md",
       "source_location": "L1",
-      "id": "users_carlosrabadan_antigravity_timetrack_agents_skills_antigravity_backend_references_fases_md",
+      "id": "references_fases",
       "community": 133,
       "norm_label": "fases.md"
     },
@@ -8801,7 +8864,7 @@
       "file_type": "document",
       "source_file": ".agents/skills/antigravity-backend/references/fichaje-modos.md",
       "source_location": "L1",
-      "id": "users_carlosrabadan_antigravity_timetrack_agents_skills_antigravity_backend_references_fichaje_modos_md",
+      "id": "references_fichaje_modos",
       "community": 134,
       "norm_label": "fichaje-modos.md"
     },
@@ -11042,7 +11105,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L1",
-      "id": "users_carlosrabadan_antigravity_timetrack_agents_md",
+      "id": "agents",
       "community": 137,
       "norm_label": "agents.md"
     },
@@ -11167,7 +11230,7 @@
       "label": "Agent skills",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L589",
+      "source_location": "L598",
       "id": "claude_agent_skills",
       "community": 69,
       "norm_label": "agent skills"
@@ -11176,7 +11239,7 @@
       "label": "Issue tracker",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L591",
+      "source_location": "L600",
       "id": "claude_issue_tracker",
       "community": 69,
       "norm_label": "issue tracker"
@@ -11185,7 +11248,7 @@
       "label": "Triage labels",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L595",
+      "source_location": "L604",
       "id": "claude_triage_labels",
       "community": 69,
       "norm_label": "triage labels"
@@ -11194,7 +11257,7 @@
       "label": "Domain docs",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L599",
+      "source_location": "L608",
       "id": "claude_domain_docs",
       "community": 69,
       "norm_label": "domain docs"
@@ -11203,7 +11266,7 @@
       "label": "graphify",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L603",
+      "source_location": "L612",
       "id": "claude_graphify",
       "community": 69,
       "norm_label": "graphify"
@@ -11263,10 +11326,19 @@
       "norm_label": "cambios de la sesion del 2026-11-04"
     },
     {
+      "label": "Cambios de la sesi\u00f3n del 2026-11-11",
+      "file_type": "document",
+      "source_file": "HANDOFF.md",
+      "source_location": "L46",
+      "id": "handoff_cambios_de_la_sesi\u00f3n_del_2026_11_11",
+      "community": 381,
+      "norm_label": "cambios de la sesion del 2026-11-11"
+    },
+    {
       "label": "Pendiente",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L48",
+      "source_location": "L55",
       "id": "handoff_pendiente",
       "community": 381,
       "norm_label": "pendiente"
@@ -11275,7 +11347,7 @@
       "label": "Issues abiertas",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L50",
+      "source_location": "L57",
       "id": "handoff_issues_abiertas",
       "community": 381,
       "norm_label": "issues abiertas"
@@ -11284,7 +11356,7 @@
       "label": "Antes de usar la app con empleados reales",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L60",
+      "source_location": "L67",
       "id": "handoff_antes_de_usar_la_app_con_empleados_reales",
       "community": 381,
       "norm_label": "antes de usar la app con empleados reales"
@@ -11293,7 +11365,7 @@
       "label": "Mantenimiento recurrente",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L66",
+      "source_location": "L73",
       "id": "handoff_mantenimiento_recurrente",
       "community": 381,
       "norm_label": "mantenimiento recurrente"
@@ -11302,7 +11374,7 @@
       "label": "Si algo falla",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L73",
+      "source_location": "L80",
       "id": "handoff_si_algo_falla",
       "community": 381,
       "norm_label": "si algo falla"
@@ -11311,7 +11383,7 @@
       "label": "Grafo de conocimiento",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L81",
+      "source_location": "L88",
       "id": "handoff_grafo_de_conocimiento",
       "community": 381,
       "norm_label": "grafo de conocimiento"
@@ -11320,7 +11392,7 @@
       "label": "Skills recomendadas",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L89",
+      "source_location": "L96",
       "id": "handoff_skills_recomendadas",
       "community": 381,
       "norm_label": "skills recomendadas"
@@ -11654,7 +11726,7 @@
       "file_type": "document",
       "source_file": "README.md",
       "source_location": "L1",
-      "id": "users_carlosrabadan_antigravity_timetrack_readme_md",
+      "id": "readme",
       "community": 45,
       "norm_label": "readme.md"
     },
@@ -12163,6 +12235,375 @@
       "norm_label": "triage labels"
     },
     {
+      "label": "architecture-review-2026-11.md",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L1",
+      "id": "docs_architecture_review_2026_11",
+      "community": 60,
+      "norm_label": "architecture-review-2026-11.md"
+    },
+    {
+      "label": "Revisi\u00f3n de arquitectura de despliegue \u2014 noviembre 2026",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L1",
+      "id": "docs_architecture_review_2026_11_revisi\u00f3n_de_arquitectura_de_despliegue_noviembre_2026",
+      "community": 60,
+      "norm_label": "revision de arquitectura de despliegue \u2014 noviembre 2026"
+    },
+    {
+      "label": "1. Arquitectura actual",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L9",
+      "id": "docs_architecture_review_2026_11_1_arquitectura_actual",
+      "community": 60,
+      "norm_label": "1. arquitectura actual"
+    },
+    {
+      "label": "2. Problemas observados (con evidencia)",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L26",
+      "id": "docs_architecture_review_2026_11_2_problemas_observados_con_evidencia",
+      "community": 60,
+      "norm_label": "2. problemas observados (con evidencia)"
+    },
+    {
+      "label": "2.1 El despliegue del backend no es fiable",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L28",
+      "id": "docs_architecture_review_2026_11_2_1_el_despliegue_del_backend_no_es_fiable",
+      "community": 60,
+      "norm_label": "2.1 el despliegue del backend no es fiable"
+    },
+    {
+      "label": "2.2 Todo en un \u00fanico stack",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L34",
+      "id": "docs_architecture_review_2026_11_2_2_todo_en_un_\u00fanico_stack",
+      "community": 60,
+      "norm_label": "2.2 todo en un unico stack"
+    },
+    {
+      "label": "2.3 Secretos repartidos y duplicados",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L38",
+      "id": "docs_architecture_review_2026_11_2_3_secretos_repartidos_y_duplicados",
+      "community": 60,
+      "norm_label": "2.3 secretos repartidos y duplicados"
+    },
+    {
+      "label": "2.4 Saltos innecesarios en caminos cr\u00edticos",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L42",
+      "id": "docs_architecture_review_2026_11_2_4_saltos_innecesarios_en_caminos_cr\u00edticos",
+      "community": 60,
+      "norm_label": "2.4 saltos innecesarios en caminos criticos"
+    },
+    {
+      "label": "3. Propuestas",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L52",
+      "id": "docs_architecture_review_2026_11_3_propuestas",
+      "community": 60,
+      "norm_label": "3. propuestas"
+    },
+    {
+      "label": "P1. Versi\u00f3n visible en `/health`",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L56",
+      "id": "docs_architecture_review_2026_11_p1_versi\u00f3n_visible_en_health",
+      "community": 60,
+      "norm_label": "p1. version visible en `/health`"
+    },
+    {
+      "label": "P2. Mover el backend a Dokploy (recomendada)",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L59",
+      "id": "docs_architecture_review_2026_11_p2_mover_el_backend_a_dokploy_recomendada",
+      "community": 60,
+      "norm_label": "p2. mover el backend a dokploy (recomendada)"
+    },
+    {
+      "label": "P3. Si el backend se queda en la Pi (alternativa a P2)",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L79",
+      "id": "docs_architecture_review_2026_11_p3_si_el_backend_se_queda_en_la_pi_alternativa_a_p2",
+      "community": 60,
+      "norm_label": "p3. si el backend se queda en la pi (alternativa a p2)"
+    },
+    {
+      "label": "P4. Alertas cr\u00edticas directas a Telegram",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L85",
+      "id": "docs_architecture_review_2026_11_p4_alertas_cr\u00edticas_directas_a_telegram",
+      "community": 60,
+      "norm_label": "p4. alertas criticas directas a telegram"
+    },
+    {
+      "label": "Decisi\u00f3n: NO mover la base de datos al Supabase self-hosted",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L88",
+      "id": "docs_architecture_review_2026_11_decisi\u00f3n_no_mover_la_base_de_datos_al_supabase_self_hosted",
+      "community": 60,
+      "norm_label": "decision: no mover la base de datos al supabase self-hosted"
+    },
+    {
+      "label": "4. Cambios ya aplicados en esta sesi\u00f3n (para contexto)",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L96",
+      "id": "docs_architecture_review_2026_11_4_cambios_ya_aplicados_en_esta_sesi\u00f3n_para_contexto",
+      "community": 60,
+      "norm_label": "4. cambios ya aplicados en esta sesion (para contexto)"
+    },
+    {
+      "label": "5. Qu\u00e9 pedir al revisor",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L110",
+      "id": "docs_architecture_review_2026_11_5_qu\u00e9_pedir_al_revisor",
+      "community": 60,
+      "norm_label": "5. que pedir al revisor"
+    },
+    {
+      "label": "architecture-review-codex.md",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L1",
+      "id": "docs_architecture_review_codex",
+      "community": 58,
+      "norm_label": "architecture-review-codex.md"
+    },
+    {
+      "label": "Revisi\u00f3n independiente de arquitectura de despliegue \u2014 TimeTrack",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L1",
+      "id": "docs_architecture_review_codex_revisi\u00f3n_independiente_de_arquitectura_de_despliegue_timetrack",
+      "community": 58,
+      "norm_label": "revision independiente de arquitectura de despliegue \u2014 timetrack"
+    },
+    {
+      "label": "1. \u00bfEl backend no depende de la red local de la Pi?",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L7",
+      "id": "docs_architecture_review_codex_1_el_backend_no_depende_de_la_red_local_de_la_pi",
+      "community": 58,
+      "norm_label": "1. \u00bfel backend no depende de la red local de la pi?"
+    },
+    {
+      "label": "Pruebas",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L11",
+      "id": "docs_architecture_review_codex_pruebas",
+      "community": 58,
+      "norm_label": "pruebas"
+    },
+    {
+      "label": "Riesgos o pasos que faltan",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L22",
+      "id": "docs_architecture_review_codex_riesgos_o_pasos_que_faltan",
+      "community": 58,
+      "norm_label": "riesgos o pasos que faltan"
+    },
+    {
+      "label": "2. \u00bfEs seguro ejecutar dos instancias?",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L30",
+      "id": "docs_architecture_review_codex_2_es_seguro_ejecutar_dos_instancias",
+      "community": 58,
+      "norm_label": "2. \u00bfes seguro ejecutar dos instancias?"
+    },
+    {
+      "label": "Pruebas",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L34",
+      "id": "docs_architecture_review_codex_pruebas_34",
+      "community": 58,
+      "norm_label": "pruebas"
+    },
+    {
+      "label": "Riesgos o pasos que faltan",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L48",
+      "id": "docs_architecture_review_codex_riesgos_o_pasos_que_faltan_48",
+      "community": 58,
+      "norm_label": "riesgos o pasos que faltan"
+    },
+    {
+      "label": "3. \u00bfSirve el Dockerfile en x86_64?",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L59",
+      "id": "docs_architecture_review_codex_3_sirve_el_dockerfile_en_x86_64",
+      "community": 58,
+      "norm_label": "3. \u00bfsirve el dockerfile en x86_64?"
+    },
+    {
+      "label": "Pruebas",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L63",
+      "id": "docs_architecture_review_codex_pruebas_63",
+      "community": 58,
+      "norm_label": "pruebas"
+    },
+    {
+      "label": "Riesgos o pasos que faltan",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L70",
+      "id": "docs_architecture_review_codex_riesgos_o_pasos_que_faltan_70",
+      "community": 58,
+      "norm_label": "riesgos o pasos que faltan"
+    },
+    {
+      "label": "4. \u00bfQu\u00e9 variables de entorno necesita el backend?",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L77",
+      "id": "docs_architecture_review_codex_4_qu\u00e9_variables_de_entorno_necesita_el_backend",
+      "community": 58,
+      "norm_label": "4. \u00bfque variables de entorno necesita el backend?"
+    },
+    {
+      "label": "Pruebas",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L81",
+      "id": "docs_architecture_review_codex_pruebas_81",
+      "community": 58,
+      "norm_label": "pruebas"
+    },
+    {
+      "label": "Riesgos o pasos que faltan",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L101",
+      "id": "docs_architecture_review_codex_riesgos_o_pasos_que_faltan_101",
+      "community": 58,
+      "norm_label": "riesgos o pasos que faltan"
+    },
+    {
+      "label": "5. \u00bfFaltan pasos o riesgos en P2?",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L110",
+      "id": "docs_architecture_review_codex_5_faltan_pasos_o_riesgos_en_p2",
+      "community": 58,
+      "norm_label": "5. \u00bffaltan pasos o riesgos en p2?"
+    },
+    {
+      "label": "Pruebas",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L114",
+      "id": "docs_architecture_review_codex_pruebas_114",
+      "community": 58,
+      "norm_label": "pruebas"
+    },
+    {
+      "label": "Riesgos o pasos que faltan",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L121",
+      "id": "docs_architecture_review_codex_riesgos_o_pasos_que_faltan_121",
+      "community": 58,
+      "norm_label": "riesgos o pasos que faltan"
+    },
+    {
+      "label": "6. \u00bfEs razonable P4?",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L138",
+      "id": "docs_architecture_review_codex_6_es_razonable_p4",
+      "community": 58,
+      "norm_label": "6. \u00bfes razonable p4?"
+    },
+    {
+      "label": "Pruebas",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L142",
+      "id": "docs_architecture_review_codex_pruebas_142",
+      "community": 58,
+      "norm_label": "pruebas"
+    },
+    {
+      "label": "Riesgos o pasos que faltan",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L150",
+      "id": "docs_architecture_review_codex_riesgos_o_pasos_que_faltan_150",
+      "community": 58,
+      "norm_label": "riesgos o pasos que faltan"
+    },
+    {
+      "label": "7. \u00bfEs correcto el diagn\u00f3stico de la secci\u00f3n 2?",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L159",
+      "id": "docs_architecture_review_codex_7_es_correcto_el_diagn\u00f3stico_de_la_secci\u00f3n_2",
+      "community": 58,
+      "norm_label": "7. \u00bfes correcto el diagnostico de la seccion 2?"
+    },
+    {
+      "label": "Pruebas",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L163",
+      "id": "docs_architecture_review_codex_pruebas_163",
+      "community": 58,
+      "norm_label": "pruebas"
+    },
+    {
+      "label": "No verificable desde el repositorio",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L171",
+      "id": "docs_architecture_review_codex_no_verificable_desde_el_repositorio",
+      "community": 58,
+      "norm_label": "no verificable desde el repositorio"
+    },
+    {
+      "label": "Puntos de fallo relevantes que faltan",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L182",
+      "id": "docs_architecture_review_codex_puntos_de_fallo_relevantes_que_faltan",
+      "community": 58,
+      "norm_label": "puntos de fallo relevantes que faltan"
+    },
+    {
+      "label": "Cambios priorizados en la propuesta",
+      "file_type": "document",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L196",
+      "id": "docs_architecture_review_codex_cambios_priorizados_en_la_propuesta",
+      "community": 58,
+      "norm_label": "cambios priorizados en la propuesta"
+    },
+    {
       "label": "backups.md",
       "file_type": "document",
       "source_file": "docs/backups.md",
@@ -12206,6 +12647,168 @@
       "id": "docs_backups_restauraci\u00f3n",
       "community": 55,
       "norm_label": "restauracion"
+    },
+    {
+      "label": "migracion-backend-dokploy.md",
+      "file_type": "document",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L1",
+      "id": "docs_migracion_backend_dokploy",
+      "community": 79,
+      "norm_label": "migracion-backend-dokploy.md"
+    },
+    {
+      "label": "Plan: migrar el backend de la Raspberry Pi a Dokploy",
+      "file_type": "document",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L1",
+      "id": "docs_migracion_backend_dokploy_plan_migrar_el_backend_de_la_raspberry_pi_a_dokploy",
+      "community": 79,
+      "norm_label": "plan: migrar el backend de la raspberry pi a dokploy"
+    },
+    {
+      "label": "Datos ya verificados",
+      "file_type": "document",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L36",
+      "id": "docs_migracion_backend_dokploy_datos_ya_verificados",
+      "community": 79,
+      "norm_label": "datos ya verificados"
+    },
+    {
+      "label": "Riesgo principal: dos backends a la vez",
+      "file_type": "document",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L52",
+      "id": "docs_migracion_backend_dokploy_riesgo_principal_dos_backends_a_la_vez",
+      "community": 79,
+      "norm_label": "riesgo principal: dos backends a la vez"
+    },
+    {
+      "label": "Fase 0 \u2014 Comprobaciones previas (sin impacto)",
+      "file_type": "document",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L64",
+      "id": "docs_migracion_backend_dokploy_fase_0_comprobaciones_previas_sin_impacto",
+      "community": 79,
+      "norm_label": "fase 0 \u2014 comprobaciones previas (sin impacto)"
+    },
+    {
+      "label": "Fase 1 \u2014 Preparar la app en Dokploy (sin tr\u00e1fico)",
+      "file_type": "document",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L89",
+      "id": "docs_migracion_backend_dokploy_fase_1_preparar_la_app_en_dokploy_sin_tr\u00e1fico",
+      "community": 79,
+      "norm_label": "fase 1 \u2014 preparar la app en dokploy (sin trafico)"
+    },
+    {
+      "label": "Fase 2 \u2014 Pruebas antes del corte (con la Pi a\u00fan en servicio)",
+      "file_type": "document",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L130",
+      "id": "docs_migracion_backend_dokploy_fase_2_pruebas_antes_del_corte_con_la_pi_a\u00fan_en_servicio",
+      "community": 79,
+      "norm_label": "fase 2 \u2014 pruebas antes del corte (con la pi aun en servicio)"
+    },
+    {
+      "label": "Fase 3 \u2014 Corte (ventana sin fichajes, p. ej. por la noche)",
+      "file_type": "document",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L159",
+      "id": "docs_migracion_backend_dokploy_fase_3_corte_ventana_sin_fichajes_p_ej_por_la_noche",
+      "community": 79,
+      "norm_label": "fase 3 \u2014 corte (ventana sin fichajes, p. ej. por la noche)"
+    },
+    {
+      "label": "Fase 4 \u2014 Marcha atr\u00e1s (si algo falla)",
+      "file_type": "document",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L184",
+      "id": "docs_migracion_backend_dokploy_fase_4_marcha_atr\u00e1s_si_algo_falla",
+      "community": 79,
+      "norm_label": "fase 4 \u2014 marcha atras (si algo falla)"
+    },
+    {
+      "label": "Fase 5 \u2014 Limpieza (tras 7 d\u00edas sin incidencias)",
+      "file_type": "document",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L195",
+      "id": "docs_migracion_backend_dokploy_fase_5_limpieza_tras_7_d\u00edas_sin_incidencias",
+      "community": 79,
+      "norm_label": "fase 5 \u2014 limpieza (tras 7 dias sin incidencias)"
+    },
+    {
+      "label": "Fuera de alcance (decisiones aparte)",
+      "file_type": "document",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L208",
+      "id": "docs_migracion_backend_dokploy_fuera_de_alcance_decisiones_aparte",
+      "community": 79,
+      "norm_label": "fuera de alcance (decisiones aparte)"
+    },
+    {
+      "label": "portainer-stack-n8n.md",
+      "file_type": "document",
+      "source_file": "docs/portainer-stack-n8n.md",
+      "source_location": "L1",
+      "id": "docs_portainer_stack_n8n",
+      "community": 89,
+      "norm_label": "portainer-stack-n8n.md"
+    },
+    {
+      "label": "Stack `n8n` de Portainer (Raspberry Pi 5)",
+      "file_type": "document",
+      "source_file": "docs/portainer-stack-n8n.md",
+      "source_location": "L1",
+      "id": "docs_portainer_stack_n8n_stack_n8n_de_portainer_raspberry_pi_5",
+      "community": 89,
+      "norm_label": "stack `n8n` de portainer (raspberry pi 5)"
+    },
+    {
+      "label": "Servicios",
+      "file_type": "document",
+      "source_file": "docs/portainer-stack-n8n.md",
+      "source_location": "L9",
+      "id": "docs_portainer_stack_n8n_servicios",
+      "community": 89,
+      "norm_label": "servicios"
+    },
+    {
+      "label": "Rutas de `Tunel_N8N` (Cloudflare Zero Trust)",
+      "file_type": "document",
+      "source_file": "docs/portainer-stack-n8n.md",
+      "source_location": "L21",
+      "id": "docs_portainer_stack_n8n_rutas_de_tunel_n8n_cloudflare_zero_trust",
+      "community": 89,
+      "norm_label": "rutas de `tunel_n8n` (cloudflare zero trust)"
+    },
+    {
+      "label": "Variables por servicio (solo nombres)",
+      "file_type": "document",
+      "source_file": "docs/portainer-stack-n8n.md",
+      "source_location": "L31",
+      "id": "docs_portainer_stack_n8n_variables_por_servicio_solo_nombres",
+      "community": 89,
+      "norm_label": "variables por servicio (solo nombres)"
+    },
+    {
+      "label": "Puntos a tener en cuenta",
+      "file_type": "document",
+      "source_file": "docs/portainer-stack-n8n.md",
+      "source_location": "L47",
+      "id": "docs_portainer_stack_n8n_puntos_a_tener_en_cuenta",
+      "community": 89,
+      "norm_label": "puntos a tener en cuenta"
+    },
+    {
+      "label": "Compose",
+      "file_type": "document",
+      "source_file": "docs/portainer-stack-n8n.md",
+      "source_location": "L55",
+      "id": "docs_portainer_stack_n8n_compose",
+      "community": 89,
+      "norm_label": "compose"
     },
     {
       "label": "saas-v3-analysis.md",
@@ -12436,7 +13039,7 @@
       "label": "Qu\u00e9 NO cambia el fix",
       "file_type": "document",
       "source_file": "docs/signalr-resilience.md",
-      "source_location": "L37",
+      "source_location": "L45",
       "id": "docs_signalr_resilience_qu\u00e9_no_cambia_el_fix",
       "community": 382,
       "norm_label": "que no cambia el fix"
@@ -12445,7 +13048,7 @@
       "label": "Verificar tras un redeploy",
       "file_type": "document",
       "source_file": "docs/signalr-resilience.md",
-      "source_location": "L47",
+      "source_location": "L55",
       "id": "docs_signalr_resilience_verificar_tras_un_redeploy",
       "community": 382,
       "norm_label": "verificar tras un redeploy"
@@ -12454,7 +13057,7 @@
       "label": "Requisito de infraestructura: `N8N_WEBHOOK_SECRET` en ambos servicios",
       "file_type": "document",
       "source_file": "docs/signalr-resilience.md",
-      "source_location": "L57",
+      "source_location": "L65",
       "id": "docs_signalr_resilience_requisito_de_infraestructura_n8n_webhook_secret_en_ambos_servicios",
       "community": 382,
       "norm_label": "requisito de infraestructura: `n8n_webhook_secret` en ambos servicios"
@@ -12463,7 +13066,7 @@
       "label": "`depends_on` en cascada (aplicado 2026-07-01)",
       "file_type": "document",
       "source_file": "docs/signalr-resilience.md",
-      "source_location": "L65",
+      "source_location": "L73",
       "id": "docs_signalr_resilience_depends_on_en_cascada_aplicado_2026_07_01",
       "community": 382,
       "norm_label": "`depends_on` en cascada (aplicado 2026-07-01)"
@@ -12472,7 +13075,7 @@
       "label": "Portainer \"re-pull\" no siempre refresca la imagen \u2014 verificar el digest",
       "file_type": "document",
       "source_file": "docs/signalr-resilience.md",
-      "source_location": "L96",
+      "source_location": "L104",
       "id": "docs_signalr_resilience_portainer_re_pull_no_siempre_refresca_la_imagen_verificar_el_digest",
       "community": 382,
       "norm_label": "portainer \"re-pull\" no siempre refresca la imagen \u2014 verificar el digest"
@@ -13007,6 +13610,42 @@
       "id": "security_audit_scan_metadata",
       "community": 4,
       "norm_label": "scan metadata"
+    },
+    {
+      "label": "fases.md",
+      "file_type": "document",
+      "source_file": ".agents/skills/antigravity-backend/references/fases.md",
+      "source_location": "L1",
+      "community": 133,
+      "norm_label": "fases.md",
+      "id": "users_carlosrabadan_antigravity_timetrack_agents_skills_antigravity_backend_references_fases_md"
+    },
+    {
+      "label": "fichaje-modos.md",
+      "file_type": "document",
+      "source_file": ".agents/skills/antigravity-backend/references/fichaje-modos.md",
+      "source_location": "L1",
+      "community": 134,
+      "norm_label": "fichaje-modos.md",
+      "id": "users_carlosrabadan_antigravity_timetrack_agents_skills_antigravity_backend_references_fichaje_modos_md"
+    },
+    {
+      "label": "AGENTS.md",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L1",
+      "community": 137,
+      "norm_label": "agents.md",
+      "id": "users_carlosrabadan_antigravity_timetrack_agents_md"
+    },
+    {
+      "label": "README.md",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "community": 45,
+      "norm_label": "readme.md",
+      "id": "users_carlosrabadan_antigravity_timetrack_readme_md"
     },
     {
       "label": "checkNonWorkingDay()",
@@ -30626,24 +31265,6 @@
       "id": "references_2n_api"
     },
     {
-      "label": "fases.md",
-      "file_type": "document",
-      "source_file": ".agents/skills/antigravity-backend/references/fases.md",
-      "source_location": "L1",
-      "community": 133,
-      "norm_label": "fases.md",
-      "id": "references_fases"
-    },
-    {
-      "label": "fichaje-modos.md",
-      "file_type": "document",
-      "source_file": ".agents/skills/antigravity-backend/references/fichaje-modos.md",
-      "source_location": "L1",
-      "community": 134,
-      "norm_label": "fichaje-modos.md",
-      "id": "references_fichaje_modos"
-    },
-    {
       "label": "n8n-workflows.md",
       "file_type": "document",
       "source_file": ".agents/skills/antigravity-backend/references/n8n-workflows.md",
@@ -30959,15 +31580,6 @@
       "id": "zoom_out_skill"
     },
     {
-      "label": "AGENTS.md",
-      "file_type": "document",
-      "source_file": "AGENTS.md",
-      "source_location": "L1",
-      "community": 137,
-      "norm_label": "agents.md",
-      "id": "agents"
-    },
-    {
       "label": "MANUAL.md",
       "file_type": "document",
       "source_file": "MANUAL.md",
@@ -30975,15 +31587,6 @@
       "community": 29,
       "norm_label": "manual.md",
       "id": "manual"
-    },
-    {
-      "label": "README.md",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L1",
-      "community": 45,
-      "norm_label": "readme.md",
-      "id": "readme"
     },
     {
       "label": "descripcion app control horario.md",
@@ -33299,6 +33902,28 @@
       "target": "lib_date_utils_todatestring"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/historial.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "routes_historial",
+      "target": "lib_schedule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/historial.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "routes_historial",
+      "target": "lib_schedule_loaduserschedule",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -33833,9 +34458,9 @@
       "source_file": "backend/src/api/routes/me.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_me",
-      "target": "lib_schedule_effectiveholidays",
-      "confidence_score": 1.0
+      "target": "lib_schedule_effectiveholidays"
     },
     {
       "relation": "imports",
@@ -33844,9 +34469,9 @@
       "source_file": "backend/src/api/routes/me.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_me",
-      "target": "lib_schedule_effectiveschedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule_effectiveschedule"
     },
     {
       "relation": "imports",
@@ -33877,9 +34502,9 @@
       "source_file": "backend/src/api/routes/me.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_me",
-      "target": "lib_schedule_loadcompanyschedulerow",
-      "confidence_score": 1.0
+      "target": "lib_schedule_loadcompanyschedulerow"
     },
     {
       "relation": "imports",
@@ -33899,9 +34524,20 @@
       "source_file": "backend/src/api/routes/me.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_me",
-      "target": "lib_schedule_loaduserschedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule_loaduserschedule"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/me.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "routes_me",
+      "target": "lib_schedule_nonworkingkind"
     },
     {
       "relation": "imports",
@@ -33911,7 +34547,7 @@
       "source_location": "L8",
       "weight": 1.0,
       "source": "routes_me",
-      "target": "lib_schedule_nonworkingkind",
+      "target": "lib_schedule_scheduleflag",
       "confidence_score": 1.0
     },
     {
@@ -33932,9 +34568,20 @@
       "source_file": "backend/src/api/routes/me.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_me",
-      "target": "lib_schedule_userbranchid",
-      "confidence_score": 1.0
+      "target": "lib_schedule_tooearlyentry"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/me.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "routes_me",
+      "target": "lib_schedule_userbranchid"
     },
     {
       "relation": "imports",
@@ -34219,6 +34866,28 @@
       "confidence_score": 1.0,
       "source": "routes_reportes",
       "target": "lib_date_utils_todatestring"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/reportes.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "routes_reportes",
+      "target": "lib_schedule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/api/routes/reportes.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "routes_reportes",
+      "target": "lib_schedule_loaduserschedule",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -34625,9 +35294,9 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_users",
-      "target": "lib_schedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule"
     },
     {
       "relation": "imports",
@@ -34636,9 +35305,9 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_users",
-      "target": "lib_schedule_loadcompanyschedulerow",
-      "confidence_score": 1.0
+      "target": "lib_schedule_loadcompanyschedulerow"
     },
     {
       "relation": "imports",
@@ -34687,9 +35356,9 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_users",
-      "target": "routes_users_isvalidbranch",
-      "confidence_score": 1.0
+      "target": "routes_users_isvalidbranch"
     },
     {
       "relation": "contains",
@@ -34794,9 +35463,9 @@
       "source_file": "backend/src/api/routes/users.ts",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_users_isvalidbranch",
-      "target": "lib_schedule_loadcompanyschedulerow",
-      "confidence_score": 1.0
+      "target": "lib_schedule_loadcompanyschedulerow"
     },
     {
       "relation": "imports_from",
@@ -34871,9 +35540,9 @@
       "source_file": "backend/src/api/routes/vacaciones.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_vacaciones",
-      "target": "lib_schedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule"
     },
     {
       "relation": "imports",
@@ -34882,9 +35551,9 @@
       "source_file": "backend/src/api/routes/vacaciones.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_vacaciones",
-      "target": "lib_schedule_effectiveholidays",
-      "confidence_score": 1.0
+      "target": "lib_schedule_effectiveholidays"
     },
     {
       "relation": "imports",
@@ -34893,9 +35562,9 @@
       "source_file": "backend/src/api/routes/vacaciones.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_vacaciones",
-      "target": "lib_schedule_effectiveschedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule_effectiveschedule"
     },
     {
       "relation": "imports",
@@ -34904,9 +35573,9 @@
       "source_file": "backend/src/api/routes/vacaciones.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_vacaciones",
-      "target": "lib_schedule_loadcompanyschedulerow",
-      "confidence_score": 1.0
+      "target": "lib_schedule_loadcompanyschedulerow"
     },
     {
       "relation": "imports",
@@ -34915,9 +35584,9 @@
       "source_file": "backend/src/api/routes/vacaciones.ts",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_vacaciones",
-      "target": "lib_schedule_userbranchid",
-      "confidence_score": 1.0
+      "target": "lib_schedule_userbranchid"
     },
     {
       "relation": "imports",
@@ -35324,6 +35993,17 @@
       "target": "lib_notify_startoutboxflusher"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/index.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_index",
+      "target": "lib_notify_stopoutboxflusher"
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -35357,6 +36037,17 @@
       "target": "services_signalr_listener_startsignalrlistener"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/index.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_index",
+      "target": "services_signalr_listener_stopsignalrlistener"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/index.ts",
@@ -35387,6 +36078,26 @@
       "target": "src_index_port"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/index.ts",
+      "source_location": "L106",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_index",
+      "target": "src_index_server"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/index.ts",
+      "source_location": "L123",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_index",
+      "target": "src_index_shutdown"
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -35407,6 +36118,28 @@
       "confidence_score": 1.0,
       "source": "src_index",
       "target": "types_api_types_appvariables"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/index.ts",
+      "source_location": "L129",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_index_shutdown",
+      "target": "lib_notify_stopoutboxflusher"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/index.ts",
+      "source_location": "L130",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_index_shutdown",
+      "target": "services_signalr_listener_stopsignalrlistener"
     },
     {
       "relation": "contains",
@@ -36289,6 +37022,28 @@
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "lib_schedule_tooearlyentry",
+      "target": "lib_madrid_time_tominutes"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "lib_schedule_workwindow",
+      "target": "lib_madrid_time_tominutes"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
       "source_file": "backend/src/lib/madrid-time.ts",
       "source_location": "L53",
       "weight": 1.0,
@@ -36338,6 +37093,17 @@
       "source_location": "L51",
       "weight": 1.0,
       "source": "lib_schedule_expectedexit",
+      "target": "lib_madrid_time_localtoutc"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "lib_schedule_workwindow",
       "target": "lib_madrid_time_localtoutc"
     },
     {
@@ -36525,6 +37291,28 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_notify",
+      "target": "lib_n8n_dispatchn8nwebhook"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L124",
+      "weight": 1.0,
+      "source": "lib_notify_flushoutbox",
+      "target": "lib_n8n_dispatchn8nwebhook"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "backend/src/services/signalr-listener.ts",
       "source_location": "L6",
       "weight": 1.0,
@@ -36541,6 +37329,17 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "services_signalr_listener_checkandalertdownconnections",
+      "target": "lib_n8n_dispatchn8nwebhook"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/services/signalr-listener.ts",
+      "source_location": "L50",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_signalr_listener_markup",
       "target": "lib_n8n_dispatchn8nwebhook"
     },
     {
@@ -36703,6 +37502,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/lib/notify.ts",
+      "source_location": "L143",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_notify",
+      "target": "lib_notify_stopoutboxflusher"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/notify.ts",
       "source_location": "L45",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -36846,9 +37655,9 @@
       "source_file": "backend/src/lib/schedule.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_test",
-      "target": "lib_schedule_companyschedulerow",
-      "confidence_score": 1.0
+      "target": "lib_schedule_companyschedulerow"
     },
     {
       "relation": "imports",
@@ -36857,9 +37666,9 @@
       "source_file": "backend/src/lib/schedule.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_test",
-      "target": "lib_schedule_effectiveholidays",
-      "confidence_score": 1.0
+      "target": "lib_schedule_effectiveholidays"
     },
     {
       "relation": "imports",
@@ -36868,9 +37677,9 @@
       "source_file": "backend/src/lib/schedule.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_test",
-      "target": "lib_schedule_effectiveschedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule_effectiveschedule"
     },
     {
       "relation": "imports",
@@ -36901,9 +37710,9 @@
       "source_file": "backend/src/lib/schedule.test.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_test",
-      "target": "lib_schedule_nonworkingkind",
-      "confidence_score": 1.0
+      "target": "lib_schedule_nonworkingkind"
     },
     {
       "relation": "imports",
@@ -36952,9 +37761,9 @@
       "source_file": "backend/src/lib/schedule.test.ts",
       "source_location": "L90",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_test",
-      "target": "lib_schedule_test_row",
-      "confidence_score": 1.0
+      "target": "lib_schedule_test_row"
     },
     {
       "relation": "contains",
@@ -36965,6 +37774,61 @@
       "confidence_score": 1.0,
       "source": "lib_schedule_test",
       "target": "lib_schedule_test_tue"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_schedule_test",
+      "target": "lib_schedule_tooearlyentry"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "lib_schedule_test",
+      "target": "services_attendance",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "lib_schedule_test",
+      "target": "services_attendance_calculatedaysummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "lib_schedule_test",
+      "target": "types_supabase_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.test.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "lib_schedule_test",
+      "target": "types_supabase_types_accesslog",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -36994,9 +37858,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L91",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule",
-      "target": "lib_schedule_branchschedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule_branchschedule"
     },
     {
       "relation": "contains",
@@ -37014,9 +37878,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L100",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule",
-      "target": "lib_schedule_companyschedulerow",
-      "confidence_score": 1.0
+      "target": "lib_schedule_companyschedulerow"
     },
     {
       "relation": "contains",
@@ -37034,9 +37898,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L119",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule",
-      "target": "lib_schedule_effectiveholidays",
-      "confidence_score": 1.0
+      "target": "lib_schedule_effectiveholidays"
     },
     {
       "relation": "contains",
@@ -37044,9 +37908,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L125",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule",
-      "target": "lib_schedule_effectiveschedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule_effectiveschedule"
     },
     {
       "relation": "contains",
@@ -37094,9 +37958,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L82",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule",
-      "target": "lib_schedule_holidayentry",
-      "confidence_score": 1.0
+      "target": "lib_schedule_holidayentry"
     },
     {
       "relation": "contains",
@@ -37104,9 +37968,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L112",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule",
-      "target": "lib_schedule_holidaysfor",
-      "confidence_score": 1.0
+      "target": "lib_schedule_holidaysfor"
     },
     {
       "relation": "contains",
@@ -37144,9 +38008,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L167",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule",
-      "target": "lib_schedule_loadcompanyschedulerow",
-      "confidence_score": 1.0
+      "target": "lib_schedule_loadcompanyschedulerow"
     },
     {
       "relation": "contains",
@@ -37164,9 +38028,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L197",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule",
-      "target": "lib_schedule_loaduserschedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule_loaduserschedule"
     },
     {
       "relation": "contains",
@@ -37174,9 +38038,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L155",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule",
-      "target": "lib_schedule_nonworkingkind",
-      "confidence_score": 1.0
+      "target": "lib_schedule_nonworkingkind"
     },
     {
       "relation": "contains",
@@ -37222,10 +38086,30 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L53",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_tooearlyentry"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L185",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule",
-      "target": "lib_schedule_userbranchid",
+      "target": "lib_schedule_userbranchid"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L85",
+      "weight": 1.0,
+      "source": "lib_schedule",
+      "target": "lib_schedule_workwindow",
       "confidence_score": 1.0
     },
     {
@@ -37243,12 +38127,45 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "backend/src/services/attendance.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "services_attendance",
+      "target": "lib_schedule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/services/report-generator.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "services_report_generator",
+      "target": "lib_schedule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "backend/src/services/signalr-listener.ts",
       "source_location": "L7",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "services_signalr_listener",
       "target": "lib_schedule"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/services/attendance.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "services_attendance",
+      "target": "lib_schedule_schedulesettings",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -37260,6 +38177,28 @@
       "confidence_score": 1.0,
       "source": "lib_schedule_evaluatefichaje",
       "target": "lib_schedule_isworkingday"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L54",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_schedule_tooearlyentry",
+      "target": "lib_schedule_isworkingday"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L86",
+      "weight": 1.0,
+      "source": "lib_schedule_workwindow",
+      "target": "lib_schedule_isworkingday",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -37299,6 +38238,39 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/lib/schedule.ts",
+      "source_location": "L87",
+      "weight": 1.0,
+      "source": "lib_schedule_workwindow",
+      "target": "lib_schedule_expectedexit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/services/attendance.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "services_attendance",
+      "target": "lib_schedule_workwindow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/services/attendance.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "services_attendance_calculatedaysummary",
+      "target": "lib_schedule_workwindow"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L154",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -37312,9 +38284,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L121",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_effectiveholidays",
-      "target": "lib_schedule_holidaysfor",
-      "confidence_score": 1.0
+      "target": "lib_schedule_holidaysfor"
     },
     {
       "relation": "calls",
@@ -37323,9 +38295,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L148",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_effectiveschedule",
-      "target": "lib_schedule_effectiveholidays",
-      "confidence_score": 1.0
+      "target": "lib_schedule_effectiveholidays"
     },
     {
       "relation": "calls",
@@ -37334,9 +38306,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L194",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_loadschedulesettings",
-      "target": "lib_schedule_effectiveschedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule_effectiveschedule"
     },
     {
       "relation": "calls",
@@ -37356,9 +38328,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L193",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_loadschedulesettings",
-      "target": "lib_schedule_loadcompanyschedulerow",
-      "confidence_score": 1.0
+      "target": "lib_schedule_loadcompanyschedulerow"
     },
     {
       "relation": "calls",
@@ -37367,9 +38339,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L198",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_loaduserschedule",
-      "target": "lib_schedule_userbranchid",
-      "confidence_score": 1.0
+      "target": "lib_schedule_userbranchid"
     },
     {
       "relation": "calls",
@@ -37400,9 +38372,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L198",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_loaduserschedule",
-      "target": "lib_schedule_loadschedulesettings",
-      "confidence_score": 1.0
+      "target": "lib_schedule_loadschedulesettings"
     },
     {
       "relation": "calls",
@@ -37422,9 +38394,42 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L227",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_scheduleflagfor",
+      "target": "lib_schedule_loaduserschedule"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/services/report-generator.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "services_report_generator",
       "target": "lib_schedule_loaduserschedule",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/services/report-generator.ts",
+      "source_location": "L285",
+      "weight": 1.0,
+      "source": "services_report_generator_generatemonthlyexcel",
+      "target": "lib_schedule_loaduserschedule"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/services/report-generator.ts",
+      "source_location": "L170",
+      "weight": 1.0,
+      "source": "services_report_generator_generatemonthlypdf",
+      "target": "lib_schedule_loaduserschedule"
     },
     {
       "relation": "calls",
@@ -38155,6 +39160,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/services/signalr-listener.ts",
+      "source_location": "L95",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_signalr_listener",
+      "target": "services_signalr_listener_alerttimer"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/services/signalr-listener.ts",
       "source_location": "L202",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -38302,6 +39317,16 @@
       "target": "services_signalr_listener_stopsignalrlistener"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/services/signalr-listener.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_signalr_listener",
+      "target": "services_signalr_listener_summarizeerror"
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -38344,6 +39369,17 @@
       "confidence_score": 1.0,
       "source": "services_signalr_listener",
       "target": "types_supabase_types_clockingmodes"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/services/signalr-listener.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_signalr_listener_markdown",
+      "target": "services_signalr_listener_summarizeerror"
     },
     {
       "relation": "calls",
@@ -45293,9 +46329,9 @@
       "source_file": "src/pages/admin/AdminSettingsPage.jsx",
       "source_location": "L212",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_adminsettingspage",
-      "target": "admin_adminsettingspage_branchschedule",
-      "confidence_score": 1.0
+      "target": "admin_adminsettingspage_branchschedule"
     },
     {
       "relation": "contains",
@@ -45303,9 +46339,9 @@
       "source_file": "src/pages/admin/AdminSettingsPage.jsx",
       "source_location": "L92",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_adminsettingspage",
-      "target": "admin_adminsettingspage_day_names",
-      "confidence_score": 1.0
+      "target": "admin_adminsettingspage_day_names"
     },
     {
       "relation": "contains",
@@ -45373,9 +46409,9 @@
       "source_file": "src/pages/admin/AdminSettingsPage.jsx",
       "source_location": "L204",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_adminsettingspage",
-      "target": "admin_adminsettingspage_schedulesummary",
-      "confidence_score": 1.0
+      "target": "admin_adminsettingspage_schedulesummary"
     },
     {
       "relation": "contains",
@@ -45393,9 +46429,9 @@
       "source_file": "src/pages/admin/AdminSettingsPage.jsx",
       "source_location": "L88",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_adminsettingspage",
-      "target": "admin_adminsettingspage_week_days",
-      "confidence_score": 1.0
+      "target": "admin_adminsettingspage_week_days"
     },
     {
       "relation": "calls",
@@ -45426,9 +46462,9 @@
       "source_file": "src/pages/admin/AdminSettingsPage.jsx",
       "source_location": "L229",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "admin_adminsettingspage_branchschedule",
-      "target": "admin_adminsettingspage_schedulesummary",
-      "confidence_score": 1.0
+      "target": "admin_adminsettingspage_schedulesummary"
     },
     {
       "relation": "contains",
@@ -46314,16 +47350,6 @@
       "source_location": "L1",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_agents_skills_antigravity_backend_references_fases_md",
-      "target": "references_fases_prompts_por_fase_para_claude_code"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".agents/skills/antigravity-backend/references/fases.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_fases",
       "target": "references_fases_prompts_por_fase_para_claude_code"
     },
@@ -46390,12 +47416,12 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": ".agents/skills/antigravity-backend/references/fichaje-modos.md",
+      "source_file": ".agents/skills/antigravity-backend/references/fases.md",
       "source_location": "L1",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_agents_skills_antigravity_backend_references_fichaje_modos_md",
-      "target": "references_fichaje_modos_modos_de_fichaje_implementaci\u00f3n_detallada"
+      "source": "users_carlosrabadan_antigravity_timetrack_agents_skills_antigravity_backend_references_fases_md",
+      "target": "references_fases_prompts_por_fase_para_claude_code"
     },
     {
       "relation": "contains",
@@ -46466,6 +47492,16 @@
       "confidence_score": 1.0,
       "source": "references_fichaje_modos_modos_de_fichaje_implementaci\u00f3n_detallada",
       "target": "references_fichaje_modos_tabla_de_comportamiento_por_modo"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/skills/antigravity-backend/references/fichaje-modos.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "users_carlosrabadan_antigravity_timetrack_agents_skills_antigravity_backend_references_fichaje_modos_md",
+      "target": "references_fichaje_modos_modos_de_fichaje_implementaci\u00f3n_detallada"
     },
     {
       "relation": "contains",
@@ -48954,7 +49990,7 @@
       "source_location": "L146",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_agents_md",
+      "source": "agents",
       "target": "agents_2n_access_commander"
     },
     {
@@ -48964,7 +50000,7 @@
       "source_location": "L14",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_agents_md",
+      "source": "agents",
       "target": "agents_backend_desde_backend"
     },
     {
@@ -48974,7 +50010,7 @@
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_agents_md",
+      "source": "agents",
       "target": "agents_frontend"
     },
     {
@@ -48984,7 +50020,7 @@
       "source_location": "L156",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_agents_md",
+      "source": "agents",
       "target": "agents_n8n"
     },
     {
@@ -48994,7 +50030,7 @@
       "source_location": "L162",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_agents_md",
+      "source": "agents",
       "target": "agents_otros"
     },
     {
@@ -49004,7 +50040,7 @@
       "source_location": "L138",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_agents_md",
+      "source": "agents",
       "target": "agents_supabase"
     },
     {
@@ -49014,7 +50050,7 @@
       "source_location": "L4",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "agents",
+      "source": "users_carlosrabadan_antigravity_timetrack_agents_md",
       "target": "agents_frontend"
     },
     {
@@ -49024,7 +50060,7 @@
       "source_location": "L14",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "agents",
+      "source": "users_carlosrabadan_antigravity_timetrack_agents_md",
       "target": "agents_backend_desde_backend"
     },
     {
@@ -49034,7 +50070,7 @@
       "source_location": "L138",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "agents",
+      "source": "users_carlosrabadan_antigravity_timetrack_agents_md",
       "target": "agents_supabase"
     },
     {
@@ -49044,7 +50080,7 @@
       "source_location": "L146",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "agents",
+      "source": "users_carlosrabadan_antigravity_timetrack_agents_md",
       "target": "agents_2n_access_commander"
     },
     {
@@ -49054,7 +50090,7 @@
       "source_location": "L156",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "agents",
+      "source": "users_carlosrabadan_antigravity_timetrack_agents_md",
       "target": "agents_n8n"
     },
     {
@@ -49064,7 +50100,7 @@
       "source_location": "L162",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "agents",
+      "source": "users_carlosrabadan_antigravity_timetrack_agents_md",
       "target": "agents_otros"
     },
     {
@@ -49306,6 +50342,16 @@
       "confidence_score": 1.0,
       "source": "handoff_estado_actual",
       "target": "handoff_cambios_de_la_sesi\u00f3n_del_2026_11_04"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "HANDOFF.md",
+      "source_location": "L46",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "handoff_estado_actual",
+      "target": "handoff_cambios_de_la_sesi\u00f3n_del_2026_11_11"
     },
     {
       "relation": "contains",
@@ -49724,18 +50770,8 @@
       "source_location": "L166",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_readme_md",
+      "source": "readme",
       "target": "readme_timetrack"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_readme_md",
-      "target": "readme_timetrack_control_de_accesos_y_fichajes"
     },
     {
       "relation": "contains",
@@ -49831,6 +50867,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "users_carlosrabadan_antigravity_timetrack_readme_md",
+      "target": "readme_timetrack_control_de_accesos_y_fichajes"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
       "source_location": "L39",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -49904,7 +50950,7 @@
       "source_location": "L166",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "readme",
+      "source": "users_carlosrabadan_antigravity_timetrack_readme_md",
       "target": "readme_timetrack"
     },
     {
@@ -50390,6 +51436,396 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_2026_11",
+      "target": "docs_architecture_review_2026_11_revisi\u00f3n_de_arquitectura_de_despliegue_noviembre_2026"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_2026_11_revisi\u00f3n_de_arquitectura_de_despliegue_noviembre_2026",
+      "target": "docs_architecture_review_2026_11_1_arquitectura_actual"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L26",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_2026_11_revisi\u00f3n_de_arquitectura_de_despliegue_noviembre_2026",
+      "target": "docs_architecture_review_2026_11_2_problemas_observados_con_evidencia"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L52",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_2026_11_revisi\u00f3n_de_arquitectura_de_despliegue_noviembre_2026",
+      "target": "docs_architecture_review_2026_11_3_propuestas"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L96",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_2026_11_revisi\u00f3n_de_arquitectura_de_despliegue_noviembre_2026",
+      "target": "docs_architecture_review_2026_11_4_cambios_ya_aplicados_en_esta_sesi\u00f3n_para_contexto"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L110",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_2026_11_revisi\u00f3n_de_arquitectura_de_despliegue_noviembre_2026",
+      "target": "docs_architecture_review_2026_11_5_qu\u00e9_pedir_al_revisor"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L28",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_2026_11_2_problemas_observados_con_evidencia",
+      "target": "docs_architecture_review_2026_11_2_1_el_despliegue_del_backend_no_es_fiable"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L34",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_2026_11_2_problemas_observados_con_evidencia",
+      "target": "docs_architecture_review_2026_11_2_2_todo_en_un_\u00fanico_stack"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_2026_11_2_problemas_observados_con_evidencia",
+      "target": "docs_architecture_review_2026_11_2_3_secretos_repartidos_y_duplicados"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L42",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_2026_11_2_problemas_observados_con_evidencia",
+      "target": "docs_architecture_review_2026_11_2_4_saltos_innecesarios_en_caminos_cr\u00edticos"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L88",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_2026_11_3_propuestas",
+      "target": "docs_architecture_review_2026_11_decisi\u00f3n_no_mover_la_base_de_datos_al_supabase_self_hosted"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L56",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_2026_11_3_propuestas",
+      "target": "docs_architecture_review_2026_11_p1_versi\u00f3n_visible_en_health"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L59",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_2026_11_3_propuestas",
+      "target": "docs_architecture_review_2026_11_p2_mover_el_backend_a_dokploy_recomendada"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L79",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_2026_11_3_propuestas",
+      "target": "docs_architecture_review_2026_11_p3_si_el_backend_se_queda_en_la_pi_alternativa_a_p2"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-2026-11.md",
+      "source_location": "L85",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_2026_11_3_propuestas",
+      "target": "docs_architecture_review_2026_11_p4_alertas_cr\u00edticas_directas_a_telegram"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex",
+      "target": "docs_architecture_review_codex_revisi\u00f3n_independiente_de_arquitectura_de_despliegue_timetrack"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_revisi\u00f3n_independiente_de_arquitectura_de_despliegue_timetrack",
+      "target": "docs_architecture_review_codex_1_el_backend_no_depende_de_la_red_local_de_la_pi"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_revisi\u00f3n_independiente_de_arquitectura_de_despliegue_timetrack",
+      "target": "docs_architecture_review_codex_2_es_seguro_ejecutar_dos_instancias"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L59",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_revisi\u00f3n_independiente_de_arquitectura_de_despliegue_timetrack",
+      "target": "docs_architecture_review_codex_3_sirve_el_dockerfile_en_x86_64"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L77",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_revisi\u00f3n_independiente_de_arquitectura_de_despliegue_timetrack",
+      "target": "docs_architecture_review_codex_4_qu\u00e9_variables_de_entorno_necesita_el_backend"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L110",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_revisi\u00f3n_independiente_de_arquitectura_de_despliegue_timetrack",
+      "target": "docs_architecture_review_codex_5_faltan_pasos_o_riesgos_en_p2"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L138",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_revisi\u00f3n_independiente_de_arquitectura_de_despliegue_timetrack",
+      "target": "docs_architecture_review_codex_6_es_razonable_p4"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L159",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_revisi\u00f3n_independiente_de_arquitectura_de_despliegue_timetrack",
+      "target": "docs_architecture_review_codex_7_es_correcto_el_diagn\u00f3stico_de_la_secci\u00f3n_2"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L196",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_revisi\u00f3n_independiente_de_arquitectura_de_despliegue_timetrack",
+      "target": "docs_architecture_review_codex_cambios_priorizados_en_la_propuesta"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_1_el_backend_no_depende_de_la_red_local_de_la_pi",
+      "target": "docs_architecture_review_codex_pruebas"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_1_el_backend_no_depende_de_la_red_local_de_la_pi",
+      "target": "docs_architecture_review_codex_riesgos_o_pasos_que_faltan"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L34",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_2_es_seguro_ejecutar_dos_instancias",
+      "target": "docs_architecture_review_codex_pruebas_34"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L48",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_2_es_seguro_ejecutar_dos_instancias",
+      "target": "docs_architecture_review_codex_riesgos_o_pasos_que_faltan_48"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L63",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_3_sirve_el_dockerfile_en_x86_64",
+      "target": "docs_architecture_review_codex_pruebas_63"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L70",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_3_sirve_el_dockerfile_en_x86_64",
+      "target": "docs_architecture_review_codex_riesgos_o_pasos_que_faltan_70"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L81",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_4_qu\u00e9_variables_de_entorno_necesita_el_backend",
+      "target": "docs_architecture_review_codex_pruebas_81"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L101",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_4_qu\u00e9_variables_de_entorno_necesita_el_backend",
+      "target": "docs_architecture_review_codex_riesgos_o_pasos_que_faltan_101"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L114",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_5_faltan_pasos_o_riesgos_en_p2",
+      "target": "docs_architecture_review_codex_pruebas_114"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L121",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_5_faltan_pasos_o_riesgos_en_p2",
+      "target": "docs_architecture_review_codex_riesgos_o_pasos_que_faltan_121"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L142",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_6_es_razonable_p4",
+      "target": "docs_architecture_review_codex_pruebas_142"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L150",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_6_es_razonable_p4",
+      "target": "docs_architecture_review_codex_riesgos_o_pasos_que_faltan_150"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L171",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_7_es_correcto_el_diagn\u00f3stico_de_la_secci\u00f3n_2",
+      "target": "docs_architecture_review_codex_no_verificable_desde_el_repositorio"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L163",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_7_es_correcto_el_diagn\u00f3stico_de_la_secci\u00f3n_2",
+      "target": "docs_architecture_review_codex_pruebas_163"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/architecture-review-codex.md",
+      "source_location": "L182",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_architecture_review_codex_7_es_correcto_el_diagn\u00f3stico_de_la_secci\u00f3n_2",
+      "target": "docs_architecture_review_codex_puntos_de_fallo_relevantes_que_faltan"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "docs/backups.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -50426,6 +51862,166 @@
       "confidence_score": 1.0,
       "source": "docs_backups_copias_de_seguridad_de_supabase_30_punto_17",
       "target": "docs_backups_restauraci\u00f3n"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_migracion_backend_dokploy",
+      "target": "docs_migracion_backend_dokploy_plan_migrar_el_backend_de_la_raspberry_pi_a_dokploy"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L36",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_migracion_backend_dokploy_plan_migrar_el_backend_de_la_raspberry_pi_a_dokploy",
+      "target": "docs_migracion_backend_dokploy_datos_ya_verificados"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L64",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_migracion_backend_dokploy_plan_migrar_el_backend_de_la_raspberry_pi_a_dokploy",
+      "target": "docs_migracion_backend_dokploy_fase_0_comprobaciones_previas_sin_impacto"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L89",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_migracion_backend_dokploy_plan_migrar_el_backend_de_la_raspberry_pi_a_dokploy",
+      "target": "docs_migracion_backend_dokploy_fase_1_preparar_la_app_en_dokploy_sin_tr\u00e1fico"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L130",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_migracion_backend_dokploy_plan_migrar_el_backend_de_la_raspberry_pi_a_dokploy",
+      "target": "docs_migracion_backend_dokploy_fase_2_pruebas_antes_del_corte_con_la_pi_a\u00fan_en_servicio"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L159",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_migracion_backend_dokploy_plan_migrar_el_backend_de_la_raspberry_pi_a_dokploy",
+      "target": "docs_migracion_backend_dokploy_fase_3_corte_ventana_sin_fichajes_p_ej_por_la_noche"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L184",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_migracion_backend_dokploy_plan_migrar_el_backend_de_la_raspberry_pi_a_dokploy",
+      "target": "docs_migracion_backend_dokploy_fase_4_marcha_atr\u00e1s_si_algo_falla"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L195",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_migracion_backend_dokploy_plan_migrar_el_backend_de_la_raspberry_pi_a_dokploy",
+      "target": "docs_migracion_backend_dokploy_fase_5_limpieza_tras_7_d\u00edas_sin_incidencias"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L208",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_migracion_backend_dokploy_plan_migrar_el_backend_de_la_raspberry_pi_a_dokploy",
+      "target": "docs_migracion_backend_dokploy_fuera_de_alcance_decisiones_aparte"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/migracion-backend-dokploy.md",
+      "source_location": "L52",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_migracion_backend_dokploy_plan_migrar_el_backend_de_la_raspberry_pi_a_dokploy",
+      "target": "docs_migracion_backend_dokploy_riesgo_principal_dos_backends_a_la_vez"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/portainer-stack-n8n.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_portainer_stack_n8n",
+      "target": "docs_portainer_stack_n8n_stack_n8n_de_portainer_raspberry_pi_5"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/portainer-stack-n8n.md",
+      "source_location": "L55",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_portainer_stack_n8n_stack_n8n_de_portainer_raspberry_pi_5",
+      "target": "docs_portainer_stack_n8n_compose"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/portainer-stack-n8n.md",
+      "source_location": "L47",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_portainer_stack_n8n_stack_n8n_de_portainer_raspberry_pi_5",
+      "target": "docs_portainer_stack_n8n_puntos_a_tener_en_cuenta"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/portainer-stack-n8n.md",
+      "source_location": "L21",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_portainer_stack_n8n_stack_n8n_de_portainer_raspberry_pi_5",
+      "target": "docs_portainer_stack_n8n_rutas_de_tunel_n8n_cloudflare_zero_trust"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/portainer-stack-n8n.md",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_portainer_stack_n8n_stack_n8n_de_portainer_raspberry_pi_5",
+      "target": "docs_portainer_stack_n8n_servicios"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/portainer-stack-n8n.md",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "docs_portainer_stack_n8n_stack_n8n_de_portainer_raspberry_pi_5",
+      "target": "docs_portainer_stack_n8n_variables_por_servicio_solo_nombres"
     },
     {
       "relation": "contains",
@@ -70590,5 +72186,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "7a90b45fe7eb3604cf85ec3988c32af6a20b6b66"
+  "built_at_commit": "74a84e005e8183ab242cd2491cde9f0d36916043"
 }

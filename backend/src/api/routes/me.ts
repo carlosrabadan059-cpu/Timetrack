@@ -5,7 +5,7 @@ import { zValidator } from '@hono/zod-validator';
 import { getSupabaseAdmin } from '../../lib/supabase.js';
 import type { AppVariables } from '../../types/api.types.js';
 import { inferDetailType, startOfDayISO, toDateString, getWeekStart } from '../../lib/date-utils.js';
-import { scheduleFlagFor, loadUserSchedule, userBranchId, loadCompanyScheduleRow, effectiveSchedule, effectiveHolidays, nonWorkingKind, firstInOfDay, expectedExit } from '../../lib/schedule.js';
+import { scheduleFlagFor, loadUserSchedule, userBranchId, loadCompanyScheduleRow, effectiveSchedule, effectiveHolidays, nonWorkingKind, firstInOfDay, expectedExit, tooEarlyEntry, type ScheduleFlag } from '../../lib/schedule.js';
 import { sseBroadcaster } from '../../services/sse-broadcaster.js';
 import { fichajeRateLimit, recordFichaje } from '../middleware/rate-limit.js';
 import {
@@ -447,7 +447,7 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
 
   // Geofence + schedule + non-working-day check
   let within_geofence: boolean | null = null;
-  let schedule_flag: 'late_entry' | 'early_exit' | null = null;
+  let schedule_flag: ScheduleFlag | null = null;
   let overrideId: string | null = null;
 
   if (user.company_id) {
@@ -492,6 +492,23 @@ me.post('/fichar', fichajeRateLimit, async (c) => {
           );
         }
         overrideId = ovr.id as string;
+      }
+
+      // ── Early entry: first 'in' at most EARLY_ENTRY_MAX_MINUTES before the official start ──
+      if (schedule && direction === 'in') {
+        const earliest = tooEarlyEntry(now, await firstInOfDay(user.id, now), schedule);
+        if (earliest) {
+          return c.json(
+            {
+              error: {
+                code: 'too_early',
+                message: `Todavía no puedes fichar la entrada: se permite a partir de las ${earliest} (tu entrada oficial es a las ${schedule.start})`,
+                details: { earliest, official_start: schedule.start },
+              },
+            },
+            422
+          );
+        }
       }
 
       // Geofence (only when GPS coordinates provided)
@@ -622,9 +639,10 @@ me.get('/dashboard', async (c) => {
     weekDates.push(toDateString(d));
   }
 
-  const weeklyBars = buildWeekBars(logs, weekDates);
-  const todaySummary = calculateDaySummary(todayLogs);
-  const todayDistribution = buildTodayDistribution(todayLogs);
+  const userSchedule = user.company_id ? await loadUserSchedule(user.id, user.company_id) : null;
+  const weeklyBars = buildWeekBars(logs, weekDates, userSchedule);
+  const todaySummary = calculateDaySummary(todayLogs, userSchedule);
+  const todayDistribution = buildTodayDistribution(todayLogs, userSchedule);
 
   const week_total_minutes = weeklyBars.reduce((sum, d) => sum + d.minutes, 0);
   const days_worked_this_week = weeklyBars.filter((d) => d.minutes > 0).length;
@@ -649,8 +667,8 @@ me.get('/dashboard', async (c) => {
   // Horario flexible: salida prevista calculada desde la primera entrada del día (hora de Madrid)
   let expected_exit: string | null = null;
   let schedule: { start: string; end: string; flex_minutes: number } | null = null;
-  if (user.company_id) {
-    const s = await loadUserSchedule(user.id, user.company_id);
+  {
+    const s = userSchedule;
     if (s) {
       schedule = { start: s.start, end: s.end, flex_minutes: s.flexEnabled ? s.flexMinutes : 0 };
       if (jornada_status !== 'out') {

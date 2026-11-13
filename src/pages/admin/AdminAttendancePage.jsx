@@ -206,6 +206,7 @@ const AdminAttendancePage = () => {
                                                     <span className="badge badge-warning" style={{ marginLeft: '0.25rem', fontSize: '0.65rem' }}>
                                                         {record.schedule_flag === 'late_entry' ? 'Entrada tardía'
                                                             : record.schedule_flag === 'early_exit' ? 'Salida anticipada'
+                                                            : record.schedule_flag === 'late_exit' ? 'Salida tardía'
                                                             : 'Fuera de horario'}
                                                     </span>
                                                 )}

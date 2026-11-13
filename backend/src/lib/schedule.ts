@@ -5,11 +5,20 @@
 //   - expected exit = max(entry, S) + (E − S)     (the lunch break is inside E − S)
 //   - a normal 'out' before expected exit − T     → 'early_exit'
 // Flags are informative only: a fichaje is never blocked because of them.
+//
+//   - a normal 'out' after expected exit + LATE_EXIT_MAX_MINUTES → 'late_exit'
+//
+// Early entry: web/mobile can't clock the first 'in' of a working day more than
+// EARLY_ENTRY_MAX_MINUTES before S (422 'too_early'). An allowed early entry still
+// counts as S for the expected exit. The 2N reader is never blocked (the door opened).
+//
+// Worked time on a working day only counts inside workWindow(): from S to the
+// expected exit. Time before S or after the expected exit is not counted.
 
 import { getSupabaseAdmin } from './supabase.js';
 import { localParts, localToUtc, startOfLocalDay, toMinutes } from './madrid-time.js';
 
-export type ScheduleFlag = 'late_entry' | 'early_exit';
+export type ScheduleFlag = 'late_entry' | 'early_exit' | 'late_exit';
 
 export interface ScheduleSettings {
   start: string; // 'HH:MM' Madrid time
@@ -39,6 +48,23 @@ export function latestOnTimeEntry(s: ScheduleSettings): number {
   return toMinutes(s.start, 9 * 60) + (s.flexEnabled ? s.flexMinutes : 0);
 }
 
+/** How long before the official start the first entry of the day may be clocked. */
+export const EARLY_ENTRY_MAX_MINUTES = 60;
+/** How long after the expected exit a normal 'out' is still not flagged as late. */
+export const LATE_EXIT_MAX_MINUTES = 60;
+
+/**
+ * Earliest allowed time ('HH:MM', Madrid) if `ts` is a first entry of a working day
+ * clocked too early; null if allowed.
+ */
+export function tooEarlyEntry(ts: Date, firstInToday: Date | null, s: ScheduleSettings): string | null {
+  if (firstInToday || !isWorkingDay(ts, s)) return null;
+  const earliest = toMinutes(s.start, 9 * 60) - EARLY_ENTRY_MAX_MINUTES;
+  if (localParts(ts).minutes >= earliest) return null;
+  const m = Math.max(0, earliest);
+  return `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+}
+
 /**
  * Expected exit for a day whose first entry was `firstIn`.
  * An entry before the official start counts as the official start.
@@ -50,6 +76,17 @@ export function expectedExit(firstIn: Date, s: ScheduleSettings): Date | null {
   const startMin = toMinutes(s.start, 9 * 60);
   if (p.minutes <= startMin) return localToUtc(p.date, startMin + duration);
   return new Date(firstIn.getTime() + duration * 60_000);
+}
+
+/**
+ * Interval of a working day in which worked time counts: official start S to the
+ * expected exit. Null on non-working days or with an inconsistent schedule (count everything).
+ */
+export function workWindow(firstIn: Date, s: ScheduleSettings): { start: Date; end: Date } | null {
+  if (!isWorkingDay(firstIn, s)) return null;
+  const end = expectedExit(firstIn, s);
+  if (!end) return null;
+  return { start: localToUtc(localParts(firstIn).date, toMinutes(s.start, 9 * 60)), end };
 }
 
 export interface EvaluateInput {
@@ -74,7 +111,8 @@ export function evaluateFichaje({ ts, direction, detailType, firstInToday, setti
   const exit = expectedExit(firstInToday, settings);
   if (!exit) return null;
   const limit = exit.getTime() - settings.exitToleranceMinutes * 60_000;
-  return ts.getTime() < limit ? 'early_exit' : null;
+  if (ts.getTime() < limit) return 'early_exit';
+  return ts.getTime() > exit.getTime() + LATE_EXIT_MAX_MINUTES * 60_000 ? 'late_exit' : null;
 }
 
 // ── Company and branch schedule ───────────────────────────────────────────────
