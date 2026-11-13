@@ -565,9 +565,15 @@ Actualiza los checkboxes al completar cada fase:
 ✅ Fase 5 — Sync 2N: usuarios vía n8n, callback, reconciliación nocturna
 
 Notas de despliegue:
-- Backend desplegado en Docker en Raspberry Pi (192.168.1.10), expuesto vía Cloudflare Tunnel como https://api.rabadanhouse.space
-- Imagen Docker: rabadanhouse/timetrack-backend:latest (Docker Hub, arm64)
-- Stack Docker en Portainer junto a n8n (red n8n_net) — compose en Portainer
+- **Backend en Dokploy (Debian, x86_64) desde el 2026-11-13.**
+  - App `Timetrack Backend`, `timetrack-backend-qmxtok`, en https://api.rabadanhouse.space, publicada por el túnel del Debian → Traefik.
+  - Auto-deploy al hacer push a `main` con Watch Paths `backend/**`. Build Path `/backend`, Docker Context Path `backend`.
+  - Ya no se compila arm64 en el Mac ni se publica en Docker Hub.
+  - `/health` muestra `version: unknown`: el commit se ve en Dokploy → Deployments.
+  - Plan, verificación y marcha atrás en `docs/migracion-backend-dokploy.md`.
+- **Raspberry Pi (192.168.1.10), stack `n8n` en Portainer:** n8n, su Postgres, cloudflared (`Tunel_N8N`: `n8n`, `access` = 2N, …) y backup. Copia del compose en `docs/portainer-stack-n8n.md`.
+  - El servicio `backend` sigue en el compose con `replicas: 0`, solo para la marcha atrás, hasta el 2026-11-20.
+  - **Nunca dos backends con SignalR activo a la vez.**
 - Frontend en Dokploy (app `Timetrack`, `timetrack-4uibyn`) en https://timetrack.rabadanhouse.space, auto-deploy desde `main` vía GitHub, build con `Dockerfile` (Vite + nginx). Las cabeceras de seguridad y la CSP están en `nginx/security-headers.conf`: cualquier origen externo nuevo hay que añadirlo ahí o el navegador lo bloqueará. Conectado al backend en api.rabadanhouse.space. No hay despliegue en Vercel
 - Copias de seguridad (2026-11-04): servicio `backup` en el stack `n8n` de Portainer (imagen `rabadanhouse/timetrack-backup:latest`). Cada día a las 03:30 hace `pg_dump` de `public`+`auth` de Supabase, cifrado con age, y lo sube a Google Drive (`gdrive:timetrack-backups`, con un client_id propio de Google). Avisa por Telegram si falla y queda *unhealthy* si pasan 26 h sin backup. Detalle y restauración en `docs/backups.md`.
 - Fix aplicado: conexión SignalR global desactivada cuando hay conexión por empresa (evita fichajes duplicados)
