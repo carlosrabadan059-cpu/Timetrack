@@ -80,8 +80,8 @@
     "semantic_hash": ""
   },
   "backend/src/api/routes/help.ts": {
-    "mtime": 1790882146.1005583,
-    "ast_hash": "06f387bbafca27ab21b88ac950ef66db",
+    "mtime": 1794604713.667824,
+    "ast_hash": "b594d76a3f5a0d08e260e78b0138ac57",
     "semantic_hash": ""
   },
   "backend/src/api/routes/historial.ts": {
@@ -775,8 +775,8 @@
     "semantic_hash": ""
   },
   ".agents/skills/antigravity-backend/references/fichaje-modos.md": {
-    "mtime": 1794603713.32652,
-    "ast_hash": "777488f0805a04a32fe6e17abe3c1257",
+    "mtime": 1794604713.6679425,
+    "ast_hash": "5dba0a5cc282969582b2a4558ec36018",
     "semantic_hash": ""
   },
   ".agents/skills/antigravity-backend/references/n8n-workflows.md": {
@@ -960,13 +960,13 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1794603713.320806,
-    "ast_hash": "b1948d61421a07347cfeb1d86a044506",
+    "mtime": 1794604713.66662,
+    "ast_hash": "e4f480273cadd8940bf7eb7c32d43bbf",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1794604314.9463685,
-    "ast_hash": "0b2d18b373fd847d2a8017ff2d5ef710",
+    "mtime": 1794604713.666343,
+    "ast_hash": "52afbf02903b58350f71bfd581bb7089",
     "semantic_hash": ""
   },
   "HELPBOT_TESTS.md": {
@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "MANUAL.md": {
-    "mtime": 1779400666.4618835,
-    "ast_hash": "2a6dbef302c51f65827a7bcede2b9ead",
+    "mtime": 1794604713.667429,
+    "ast_hash": "99cfe84ce45737d8494622d6c905925e",
     "semantic_hash": ""
   },
   "README.md": {
@@ -1275,8 +1275,8 @@
     "semantic_hash": ""
   },
   "HANDOFF.md": {
-    "mtime": 1794516639.2075512,
-    "ast_hash": "959e54b8e9e4a833dfa5ac439863af09",
+    "mtime": 1794604713.6667438,
+    "ast_hash": "c709c3db4746e6c10f260da19b342dd2",
     "semantic_hash": ""
   },
   "docs/signalr-resilience.md": {

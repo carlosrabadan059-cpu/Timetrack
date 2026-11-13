@@ -19,6 +19,10 @@ const MANUAL = `
 - Badge verde "En Jornada" o gris "Fuera de Horario".
 - Resumen del día: horas trabajadas, primera entrada, última salida.
 - El fichaje web/móvil no requiere acción extra — solo pulsar el botón.
+- Entrada: se puede fichar como mucho 1 hora antes de la entrada oficial (si es a las 9:00, desde las 8:00). Antes, la app muestra un aviso y no ficha. El lector 2N no se bloquea.
+- Si se ficha antes de la hora oficial, la jornada cuenta desde la hora oficial.
+- "Salida prevista": entrada real (o la oficial, si se entró antes) + duración de la jornada.
+- Horas trabajadas: en día laborable solo cuenta el tiempo entre la entrada oficial y la salida prevista. Lo de antes o después no suma; las horas extra se piden con una incidencia "Hora Extra".
 
 ### Historial
 - Lista de todos los fichajes propios ordenados por fecha.
@@ -53,6 +57,7 @@ const MANUAL = `
 ### Asistencia
 - Tabla completa de fichajes de toda la empresa.
 - Filtros: empleado, fechas, dirección.
+- Marcas informativas (el fichaje se registra igual): "Entrada tardía" (después de entrada oficial + margen flexible), "Salida anticipada" (antes de la salida prevista − tolerancia), "Salida tardía" (más de 1 hora después de la salida prevista).
 
 ### Empleados
 - Crear, editar, eliminar empleados.
@@ -87,6 +92,8 @@ const MANUAL = `
 
 ## FAQ
 - ¿No puedo fichar dos veces? → El sistema bloquea dos entradas o salidas consecutivas. Crea una incidencia si fue un error.
+- ¿No me deja fichar la entrada? → Solo se puede fichar desde 1 hora antes de la entrada oficial. El aviso indica desde qué hora.
+- ¿Por qué no cuentan mis horas de más? → Solo cuenta el tiempo entre la entrada oficial y la salida prevista. Pide las horas extra con una incidencia "Hora Extra".
 - ¿Olvidé fichar la salida? → Crea incidencia tipo "Olvido" con la hora correcta. Si se aprueba, se crea el fichaje.
 - ¿GPS obligatorio? → No. Se guarda si está disponible pero no bloquea el fichaje.
 - ¿Qué es EMP-0001? → Código único de empleado asignado automáticamente.

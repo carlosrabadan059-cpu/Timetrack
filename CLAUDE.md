@@ -257,13 +257,14 @@ Salida prevista = max(primera entrada, S) + (E − S) — la pausa de comida va 
 Salida normal (no pausa) antes de salida prevista − T → schedule_flag = 'early_exit'
 Salida normal (no pausa) más de 60 min después de la salida prevista (LATE_EXIT_MAX_MINUTES) → schedule_flag = 'late_exit'. Se registra igual, nunca se bloquea.
 Horas trabajadas (dashboard, historial, reportes, PDF/Excel): en día laborable solo cuentan entre S y la salida prevista (workWindow() en schedule.ts, usado por calculateDaySummary). Lo fichado antes de S o después de la salida prevista no suma.
-Solo informativo: nunca bloquea el fichaje. Se aplica igual a 2N, web y móvil. out_of_schedule = schedule_flag is not null (compatibilidad)
+Las marcas (late_entry, early_exit, late_exit) son solo informativas: nunca bloquean el fichaje. Lo único que bloquea es la entrada anticipada (too_early, solo web/móvil). Se aplica igual a 2N, web y móvil. out_of_schedule = schedule_flag is not null (compatibilidad)
 GET /api/me/dashboard devuelve expected_exit (ISO) y el empleado lo ve como "Salida prevista"
 Las horas se comparan siempre en Europe/Madrid (lib/madrid-time.ts): el servidor corre en UTC, nunca usar Date#getHours()
 
 Validaciones:
 
 Dos in consecutivos o dos out consecutivos → 422 { error: { code: 'duplicate_direction', message: 'Ya tienes una entrada sin salida registrada' } }
+Primera entrada del día más de 60 min antes de la entrada oficial (web/móvil) → 422 { error: { code: 'too_early', message: 'Todavía no puedes fichar la entrada: se permite a partir de las HH:MM …', details: { earliest, official_start } } }
 El fichaje web/móvil NO pasa por 2N AC — se inserta directamente en access_logs
 La geolocalización es opcional y no bloquea el fichaje — solo se almacena para auditoría
 

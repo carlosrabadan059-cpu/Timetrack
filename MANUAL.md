@@ -29,6 +29,10 @@ La pantalla principal muestra:
 
 **¿Y si fichaje dos veces seguidas en la misma dirección?** El sistema mostrará un error de "fichaje duplicado" — es una validación de seguridad para evitar errores.
 
+**¿Puedo fichar antes de mi hora de entrada?** Sí, hasta 1 hora antes de tu entrada oficial (si entras a las 9:00, desde las 8:00). Antes de eso la app no deja fichar la entrada. Aunque fiches antes, tu jornada cuenta desde la hora oficial: tu salida prevista y tus horas se calculan desde las 9:00.
+
+**Salida prevista**: al fichar la entrada, el dashboard muestra a qué hora termina tu jornada. Se calcula desde tu entrada real (o la oficial, si entraste antes).
+
 **¿Puedo fichar desde el móvil?** Sí, la app web es completamente responsive. Si se detecta geolocalización, se guarda la posición (solo para auditoría, no bloquea el fichaje).
 
 ---
@@ -42,6 +46,8 @@ Muestra todos tus fichajes ordenados por fecha, agrupados por día.
 - Cada fichaje muestra: hora, dirección, tipo (Normal / Comida), origen y dispositivo.
 
 **Tipo "Comida"**: Los fichajes realizados entre las 13:00 y las 15:59 se clasifican automáticamente como tipo "Comida".
+
+**Horas trabajadas**: en un día laborable solo cuenta el tiempo entre tu entrada oficial y tu salida prevista. Lo que fiches antes de la hora oficial o después de la salida prevista no suma (para horas extra, crea una incidencia de tipo "Hora extra"). En fines de semana y festivos autorizados cuenta todo lo fichado.
 
 ---
 
@@ -111,6 +117,10 @@ Tabla completa de todos los fichajes de la empresa.
 - **Búsqueda**: por nombre o email del empleado.
 - **Paginación**: 50 registros por página.
 - Cada fila muestra: empleado, código, fecha/hora, dirección, tipo, origen, si tiene GPS.
+- **Marcas de horario** (solo informativas, el fichaje se registra igual):
+  - *Entrada tardía*: primera entrada después de la hora oficial + margen flexible.
+  - *Salida anticipada*: salida antes de la salida prevista − tolerancia de salida.
+  - *Salida tardía*: salida más de 1 hora después de la salida prevista.
 
 ---
 
@@ -160,6 +170,11 @@ Configuración general de la empresa, dividida en pestañas:
 - **Minutos de cortesía**: tolerancia en minutos al inicio/fin de jornada.
 - **Coordenadas de la sede**: latitud y longitud del centro principal.
 - **Horario laboral**: hora de inicio y fin, días laborables de la semana.
+- **Reglas fijas del horario**:
+  - la entrada se puede fichar como mucho 1 hora antes de la oficial (web y móvil; el lector 2N no se bloquea);
+  - salida prevista = entrada real (o la oficial, si se entró antes) + duración de la jornada;
+  - una salida más de 1 hora después de la prevista se marca como *Salida tardía*;
+  - las horas trabajadas solo cuentan entre la entrada oficial y la salida prevista.
 
 #### Modos de Fichaje
 Configura qué métodos de fichaje están disponibles:
@@ -194,6 +209,12 @@ Para integración con sistemas externos (ERP, nóminas, RRHH):
 
 **¿Por qué no puedo fichar dos veces seguidas?**
 El sistema impide dos entradas o dos salidas consecutivas para evitar errores. Si crees que hay un error, crea una incidencia de tipo "Olvido" o "Corrección".
+
+**¿Por qué no me deja fichar la entrada?**
+Si falta más de 1 hora para tu entrada oficial, la app no deja fichar todavía. El mensaje indica desde qué hora puedes hacerlo.
+
+**¿Por qué mis horas no cuentan lo que he fichado de más?**
+En días laborables solo se cuenta el tiempo entre tu entrada oficial y tu salida prevista. Si has hecho horas extra, solicítalas con una incidencia de tipo "Hora extra".
 
 **¿Qué pasa si olvido fichar la salida?**
 Tu jornada quedará sin cerrar. Crea una incidencia de tipo "Olvido" indicando la hora de salida correcta. Un admin la revisará y, si la aprueba, se creará el fichaje automáticamente.

@@ -1,16 +1,16 @@
 # Graph Report - Timetrack  (2026-11-13)
 
 ## Corpus Check
-- 190 files · ~135,134 words
+- 190 files · ~136,353 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3555 nodes · 3957 edges · 377 communities (359 shown, 18 thin omitted)
+- 3557 nodes · 3959 edges · 375 communities (357 shown, 18 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `74a84e00`
+- Built from commit: `a2acffa7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -103,9 +103,7 @@
 - [[_COMMUNITY_Community 87|Community 87]]
 - [[_COMMUNITY_Community 88|Community 88]]
 - [[_COMMUNITY_Community 89|Community 89]]
-- [[_COMMUNITY_Community 90|Community 90]]
 - [[_COMMUNITY_Community 91|Community 91]]
-- [[_COMMUNITY_Community 92|Community 92]]
 - [[_COMMUNITY_Community 93|Community 93]]
 - [[_COMMUNITY_Community 94|Community 94]]
 - [[_COMMUNITY_Community 95|Community 95]]
@@ -398,7 +396,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (377 total, 18 thin omitted)
+## Communities (375 total, 18 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.20
@@ -518,7 +516,7 @@ Nodes (24): dependencies, dotenv, exceljs, hono, @hono/node-server, @hono/zod-va
 
 ### Community 29 - "Community 29"
 Cohesion: 0.08
-Nodes (23): ADMINS Y MANAGERS, Ajustes, API Keys, Asistencia (Fichajes), Calendario Laboral, Control Horario, Correcciones (Incidencias Admin), Dashboard Admin (+15 more)
+Nodes (24): ADMINS Y MANAGERS, Ajustes, API Keys, Asistencia (Fichajes), Calendario Laboral, Control Horario, Correcciones (Incidencias Admin), Dashboard Admin (+16 more)
 
 ### Community 30 - "Community 30"
 Cohesion: 0.09
@@ -557,8 +555,8 @@ Cohesion: 0.10
 Nodes (19): 1. Expression Syntax (Skill #1), 2. MCP Tools Expert (Skill #2), 3. Workflow Patterns (Skill #3), 4. Validation Expert (Skill #4), 5. Node Configuration (Skill #5), Critical Findings for Skills, Database Statistics, Generated: 2025-10-20 (+11 more)
 
 ### Community 40 - "Community 40"
-Cohesion: 0.11
-Nodes (3): MONTHS_ES, supabase, AuthContext
+Cohesion: 0.12
+Nodes (10): DashboardPage(), fmtMinutes(), pauseOptions, MONTHS_ES, download(), getToken(), supabase, AuthContext (+2 more)
 
 ### Community 41 - "Community 41"
 Cohesion: 0.14
@@ -589,7 +587,7 @@ Cohesion: 0.27
 Nodes (6): getSupabaseAdmin(), main(), main(), main(), main(), main()
 
 ### Community 48 - "Community 48"
-Cohesion: 0.11
+Cohesion: 0.10
 Nodes (3): MONTHS_ES, STATUS_BADGE, TYPE_LABELS
 
 ### Community 49 - "Community 49"
@@ -740,17 +738,9 @@ Nodes (6): DayGroup, DETAIL_LABEL, Fichaje, HistorialResponse, SOURCE_LABEL, sty
 Cohesion: 0.29
 Nodes (6): Compose, Puntos a tener en cuenta, Rutas de `Tunel_N8N` (Cloudflare Zero Trust), Servicios, Stack `n8n` de Portainer (Raspberry Pi 5), Variables por servicio (solo nombres)
 
-### Community 90 - "Community 90"
-Cohesion: 0.50
-Nodes (3): DashboardPage(), fmtMinutes(), pauseOptions
-
 ### Community 91 - "Community 91"
 Cohesion: 0.50
 Nodes (4): getEnv(), getSupabasePublic(), supabaseAdmin, supabasePublic
-
-### Community 92 - "Community 92"
-Cohesion: 0.60
-Nodes (4): download(), getToken(), api, request()
 
 ### Community 93 - "Community 93"
 Cohesion: 0.18
@@ -1165,7 +1155,7 @@ Cohesion: 0.29
 Nodes (5): Before exploring, read these, Domain Docs, File structure, Flag ADR conflicts, Use the glossary's vocabulary
 
 ### Community 204 - "Community 204"
-Cohesion: 0.12
+Cohesion: 0.10
 Nodes (3): ROLE_LABELS, STATUS_BADGE, TYPE_CONFIG
 
 ### Community 206 - "Community 206"
@@ -1689,8 +1679,8 @@ Cohesion: 0.40
 Nodes (5): Core Variables, $env - Environment Variables, $json - Current Node Output, $node - Reference Other Nodes, $now - Current Timestamp
 
 ### Community 381 - "Community 381"
-Cohesion: 0.09
-Nodes (21): Antes de usar la app con empleados reales, Auth bug fixed (commits `4004298`, `b90fef3`), Cambios de la sesión del 2026-11-04, Cambios de la sesión del 2026-11-11, Copias de seguridad (punto 17 de #30, cerrado el 2026-11-04), Current project state, Cómo usar el grafo de conocimiento, Despliegue (+13 more)
+Cohesion: 0.08
+Nodes (22): Antes de usar la app con empleados reales, Auth bug fixed (commits `4004298`, `b90fef3`), Cambios de la sesión del 2026-11-04, Cambios de la sesión del 2026-11-11, Cambios de la sesión del 2026-11-13, Copias de seguridad (punto 17 de #30, cerrado el 2026-11-04), Current project state, Cómo usar el grafo de conocimiento (+14 more)
 
 ### Community 382 - "Community 382"
 Cohesion: 0.20
@@ -1749,7 +1739,7 @@ Cohesion: 0.11
 Nodes (34): DOW, localParts, localToUtc(), startOfLocalDay(), toMinutes(), DOW, loadSchedule(), LocalParts (+26 more)
 
 ## Knowledge Gaps
-- **2263 isolated node(s):** `dev`, `build`, `start`, `test`, `@hono/node-server` (+2258 more)
+- **2265 isolated node(s):** `dev`, `build`, `start`, `test`, `@hono/node-server` (+2260 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **18 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -1758,10 +1748,10 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `fmt` connect `Community 71` to `Community 401`?**
   _High betweenness centrality (0.009) - this node is a cross-community bridge._
-- **Why does `supabase` connect `Community 40` to `Community 33`, `Community 66`, `Community 71`, `Community 39`, `Community 204`, `Community 49`, `Community 90`, `Community 92`?**
+- **Why does `supabase` connect `Community 40` to `Community 33`, `Community 66`, `Community 71`, `Community 39`, `Community 204`, `Community 48`, `Community 49`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
 - **What connects `dev`, `build`, `start` to the rest of the system?**
-  _2263 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _2265 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**

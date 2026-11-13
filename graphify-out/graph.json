@@ -752,7 +752,7 @@
       "label": "chatSchema",
       "file_type": "code",
       "source_file": "backend/src/api/routes/help.ts",
-      "source_location": "L97",
+      "source_location": "L104",
       "id": "routes_help_chatschema",
       "community": 20,
       "norm_label": "chatschema"
@@ -7245,7 +7245,7 @@
       "source_file": "src/lib/api.js",
       "source_location": "L1",
       "id": "src_lib_api_js_lib_api",
-      "community": 92,
+      "community": 40,
       "norm_label": "api.js"
     },
     {
@@ -7254,7 +7254,7 @@
       "source_file": "src/lib/api.js",
       "source_location": "L7",
       "id": "lib_api_gettoken",
-      "community": 92,
+      "community": 40,
       "norm_label": "gettoken()"
     },
     {
@@ -7263,7 +7263,7 @@
       "source_file": "src/lib/api.js",
       "source_location": "L12",
       "id": "src_lib_api_js_lib_api_request",
-      "community": 92,
+      "community": 40,
       "norm_label": "request()"
     },
     {
@@ -7272,7 +7272,7 @@
       "source_file": "src/lib/api.js",
       "source_location": "L43",
       "id": "lib_api_download",
-      "community": 92,
+      "community": 40,
       "norm_label": "download()"
     },
     {
@@ -7281,7 +7281,7 @@
       "source_file": "src/lib/api.js",
       "source_location": "L60",
       "id": "src_lib_api_js_lib_api_api",
-      "community": 92,
+      "community": 40,
       "norm_label": "api"
     },
     {
@@ -7443,7 +7443,7 @@
       "source_file": "src/pages/admin/AdminAttendancePage.jsx",
       "source_location": "L1",
       "id": "admin_adminattendancepage",
-      "community": 40,
+      "community": 204,
       "norm_label": "adminattendancepage.jsx"
     },
     {
@@ -7452,7 +7452,7 @@
       "source_file": "src/pages/admin/AdminAttendancePage.jsx",
       "source_location": "L8",
       "id": "admin_adminattendancepage_fmtdatetime",
-      "community": 40,
+      "community": 204,
       "norm_label": "fmtdatetime()"
     },
     {
@@ -7461,7 +7461,7 @@
       "source_file": "src/pages/admin/AdminAttendancePage.jsx",
       "source_location": "L16",
       "id": "admin_adminattendancepage_sourceicon",
-      "community": 40,
+      "community": 204,
       "norm_label": "sourceicon()"
     },
     {
@@ -7470,7 +7470,7 @@
       "source_file": "src/pages/admin/AdminAttendancePage.jsx",
       "source_location": "L23",
       "id": "admin_adminattendancepage_sourcelabel",
-      "community": 40,
+      "community": 204,
       "norm_label": "sourcelabel()"
     },
     {
@@ -7479,7 +7479,7 @@
       "source_file": "src/pages/admin/AdminAttendancePage.jsx",
       "source_location": "L32",
       "id": "admin_adminattendancepage_adminattendancepage",
-      "community": 40,
+      "community": 204,
       "norm_label": "adminattendancepage()"
     },
     {
@@ -7596,7 +7596,7 @@
       "source_file": "src/pages/admin/AdminDashboardPage.jsx",
       "source_location": "L1",
       "id": "admin_admindashboardpage",
-      "community": 40,
+      "community": 48,
       "norm_label": "admindashboardpage.jsx"
     },
     {
@@ -7605,7 +7605,7 @@
       "source_file": "src/pages/admin/AdminDashboardPage.jsx",
       "source_location": "L9",
       "id": "admin_admindashboardpage_fmttime",
-      "community": 40,
+      "community": 48,
       "norm_label": "fmttime()"
     },
     {
@@ -7614,7 +7614,7 @@
       "source_file": "src/pages/admin/AdminDashboardPage.jsx",
       "source_location": "L14",
       "id": "admin_admindashboardpage_admindashboardpage",
-      "community": 40,
+      "community": 48,
       "norm_label": "admindashboardpage()"
     },
     {
@@ -8082,7 +8082,7 @@
       "source_file": "src/pages/employee/DashboardPage.jsx",
       "source_location": "L1",
       "id": "employee_dashboardpage",
-      "community": 90,
+      "community": 40,
       "norm_label": "dashboardpage.jsx"
     },
     {
@@ -8091,7 +8091,7 @@
       "source_file": "src/pages/employee/DashboardPage.jsx",
       "source_location": "L14",
       "id": "employee_dashboardpage_getdeviceinfo",
-      "community": 90,
+      "community": 40,
       "norm_label": "getdeviceinfo()"
     },
     {
@@ -8100,7 +8100,7 @@
       "source_file": "src/pages/employee/DashboardPage.jsx",
       "source_location": "L21",
       "id": "employee_dashboardpage_fmtminutes",
-      "community": 90,
+      "community": 40,
       "norm_label": "fmtminutes()"
     },
     {
@@ -8109,7 +8109,7 @@
       "source_file": "src/pages/employee/DashboardPage.jsx",
       "source_location": "L28",
       "id": "employee_dashboardpage_pauseoptions",
-      "community": 90,
+      "community": 40,
       "norm_label": "pauseoptions"
     },
     {
@@ -8118,7 +8118,7 @@
       "source_file": "src/pages/employee/DashboardPage.jsx",
       "source_location": "L35",
       "id": "employee_dashboardpage_dashboardpage",
-      "community": 90,
+      "community": 40,
       "norm_label": "dashboardpage()"
     },
     {
@@ -8908,7 +8908,7 @@
       "label": "Modo Correcci\u00f3n \u2014 al aprobar incidencia tipo 'olvido'",
       "file_type": "document",
       "source_file": ".agents/skills/antigravity-backend/references/fichaje-modos.md",
-      "source_location": "L106",
+      "source_location": "L112",
       "id": "references_fichaje_modos_modo_correcci\u00f3n_al_aprobar_incidencia_tipo_olvido",
       "community": 134,
       "norm_label": "modo correccion \u2014 al aprobar incidencia tipo 'olvido'"
@@ -8917,7 +8917,7 @@
       "label": "Algoritmo de emparejamiento in/out",
       "file_type": "document",
       "source_file": ".agents/skills/antigravity-backend/references/fichaje-modos.md",
-      "source_location": "L133",
+      "source_location": "L139",
       "id": "references_fichaje_modos_algoritmo_de_emparejamiento_in_out",
       "community": 134,
       "norm_label": "algoritmo de emparejamiento in/out"
@@ -8926,7 +8926,7 @@
       "label": "Tabla de comportamiento por modo",
       "file_type": "document",
       "source_file": ".agents/skills/antigravity-backend/references/fichaje-modos.md",
-      "source_location": "L177",
+      "source_location": "L183",
       "id": "references_fichaje_modos_tabla_de_comportamiento_por_modo",
       "community": 134,
       "norm_label": "tabla de comportamiento por modo"
@@ -11230,7 +11230,7 @@
       "label": "Agent skills",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L598",
+      "source_location": "L599",
       "id": "claude_agent_skills",
       "community": 69,
       "norm_label": "agent skills"
@@ -11239,7 +11239,7 @@
       "label": "Issue tracker",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L600",
+      "source_location": "L601",
       "id": "claude_issue_tracker",
       "community": 69,
       "norm_label": "issue tracker"
@@ -11248,7 +11248,7 @@
       "label": "Triage labels",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L604",
+      "source_location": "L605",
       "id": "claude_triage_labels",
       "community": 69,
       "norm_label": "triage labels"
@@ -11257,7 +11257,7 @@
       "label": "Domain docs",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L608",
+      "source_location": "L609",
       "id": "claude_domain_docs",
       "community": 69,
       "norm_label": "domain docs"
@@ -11266,7 +11266,7 @@
       "label": "graphify",
       "file_type": "document",
       "source_file": "CLAUDE.md",
-      "source_location": "L612",
+      "source_location": "L613",
       "id": "claude_graphify",
       "community": 69,
       "norm_label": "graphify"
@@ -11335,10 +11335,19 @@
       "norm_label": "cambios de la sesion del 2026-11-11"
     },
     {
+      "label": "Cambios de la sesi\u00f3n del 2026-11-13",
+      "file_type": "document",
+      "source_file": "HANDOFF.md",
+      "source_location": "L50",
+      "id": "handoff_cambios_de_la_sesi\u00f3n_del_2026_11_13",
+      "community": 381,
+      "norm_label": "cambios de la sesion del 2026-11-13"
+    },
+    {
       "label": "Pendiente",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L55",
+      "source_location": "L66",
       "id": "handoff_pendiente",
       "community": 381,
       "norm_label": "pendiente"
@@ -11347,7 +11356,7 @@
       "label": "Issues abiertas",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L57",
+      "source_location": "L68",
       "id": "handoff_issues_abiertas",
       "community": 381,
       "norm_label": "issues abiertas"
@@ -11356,7 +11365,7 @@
       "label": "Antes de usar la app con empleados reales",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L67",
+      "source_location": "L78",
       "id": "handoff_antes_de_usar_la_app_con_empleados_reales",
       "community": 381,
       "norm_label": "antes de usar la app con empleados reales"
@@ -11365,7 +11374,7 @@
       "label": "Mantenimiento recurrente",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L73",
+      "source_location": "L84",
       "id": "handoff_mantenimiento_recurrente",
       "community": 381,
       "norm_label": "mantenimiento recurrente"
@@ -11374,7 +11383,7 @@
       "label": "Si algo falla",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L80",
+      "source_location": "L91",
       "id": "handoff_si_algo_falla",
       "community": 381,
       "norm_label": "si algo falla"
@@ -11383,7 +11392,7 @@
       "label": "Grafo de conocimiento",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L88",
+      "source_location": "L99",
       "id": "handoff_grafo_de_conocimiento",
       "community": 381,
       "norm_label": "grafo de conocimiento"
@@ -11392,7 +11401,7 @@
       "label": "Skills recomendadas",
       "file_type": "document",
       "source_file": "HANDOFF.md",
-      "source_location": "L96",
+      "source_location": "L107",
       "id": "handoff_skills_recomendadas",
       "community": 381,
       "norm_label": "skills recomendadas"
@@ -11510,7 +11519,7 @@
       "file_type": "document",
       "source_file": "MANUAL.md",
       "source_location": "L1",
-      "id": "users_carlosrabadan_antigravity_timetrack_manual_md",
+      "id": "manual",
       "community": 29,
       "norm_label": "manual.md"
     },
@@ -11554,7 +11563,7 @@
       "label": "Historial",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L36",
+      "source_location": "L40",
       "id": "manual_historial",
       "community": 29,
       "norm_label": "historial"
@@ -11563,7 +11572,7 @@
       "label": "Incidencias",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L48",
+      "source_location": "L54",
       "id": "manual_incidencias",
       "community": 29,
       "norm_label": "incidencias"
@@ -11572,7 +11581,7 @@
       "label": "Reportes",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L71",
+      "source_location": "L77",
       "id": "manual_reportes",
       "community": 29,
       "norm_label": "reportes"
@@ -11581,7 +11590,7 @@
       "label": "Mi Perfil",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L83",
+      "source_location": "L89",
       "id": "manual_mi_perfil",
       "community": 29,
       "norm_label": "mi perfil"
@@ -11590,7 +11599,7 @@
       "label": "ADMINS Y MANAGERS",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L93",
+      "source_location": "L99",
       "id": "manual_admins_y_managers",
       "community": 29,
       "norm_label": "admins y managers"
@@ -11599,7 +11608,7 @@
       "label": "Dashboard Admin",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L95",
+      "source_location": "L101",
       "id": "manual_dashboard_admin",
       "community": 29,
       "norm_label": "dashboard admin"
@@ -11608,7 +11617,7 @@
       "label": "Asistencia (Fichajes)",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L106",
+      "source_location": "L112",
       "id": "manual_asistencia_fichajes",
       "community": 29,
       "norm_label": "asistencia (fichajes)"
@@ -11617,8 +11626,8 @@
       "label": "Empleados",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L117",
-      "id": "manual_empleados_117",
+      "source_location": "L127",
+      "id": "manual_empleados_127",
       "community": 29,
       "norm_label": "empleados"
     },
@@ -11626,7 +11635,7 @@
       "label": "Correcciones (Incidencias Admin)",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L128",
+      "source_location": "L138",
       "id": "manual_correcciones_incidencias_admin",
       "community": 29,
       "norm_label": "correcciones (incidencias admin)"
@@ -11635,7 +11644,7 @@
       "label": "Reportes Admin",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L139",
+      "source_location": "L149",
       "id": "manual_reportes_admin",
       "community": 29,
       "norm_label": "reportes admin"
@@ -11644,7 +11653,7 @@
       "label": "Ajustes",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L147",
+      "source_location": "L157",
       "id": "manual_ajustes",
       "community": 29,
       "norm_label": "ajustes"
@@ -11653,7 +11662,7 @@
       "label": "General",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L151",
+      "source_location": "L161",
       "id": "manual_general",
       "community": 29,
       "norm_label": "general"
@@ -11662,7 +11671,7 @@
       "label": "Sucursales",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L154",
+      "source_location": "L164",
       "id": "manual_sucursales",
       "community": 29,
       "norm_label": "sucursales"
@@ -11671,7 +11680,7 @@
       "label": "Control Horario",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L158",
+      "source_location": "L168",
       "id": "manual_control_horario",
       "community": 29,
       "norm_label": "control horario"
@@ -11680,7 +11689,7 @@
       "label": "Modos de Fichaje",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L164",
+      "source_location": "L179",
       "id": "manual_modos_de_fichaje",
       "community": 29,
       "norm_label": "modos de fichaje"
@@ -11689,7 +11698,7 @@
       "label": "Calendario Laboral",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L170",
+      "source_location": "L185",
       "id": "manual_calendario_laboral",
       "community": 29,
       "norm_label": "calendario laboral"
@@ -11698,7 +11707,7 @@
       "label": "API Keys",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L174",
+      "source_location": "L189",
       "id": "manual_api_keys",
       "community": 29,
       "norm_label": "api keys"
@@ -11707,7 +11716,7 @@
       "label": "Modos de fichaje explicados",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L182",
+      "source_location": "L197",
       "id": "manual_modos_de_fichaje_explicados",
       "community": 29,
       "norm_label": "modos de fichaje explicados"
@@ -11716,7 +11725,7 @@
       "label": "Preguntas frecuentes",
       "file_type": "document",
       "source_file": "MANUAL.md",
-      "source_location": "L193",
+      "source_location": "L208",
       "id": "manual_preguntas_frecuentes",
       "community": 29,
       "norm_label": "preguntas frecuentes"
@@ -13610,6 +13619,24 @@
       "id": "security_audit_scan_metadata",
       "community": 4,
       "norm_label": "scan metadata"
+    },
+    {
+      "label": "MANUAL.md",
+      "file_type": "document",
+      "source_file": "MANUAL.md",
+      "source_location": "L1",
+      "community": 29,
+      "norm_label": "manual.md",
+      "id": "users_carlosrabadan_antigravity_timetrack_manual_md"
+    },
+    {
+      "label": "Empleados",
+      "file_type": "document",
+      "source_file": "MANUAL.md",
+      "source_location": "L117",
+      "community": 29,
+      "norm_label": "empleados",
+      "id": "manual_empleados_117"
     },
     {
       "label": "fases.md",
@@ -31580,15 +31607,6 @@
       "id": "zoom_out_skill"
     },
     {
-      "label": "MANUAL.md",
-      "file_type": "document",
-      "source_file": "MANUAL.md",
-      "source_location": "L1",
-      "community": 29,
-      "norm_label": "manual.md",
-      "id": "manual"
-    },
-    {
       "label": "descripcion app control horario.md",
       "file_type": "document",
       "source_file": "descripcion app control horario.md",
@@ -33908,9 +33926,9 @@
       "source_file": "backend/src/api/routes/historial.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_historial",
-      "target": "lib_schedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule"
     },
     {
       "relation": "imports",
@@ -33919,9 +33937,9 @@
       "source_file": "backend/src/api/routes/historial.ts",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_historial",
-      "target": "lib_schedule_loaduserschedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule_loaduserschedule"
     },
     {
       "relation": "imports",
@@ -34546,9 +34564,9 @@
       "source_file": "backend/src/api/routes/me.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_me",
-      "target": "lib_schedule_scheduleflag",
-      "confidence_score": 1.0
+      "target": "lib_schedule_scheduleflag"
     },
     {
       "relation": "imports",
@@ -34874,9 +34892,9 @@
       "source_file": "backend/src/api/routes/reportes.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_reportes",
-      "target": "lib_schedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule"
     },
     {
       "relation": "imports",
@@ -34885,9 +34903,9 @@
       "source_file": "backend/src/api/routes/reportes.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "routes_reportes",
-      "target": "lib_schedule_loaduserschedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule_loaduserschedule"
     },
     {
       "relation": "imports",
@@ -37793,9 +37811,9 @@
       "source_file": "backend/src/lib/schedule.test.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_test",
-      "target": "services_attendance",
-      "confidence_score": 1.0
+      "target": "services_attendance"
     },
     {
       "relation": "imports",
@@ -37804,9 +37822,9 @@
       "source_file": "backend/src/lib/schedule.test.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_test",
-      "target": "services_attendance_calculatedaysummary",
-      "confidence_score": 1.0
+      "target": "services_attendance_calculatedaysummary"
     },
     {
       "relation": "imports_from",
@@ -37815,9 +37833,9 @@
       "source_file": "backend/src/lib/schedule.test.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_test",
-      "target": "types_supabase_types",
-      "confidence_score": 1.0
+      "target": "types_supabase_types"
     },
     {
       "relation": "imports",
@@ -37826,9 +37844,9 @@
       "source_file": "backend/src/lib/schedule.test.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_test",
-      "target": "types_supabase_types_accesslog",
-      "confidence_score": 1.0
+      "target": "types_supabase_types_accesslog"
     },
     {
       "relation": "calls",
@@ -38108,9 +38126,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L85",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule",
-      "target": "lib_schedule_workwindow",
-      "confidence_score": 1.0
+      "target": "lib_schedule_workwindow"
     },
     {
       "relation": "imports",
@@ -38130,9 +38148,9 @@
       "source_file": "backend/src/services/attendance.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "services_attendance",
-      "target": "lib_schedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule"
     },
     {
       "relation": "imports_from",
@@ -38141,9 +38159,9 @@
       "source_file": "backend/src/services/report-generator.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "services_report_generator",
-      "target": "lib_schedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule"
     },
     {
       "relation": "imports_from",
@@ -38163,9 +38181,9 @@
       "source_file": "backend/src/services/attendance.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "services_attendance",
-      "target": "lib_schedule_schedulesettings",
-      "confidence_score": 1.0
+      "target": "lib_schedule_schedulesettings"
     },
     {
       "relation": "calls",
@@ -38196,9 +38214,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L86",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_workwindow",
-      "target": "lib_schedule_isworkingday",
-      "confidence_score": 1.0
+      "target": "lib_schedule_isworkingday"
     },
     {
       "relation": "calls",
@@ -38240,9 +38258,9 @@
       "source_file": "backend/src/lib/schedule.ts",
       "source_location": "L87",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "lib_schedule_workwindow",
-      "target": "lib_schedule_expectedexit",
-      "confidence_score": 1.0
+      "target": "lib_schedule_expectedexit"
     },
     {
       "relation": "imports",
@@ -38251,9 +38269,9 @@
       "source_file": "backend/src/services/attendance.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "services_attendance",
-      "target": "lib_schedule_workwindow",
-      "confidence_score": 1.0
+      "target": "lib_schedule_workwindow"
     },
     {
       "relation": "calls",
@@ -38405,9 +38423,9 @@
       "source_file": "backend/src/services/report-generator.ts",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "services_report_generator",
-      "target": "lib_schedule_loaduserschedule",
-      "confidence_score": 1.0
+      "target": "lib_schedule_loaduserschedule"
     },
     {
       "relation": "calls",
@@ -50357,6 +50375,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "HANDOFF.md",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "handoff_estado_actual",
+      "target": "handoff_cambios_de_la_sesi\u00f3n_del_2026_11_13",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "HANDOFF.md",
       "source_location": "L25",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -50530,16 +50558,6 @@
       "source_location": "L1",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "users_carlosrabadan_antigravity_timetrack_manual_md",
-      "target": "manual_manual_de_usuario_timetrack"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "MANUAL.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "manual",
       "target": "manual_manual_de_usuario_timetrack"
     },
@@ -50592,6 +50610,16 @@
       "confidence_score": 1.0,
       "source": "manual_manual_de_usuario_timetrack",
       "target": "manual_roles_de_usuario"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "MANUAL.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "users_carlosrabadan_antigravity_timetrack_manual_md",
+      "target": "manual_manual_de_usuario_timetrack"
     },
     {
       "relation": "contains",
@@ -50692,6 +50720,16 @@
       "confidence_score": 1.0,
       "source": "manual_admins_y_managers",
       "target": "manual_empleados_117"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "MANUAL.md",
+      "source_location": "L127",
+      "weight": 1.0,
+      "source": "manual_admins_y_managers",
+      "target": "manual_empleados_127",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -72186,5 +72224,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "74a84e005e8183ab242cd2491cde9f0d36916043"
+  "built_at_commit": "a2acffa734ce19eacbc5ea13e90dfd7024102fb0"
 }

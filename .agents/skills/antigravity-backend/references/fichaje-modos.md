@@ -84,6 +84,12 @@ if (lastLog && lastLog.direction === direction) {
   return 422 { code: 'duplicate_direction' }
 }
 
+// Paso 3b: horario (lib/schedule.ts, hora de Madrid)
+// - día no laborable sin override_token → 422 'non_working_day'
+// - primera entrada > 60 min antes de la oficial → 422 'too_early' (solo web/móvil; 2N nunca se bloquea)
+// - schedule_flag (informativo): 'late_entry' | 'early_exit' | 'late_exit' (salida > prevista + 60 min)
+// - horas trabajadas: calculateDaySummary(logs, schedule) recorta a [entrada oficial, salida prevista]
+
 // Paso 4: Determinar source por device_info, NO por GPS
 // GPS puede estar presente en web también — no es indicador fiable de móvil
 const source: 'web' | 'mobile' =

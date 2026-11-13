@@ -46,6 +46,17 @@ Todas las fases (0–5) están en producción. Del lado del código, la auditor�
 ### Cambios de la sesión del 2026-11-11
 
 - `7a90b45`, `468f7d2`, `6e042b6`: **horario flexible** (ventana de entrada y salida prevista = entrada + duración oficial) y **horario por sucursal** (`profiles.branch_id`, `branches[].schedule`, festivos locales). Reglas en `CLAUDE.md`; lógica y tests en `backend/src/lib/schedule.ts` (`npm test`). Se configura en *Ajustes → Control Horario* y *Sucursales → Configurar horario*; la sucursal del empleado, en *Empleados → Editar*. Las marcas "Entrada tardía" / "Salida anticipada" salen en *Asistencia*.
+
+### Cambios de la sesión del 2026-11-13
+
+- `74a84e0`: **backend migrado a Dokploy** (Debian). Ver `docs/migracion-backend-dokploy.md`; marcha atrás a la Pi posible hasta el 2026-11-20.
+- Frontend en Dokploy: Watch Paths configurados (solo redespliega si cambian `src/**`, `public/**`, `nginx/**`, `Dockerfile`, configs de Vite/Tailwind/npm) y vaciado un *Command* que se había quedado puesto por error.
+- `a2acffa`: **límites de entrada y salida** y **horas recortadas a la jornada**:
+  - web/móvil no pueden fichar la primera entrada más de 60 min antes de la oficial (422 `too_early`); la referencia sigue siendo la hora oficial;
+  - salida más de 60 min después de la prevista → marca `late_exit` ("Salida tardía" en *Asistencia*), sin bloquear;
+  - las horas trabajadas en día laborable solo cuentan entre la entrada oficial y la salida prevista (dashboard, historial, reportes, PDF y Excel);
+  - migración `access_logs_schedule_flag_late_exit` aplicada (check de `schedule_flag` admite `late_exit`).
+- Documentación: el límite de fichaje es 1 cada 5 segundos (el código ya lo hacía; los docs decían 5 minutos).
 - `e25828e`, `9472417`, `673ce27`: la alerta de **2N caído** nunca llegaba a Telegram (el HTML del 502 de Cloudflare superaba los 4096 caracteres). Ahora el error se resume y, al recuperar la conexión, llega también "✅ 2N Access Commander reconectado". El workflow de n8n usa la credencial *Telegram TimeTrack 2n*.
 - `N8N_WEBHOOK_SECRET` **rotado** (estaba expuesto en una consulta); el valor nuevo está en la app Contraseñas del Mac y en el stack `n8n` de Portainer, mismo valor en los servicios `n8n` y `backend`.
 - Con el servidor 2N parado, `/health` muestra `signalr connected:false`: es lo esperado.
